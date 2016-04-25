@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# Common code used by cisco and embrane plugins
+# ---------------------------------------------
+
+# This module used to be for Open vSwitch monolithic plugin,
+# which has been removed in Juno.
+
+# Save trace setting
+_XTRACE_NEUTRON_OVS=$(set +o | grep xtrace)
+set +o xtrace
+
+source $TOP_DIR/lib/neutron_plugins/openvswitch_agent
+
+function neutron_plugin_configure_common {
+    Q_PLUGIN_CONF_PATH=etc/neutron/plugins/openvswitch
+    Q_PLUGIN_CONF_FILENAME=ovs_neutron_plugin.ini
+    Q_PLUGIN_CLASS="neutron.plugins.openvswitch.ovs_neutron_plugin.OVSNeutronPluginV2"
+}
+
+function neutron_plugin_configure_service {
+    if [[ "$ENABLE_TENANT_TUNNELS" == "True" ]]; then
+        iniset /$Q_PLUGIN_CONF_FILE ovs tenant_network_type gre
+        iniset /$Q_PLUGIN_CONF_FILE ovs tunnel_id_ranges $TENANT_TUNNEL_RANGES
+    elif [[ "$ENABLE_TENANT_VLANS" == "True" ]]; then
+        iniset /$Q_PLUGIN_CONF_FILE ovs tenant_network_type vlan
+    else
+        echo "WARNING - The openvswitch plugin is using local tenant networks, with no connectivity between hosts."
+    fi
+
+    # Override ``OVS_VLAN_RANGES`` and ``OVS_BRIDGE_MAPPINGS`` in ``localrc``
+    # for more complex physical network configurations.
+    if [[ "$OVS_VLAN_RANGES" == "" ]] && [[ "$PHYSICAL_NETWORK" != "" ]]; then
+        OVS_VLAN_RANGES=$PHYSICAL_NETWORK
+        if [[ "$TENANT_VLAN_RANGE" != "" ]]; then
+            OVS_VLAN_RANGES=$OVS_VLAN_RANGES:$TENANT_VLAN_RANGE
+        fi
+    fi
+    if [[ "$OVS_VLAN_RANGES" != "" ]]; then
+        iniset /$Q_PLUGIN_CONF_FILE ovs network_vlan_ranges $OVS_VLAN_RANGES
+    fi
+
+    _neutron_ovs_base_configure_firewall_driver
+
+    # Define extra "OVS" configuration options when q-svc is configured by defining
+    # the array ``Q_SRV_EXTRA_OPTS``.
+    # For Example: ``Q_SRV_EXTRA_OPTS=(foo=true bar=2)``
+    for I in "${Q_SRV_EXTRA_OPTS[@]}"; do
+        # Replace the first '=' with ' ' for iniset syntax
+        iniset /$Q_PLUGIN_CONF_FILE ovs ${I/=/ }
+    done
+}
+
+function has_neutron_plugin_security_group {
+    return 0
+}
+
+# Restore xtrace
+$_XTRACE_NEUTRON_OVS
+

@@ -1,0 +1,157 @@
+#!/bin/bash
+#
+# Neutron Cisco plugin
+# ---------------------------
+
+# Save trace setting
+_XTRACE_NEUTRON_CISCO=$(set +o | grep xtrace)
+set +o xtrace
+
+# Scecify the VSM parameters
+Q_CISCO_PLUGIN_VSM_IP=${Q_CISCO_PLUGIN_VSM_IP:-}
+# Specify the VSM username
+Q_CISCO_PLUGIN_VSM_USERNAME=${Q_CISCO_PLUGIN_VSM_USERNAME:-admin}
+# Specify the VSM passward for above username
+Q_CISCO_PLUGIN_VSM_PASSWORD=${Q_CISCO_PLUGIN_VSM_PASSWORD:-}
+# Specify the uVEM integration bridge name
+Q_CISCO_PLUGIN_INTEGRATION_BRIDGE=${Q_CISCO_PLUGIN_INTEGRATION_BRIDGE:-br-int}
+# Specify if tunneling is enabled
+Q_CISCO_PLUGIN_ENABLE_TUNNELING=${Q_CISCO_PLUGIN_ENABLE_TUNNELING:-True}
+# Specify the VXLAN range
+Q_CISCO_PLUGIN_VXLAN_ID_RANGES=${Q_CISCO_PLUGIN_VXLAN_ID_RANGES:-5000:10000}
+# Specify the VLAN range
+Q_CISCO_PLUGIN_VLAN_RANGES=${Q_CISCO_PLUGIN_VLAN_RANGES:-vlan:1:4094}
+
+# This routine put a prefix on an existing function name
+function _prefix_function {
+    declare -F $1 > /dev/null || die "$1 doesn't exist"
+    eval "$(echo "${2}_${1}()"; declare -f ${1} | tail -n +2)"
+}
+
+function _has_n1kv_subplugin {
+    local subplugin
+    for subplugin in ${Q_CISCO_PLUGIN_SUBPLUGINS[@]}; do
+        if [[ "$subplugin" == "n1kv" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Prefix openvswitch plugin routines with "ovs" in order to differentiate from
+# cisco plugin routines. This means, ovs plugin routines will coexist with cisco
+# plugin routines in this script.
+source $TOP_DIR/lib/neutron_plugins/openvswitch
+_prefix_function neutron_plugin_create_nova_conf ovs
+_prefix_function neutron_plugin_install_agent_packages ovs
+_prefix_function neutron_plugin_configure_common ovs
+_prefix_function neutron_plugin_configure_debug_command ovs
+_prefix_function neutron_plugin_configure_dhcp_agent ovs
+_prefix_function neutron_plugin_configure_l3_agent ovs
+_prefix_function neutron_plugin_configure_plugin_agent ovs
+_prefix_function neutron_plugin_configure_service ovs
+_prefix_function neutron_plugin_setup_interface_driver ovs
+_prefix_function has_neutron_plugin_security_group ovs
+
+function has_neutron_plugin_security_group {
+    return 1
+}
+
+function is_neutron_ovs_base_plugin {
+    return
+}
+
+# populate required nova configuration parameters
+function neutron_plugin_create_nova_conf {
+    _neutron_ovs_base_configure_nova_vif_driver
+}
+
+function neutron_plugin_install_agent_packages {
+    # Cisco plugin uses openvswitch to operate in one of its configurations
+    ovs_neutron_plugin_install_agent_packages
+}
+
+# Configure common parameters
+function neutron_plugin_configure_common {
+    # setup default subplugins
+    if [ ! -v Q_CISCO_PLUGIN_SUBPLUGINS ]; then
+        declare -ga Q_CISCO_PLUGIN_SUBPLUGINS
+        Q_CISCO_PLUGIN_SUBPLUGINS=(n1kv)
+    fi
+    Q_PLUGIN_CONF_PATH=etc/neutron/plugins/cisco
+    Q_PLUGIN_CONF_FILENAME=cisco_plugins.ini
+    Q_PLUGIN_CLASS="neutron.plugins.cisco.network_plugin.PluginV2"
+}
+
+function neutron_plugin_configure_debug_command {
+    :
+}
+
+function neutron_plugin_configure_dhcp_agent {
+    iniset $Q_DHCP_CONF_FILE DEFAULT dhcp_agent_manager neutron.agent.dhcp_agent.DhcpAgentWithStateReport
+}
+
+function neutron_plugin_configure_l3_agent {
+    :
+}
+
+# Configure n1kv plugin
+function _configure_n1kv_subplugin {
+    local cisco_cfg_file=$1
+
+    # populate the cisco plugin cfg file with the VSM information
+    echo "Configuring n1kv in $cisco_cfg_file-- $Q_CISCO_PLUGIN_VSM_IP $Q_CISCO_PLUGIN_VSM_USERNAME $Q_CISCO_PLUGIN_VSM_PASSWORD"
+    iniset $cisco_cfg_file N1KV:$Q_CISCO_PLUGIN_VSM_IP username $Q_CISCO_PLUGIN_VSM_USERNAME
+    iniset $cisco_cfg_file N1KV:$Q_CISCO_PLUGIN_VSM_IP password $Q_CISCO_PLUGIN_VSM_PASSWORD
+
+    iniset $cisco_cfg_file CISCO_N1K integration_bridge $Q_CISCO_PLUGIN_INTEGRATION_BRIDGE
+    iniset $cisco_cfg_file CISCO_N1K enable_tunneling $Q_CISCO_PLUGIN_ENABLE_TUNNELING
+    iniset $cisco_cfg_file CISCO_N1K vxlan_id_ranges $Q_CISCO_PLUGIN_VXLAN_ID_RANGES
+    iniset $cisco_cfg_file CISCO_N1K network_vlan_ranges $Q_CISCO_PLUGIN_VLAN_RANGES
+
+    # Setup the integration bridge by calling the ovs_base
+    OVS_BRIDGE=$Q_CISCO_PLUGIN_INTEGRATION_BRIDGE
+    _neutron_ovs_base_setup_bridge $OVS_BRIDGE
+}
+
+function neutron_plugin_configure_plugin_agent {
+    :
+}
+
+function neutron_plugin_configure_service {
+    local subplugin
+    local cisco_cfg_file
+
+    cisco_cfg_file=/$Q_PLUGIN_CONF_FILE
+
+    # Setup the [CISCO_PLUGINS] section
+    if [[ ${#Q_CISCO_PLUGIN_SUBPLUGINS[@]} > 2 ]]; then
+        die $LINENO "At most two subplugins are supported."
+    fi
+
+    # Setup the subplugins
+    inicomment $cisco_cfg_file CISCO_PLUGINS vswitch_plugin
+    inicomment $cisco_cfg_file CISCO_TEST host
+    for subplugin in ${Q_CISCO_PLUGIN_SUBPLUGINS[@]}; do
+        case $subplugin in
+            n1kv) iniset $cisco_cfg_file CISCO_PLUGINS vswitch_plugin neutron.plugins.cisco.n1kv.n1kv_neutron_plugin.N1kvNeutronPluginV2;;
+            *) die $LINENO "Unsupported cisco subplugin: $subplugin";;
+        esac
+    done
+
+    if _has_n1kv_subplugin; then
+        _configure_n1kv_subplugin $cisco_cfg_file
+    fi
+}
+
+function neutron_plugin_create_initial_network_profile {
+    neutron cisco-network-profile-create default_network_profile vlan --segment_range 1-3000 --physical_network "$1"
+}
+
+function neutron_plugin_setup_interface_driver {
+    local conf_file=$1
+    iniset $conf_file DEFAULT interface_driver openvswitch
+}
+
+# Restore xtrace
+$_XTRACE_NEUTRON_CISCO

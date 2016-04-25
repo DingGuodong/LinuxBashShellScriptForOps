@@ -1,0 +1,145 @@
+#!/bin/bash
+#
+# lib/database
+# Interface for interacting with different database backends
+
+# Dependencies:
+# ``ENABLED_SERVICES`` must be defined
+
+# ``DATABASE_BACKENDS`` will contain a list of available database backends
+# after sourcing this file.
+
+# This is a wrapper for the specific database backends available.
+# Each database must implement four functions:
+#
+# - recreate_database_$DATABASE_TYPE
+# - install_database_$DATABASE_TYPE
+# - configure_database_$DATABASE_TYPE
+# - database_connection_url_$DATABASE_TYPE
+#
+# and call register_database $DATABASE_TYPE
+
+# Save trace setting
+_XTRACE_LIB_DB=$(set +o | grep xtrace)
+set +o xtrace
+
+DATABASE_BACKENDS=""
+
+# Register a database backend
+#
+#   $1 The name of the database backend
+#
+# This is required to be defined before the specific database scripts are sourced
+function register_database {
+    DATABASE_BACKENDS+=" $1"
+}
+
+# Sourcing the database libs sets DATABASE_BACKENDS with the available list
+for f in $TOP_DIR/lib/databases/*; do
+    source $f;
+done
+
+# ``DATABASE_BACKENDS`` now contains a list of the supported databases
+# Look in ``ENABLED_SERVICES`` to see if one has been selected
+for db in $DATABASE_BACKENDS; do
+    # Set the type for the rest of the backend to use
+    if is_service_enabled $db; then
+        # Set this now for the rest of the database functions
+        DATABASE_TYPE=$db
+    fi
+done
+# If ``DATABASE_TYPE`` is unset here no database was selected
+# This is not an error as multi-node installs will do this on the compute nodes
+
+
+# Functions
+# ---------
+
+# Get rid of everything enough to cleanly change database backends
+function cleanup_database {
+    cleanup_database_$DATABASE_TYPE
+}
+
+# Set the database type based on the configuration
+function initialize_database_backends {
+    for backend in $DATABASE_BACKENDS; do
+        is_service_enabled $backend && DATABASE_TYPE=$backend
+    done
+
+    [ -z "$DATABASE_TYPE" ] && return 1
+
+    # For backward-compatibility, read in the MYSQL_HOST/USER variables and use
+    # them as the default values for the DATABASE_HOST/USER variables.
+    MYSQL_HOST=${MYSQL_HOST:-$SERVICE_LOCAL_HOST}
+    MYSQL_USER=${MYSQL_USER:-root}
+
+    # Set DATABASE_HOST equal to MYSQL_HOST. If SERVICE_IP_VERSION is equal to 6,
+    # set DATABASE_HOST equal to [MYSQL_HOST]. MYSQL_HOST cannot use brackets due
+    # to mysql not using bracketing for IPv6 addresses. DATABASE_HOST must have brackets
+    # due to sqlalchemy only reading IPv6 addresses with brackets.
+    if [[ "$SERVICE_IP_VERSION" == 6 ]]; then
+        DATABASE_HOST=${DATABASE_HOST:-[$MYSQL_HOST]}
+    else
+        DATABASE_HOST=${DATABASE_HOST:-${MYSQL_HOST}}
+    fi
+
+    DATABASE_USER=${DATABASE_USER:-${MYSQL_USER}}
+
+    if [ -n "$MYSQL_PASSWORD" ]; then
+        DATABASE_PASSWORD=$MYSQL_PASSWORD
+    else
+        read_password DATABASE_PASSWORD "ENTER A PASSWORD TO USE FOR THE DATABASE."
+    fi
+
+    # We configure Nova, Horizon, Glance and Keystone to use MySQL as their
+    # database server.  While they share a single server, each has their own
+    # database and tables.
+
+    # By default this script will install and configure MySQL.  If you want to
+    # use an existing server, you can pass in the user/password/host parameters.
+    # You will need to send the same ``DATABASE_PASSWORD`` to every host if you are doing
+    # a multi-node DevStack installation.
+
+    # NOTE: Don't specify ``/db`` in this string so we can use it for multiple services
+    BASE_SQL_CONN=${BASE_SQL_CONN:-$(get_database_type_$DATABASE_TYPE)://$DATABASE_USER:$DATABASE_PASSWORD@$DATABASE_HOST}
+
+    return 0
+}
+
+# Recreate a given database
+#  $1 The name of the database
+function recreate_database {
+    local db=$1
+    recreate_database_$DATABASE_TYPE $db
+}
+
+# Install the database
+function install_database {
+    install_database_$DATABASE_TYPE
+}
+
+# Install the database Python packages
+function install_database_python {
+    install_database_python_$DATABASE_TYPE
+}
+
+# Configure and start the database
+function configure_database {
+    configure_database_$DATABASE_TYPE
+}
+
+# Generate an SQLAlchemy connection URL and output it using echo
+#  $1 The name of the database
+function database_connection_url {
+    local db=$1
+    database_connection_url_$DATABASE_TYPE $db
+}
+
+
+# Restore xtrace
+$_XTRACE_LIB_DB
+
+# Tell emacs to use shell-script-mode
+## Local variables:
+## mode: shell-script
+## End:

@@ -1,0 +1,12 @@
+acl
+dnsmasq
+dnsmasq-utils # dist:opensuse-12.3,opensuse-13.1
+ebtables
+iptables
+iputils
+mariadb # NOPRIME
+rabbitmq-server # NOPRIME
+radvd # NOPRIME
+sqlite3
+sudo
+vlan
