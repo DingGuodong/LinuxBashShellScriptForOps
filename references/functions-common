@@ -2344,8 +2344,8 @@ function sudo_with_proxies {
 # Resolution is only in whole seconds, so should be used for long
 # running activities.
 
-declare -A _TIME_TOTAL
-declare -A _TIME_START
+declare -A _TIME_TOTAL=()
+declare -A _TIME_START=()
 declare -r _TIME_BEGIN=$(date +%s)
 
 # time_start $name

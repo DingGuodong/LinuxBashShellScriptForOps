@@ -3,8 +3,13 @@
     <words>
       <w>cidr</w>
       <w>distrib</w>
+      <w>distros</w>
       <w>ipcalc</w>
+      <w>lineno</w>
+      <w>repos</w>
       <w>subsys</w>
+      <w>sudo</w>
+      <w>xtrace</w>
     </words>
   </dictionary>
 </component>
