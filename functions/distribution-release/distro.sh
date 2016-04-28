@@ -11,7 +11,7 @@
 # is_package_installed "package" && install_package "package"
 #
 # Usage:
-# distro.sh parameters
+# <function-common> distro.sh
 #
 # Birth Time:
 # 2016-04-28 18:04:27.151203523 +0800
