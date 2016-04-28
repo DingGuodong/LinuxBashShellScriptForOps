@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="192.168.1.241">
+  <component name="PublishConfigData" serverName="10.20.0.7">
     <serverData>
+      <paths name="10.20.0.7">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/root/chris" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="192.168.1.241">
         <serverdata>
           <mappings>

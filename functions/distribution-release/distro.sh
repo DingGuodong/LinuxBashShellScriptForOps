@@ -55,6 +55,18 @@ eof
 
 }
 
+# Like sudo but forwarding http_proxy https_proxy no_proxy environment vars.
+# If it is run as superuser then sudo is replaced by env.
+#
+function sudo_with_proxies {
+    local sudo
+
+    [[ "$(id -u)" = "0" ]] && sudo="env" || sudo="sudo"
+
+    $sudo http_proxy="${http_proxy:-}" https_proxy="${https_proxy:-}"\
+        no_proxy="${no_proxy:-}" "$@"
+}
+
 
 # Timing infrastructure - figure out where large blocks of time are
 # used
@@ -126,6 +138,7 @@ function time_totals {
     elapsed_time=$(($end_time - $_TIME_BEGIN))
 
     # pad 1st column this far
+    t=()
     for t in ${!_TIME_TOTAL[*]}; do
         if [[ ${#t} -gt $len ]]; then
             len=${#t}
@@ -138,6 +151,7 @@ function time_totals {
     echo
     printf "%-${len}s %3d\n" "Total runtime" "$elapsed_time"
     echo
+    t=()
     for t in ${!_TIME_TOTAL[*]}; do
         local v=${_TIME_TOTAL[$t]}
         printf "%-${len}s %3d\n" "$t" "$v"
@@ -158,6 +172,47 @@ function backtrace {
         echo "${BASH_SOURCE[$deep]}:${BASH_LINENO[$deep-1]}:${FUNCNAME[$deep-1]}"
         deep=$((deep - 1))
     done
+}
+
+# Prints line number and "message" in error format
+# err $LINENO "message"
+function err {
+    local exitcode=$?
+    local xtrace
+    xtrace=$(set +o | grep xtrace)
+    set +o xtrace
+    local msg="[ERROR] ${BASH_SOURCE[2]}:$1 $2"
+    echo $msg 1>&2;
+    if [[ -n ${LOGDIR} ]]; then
+        echo $msg >> "${LOGDIR}/error.log"
+    fi
+    $xtrace
+    return $exitcode
+}
+
+# Checks an environment variable is not set or has length 0 OR if the
+# exit code is non-zero and prints "message"
+# NOTE: env-var is the variable name without a '$'
+# err_if_not_set $LINENO env-var "message"
+function err_if_not_set {
+    local exitcode=$?
+    local xtrace
+    xtrace=$(set +o | grep xtrace)
+    set +o xtrace
+    local line=$1; shift
+    local val=$1; shift
+    if ! is_set $val || [ $exitcode != 0 ]; then
+        err $line "$*"
+    fi
+    $xtrace
+    return $exitcode
+}
+
+# Test if the named environment variable is set and not zero length
+# is_set env-var
+function is_set {
+    local var=\$"$1"
+    eval "[ -n \"$var\" ]" # For ex.: sh -c "[ -n \"$var\" ]" would be better, but several exercises depends on this
 }
 
 # Prints line number and "message" then exits
@@ -187,8 +242,8 @@ function die_if_not_set {
     xtrace=$(set +o | grep xtrace)
     set +o xtrace
     local line=$1; shift
-    local evar=$1; shift
-    if ! is_set $evar || [ $exitcode != 0 ]; then
+    local val=$1; shift
+    if ! is_set $val || [ $exitcode != 0 ]; then
         die $line "$*"
     fi
     $xtrace
@@ -198,47 +253,6 @@ function deprecated {
     local text=$1
     DEPRECATED_TEXT+="\n$text"
     echo "WARNING: $text"
-}
-
-# Prints line number and "message" in error format
-# err $LINENO "message"
-function err {
-    local exitcode=$?
-    local xtrace
-    xtrace=$(set +o | grep xtrace)
-    set +o xtrace
-    local msg="[ERROR] ${BASH_SOURCE[2]}:$1 $2"
-    echo $msg 1>&2;
-    if [[ -n ${LOGDIR} ]]; then
-        echo $msg >> "${LOGDIR}/error.log"
-    fi
-    $xtrace
-    return $exitcode
-}
-
-# Checks an environment variable is not set or has length 0 OR if the
-# exit code is non-zero and prints "message"
-# NOTE: env-var is the variable name without a '$'
-# err_if_not_set $LINENO env-var "message"
-function err_if_not_set {
-    local exitcode=$?
-    local xtrace
-    xtrace=$(set +o | grep xtrace)
-    set +o xtrace
-    local line=$1; shift
-    local evar=$1; shift
-    if ! is_set $evar || [ $exitcode != 0 ]; then
-        err $line "$*"
-    fi
-    $xtrace
-    return $exitcode
-}
-
-# Test if the named environment variable is set and not zero length
-# is_set env-var
-function is_set {
-    local var=\$"$1"
-    eval "[ -n \"$var\" ]" # For ex.: sh -c "[ -n \"$var\" ]" would be better, but several exercises depends on this
 }
 
 # Prints line number and "message" in warning format
@@ -291,7 +305,7 @@ function _ensure_lsb_release(){
     elif test -x $(command -v dnf 2>/dev/null); then
         sudo dnf install -y redhat-lsb-core
     elif test -x $(command -v yum 2>/dev/null); then
-        # all rh patforms (fedora, centos, rhel) have this pkg
+        # all rh platforms (fedora, centos, rhel) have this pkg
         sudo yum install -y redhat-lsb-core
     else
         die $LINENO "Unable to find or auto-install lsb_release"
@@ -406,7 +420,7 @@ function is_fedora {
     [ "$OS_VENDOR" = "Fedora" ] || [ "$OS_VENDOR" = "Red Hat" ] || \
         [ "$OS_VENDOR" = "RedHatEnterpriseServer" ] || \
         [ "$OS_VENDOR" = "CentOS" ] || [ "$OS_VENDOR" = "OracleServer" ] || \
-        [ "$OS_VENDOR" = "Virtuozzo" ] || [ "$OS_VENDOR" = "kvmibm" ]
+        [ "$OS_VENDOR" = "Virtuozzo" ]
 }
 
 
@@ -502,126 +516,6 @@ function apt_get {
     # stop the clock
     time_stop "apt-get"
     return $result
-}
-
-function _parse_package_files {
-    local files_to_parse=$@
-
-    if [[ -z "$DISTRO" ]]; then
-        GetDistro
-    fi
-
-    for fname in ${files_to_parse}; do
-        local OIFS line package distros distro
-        [[ -e $fname ]] || continue
-
-        OIFS=$IFS
-        IFS=$'\n'
-        for line in $(<${fname}); do
-            if [[ $line =~ "NOPRIME" ]]; then
-                continue
-            fi
-
-            # Assume we want this package; free-form
-            # comments allowed after a #
-            package=${line%%#*}
-            inst_pkg=1
-
-            # Look for # dist:xxx in comment
-            if [[ $line =~ (.*)#.*dist:([^ ]*) ]]; then
-                # We are using BASH regexp matching feature.
-                package=${BASH_REMATCH[1]}
-                distros=${BASH_REMATCH[2]}
-                # In bash ${VAR,,} will lowercase VAR
-                # Look for a match in the distro list
-                if [[ ! ${distros,,} =~ ${DISTRO,,} ]]; then
-                    # If no match then skip this package
-                    inst_pkg=0
-                fi
-            fi
-
-            if [[ $inst_pkg = 1 ]]; then
-                echo $package
-            fi
-        done
-        IFS=$OIFS
-    done
-}
-
-# get_packages() collects a list of package names of any type from the
-# prerequisite files in ``files/{debs|rpms}``.  The list is intended
-# to be passed to a package installer such as apt or yum.
-#
-# Only packages required for the services in 1st argument will be
-# included.  Two bits of metadata are recognized in the prerequisite files:
-#
-# - ``# NOPRIME`` defers installation to be performed later in `stack.sh`
-# - ``# dist:DISTRO`` or ``dist:DISTRO1,DISTRO2`` limits the selection
-#   of the package to the distros listed.  The distro names are case insensitive.
-function get_packages {
-    local xtrace
-    xtrace=$(set +o | grep xtrace)
-    set +o xtrace
-    local services=$@
-    local package_dir
-    package_dir=$(_get_package_dir)
-    local file_to_parse=""
-    local service=""
-
-    if [ $# -ne 1 ]; then
-        die $LINENO "get_packages takes a single, comma-separated argument"
-    fi
-
-    if [[ -z "$package_dir" ]]; then
-        echo "No package directory supplied"
-        return 1
-    fi
-    for service in ${services//,/ }; do
-        # Allow individual services to specify dependencies
-        if [[ -e ${package_dir}/${service} ]]; then
-            file_to_parse="${file_to_parse} ${package_dir}/${service}"
-        fi
-        # NOTE(sdague) n-api needs glance for now because that's where
-        # glance client is
-        if [[ $service == n-api ]]; then
-            if [[ ! $file_to_parse =~ $package_dir/nova ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/nova"
-            fi
-            if [[ ! $file_to_parse =~ $package_dir/glance ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/glance"
-            fi
-        elif [[ $service == c-* ]]; then
-            if [[ ! $file_to_parse =~ $package_dir/cinder ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/cinder"
-            fi
-        elif [[ $service == s-* ]]; then
-            if [[ ! $file_to_parse =~ $package_dir/swift ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/swift"
-            fi
-        elif [[ $service == n-* ]]; then
-            if [[ ! $file_to_parse =~ $package_dir/nova ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/nova"
-            fi
-        elif [[ $service == g-* ]]; then
-            if [[ ! $file_to_parse =~ $package_dir/glance ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/glance"
-            fi
-        elif [[ $service == key* ]]; then
-            if [[ ! $file_to_parse =~ $package_dir/keystone ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/keystone"
-            fi
-        elif [[ $service == q-* ]]; then
-            if [[ ! $file_to_parse =~ $package_dir/neutron ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/neutron"
-            fi
-        elif [[ $service == ir-* ]]; then
-            if [[ ! $file_to_parse =~ $package_dir/ironic ]]; then
-                file_to_parse="${file_to_parse} ${package_dir}/ironic"
-            fi
-        fi
-    done
-    echo "$(_parse_package_files $file_to_parse)"
-    $xtrace
 }
 
 # Distro-agnostic package installer

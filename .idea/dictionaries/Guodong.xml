@@ -2,13 +2,17 @@
   <dictionary name="Guodong">
     <words>
       <w>cidr</w>
+      <w>confold</w>
       <w>distrib</w>
       <w>distros</w>
+      <w>dpkg</w>
       <w>ipcalc</w>
       <w>lineno</w>
       <w>repos</w>
       <w>subsys</w>
       <w>sudo</w>
+      <w>uninstaller</w>
+      <w>virtuozzo</w>
       <w>xtrace</w>
       <w>zypper</w>
     </words>
