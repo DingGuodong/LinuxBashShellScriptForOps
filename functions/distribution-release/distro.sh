@@ -1,5 +1,152 @@
 #!/usr/bin/env bash
 
+# Save trace setting
+_XTRACE_FUNCTIONS_COMMON=$(set +o | grep xtrace)
+set +o xtrace
+
+check_network_connectivity(){
+    echo "checking network connectivity ... "
+    network_address_to_check=8.8.4.4
+    stable_network_address_to_check=114.114.114.114
+    ping_count=2
+    ping -c $ping_count $network_address_to_check >/dev/null
+    retval=$?
+    if [ $retval -ne 0 ] ; then
+        if ping -c $ping_count $stable_network_address_to_check >/dev/null;then
+            echo "Network to $stable_network_address_to_check succeed! "
+            echo "Note: network to $network_address_to_check failed once! maybe just some packages loss."
+        elif ! ip route | grep default >/dev/null; then
+            echo "Network is unreachable, gateway is not set."
+        elif ! ping -c2 $(ip route | awk '/default/ {print $3}') >/dev/null; then
+            echo "Network is unreachable, gateway is unreachable."
+        else
+            echo "Network is blocked! "
+            return 0
+        fi
+        OFFLINE="True"
+        return 1
+    elif [ $retval -eq 0 ]; then
+        echo "Check network connectivity passed! "
+        OFFLINE="False"
+        return 0
+    fi
+}
+
+check_name_resolve(){
+    echo "checking DNS name resolve ... "
+    target_name_to_resolve="github.com"
+    stable_target_name_to_resolve="www.aliyun.com"
+    ping_count=1
+    if ! ping  -c$ping_count $target_name_to_resolve >/dev/null; then
+        echo "Name lookup failed for $target_name_to_resolve with $ping_count times "
+        if ping  -c$ping_count $stable_target_name_to_resolve >/dev/null; then
+            echo "Name lookup success for $stable_target_name_to_resolve with $ping_count times "
+        fi
+        [ -f /etc/resolv.conf ] && cp /etc/resolv.conf /etc/resolv.conf_$(date +%Y%m%d%H%M%S)~
+        cat >/etc/resolv.conf<<eof
+nameserver 8.8.4.4
+nameserver 114.114.114.114
+eof
+    check_name_resolve
+    else
+        echo "Check DNS name resolve passed! "
+        return 0
+    fi
+
+}
+
+
+# Timing infrastructure - figure out where large blocks of time are
+# used
+#
+# The timing infrastructure is about collecting buckets
+# of time that are spend in some sub-task. For instance, that might be
+# 'apt', 'pip', 'osc', even database migrations. We do this by a pair
+# of functions: time_start / time_stop.
+#
+# These take a single parameter: $name - which specifies the name of
+# the bucket to be accounted against. time_totals function spits out
+# the results.
+#
+# Resolution is only in whole seconds, so should be used for long
+# running activities.
+
+declare -A _TIME_TOTAL=()
+declare -A _TIME_START=()
+declare -r _TIME_BEGIN=$(date +%s)
+
+# time_start $name
+#
+# starts the clock for a timer by name. Errors if that clock is
+# already started.
+function time_start {
+    local name=$1
+    local start_time=${_TIME_START[$name]}
+    if [[ -n "$start_time" ]]; then
+        die $LINENO "Trying to start the clock on $name, but it's already been started"
+    fi
+    _TIME_START[$name]=$(date +%s)
+}
+
+# time_stop $name
+#
+# stops the clock for a timer by name, and accumulate that time in the
+# global counter for that name. Errors if that clock had not
+# previously been started.
+function time_stop {
+    local name
+    local end_time
+    local elapsed_time
+    local total
+    local start_time
+
+    name=$1
+    start_time=${_TIME_START[$name]}
+
+    if [[ -z "$start_time" ]]; then
+        die $LINENO "Trying to stop the clock on $name, but it was never started"
+    fi
+    end_time=$(date +%s)
+    elapsed_time=$(($end_time - $start_time))
+    total=${_TIME_TOTAL[$name]:-0}
+    # reset the clock so we can start it in the future
+    _TIME_START[$name]=""
+    _TIME_TOTAL[$name]=$(($total + $elapsed_time))
+}
+
+# time_totals
+#  Print out total time summary
+function time_totals {
+    local elapsed_time
+    local end_time
+    local len=15
+    local xtrace
+
+    end_time=$(date +%s)
+    elapsed_time=$(($end_time - $_TIME_BEGIN))
+
+    # pad 1st column this far
+    for t in ${!_TIME_TOTAL[*]}; do
+        if [[ ${#t} -gt $len ]]; then
+            len=${#t}
+        fi
+    done
+
+    xtrace=$(set +o | grep xtrace)
+    set +o xtrace
+
+    echo
+    printf "%-${len}s %3d\n" "Total runtime" "$elapsed_time"
+    echo
+    for t in ${!_TIME_TOTAL[*]}; do
+        local v=${_TIME_TOTAL[$t]}
+        printf "%-${len}s %3d\n" "$t" "$v"
+    done
+
+    $xtrace
+}
+
+
 # Prints backtrace info
 # backtrace level
 function backtrace {
@@ -106,8 +253,6 @@ function warn {
     $xtrace
     return $exitcode
 }
-
-
 
 # Distro Functions
 # ================
@@ -310,6 +455,7 @@ function apt_get_update {
     fi
 
     # bail if we are offline
+    check_network_connectivity
     [[ "$OFFLINE" = "True" ]] && return
 
     local sudo="sudo"
@@ -337,6 +483,7 @@ function apt_get {
     xtrace=$(set +o | grep xtrace)
     set +o xtrace
 
+    check_network_connectivity
     [[ "$OFFLINE" = "True" || -z "$@" ]] && return
     local sudo="sudo"
     [[ "$(id -u)" = "0" ]] && sudo="env"
@@ -555,6 +702,7 @@ function uninstall_package {
 function yum_install {
     local result parse_yum_result
 
+    check_network_connectivity
     [[ "$OFFLINE" = "True" ]] && return
 
     time_start "yum_install"
@@ -596,6 +744,7 @@ function yum_install {
 # Uses globals ``OFFLINE``, ``*_proxy``
 # zypper_install package [package ...]
 function zypper_install {
+    check_network_connectivity
     [[ "$OFFLINE" = "True" ]] && return
     local sudo="sudo"
     [[ "$(id -u)" = "0" ]] && sudo="env"
@@ -605,3 +754,5 @@ function zypper_install {
 }
 
 
+# Restore xtrace
+$_XTRACE_FUNCTIONS_COMMON

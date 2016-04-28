@@ -10,6 +10,7 @@
       <w>subsys</w>
       <w>sudo</w>
       <w>xtrace</w>
+      <w>zypper</w>
     </words>
   </dictionary>
 </component>
