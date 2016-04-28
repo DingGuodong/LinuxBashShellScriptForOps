@@ -1,4 +1,30 @@
 #!/usr/bin/env bash
+#
+# Function description:
+# determine which Linux distribution running
+#
+# Useful function list:
+# is_centos
+# is_ubuntu
+# is_debian
+# is_rhel
+# is_package_installed "package" && install_package "package"
+#
+# Usage:
+# distro.sh parameters
+#
+# Birth Time:
+# 2016-04-28 18:04:27.151203523 +0800
+#
+# Author:
+# Open Source Software written by 'Guodong Ding <dgdenterprise@gmail.com>'
+# Blog: http://dgd2010.blog.51cto.com/
+# Github: https://github.com/DingGuodong
+#
+# Refer:
+# https://github.com/openstack-dev/devstack
+# functions-common
+
 
 # Save trace setting
 _XTRACE_FUNCTIONS_COMMON=$(set +o | grep xtrace)
@@ -58,7 +84,7 @@ eof
 # Like sudo but forwarding http_proxy https_proxy no_proxy environment vars.
 # If it is run as superuser then sudo is replaced by env.
 #
-function sudo_with_proxies {
+function sudo_with_proxies() {
     local sudo
 
     [[ "$(id -u)" = "0" ]] && sudo="env" || sudo="sudo"
@@ -91,7 +117,7 @@ declare -r _TIME_BEGIN=$(date +%s)
 #
 # starts the clock for a timer by name. Errors if that clock is
 # already started.
-function time_start {
+function time_start() {
     local name=$1
     local start_time=${_TIME_START[$name]}
     if [[ -n "$start_time" ]]; then
@@ -105,7 +131,7 @@ function time_start {
 # stops the clock for a timer by name, and accumulate that time in the
 # global counter for that name. Errors if that clock had not
 # previously been started.
-function time_stop {
+function time_stop() {
     local name
     local end_time
     local elapsed_time
@@ -128,7 +154,7 @@ function time_stop {
 
 # time_totals
 #  Print out total time summary
-function time_totals {
+function time_totals() {
     local elapsed_time
     local end_time
     local len=15
@@ -163,7 +189,7 @@ function time_totals {
 
 # Prints backtrace info
 # backtrace level
-function backtrace {
+function backtrace() {
     local level=$1
     local deep
     deep=$((${#BASH_SOURCE[@]} - 1))
@@ -176,7 +202,7 @@ function backtrace {
 
 # Prints line number and "message" in error format
 # err $LINENO "message"
-function err {
+function err() {
     local exitcode=$?
     local xtrace
     xtrace=$(set +o | grep xtrace)
@@ -194,7 +220,7 @@ function err {
 # exit code is non-zero and prints "message"
 # NOTE: env-var is the variable name without a '$'
 # err_if_not_set $LINENO env-var "message"
-function err_if_not_set {
+function err_if_not_set() {
     local exitcode=$?
     local xtrace
     xtrace=$(set +o | grep xtrace)
@@ -210,7 +236,7 @@ function err_if_not_set {
 
 # Test if the named environment variable is set and not zero length
 # is_set env-var
-function is_set {
+function is_set() {
     local var=\$"$1"
     eval "[ -n \"$var\" ]" # For ex.: sh -c "[ -n \"$var\" ]" would be better, but several exercises depends on this
 }
@@ -218,7 +244,7 @@ function is_set {
 # Prints line number and "message" then exits
 # die $LINENO "message"
 # $LINENO is refer to "man bash": BASH_LINENO, Use LINENO to obtain the current line number.
-function die {
+function die() {
     local exitcode=$?
     set +o xtrace
     local line=$1; shift
@@ -236,7 +262,7 @@ function die {
 # exit code is non-zero and prints "message" and exits
 # NOTE: env-var is the variable name without a '$'
 # die_if_not_set $LINENO env-var "message"
-function die_if_not_set {
+function die_if_not_set() {
     local exitcode=$?
     local xtrace
     xtrace=$(set +o | grep xtrace)
@@ -249,7 +275,7 @@ function die_if_not_set {
     $xtrace
 }
 
-function deprecated {
+function deprecated() {
     local text=$1
     DEPRECATED_TEXT+="\n$text"
     echo "WARNING: $text"
@@ -257,7 +283,7 @@ function deprecated {
 
 # Prints line number and "message" in warning format
 # warn $LINENO "message"
-function warn {
+function warn() {
     local exitcode=$?
     local xtrace
     xtrace=$(set +o | grep xtrace)
@@ -341,7 +367,7 @@ function GetOSVersion(){
 # Sets global ``DISTRO`` from the ``os_*`` values
 declare DISTRO
 
-function GetDistro {
+function GetDistro() {
     GetOSVersion
     if [[ "$OS_VENDOR" =~ (Ubuntu) || "$OS_VENDOR" =~ (Debian) || \
             "$OS_VENDOR" =~ (LinuxMint) ]]; then
@@ -394,13 +420,13 @@ function GetDistro {
 
 # Utility function for checking machine architecture
 # is_arch arch-type
-function is_arch {
+function is_arch() {
     [[ "$(uname -m)" == "$1" ]]
 }
 
 # Determine if current distribution is an Oracle distribution
 # is_oraclelinux
-function is_oraclelinux {
+function is_oraclelinux() {
     if [[ -z "$OS_VENDOR" ]]; then
         GetOSVersion
     fi
@@ -412,7 +438,7 @@ function is_oraclelinux {
 # Determine if current distribution is a Fedora-based distribution
 # (Fedora, RHEL, CentOS, etc).
 # is_fedora
-function is_fedora {
+function is_fedora() {
     if [[ -z "$OS_VENDOR" ]]; then
         GetOSVersion
     fi
@@ -423,11 +449,38 @@ function is_fedora {
         [ "$OS_VENDOR" = "Virtuozzo" ]
 }
 
+# Determine if current distribution is a Fedora-based distribution
+# (Fedora, RHEL, CentOS, etc).
+# is_centos
+function is_centos() {
+    if [[ -z "$OS_VENDOR" ]]; then
+        GetOSVersion
+    fi
+
+    [ "$OS_VENDOR" = "Fedora" ] || [ "$OS_VENDOR" = "Red Hat" ] || \
+        [ "$OS_VENDOR" = "RedHatEnterpriseServer" ] || \
+        [ "$OS_VENDOR" = "CentOS" ] || [ "$OS_VENDOR" = "OracleServer" ] || \
+        [ "$OS_VENDOR" = "Virtuozzo" ]
+}
+
+# Determine if current distribution is a Fedora-based distribution
+# (Fedora, RHEL, CentOS, etc).
+# is_rhel
+function is_rhel() {
+    if [[ -z "$OS_VENDOR" ]]; then
+        GetOSVersion
+    fi
+
+    [ "$OS_VENDOR" = "Fedora" ] || [ "$OS_VENDOR" = "Red Hat" ] || \
+        [ "$OS_VENDOR" = "RedHatEnterpriseServer" ] || \
+        [ "$OS_VENDOR" = "CentOS" ] || [ "$OS_VENDOR" = "OracleServer" ] || \
+        [ "$OS_VENDOR" = "Virtuozzo" ]
+}
 
 # Determine if current distribution is a SUSE-based distribution
 # (openSUSE, SLE).
 # is_suse
-function is_suse {
+function is_suse() {
     if [[ -z "$OS_VENDOR" ]]; then
         GetOSVersion
     fi
@@ -439,16 +492,27 @@ function is_suse {
 # Determine if current distribution is an Ubuntu-based distribution
 # It will also detect non-Ubuntu but Debian-based distros
 # is_ubuntu
-function is_ubuntu {
+function is_ubuntu() {
     if [[ -z "$OS_PACKAGE" ]]; then
         GetOSVersion
     fi
     [ "$OS_PACKAGE" = "deb" ]
 }
 
+# Determine if current distribution is an Ubuntu-based distribution
+# It will also detect non-Ubuntu but Debian-based distros
+# is_debian
+function is_debian() {
+    if [[ -z "$OS_PACKAGE" ]]; then
+        GetOSVersion
+    fi
+    [ "$OS_PACKAGE" = "deb" ]
+}
+
+
 # Exit after outputting a message about the distribution not being supported.
 # exit_distro_not_supported [optional-string-telling-what-is-missing]
-function exit_distro_not_supported {
+function exit_distro_not_supported() {
     if [[ -z "$DISTRO" ]]; then
         GetDistro
     fi
@@ -462,7 +526,7 @@ function exit_distro_not_supported {
 
 # Wrapper for ``apt-get update`` to try multiple times on the update
 # to address bad package mirrors (which happen all the time).
-function apt_get_update {
+function apt_get_update() {
     # only do this once per run
     if [[ "$REPOS_UPDATED" == "True" && "$RETRY_UPDATE" != "True" ]]; then
         return
@@ -492,7 +556,7 @@ function apt_get_update {
 # Wrapper for ``apt-get`` to set cache and proxy environment variables
 # Uses globals ``OFFLINE``, ``*_proxy``
 # apt_get operation package [package ...]
-function apt_get {
+function apt_get() {
     local xtrace result
     xtrace=$(set +o | grep xtrace)
     set +o xtrace
@@ -521,7 +585,7 @@ function apt_get {
 # Distro-agnostic package installer
 # Uses globals ``NO_UPDATE_REPOS``, ``REPOS_UPDATED``, ``RETRY_UPDATE``
 # install_package package [package ...]
-function update_package_repo {
+function update_package_repo() {
     NO_UPDATE_REPOS=${NO_UPDATE_REPOS:-False}
     REPOS_UPDATED=${REPOS_UPDATED:-False}
     RETRY_UPDATE=${RETRY_UPDATE:-False}
@@ -535,7 +599,7 @@ function update_package_repo {
     fi
 }
 
-function real_install_package {
+function real_install_package() {
     if is_ubuntu; then
         apt_get install "$@"
     elif is_fedora; then
@@ -549,7 +613,7 @@ function real_install_package {
 
 # Distro-agnostic package installer
 # install_package package [package ...]
-function install_package {
+function install_package() {
     update_package_repo
     if ! real_install_package "$@"; then
         RETRY_UPDATE=True update_package_repo && real_install_package "$@"
@@ -558,7 +622,7 @@ function install_package {
 
 # Distro-agnostic function to tell if a package is installed
 # is_package_installed package [package ...]
-function is_package_installed {
+function is_package_installed() {
     if [[ -z "$@" ]]; then
         return 1
     fi
@@ -578,7 +642,7 @@ function is_package_installed {
 
 # Distro-agnostic package uninstaller
 # uninstall_package package [package ...]
-function uninstall_package {
+function uninstall_package() {
     if is_ubuntu; then
         apt_get purge "$@"
     elif is_fedora; then
@@ -593,7 +657,7 @@ function uninstall_package {
 # Wrapper for ``yum`` to set proxy environment variables
 # Uses globals ``OFFLINE``, ``*_proxy``, ``YUM``
 # yum_install package [package ...]
-function yum_install {
+function yum_install() {
     local result parse_yum_result
 
     check_network_connectivity
@@ -637,7 +701,7 @@ function yum_install {
 # zypper wrapper to set arguments correctly
 # Uses globals ``OFFLINE``, ``*_proxy``
 # zypper_install package [package ...]
-function zypper_install {
+function zypper_install() {
     check_network_connectivity
     [[ "$OFFLINE" = "True" ]] && return
     local sudo="sudo"
