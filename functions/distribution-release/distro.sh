@@ -209,7 +209,7 @@ function err() {
     set +o xtrace
     local msg="[ERROR] ${BASH_SOURCE[2]}:$1 $2"
     echo $msg 1>&2;
-    if [[ -n ${LOGDIR} ]]; then
+    if test -n ${LOGDIR}; then
         echo $msg >> "${LOGDIR}/error.log"
     fi
     $xtrace
