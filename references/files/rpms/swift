@@ -1,8 +1,0 @@
-curl
-liberasurecode-devel
-memcached
-pyxattr
-rsync-daemon # dist:f22,f23
-sqlite
-xfsprogs
-xinetd
