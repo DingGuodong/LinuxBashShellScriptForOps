@@ -2,253 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="add new files">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/.gitreview" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/.mailmap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/FUTURE.rst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/HACKING.rst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/LICENSE" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/MAINTAINERS.rst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/Makefile" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/clean.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercise.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exerciserc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/aggregates.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/boot_from_volume.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/client-args.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/client-env.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/floating_ips.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/neutron-adv-test.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/sec_groups.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/swift.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/exercises/volumes.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/extras.d/60-ceph.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/extras.d/80-tempest.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/extras.d/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-cinder-api.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-heat-api-cfn.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-heat-api-cloudwatch.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-heat-api.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-heat-pip-repo.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-horizon.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-keystone.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-nova-api.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apache-nova-metadata.template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/baremetal" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/ceph" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/cinder" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/dstat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/general" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/heat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/horizon" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/keystone" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/ldap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/n-api" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/n-cpu" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/neutron" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/nova" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/openvswitch" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/q-agt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/q-l3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/swift" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/tls-proxy" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/apts/zookeeper" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/baremetal" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/ceph" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/cinder" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/dstat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/general" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/heat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/horizon" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/keystone" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/ldap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/n-api" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/n-cpu" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/neutron" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/nova" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/openvswitch" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/q-agt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/q-l3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/swift" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/tls-proxy" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/debs/zookeeper" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/dnsmasq-for-baremetal-from-nova-network.conf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/ebtables.workaround" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/ldap/keystone.ldif.in" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/ldap/manager.ldif.in" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/ldap/suse-base-config.ldif.in" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/baremetal" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/ceph" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/cinder" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/dstat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/general" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/horizon" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/keystone" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/ldap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/n-api" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/n-cpu" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/n-novnc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/n-spice" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/neutron" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/nova" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/openvswitch" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/q-agt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/q-l3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms-suse/swift" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/ceph" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/cinder" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/dstat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/general" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/horizon" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/keystone" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/ldap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/n-api" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/n-cpu" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/n-novnc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/n-spice" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/neutron" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/nova" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/openvswitch" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/q-agt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/q-l3" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/swift" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/rpms/zookeeper" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/swift/rsyncd.conf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/swift/rsyslog.conf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/zookeeper/environment" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/zookeeper/log4j.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/zookeeper/myid" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/files/zookeeper/zoo.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/functions" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/functions-common" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/gate/updown.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/inc/ini-config" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/inc/meta-config" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/inc/python" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/inc/rootwrap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/apache" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/ceph" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_backends/ceph" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_backends/glusterfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_backends/lvm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_backends/netapp_iscsi" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_backends/netapp_nfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_backends/nfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_backends/vmdk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_backends/xiv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_plugins/XenAPINFS" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_plugins/glusterfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_plugins/nfs" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_plugins/sheepdog" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/cinder_plugins/vsphere" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/database" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/databases/mysql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/databases/postgresql" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/dlm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/dstat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/glance" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/heat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/horizon" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/infra" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/keystone" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/ldap" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/lvm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron-legacy" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/bigswitch_floodlight" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/brocade" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/cisco" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/embrane" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/linuxbridge_agent" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/ml2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/nuage" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/openvswitch" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/openvswitch_agent" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/ovs_base" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/services/firewall" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/services/loadbalancer" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/services/metering" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_plugins/services/vpn" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_thirdparty/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_thirdparty/bigswitch_floodlight" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/neutron_thirdparty/vmware_nsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/nova" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/nova_plugins/functions-libvirt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/nova_plugins/hypervisor-fake" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/nova_plugins/hypervisor-ironic" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/nova_plugins/hypervisor-libvirt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/nova_plugins/hypervisor-openvz" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/nova_plugins/hypervisor-vsphere" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/nova_plugins/hypervisor-xenserver" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/oslo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/rpc_backend" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/stack" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/swift" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/tempest" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/template" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/lib/tls" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/openrc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/pkg/elasticsearch.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/run_tests.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/setup.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/setup.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/stack.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/stackrc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/fake-service.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/run-process.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_functions.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_ini_config.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_ip.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_libs_from_pypi.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_meta_config.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_package_ordering.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_refs.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_truefalse.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_vercmp.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/test_worlddump.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tests/unittest.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/build_venv.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/cap-pip.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/cpu_map_update.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/create-stack-user.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/create_userrc.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/dstat.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/fixup_stuff.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/generate-devstack-plugins-list.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/generate-devstack-plugins-list.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/image_list.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/info.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/install_ebtables_workaround.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/install_pip.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/install_prereqs.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/make_cert.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/outfilter.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/peakmem_tracker.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/ping_neutron.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/uec/meta.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/update_clouds_yaml.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/upload_image.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/worlddump.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/build_xva.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/devstackubuntu_latecommand.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/devstackubuntupreseed.cfg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/functions" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/install_os_domU.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/mocks" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/prepare_guest.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/prepare_guest_template.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/scripts/install-os-vpx.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/scripts/install_ubuntu_template.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/scripts/manage-vdi" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/scripts/on_exit.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/scripts/uninstall-os-vpx.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/test_functions.sh" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tools/xen/xenrc" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/tox.ini" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/references/unstack.sh" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/syntax/syntax_for.sh" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/networkBase.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
@@ -270,7 +25,78 @@
     <favorites_list name="LinuxBashShellScriptForOps" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="dateFormat.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/functions/date/dateFormat.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="restrict_error.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/functions/debug/restrict_error.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="trace_error.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/functions/debug/trace_error.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="syntax_for.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/syntax/syntax_for.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="1" column="31" selection-start-line="1" selection-start-column="31" selection-end-line="1" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="replaceLocalHostsFileAgainstGfw.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/fileOps/GoogleHostsFileForLinux/replaceLocalHostsFileAgainstGfw.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="167" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="addSomeHostsRecordsIntoHostsFile.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/fileOps/addSomeHostsRecordsIntoHostsFile.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="73" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="networkBase.sh" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/networkBase.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.34364262">
+              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
@@ -308,6 +134,8 @@
         <option value="$PROJECT_DIR$/references/functions-common" />
         <option value="$PROJECT_DIR$/functions/check_if_exists/check_if_command_exists.sh" />
         <option value="$PROJECT_DIR$/functions/distribution-release/distro.sh" />
+        <option value="$PROJECT_DIR$/syntax/syntax_for.sh" />
+        <option value="$PROJECT_DIR$/templates/networkBase.sh" />
       </list>
     </option>
   </component>
@@ -317,8 +145,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="-2" />
+    <option name="y" value="-2" />
     <option name="width" value="1382" />
     <option name="height" value="744" />
   </component>
@@ -366,8 +194,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -396,12 +222,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="projects" />
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="syntax" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -722,15 +564,21 @@
       <option name="project" value="LOCAL" />
       <updated>1462245552552</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="add new files">
+      <created>1462326384274</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1462326384274</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
+    <frame x="-2" y="-2" width="1382" height="744" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30408472" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31770045" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32569557" sideWeight="0.5060514" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -797,11 +645,66 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/functions/date/dateFormat.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/debug/restrict_error.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/debug/trace_error.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/syntax/syntax_for.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/date/dateFormat.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/debug/restrict_error.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/debug/trace_error.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -847,55 +750,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/references/functions">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="38" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/stack.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="102" column="18" selection-start-line="102" selection-start-column="18" selection-end-line="102" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/functions">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/tools/create-stack-user.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.9816754">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/stack.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="102" column="18" selection-start-line="102" selection-start-column="18" selection-end-line="102" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/debug/restrict_error.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/debug/trace_error.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.042881645">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/net/ip/validate_ip_address.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.8439108">
@@ -931,14 +785,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.06527415">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/date/dateFormat.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19582245">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -970,13 +816,6 @@
             <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projects/fileOps/addSomeHostsRecordsIntoHostsFile.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="38" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -1015,59 +854,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/functions/check_if_exists/check_if_command_exists.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4716981">
-          <caret line="11" column="2" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/functions-common">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.042881645">
-          <caret line="2321" column="1" selection-start-line="2319" selection-start-column="0" selection-end-line="2330" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projects/fileOps/GoogleHostsFileForLinux/replaceLocalHostsFileAgainstGfw.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.1440823">
-          <caret line="110" column="0" selection-start-line="110" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/sh_header/opensource_software_header.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4425386">
           <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/lib/apache">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="54" column="38" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/clean.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="26" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/lib/databases/mysql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="96" column="10" selection-start-line="96" selection-start-column="4" selection-end-line="96" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/functions">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="676" column="0" selection-start-line="676" selection-start-column="0" selection-end-line="676" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1078,29 +868,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/references/tox.ini">
+    <entry file="file://$PROJECT_DIR$/functions/check_if_exists/check_if_command_exists.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.5154639">
+          <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/references/setup.cfg">
+    <entry file="file://$PROJECT_DIR$/functions/date/dateFormat.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/run_tests.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/references/openrc">
+    <entry file="file://$PROJECT_DIR$/functions/debug/restrict_error.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1108,66 +891,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/references/tools/make_cert.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6861063">
-          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/tools/xen/build_xva.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5574614">
-          <caret line="13" column="15" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/tools/xen/xenrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6432247">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/samples/local.sh">
+    <entry file="file://$PROJECT_DIR$/functions/debug/trace_error.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/references/pkg/elasticsearch.sh">
+    <entry file="file://$PROJECT_DIR$/syntax/syntax_for.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="1" column="31" selection-start-line="1" selection-start-column="31" selection-end-line="1" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/references/inc/rootwrap">
+    <entry file="file://$PROJECT_DIR$/projects/fileOps/GoogleHostsFileForLinux/replaceLocalHostsFileAgainstGfw.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="167" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/references/lib/tls">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60034305">
-          <caret line="14" column="15" selection-start-line="14" selection-start-column="15" selection-end-line="14" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/references/exercise.sh">
+    <entry file="file://$PROJECT_DIR$/projects/fileOps/addSomeHostsRecordsIntoHostsFile.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="73" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/networkBase.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34364262">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="49" />
           <folding />
         </state>
       </provider>
