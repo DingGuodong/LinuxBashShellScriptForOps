@@ -1,13 +1,14 @@
 #! /bin/bash
 
-# Zabbix Email Alter
+# Zabbix Email alter shell script
+# msmtp is an SMTP client
 DEBUG=1
 if [[ $DEBUG -gt 0 ]];then
     exec 2>>/tmp/zabbix_msmtp.log
     set -x
 fi
 FROM='example@example.com'
-MSMTP_ACCOUNT='zabbix'
+account_name='zabbix'
 # Parameters (as passed by Zabbix):
 #  $1 : Recipient
 #  $2 : Subject
@@ -16,10 +17,10 @@ recipient=$1
 subject=$2
 message=$3
 date=`date --rfc-2822`
-sed 's/$/\r/' <<EOF | /usr/bin/msmtp --account $MSMTP_ACCOUNT $recipient
+sed 's/$/\r/' <<eof | /usr/bin/msmtp --account $account_name $recipient
 From: <$FROM>
 To: <$recipient>
 Subject: $subject
 Date: $date
 $message
-EOF
+eof
