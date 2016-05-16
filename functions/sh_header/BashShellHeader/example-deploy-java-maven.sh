@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Name: doDeploy.sh
-#Execute this shell script to deploy Java projects built by Maven automatically on remote hosts.
+# Execute this shell script to deploy Java projects built by Maven automatically on remote hosts.
+# Do NOT modify anything expect for "user defined variables" unless you know what are you doing.
 
-# debug option
+# debug option, if you want see what command is executing, then uncomment next 2 lines below and last line at bottom.
 #_XTRACE_FUNCTIONS=$(set +o | grep xtrace)
 #set -o xtrace
 
@@ -13,7 +14,7 @@ Function: Execute this shell script to deploy Java projects built by Maven autom
 License: Open source software
 "
 
-# define variables
+# user defined variables
 # Where to get source code
 project_clone_depends_1="ssh://git@git.huntor.cn:18082/core/business-service-base.git"
 project_clone="ssh://git@git.huntor.cn:18082/core/business-service-core.git"
@@ -25,7 +26,7 @@ docker_container_name="" # if you using a docker container other than a startup 
 project_conf_directory="" # if you do NOT want to use configurations from deploy target, you should set this variable to where pointed to config files
 # Setting how many days do you want save old releases, default is 10 days
 save_old_releases_for_days=10
-# end define variables
+# end user defined variables
 
 # pretreatment
 test -z ${project_clone_depends_1} || project_clone_target_depends_1="`echo ${project_clone_depends_1} | awk -F '[/.]+' '{ print $(NF-1)}'`"
@@ -509,15 +510,15 @@ function deploy() {
     # Start service or validate status
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
         ${WORKDIR}/current/bin/startup.sh start
-        RETVAL=$?
+        retval=$?
     else
         test -z ${docker_container_name} || restart_docker_container ${docker_container_name}
         # TODO(Guodong Ding) external health check
-        RETVAL=$?
+        retval=$?
     fi
 
     # if started ok, then create a workable program to a file
-    if [[ ${RETVAL} -eq 0 ]]; then
+    if [[ ${retval} -eq 0 ]]; then
     # Note cat with eof must start at row 0, and with eof end only, such as no blank spaces, etc
     cat >${WORKDIR}/share/workable_program.log <<eof
 ${new_release_just_created}
@@ -560,15 +561,15 @@ function rollback() {
     # Start service or validate status
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
         ${WORKDIR}/current/bin/startup.sh start
-        RETVAL=$?
+        retval=$?
     else
         test -z ${docker_container_name} || restart_docker_container ${docker_container_name}
         # TODO(Guodong Ding) external health check
-        RETVAL=$?
+        retval=$?
     fi
 
     # if started ok, then create a workable program to a file
-    if [[ ${RETVAL} -eq 0 ]]; then
+    if [[ ${retval} -eq 0 ]]; then
         echo_g "Rollback successfully! "
         echo_g "current workable version is $WORKABLE_PROGRAM"
 #        ls --color=auto -l ${WORKDIR}/current
