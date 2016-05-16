@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# resolve links - $0 may be a softlink
+# resolve links - $0 may be a symbolic link
 PRG="$0"
 
 while [ -h "$PRG" ]; do

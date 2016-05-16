@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# resolve links - $0 may be a softlink
+# resolve links - $0 may be a symbolic link
 
 # learning from ActiveMQ
-# get a canonical path, macosx and slowlaris does not support radlink -f :-)
+# get a canonical path, macosx and slowlaris does not support readlink -f :-)
 pathCanonical() {
     local dst="${1}"
     while [ -h "${dst}" ] ; do
@@ -30,7 +30,7 @@ getActiveMQHome(){
   local REAL_DIR="`dirname $REAL_BIN`/../"
   REAL_DIR="`cd $REAL_DIR && pwd -P`"
   if [ -z "$REAL_DIR" ];then
-      echo 'ERROR: unable to find real installtion path fo activemq, you have to define ACTIVEMQ_HOME manually in the config' >&2
+      echo 'ERROR: unable to find real installation path fo activemq, you have to define ACTIVEMQ_HOME manually in the config' >&2
       exit 1
   fi
   echo "$REAL_DIR/"
