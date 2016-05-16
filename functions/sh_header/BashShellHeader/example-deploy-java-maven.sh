@@ -2,7 +2,7 @@
 
 # Name: doDeploy.sh
 # Execute this shell script to deploy Java projects built by Maven automatically on remote hosts.
-# Do NOT modify anything expect for "user defined variables" unless you know what are you doing.
+# Do NOT modify anything expect for "user defined variables" unless you know what it means and what are you doing.
 
 # debug option, if you want see what command is executing, then uncomment next 2 lines below and last line at bottom.
 #_XTRACE_FUNCTIONS=$(set +o | grep xtrace)

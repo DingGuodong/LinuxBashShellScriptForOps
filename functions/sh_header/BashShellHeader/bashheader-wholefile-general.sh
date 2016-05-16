@@ -2,6 +2,7 @@
 
 # Name: doSomething.sh
 # Execute this shell script to
+# Do NOT modify anything expect for "user defined variables" unless you know what it means and what are you doing.
 
 # debug option
 #_XTRACE_FUNCTIONS=$(set +o | grep xtrace)
@@ -12,8 +13,8 @@ header="
 
 "
 
-# define variables
-# end define variables
+# user defined variables
+# end user defined variables
 
 # pretreatment
 # end pretreatment
