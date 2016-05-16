@@ -87,46 +87,46 @@ check_ip_manipulation_tool_if_exist(){
 #  $1: <IPv6 address>
 # return code: 0=ok 1=not valid
 ipv6_test_ipv6_addr_valid() {
-        ipcalc -cs6 $1
+    ipcalc -cs6 $1
 }
 
 ## Test a given IPv4 address for validity
 #  $1: <IPv4 address>
 # return code: 0=ok 1=not valid
 ipv6_test_ipv4_addr_valid() {
-        ipcalc -cs4 $1
+    ipcalc -cs4 $1
 }
 
 ## Test a given IPv4 address for not a private but unicast one
 #  $1: <IPv4 address>
 # return code: 0=ok 1=argument error 10=private or not unicast
 ipv6_test_ipv4_addr_global_usable() {
-        local fn="ipv6_test_ipv4_addr_global_usable"
+    local fn="ipv6_test_ipv4_addr_global_usable"
 
-        local testipv4addr_globalusable=$1
+    local testipv4addr_globalusable=$1
 
 
-        if [ -z "$testipv4addr_globalusable" ]; then
+    if [ -z "$testipv4addr_globalusable" ]; then
                 return 1
-        fi
+    fi
 
-        # Test for a globally usable IPv4 address now
-                # test 0.0.0.0/8
-                /bin/ipcalc --network $testipv4addr_globalusable 255.0.0.0   | LC_ALL=C grep -q "NETWORK=0\.0\.0\.0"     && return 10
-                # test 10.0.0.0/8     (RFC 1918 / private)
-                /bin/ipcalc --network $testipv4addr_globalusable 255.0.0.0   | LC_ALL=C grep -q "NETWORK=10\.0\.0\.0"    && return 10
-                # test 127.0.0.0/8    (loopback)
-                /bin/ipcalc --network $testipv4addr_globalusable 255.0.0.0   | LC_ALL=C grep -q "NETWORK=127\.0\.0\.0"   && return 10
-                # test 169.254.0.0/16 (APIPA / DHCP link local)
-                /bin/ipcalc --network $testipv4addr_globalusable 255.255.0.0 | LC_ALL=C grep -q "NETWORK=169\.254\.0\.0" && return 10
-                # test 172.16.0.0/12  (RFC 1918 / private)
-                /bin/ipcalc --network $testipv4addr_globalusable 255.240.0.0 | LC_ALL=C grep -q "NETWORK=172\.16\.0\.0"  && return 10
-                # test 192.168.0.0/16 (RFC 1918 / private)
-                /bin/ipcalc --network $testipv4addr_globalusable 255.255.0.0 | LC_ALL=C grep -q "NETWORK=192\.168\.0\.0" && return 10
-                # test 224.0.0.0/3    (multicast and reserved, broadcast)
-                /bin/ipcalc --network $testipv4addr_globalusable 224.0.0.0   | LC_ALL=C grep -q "NETWORK=224\.0\.0\.0"   && return 10
+    # Test for a globally usable IPv4 address now
+    # test 0.0.0.0/8
+    /bin/ipcalc --network $testipv4addr_globalusable 255.0.0.0   | LC_ALL=C grep -q "NETWORK=0\.0\.0\.0"     && return 10
+    # test 10.0.0.0/8     (RFC 1918 / private)
+    /bin/ipcalc --network $testipv4addr_globalusable 255.0.0.0   | LC_ALL=C grep -q "NETWORK=10\.0\.0\.0"    && return 10
+    # test 127.0.0.0/8    (loopback)
+    /bin/ipcalc --network $testipv4addr_globalusable 255.0.0.0   | LC_ALL=C grep -q "NETWORK=127\.0\.0\.0"   && return 10
+    # test 169.254.0.0/16 (APIPA / DHCP link local)
+    /bin/ipcalc --network $testipv4addr_globalusable 255.255.0.0 | LC_ALL=C grep -q "NETWORK=169\.254\.0\.0" && return 10
+    # test 172.16.0.0/12  (RFC 1918 / private)
+    /bin/ipcalc --network $testipv4addr_globalusable 255.240.0.0 | LC_ALL=C grep -q "NETWORK=172\.16\.0\.0"  && return 10
+    # test 192.168.0.0/16 (RFC 1918 / private)
+    /bin/ipcalc --network $testipv4addr_globalusable 255.255.0.0 | LC_ALL=C grep -q "NETWORK=192\.168\.0\.0" && return 10
+    # test 224.0.0.0/3    (multicast and reserved, broadcast)
+    /bin/ipcalc --network $testipv4addr_globalusable 224.0.0.0   | LC_ALL=C grep -q "NETWORK=224\.0\.0\.0"   && return 10
 
-        return 0
+    return 0
 }
 
 function is_reserved_ip_address(){
@@ -177,38 +177,38 @@ function get_current_login_users_ipaddress_and_times(){
 }
 
 show_current_logged_in_users_ip_address(){
-        echo "Current logged in users from ip address are: "
-        get_current_login_users_ipaddress_and_times
-        echo
-        current_logged_in_users_ipaddress=$(get_current_login_users_ipaddress)
-        echo "Current logged in users from ip address are:"
-        for ip in ${current_logged_in_users_ipaddress}; do
-            echo -e "\t- $ip"
-        done
-        echo
+    echo "Current logged in users from ip address are: "
+    get_current_login_users_ipaddress_and_times
+    echo
+    current_logged_in_users_ipaddress=$(get_current_login_users_ipaddress)
+    echo "Current logged in users from ip address are:"
+    for ip in ${current_logged_in_users_ipaddress}; do
+        echo -e "\t- $ip"
+    done
+    echo
 }
 
 show_current_logged_in_users_ip_address_from_public_network(){
-        some_user_logged_in_from_public_network=0
-        for ip in ${current_logged_in_users_ipaddress}; do
-            if return_ip_addr_if_is_global_usable "$ip"; then
-                some_user_logged_in_from_public_network=1
-                echo -n "Current logged in users ip address from public network are:"
-                echo "$ip"
-            fi
-        done
-        if test ${some_user_logged_in_from_public_network} -eq 0; then
-            echo "NO logged in users ip address from public network."
+    some_user_logged_in_from_public_network=0
+    for ip in ${current_logged_in_users_ipaddress}; do
+        if return_ip_addr_if_is_global_usable "$ip"; then
+            some_user_logged_in_from_public_network=1
+            echo -n "Current logged in users ip address from public network are:"
+            echo "$ip"
         fi
-        echo
+    done
+    if test ${some_user_logged_in_from_public_network} -eq 0; then
+        echo "NO logged in users ip address from public network."
+    fi
+    echo
 }
 
 show_extra_information_from_sys_call(){
-        echo "Show who is logged on and what they are doing by \"w\" : "
-        command_exists w && w
-        echo
-        echo "Show a list of last logged in users, top 10 users show by \"last\" : "
-        command_exists last && last | head -n10
+    echo "Show who is logged on and what they are doing by \"w\" : "
+    command_exists w && w
+    echo
+    echo "Show a list of last logged in users, top 10 users show by \"last\" : "
+    command_exists last && last | head -n10
 }
 
 function main(){

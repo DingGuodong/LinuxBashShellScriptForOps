@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="add new files">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-echowithcolor-C.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-echowithcolor-D.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-wholefile-general.sh" afterPath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-wholefile-general.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy-java-maven.sh" afterPath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy-java-maven.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/others/startDockerContainersFirstTime.sh" afterPath="$PROJECT_DIR$/projects/others/startDockerContainersFirstTime.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/loginOps/check_who_login_and_record.sh" afterPath="$PROJECT_DIR$/projects/loginOps/check_who_login_and_record.sh" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,10 +25,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="example-deploy.sh" pinned="false" current-in-tab="false">
+      <file leaf-file-name="example-deploy.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.14089347">
               <caret line="4" column="36" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="43" />
               <folding />
             </state>
@@ -79,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="check_who_login_and_record.sh" pinned="false" current-in-tab="true">
+      <file leaf-file-name="check_who_login_and_record.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projects/loginOps/check_who_login_and_record.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="5.927835">
-              <caret line="213" column="0" selection-start-line="213" selection-start-column="0" selection-end-line="233" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -152,7 +148,6 @@
         <option value="$PROJECT_DIR$/functions/sh_header/opensource_software_header.sh" />
         <option value="$PROJECT_DIR$/functions/string/convert_exchange_row_to_column.sh" />
         <option value="$PROJECT_DIR$/functions/net/ip/validate_ip_address.sh" />
-        <option value="$PROJECT_DIR$/projects/loginOps/check_who_login_and_record.sh" />
         <option value="$PROJECT_DIR$/projects/BashEnhancementProposals/bashStyle.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/projects/processOps/ckill.sh" />
@@ -180,6 +175,7 @@
         <option value="$PROJECT_DIR$/projects/others/startDockerContainersFirstTime.sh" />
         <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-wholefile-general.sh" />
         <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy-java-maven.sh" />
+        <option value="$PROJECT_DIR$/projects/loginOps/check_who_login_and_record.sh" />
       </list>
     </option>
   </component>
@@ -802,7 +798,13 @@
       <option name="project" value="LOCAL" />
       <updated>1463380007868</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="add new files">
+      <created>1463392423385</created>
+      <option name="number" value="00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1463392423385</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1178,38 +1180,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-wholefile-general.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy-java-maven.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-update.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="36" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-restrictbashscript.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1252,8 +1222,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/loginOps/check_who_login_and_record.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="5.927835">
-          <caret line="213" column="0" selection-start-line="213" selection-start-column="0" selection-end-line="233" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-update.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy-java-maven.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-wholefile-general.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14089347">
+          <caret line="4" column="36" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="43" />
           <folding />
         </state>
       </provider>
