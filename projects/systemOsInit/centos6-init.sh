@@ -1,8 +1,19 @@
-#!/bin/bash
-
-# Name: doSomething.sh
-# Execute this shell script to
-# Do NOT modify anything expect for "user defined variables" unless you know what it means and what are you doing.
+#!/usr/bin/env bash
+#
+# Function description:
+# Use this script to initialize system after full refresh installation
+#
+# Usage:
+# bash centos6-init.sh
+#
+# Birth Time:
+# 2016-05-17 10:19:33.005064327 +0800
+#
+# Author:
+# Open Source Software written by 'Guodong Ding <dgdenterprise@gmail.com>'
+# Blog: http://dgd2010.blog.51cto.com/
+# Github: https://github.com/DingGuodong
+#
 
 # debug option
 #_XTRACE_FUNCTIONS=$(set +o | grep xtrace)
@@ -10,7 +21,7 @@
 
 # define user friendly messages
 header="
-
+Use this script to initialize system after full refresh installation
 "
 
 # user defined variables
@@ -86,7 +97,8 @@ WORKDIR="`readlink -f ${PRGDIR}`"
 USER="`id -un`"
 LOGNAME="$USER"
 if [ $UID -ne 0 ]; then
-    echo "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options"
+    echo_y "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options."
+    echo_y "Retry to using \"sudo bash $0 $@\"."
 fi
 
 command_exists() {
@@ -152,35 +164,6 @@ eof
     fi
 }
 
-function checkOtherDependencies() {
-    echo_b "Checking other dependencies for deploy procedure... "
-
-    echo_b "\tChecking user customized variables..."
-    # Refer:
-    # if [ -z ${var+x} ]; then
-    #     echo "var is unset"; else echo "var is set to '$var'"
-    # fi
-    # if [ "$var x" = " x" ]; then
-    #     echo "var is empty"; else echo "var is set to '$var'"
-    # fi
-    # if [ -z $var ]; then
-    #     echo "var is empty"; else echo "var is set to '$var'"
-    # fi
-
-    echo_g "\tChecking user customized variables passed! "
-
-    echo_b "\tChecking disk space available..."
-    disk_space_available=`df ${WORKDIR} | tail -n1 | awk '{print $(NF-2)}'`
-    if [[ ${disk_space_available} -lt 2097152 ]]; then
-        echo_y "Warning: Disk space of $WORKDIR is smaller than 2GB"
-        #exit 1
-    else
-        echo_g "\tChecking disk space available passed! "
-    fi
-
-    echo_g "All required dependencies check passed! "
-
-}
 function main(){
     lock_filename="lock_$$_$RANDOM"
 #    lock_filename_full_path="/var/lock/subsys/$lock_filename"
@@ -223,3 +206,4 @@ main $@
 
 # debug option
 #${_XTRACE_FUNCTIONS}
+

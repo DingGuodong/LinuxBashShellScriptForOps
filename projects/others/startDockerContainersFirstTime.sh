@@ -45,16 +45,19 @@ function echo_r (){
     [ $# -ne 1 ] && return 1
     echo -e "\033[31m$1\033[0m"
 }
+
 function echo_g (){
     # Color green: Success
     [ $# -ne 1 ] && return 1
     echo -e "\033[32m$1\033[0m"
 }
+
 function echo_y (){
     # Color yellow: Warning
     [ $# -ne 1 ] && return 1
     echo -e "\033[33m$1\033[0m"
 }
+
 function echo_b (){
     # Color blue: Debug Level 1
     [ $# -ne 1 ] && return 1

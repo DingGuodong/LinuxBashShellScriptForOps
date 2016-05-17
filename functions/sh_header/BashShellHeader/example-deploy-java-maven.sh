@@ -71,10 +71,22 @@ function echo_y (){
     echo -e "\033[33m$1\033[0m"
 }
 function echo_b (){
-    # Color blue: Debug, friendly prompt
+    # Color blue: Debug Level 1
     [ $# -ne 1 ] && return 1
     echo -e "\033[34m$1\033[0m"
 }
+function echo_p (){
+    # Color purple: Debug Level 2
+    [ $# -ne 1 ] && return 1
+    echo -e "\033[35m$1\033[0m"
+}
+
+function echo_c (){
+    # Color cyan: friendly prompt, Level 1
+    [ $# -ne 1 ] && return 1
+    echo -e "\033[36m$1\033[0m"
+}
+
 # end echo color function, smarter
 
 #WORKDIR="`realpath ${WORKDIR}`"
