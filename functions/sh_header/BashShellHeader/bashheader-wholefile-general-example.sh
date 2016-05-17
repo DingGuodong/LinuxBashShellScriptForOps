@@ -25,6 +25,7 @@ Use this script to initialize system after full refresh installation
 "
 
 # user defined variables
+user_defined_=""
 # end user defined variables
 
 # pretreatment

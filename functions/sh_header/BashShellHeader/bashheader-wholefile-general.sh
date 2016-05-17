@@ -14,6 +14,7 @@ header="
 "
 
 # user defined variables
+user_defined_=""
 # end user defined variables
 
 # pretreatment

@@ -25,6 +25,8 @@ Use this script to initialize system after full refresh installation
 "
 
 # user defined variables
+user_defined_hostname=""
+user_defined_=""
 # end user defined variables
 
 # pretreatment
@@ -164,6 +166,188 @@ eof
     fi
 }
 
+function setHostnameFqdnFormat(){
+    current_hostname_fqdn="`hostname -A`"
+    dot_appear_times_to_match_fqdn_rule=`echo "$current_hostname_fqdn" | grep -o '\.' | wc -l`
+    if test $dot_appear_times_to_match_fqdn_rule -gt 1; then
+        echo_g "current hostname $current_hostname_fqdn is a fqdn name, check passed! "
+    else
+        if test -z $user_defined_hostname; then
+            new_hostname_to_set="$user_defined_hostname"
+        else
+            read -p 'Input hostname you want, then press Enter ' user_input_hostname
+            new_hostname_to_set="$user_input_hostname"
+        fi
+        test -f /etc/hostname && echo "$new_hostname_to_set" > /etc/hostname
+        test -f /etc/hostname && hostname -b -F /etc/hostname || hostname "$new_hostname_to_set"
+        test -f /etc/sysconfig/network && sed -i "s/^HOSTNAME=.*.$/HOSTNAME=$new_hostname_to_set/g" /etc/sysconfig/network
+    fi
+    ipaddress_global_routing="`ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'`"
+    grep -v -E "($ipaddress_global_routing|$new_hostname_to_set)" /etc/hosts >/dev/null 2>&1 && echo "$ipaddress_global_routing $new_hostname_to_set" >> /etc/hosts
+}
+
+function yum_install_base_packages(){
+    yum -y install vim wget perl unzip man man-pages man-pages-overrides >/dev/null 2>&1
+}
+
+function yum_repository_config(){
+    yum -y install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm >/dev/null 2>&1
+
+}
+
+function yum_install_extra_packages(){
+    yum info bash-completion >/dev/null 2>&1 && yum -y install bash-completion >/dev/null 2>&1
+
+
+}
+function customized_commands(){
+    # customized commands, alternatively, echo into .bashrc file as a function or alias
+    cat >delsc.sh <<eof
+#!/bin/bash
+# delete all spaces and comments of specialized file, using with \$0 filename
+[[ "\$1" == "" ]] && echo "delete all spaces and comments of specialized file, using with \$0 filename" && exit 1
+if cat -A \$1 | grep '\^M\\\$' >/dev/null || file \$1 | grep "with CRLF line terminators" >/dev/null ; then
+    which dos2unix >/dev/null 2>&1 || yum -q -y install dos2unix || apt-get -qq -y install dos2unix
+    dos2unix \$1 >/dev/null
+fi
+if test -f \$1 && file \$1 | grep "XML" >/dev/null; then
+    which tidy >/dev/null 2>&1 || yum -q -y install tidy || apt-get -qq -y install tidy
+    tidy -quiet -asxml -xml -indent -wrap 1024 --hide-comments 1 \$1
+elif test -f \$1; then
+    grep -v \# \$1 | grep -v ^\; |grep -v ^$ | grep -v ^\ *$
+fi
+# Others:
+# sed -e '/^#/d;/^$/d' \$1
+# Refer: https://github.com/mysfitt/nocomment/blob/master/nocomment.sh
+# grep -Ev '^\s*#|^//|^\s\*|^/\*|^\*/' \$1 | grep -Ev '^$|^\s+$'
+eof
+    chmod +x ./delsc.sh
+    \cp delsc.sh /usr/local/bin/delsc
+    rm -f ./delsc.sh
+    SELINUX_STATE=$(cat "/selinux/enforce")
+    [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon -r /usr/local/bin
+
+}
+
+function inject_ssh_key_for_root(){
+    test ! -d /root/.ssh && ssh-keygen -N "" -f /root/.ssh/id_rsa
+    test ! -f /root/.ssh/authorized_keys && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+    cat >>/root/.ssh/authorized_keys<<eof
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCawuOgQup3Qc1OILytyH+u3S9te85ctEKTvzPtRjHfnEEOjpRS6v6/PsuDHplHO1PAm8cKbEZmqR9tg4mWSweosBYW7blUUB4yWfBu6cHAnJOZ7ADNWHHJHAYi8QFZd4SLAAKbf9J12Xrkw2qZkdUyTBVbm+Y8Ay9bHqGX7KKLhjt0FIqQHRizcvncBFHXbCTJWsAduj2i7GQ5vJ507+MgFl2ZTKD2BGX5m0Jq9z3NTJD7fEb2J6RxC9PypYjayXyQBhgACxaBrPXRdYVXmy3f3zRQ4/OmJvkgoSodB7fYL8tcUZWSoXFa33vdPlVlBYx91uuA6onvOXDnryo3frN1
+ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAumQ2srRwd9slaeYTdr/dGd0H4NzJ3uQdBQABTe/nhJsUFWVG3titj7JiOYjCb54dmpHoi4rAYIElwrolQttZSCDKTVjamnzXfbV8HvJapLLLJTdKraSXhiUkdS4D004uleMpaqhmgNxCLu7onesCCWQzsNw9Hgpx5Hicpko6Xh0=
+eof
+    SELINUX_STATE=$(cat "/selinux/enforce")
+    [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon -r /root/.ssh
+
+}
+
+function update_local_time(){
+    if [[ ! `grep -a CST-8 /etc/localtime >/dev/null 2>&1` || ! `diff /etc/localtime /usr/share/zoneinfo/Asia/Shanghai >/dev/null 2>&1` ]]; then
+        rm -rf /etc/localtime
+        ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    fi
+    ntpdate -u pool.ntp.org >/dev/null 2>&1 || ntpdate -u time.nist.gov >/dev/null 2>&1 || ntpdate -u time-nw.nist.gov >/dev/null 2>&1
+    date
+    cat >>/etc/rc.local<<eof
+ntpdate -u pool.ntp.org || ntpdate -u time.nist.gov || ntpdate -u time-nw.nist.gov
+hwclock -w
+eof
+    # Recommended do
+    touch /etc/cron.daily/ntpdate
+    chown -R --reference=/etc/cron.daily/logrotate /etc/cron.daily/ntpdate
+    chmod -R --reference=/etc/cron.daily/logrotate /etc/cron.daily/ntpdate
+    chcon -R --reference=/etc/cron.daily/logrotate /etc/cron.daily/ntpdate >/dev/null 2>&1
+    cat >>/etc/cron.daily/ntpdate<<eof
+ntpdate -u pool.ntp.org >/dev/null 2>&1 || ntpdate -u time.nist.gov >/dev/null 2>&1 || ntpdate -u time-nw.nist.gov >/dev/null 2>&1
+hwclock -w
+eof
+
+}
+
+function system_performance_tuning(){
+    cp /etc/security/limits.conf /etc/security/limits.conf_origin_$(date +%Y%m%d%H%M%S)~
+    cat >>/etc/security/limits.conf<<eof
+# refer to the free inodes number, by "df -i" commands
+* soft nofile 200000
+* hard nofile 200000
+
+eof
+
+    cp /etc/sysctl.conf /etc/sysctl.conf_origin_$(date +%Y%m%d%H%M%S)~
+    cat >/etc/sysctl.conf<<eof
+fs.file-max = 808127
+kernel.core_uses_pid = 1
+kernel.hung_task_timeout_secs = 0
+kernel.msgmax = 65536
+kernel.msgmnb = 65536
+kernel.sem = 250 32000 100 128
+kernel.shmall = 4294967296
+kernel.shmmax = 536870912
+kernel.shmmax = 68719476736
+kernel.shmmni = 4096
+kernel.sysrq = 0
+net.core.netdev_max_backlog = 262144
+net.core.rmem_default = 8388608
+net.core.rmem_max = 16777216
+net.core.somaxconn = 262144
+net.core.wmem_default = 8388608
+net.core.wmem_max = 16777216
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.ip_forward = 0
+net.ipv4.ip_local_port_range = 1024 65535
+net.ipv4.tcp_fin_timeout = 1
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_max_orphans = 3276800
+net.ipv4.tcp_max_syn_backlog = 262144
+net.ipv4.tcp_max_tw_buckets = 6000
+net.ipv4.tcp_mem = 94500000 915000000 927000000
+net.ipv4.tcp_rmem = 4096 87380 4194304
+net.ipv4.tcp_sack = 1
+net.ipv4.tcp_synack_retries = 5
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_syn_retries = 5
+net.ipv4.tcp_timestamps = 0
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_window_scaling = 1
+net.ipv4.tcp_wmem = 4096 16384 4194304
+vm.swappiness = 30
+eof
+    # TODO(Guodong Ding) OOM(sysctl -a | grep oom)
+
+    # TODO(Guodong Ding) 5% reserved-blocks-percentage(tune2fs, dump2fs, man tune2fs)
+
+    sysctl -p >/dev/null 2>&1
+
+}
+
+function ssh_config(){
+    if grep "^#UseDNS" /etc/ssh/sshd_config >/dev/null 2>&1 && ! grep "UseDNS no" /etc/ssh/sshd_config >/dev/null 2>&1; then
+        cp /etc/ssh/sshd_config /etc/ssh/sshd_config_origin_$(date +%Y%m%d%H%M%S)~
+        sed -i "s/^#UseDNS.*.$/UseDNS no/g" /etc/ssh/sshd_config
+        service sshd restart
+    fi
+
+}
+
+# TODO(Guodong Ding) Reducing Disk IO By Mounting Partitions With noatime
+    # Refer: https://www.howtoforge.com/reducing-disk-io-by-mounting-partitions-with-noatime
+    # Refer: man 8 mount
+
+function initialize(){
+    check_network_connectivity
+    check_name_resolve
+    setHostnameFqdnFormat
+    yum_install_base_packages
+    yum_repository_config
+    yum_install_extra_packages
+    customized_commands
+    inject_ssh_key_for_root
+    update_local_time
+    system_performance_tuning
+    ssh_config
+}
 function main(){
     lock_filename="lock_$$_$RANDOM"
 #    lock_filename_full_path="/var/lock/subsys/$lock_filename"
@@ -174,21 +358,15 @@ function main(){
          if [[ $# -ne 1 ]]; then
             [ ! -x ${WORKDIR}/`basename $0` ] && chmod +x ${WORKDIR}/`basename $0`
             test -z ${header} || echo_b "$header"
-            ${WORKDIR}/`basename $0` deploy
+            ${WORKDIR}/`basename $0` initialize
             exit 0
          fi
         case $1 in
-            deploy)
-                deploy
-                ;;
-            rollback)
-                rollback
-                ;;
-            destroy)
-                destroy
+            initialize)
+                initialize
                 ;;
             help|*)
-                echo "Usage: $0 {deploy|rollback|destroy} with $0 itself"
+                echo "Usage: $0 {initialize} with $0 itself"
                 exit 1
                 ;;
         esac
