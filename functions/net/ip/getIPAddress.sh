@@ -9,7 +9,7 @@ IP=$(ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)" | awk -F ":" '{print $2
 IP=$(ifconfig | grep inet | grep -Ev "(inet6|127.0.0.1)" | awk -F ":" '{print $2}' | awk '{print $1}')
 hostname -i
 facter ipaddress_eth0
-#获取IP地址的系统标准方法：来自/etc/rc.d/rc.sysinit 346行, 适用于CentOS，不适用于Ubuntu
+# A system used standard method to get ip address from  '/etc/rc.d/rc.sysinit' line 346 on CentOS, useless for Ubuntu
 ip addr show to 0.0.0.0/0 scope global | awk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
 
 # Ubuntu
@@ -23,10 +23,12 @@ ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)" | cut -d ":" -f2 | cut -d " 
 DEVICE=$(route -n | awk '/^0.0.0.0/ && /UG/ {print $NF}')
 IP=$(ifconfig $DEVICE | awk -F '[ :]+' '/inet/ && !/inet6/ {print $3}')
 echo $IP
+
 # Ubuntu IP
 DEVICE=$(route -n | awk '/^0.0.0.0/ && /UG/ {print $NF}')
 IP=$(ifconfig $DEVICE | awk -F '[ :]+' '/inet/ && !/inet6/ {print $4}')
 echo $IP
+
 # general distro using ip command
 ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'
 
