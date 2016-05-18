@@ -27,6 +27,8 @@ echo $IP
 DEVICE=$(route -n | awk '/^0.0.0.0/ && /UG/ {print $NF}')
 IP=$(ifconfig $DEVICE | awk -F '[ :]+' '/inet/ && !/inet6/ {print $4}')
 echo $IP
+# general distro using ip command
+ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'
 
 #without awk or cut
 IP1=$(ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)")

@@ -1,7 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# Function description:
+# Use this script to initialize system after full refresh installation
+#
+# Usage:
+# bash centos6-init.sh
+#
+# Birth Time:
+# 2016-05-17 10:19:33.005064327 +0800
+#
+# Author:
+# Open Source Software written by 'Guodong Ding <dgdenterprise@gmail.com>'
+# Blog: http://dgd2010.blog.51cto.com/
+# Github: https://github.com/DingGuodong
+#
 
-#Function Description
-#Function Description Details
+# debug option
+#_XTRACE_FUNCTIONS=$(set +o | grep xtrace)
+#set -o xtrace
+
+# define user friendly messages
+header="
+Use this script to initialize system after full refresh installation
+"
+
+# user defined variables
+user_defined_=""
+# end user defined variables
+
+# pretreatment
+# end pretreatment
 
 # Public header
 # =============================================================================================================================
@@ -22,27 +50,40 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-# echo color function, smarter
+# echo color function, smarter, learn from lnmp.org lnmp install.sh
 function echo_r (){
-    #Error, Failed
-    [ $# -ne 1 ] && return 0
+    # Color red: Error, Failed
+    [ $# -ne 1 ] && return 1
     echo -e "\033[31m$1\033[0m"
 }
 function echo_g (){
-    # Success
-    [ $# -ne 1 ] && return 0
+    # Color green: Success
+    [ $# -ne 1 ] && return 1
     echo -e "\033[32m$1\033[0m"
 }
 function echo_y (){
-    # Warning
-    [ $# -ne 1 ] && return 0
+    # Color yellow: Warning
+    [ $# -ne 1 ] && return 1
     echo -e "\033[33m$1\033[0m"
 }
 function echo_b (){
-    # Debug
-    [ $# -ne 1 ] && return 0
+    # Color blue: Debug Level 1
+    [ $# -ne 1 ] && return 1
     echo -e "\033[34m$1\033[0m"
 }
+
+function echo_p (){
+    # Color purple: Debug Level 2
+    [ $# -ne 1 ] && return 1
+    echo -e "\033[35m$1\033[0m"
+}
+
+function echo_c (){
+    # Color cyan: friendly prompt, Level 1
+    [ $# -ne 1 ] && return 1
+    echo -e "\033[36m$1\033[0m"
+}
+
 # end echo color function, smarter
 
 WORKDIR="$PRGDIR"
@@ -127,6 +168,7 @@ function main(){
     if ( set -o noclobber; echo "$$" > "$lock_filename_full_path") 2> /dev/null;then
         trap 'rm -f "$lock_filename_full_path"; exit $?' INT TERM EXIT
         # do
+        test -z ${header} || echo_b "$header"
         echo $@
         # done
         rm -f "$lock_filename_full_path"

@@ -2,6 +2,7 @@
 #
 # Function description:
 # Use this script to initialize system after full refresh installation
+# Try most best to refer to more general and minimal principle, UNIX philosophy
 #
 # Usage:
 # bash centos6-init.sh
@@ -26,7 +27,8 @@ Use this script to initialize system after full refresh installation
 
 # user defined variables
 user_defined_hostname=""
-user_defined_=""
+user_defined_username=""
+user_defined_user_can_run_sudo=true # true or false
 # end user defined variables
 
 # pretreatment
@@ -166,7 +168,7 @@ eof
     fi
 }
 
-function setHostnameFqdnFormat(){
+function set_hostname_fqdn_format(){
     current_hostname_fqdn="`hostname -A`"
     dot_appear_times_to_match_fqdn_rule=`echo "$current_hostname_fqdn" | grep -o '\.' | wc -l`
     if test $dot_appear_times_to_match_fqdn_rule -gt 1; then
@@ -187,7 +189,7 @@ function setHostnameFqdnFormat(){
 }
 
 function yum_install_base_packages(){
-    yum -y install vim wget perl unzip man man-pages man-pages-overrides >/dev/null 2>&1
+    yum -y install vim wget curl perl unzip man man-pages man-pages-overrides bind-utils net-tools >/dev/null 2>&1
 }
 
 function yum_repository_config(){
@@ -322,6 +324,13 @@ eof
 
 }
 
+# TODO(Guodong Ding) noatime(man mount), fstab is only read by programs, and not written; it is the duty of the system \
+#     administrator to properly create and maintain this file.
+#     rw, suid, dev, exec, auto, nouser, async, and noatime
+
+# TODO(Guodong Ding)
+
+
 function ssh_config(){
     if grep "^#UseDNS" /etc/ssh/sshd_config >/dev/null 2>&1 && ! grep "UseDNS no" /etc/ssh/sshd_config >/dev/null 2>&1; then
         cp /etc/ssh/sshd_config /etc/ssh/sshd_config_origin_$(date +%Y%m%d%H%M%S)~
@@ -335,10 +344,20 @@ function ssh_config(){
     # Refer: https://www.howtoforge.com/reducing-disk-io-by-mounting-partitions-with-noatime
     # Refer: man 8 mount
 
+function add_user_as_user_defined(){
+    if test -z ${user_defined_username}; then
+        return 0
+    else
+        useradd ${user_defined_username}
+        test -d /etc/sudoers.d && echo "$user_defined_username ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_$user_defined_username.conf
+    fi
+
+}
+
 function initialize(){
     check_network_connectivity
     check_name_resolve
-    setHostnameFqdnFormat
+    set_hostname_fqdn_format
     yum_install_base_packages
     yum_repository_config
     yum_install_extra_packages
