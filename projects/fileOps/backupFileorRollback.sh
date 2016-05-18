@@ -22,7 +22,7 @@
 #_XTRACE_FUNCTIONS=$(set +o | grep xtrace)
 #set -o xtrace
 
-
+# TODO(Guodong Ding) add directory support
 # Function description: backup files
 # Note: accept $@ parameters
 backup_files(){

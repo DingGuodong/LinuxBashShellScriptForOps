@@ -2,15 +2,18 @@
   <dictionary name="Guodong">
     <words>
       <w>activemq</w>
+      <w>bashrc</w>
       <w>cidr</w>
       <w>confold</w>
       <w>distrib</w>
       <w>distros</w>
       <w>dpkg</w>
       <w>fqdn</w>
+      <w>histtimeformat</w>
       <w>ipcalc</w>
       <w>lineno</w>
       <w>msmtp</w>
+      <w>printf</w>
       <w>readlink</w>
       <w>repos</w>
       <w>slowlaris</w>

@@ -29,6 +29,7 @@ Use this script to initialize system after full refresh installation
 user_defined_hostname=""
 user_defined_username=""
 user_defined_user_can_run_sudo=true # true or false
+user_defined_log_absolute_path=""
 # end user defined variables
 
 # pretreatment
@@ -114,6 +115,68 @@ check_command_can_be_execute(){
     [ $# -ne 1 ] && return 1
     command_exists $1
 }
+
+function check_user_defined_variables(){
+    # TODO(Guodong Ding) continue
+    test -z $user_defined_hostname
+    test -z $user_defined_username
+    test -z $user_defined_user_can_run_sudo
+    test -z $user_defined_log_absolute_path
+
+}
+
+function backup_single_file(){
+    set -o errexit
+    if [ "$#" -ne 1 ]; then
+        return 1
+    fi
+    backup_filename_origin="$1"
+    operation_date_time="`date +"%Y%m%d%H%M%S"`"
+    backup_filename_prefix=".backup_"
+    backup_filename_suffix="_origin_$operation_date_time~"
+    backup_filename_target="$backup_filename_prefix$backup_filename_origin$backup_filename_suffix"
+    test -f $backup_filename_origin && cp $backup_filename_origin $backup_filename_target
+    set +o errexit
+
+}
+
+# Function description: backup files without directory support
+# Note: accept $@ parameters, such as '$0 file1 file2 file3'
+# Usage: backup_files $@ || rollback_files
+backup_files(){
+    set -o errexit
+    if [ "$#" -eq 0 ]; then
+        return 1
+    fi
+    file_list=$@
+    operation_date_time="_`date +"%Y%m%d%H%M%S"`"
+    log_filename=".log_$0_$$_$RANDOM"
+    if test -z $user_defined_log_absolute_path; then
+        log_filename_full_path=/tmp/$log_filename
+    else
+        log_filename_full_path=$user_defined_log_absolute_path
+    fi
+    touch $log_filename_full_path
+    old_IFS=$IFS
+    IFS=" "
+    for file in $file_list;do
+        # is there a bin named 'realpath' ?
+        real_file=$(readlink -f $file)
+        [ -f $real_file ] && cp $real_file $file$operation_date_time~
+        [ -f $log_filename_full_path ] && echo "\mv -f $file$operation_date_time~ $file" >>$log_filename_full_path
+    done
+    IFS="$old_IFS"
+    set +o errexit
+    return 0
+}
+
+# Function description: rollback files
+rollback_files(){
+    [ -f $log_filename_full_path ] && . $log_filename_full_path
+    \rm -f $log_filename_full_path
+    exit 2
+}
+
 
 check_network_connectivity(){
     echo_b "checking network connectivity ... "
@@ -241,6 +304,26 @@ eof
     SELINUX_STATE=$(cat "/selinux/enforce")
     [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon -r /root/.ssh
 
+}
+
+function bashrc_setting(){
+    backup_single_file ~/.bashrc
+
+    # history related
+    # HISTTIMEFORMAT
+
+    # PROMPT_COMMAND
+    # Refer: http://dl528888.blog.51cto.com/2382721/1703059
+    # Refer: http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x264.html
+    # TODO(Guodong Ding) a known issue, it will make user confused when a command line include a double quotes("), because is not a valid json any more
+    #   like this "{"TIME":"2016-05-18 15:43:14", "HOSTNAME":"chris.51devops.com", "IP":"10.20.0.1", "LOGIN":"root", "USER":"root", "CMD":"export PROMPT_COMMAND='history 1|tail -1|sed "s/^[ ]\+[0-9]\+  //"|sed "s/^/{/"|sed "s/$/\"}/">> /var/log/command.log'"}"
+
+    if ! grep HISTTIMEFORMAT ~/.bashrc && ! grep PROMPT_COMMAND;then
+    cat >>~/.bashrc<<eof
+export HISTTIMEFORMAT="\"TIME\":\"%F %T\", \"HOSTNAME\":\"$HOSTNAME\", \"IP\":\"\$(who -u am i 2>/dev/null| awk '{print \$NF}'|sed -e 's/[()]//g')\", \"LOGIN\":\"\$(who am i|awk '{print \$1}')\", \"USER\":\"\${USER}\", \"CMD\":\""
+export PROMPT_COMMAND='history 1|tail -1|sed "s/^[ ]\+[0-9]\+  //"|sed "s/^/{/"|sed "s/$/\"}/">> /var/log/.command_history.log'
+eof
+    fi
 }
 
 function update_local_time(){

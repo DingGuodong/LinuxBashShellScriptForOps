@@ -28,14 +28,14 @@ eof
 
  history -c && exit
 
-# 多个主机间注册SSH key 1
+# Multi host register SSH key 1
 # ssh-keygen -N "" -f /root/.ssh/id_rsa
 [ ! -e /root/.ssh/authorized_keys ] && mkdir /root/.ssh
 # ssh-keyscan 192.168.1.241 192.168.1.242 192.168.1.243 |& awk -F '[ ]+' '!/^#/ {print $2" "$3}' >> /root/.ssh/authorized_keys
 ssh-keyscan -t rsa 192.168.1.241 192.168.1.242 192.168.1.243 |& awk -F '[ ]+' '!/^#/ {print $2" "$3}' >> /root/.ssh/authorized_keys
 ssh -i /etc/ssh/ssh_host_rsa_key -p 22 -oStrictHostKeyChecking=no root@192.168.1.242 "uname -a"
 
-# 多个主机间注册SSH key 2
+# Multi host register SSH key 2
 # ssh-keygen -N "" -f /root/.ssh/id_rsa
 [ ! -e /root/.ssh/authorized_keys ] && mkdir /root/.ssh
 # ssh-keyscan 192.168.1.241 192.168.1.242 192.168.1.243 |& awk -F '[ ]+' '!/^#/ {print $2" "$3}' >> /root/.ssh/authorized_keys
