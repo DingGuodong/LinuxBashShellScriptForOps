@@ -2,6 +2,8 @@
 #
 # Function description:
 # Use this script to initialize system after full refresh installation
+# Do NOT modify anything expect for "user defined variables" unless you know what it means and what are you doing.
+
 # Try most best to refer to more general and minimal principle, UNIX philosophy
 #
 # Usage:
@@ -237,14 +239,14 @@ function set_hostname_fqdn_format(){
     if test $dot_appear_times_to_match_fqdn_rule -gt 1; then
         echo_g "current hostname $current_hostname_fqdn is a fqdn name, check passed! "
     else
-        if test -z $user_defined_hostname; then
+        if test ! -z $user_defined_hostname; then
             new_hostname_to_set="$user_defined_hostname"
         else
             read -p 'Input hostname you want, then press Enter ' user_input_hostname
             new_hostname_to_set="$user_input_hostname"
         fi
         test -f /etc/hostname && echo "$new_hostname_to_set" > /etc/hostname
-        test -f /etc/hostname && hostname -b -F /etc/hostname || hostname "$new_hostname_to_set"
+            test -f /etc/hostname && hostname -b -F /etc/hostname || hostname "$new_hostname_to_set"
         test -f /etc/sysconfig/network && sed -i "s/^HOSTNAME=.*.$/HOSTNAME=$new_hostname_to_set/g" /etc/sysconfig/network
     fi
     ipaddress_global_routing="`ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'`"
@@ -262,7 +264,7 @@ function yum_repository_config(){
 
 function yum_install_extra_packages(){
     yum info bash-completion >/dev/null 2>&1 && yum -y install bash-completion >/dev/null 2>&1
-
+    yum -y update
 
 }
 function customized_commands(){
@@ -411,7 +413,7 @@ eof
 #     administrator to properly create and maintain this file.
 #     rw, suid, dev, exec, auto, nouser, async, and noatime
 
-# TODO(Guodong Ding)
+# TODO(Guodong Ding) more points
 
 
 function ssh_config(){
@@ -446,6 +448,7 @@ function initialize(){
     yum_install_extra_packages
     customized_commands
     inject_ssh_key_for_root
+    bashrc_setting
     update_local_time
     system_performance_tuning
     ssh_config
@@ -468,6 +471,7 @@ function main(){
                 initialize
                 ;;
             help|*)
+                test -z ${header} || echo_b "$header"
                 echo "Usage: $0 {initialize} with $0 itself"
                 exit 1
                 ;;
