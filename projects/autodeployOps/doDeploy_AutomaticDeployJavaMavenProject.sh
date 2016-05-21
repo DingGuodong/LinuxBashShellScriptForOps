@@ -4,8 +4,15 @@
 #Execute this shell script to deploy Java projects built by Maven automatically on remote hosts.
 
 # debug option
-_XTRACE_FUNCTIONS=$(set +o | grep xtrace)
-set -o xtrace
+DEBUG=true
+
+if $DEBUG ; then
+    old_PS4=$PS4
+#    export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+    export PS4='+${LINENO}: ${FUNCNAME[0]}: ' # if there is only one bash script, do not display ${BASH_SOURCE}
+    _XTRACE_FUNCTIONS=$(set +o | grep xtrace)
+    set -o xtrace
+fi
 
 # define user friendly messages
 header="
@@ -168,7 +175,7 @@ eof
     fi
 }
 
-function checkOtherDependencies() {
+function check_other_dependencies() {
     echo_b "Checking other dependencies for deploy procedure... "
 
     echo_b "\tChecking user customized variables..."
@@ -252,7 +259,7 @@ function setDirectoryStructureOnLocalHost() {
     echo_g "Set directory structure successfully! "
 }
 
-function cleanOldReleases(){
+function clean_old_releases(){
     echo_b "Clean old releases... "
     save_days=${save_old_releases_for_days:-10}
     if [ ! -d ${WORKDIR}/release ]; then
@@ -266,10 +273,28 @@ function cleanOldReleases(){
         if [ $? -eq 0 ]; then
             echo_g "Expired releases have removed from project! "
         else
-            echo_r "Can NOT remove expired releases, please alter to Admin users. "
+            echo_r "Can NOT remove expired releases, please feel free to alter to administrators. "
         fi
     else
         echo_g "All releases are not expired, skipping. "
+    fi
+
+}
+
+function clean_old_logs(){
+    echo_b "Clean old logs... "
+    save_days=${save_old_releases_for_days:-10}
+    need_clean=$(find ${WORKDIR}/ -name "*.log" -mtime +${save_days} -exec ls '{}' \;)
+    if [ ! -z ${need_clean} ]; then
+        echo_g "Expired releases found and will be removed from project! "
+        find -L ${WORKDIR}/ -maxdepth 1 -name "*.log" -mtime +${save_days} -exec rm -rf '{}' \;
+        if [ $? -eq 0 ]; then
+            echo_g "Expired logs have removed from project! "
+        else
+            echo_r "Can NOT remove expired logs, please feel free to alter to administrators. "
+        fi
+    else
+        echo_g "All logs are not expired, skipping. "
     fi
 
 }
@@ -469,7 +494,8 @@ function deploy() {
     if [[ ! -f ${WORKDIR}/.lock ]]; then
         setDirectoryStructureOnLocalHost
     fi
-    cleanOldReleases
+    clean_old_releases
+    clean_old_logs
     # do dependencies checking
     if test ! -z $user_defined_skip_check_network_and_resolver; then
         echo_g "skipping checking network connectivity and name resolve."
@@ -478,7 +504,7 @@ function deploy() {
         check_name_resolve
     fi
 
-    checkOtherDependencies
+    check_other_dependencies
 
     check_ssh_can_be_connect ${user_defined_deploy_target_host_ip}
 
@@ -787,4 +813,8 @@ fi
 main $@
 
 # debug option
-${_XTRACE_FUNCTIONS}
+if $DEBUG ; then
+    export PS4=$old_PS4
+    ${_XTRACE_FUNCTIONS}
+fi
+

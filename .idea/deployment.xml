@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="10.6.28.28">
+  <component name="PublishConfigData" autoUpload="Always" serverName="10.6.28.28">
     <serverData>
       <paths name="10.20.0.7">
         <serverdata>
@@ -24,5 +24,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
