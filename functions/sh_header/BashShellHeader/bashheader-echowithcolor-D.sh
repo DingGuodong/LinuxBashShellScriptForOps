@@ -22,7 +22,7 @@ function echo_b (){
 }
 
 function echo_p (){
-    # Color purple: Debug Level 2
+    # Color purple,magenta: Debug Level 2
     [ $# -ne 1 ] && return 1
     echo -e "\033[35m$1\033[0m"
 }
