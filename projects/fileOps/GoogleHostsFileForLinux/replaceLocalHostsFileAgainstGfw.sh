@@ -487,7 +487,7 @@ function get_hosts_file_from_github(){
         rm -f /etc/hosts
         [ -f hosts/hosts ] && \cp -f hosts/hosts /etc/hosts || ( echo_r "can NOT find file \"hosts/hosts\"" && exit 1 )
 
-        # check if able to resolve host `hostname -f`
+        # check if able to resolve host `hostname -f`, if not, sudo will throw a exception 'sudo: unable to resolve host xxx'
         echo "127.0.0.1 `hostname`" >> /etc/hosts
         echo "127.0.0.1 `hostname -f`" >> /etc/hosts
         echo "`ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'` `hostname`" >> /etc/hosts
