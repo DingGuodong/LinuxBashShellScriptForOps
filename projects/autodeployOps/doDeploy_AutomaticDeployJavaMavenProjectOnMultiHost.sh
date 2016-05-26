@@ -5,6 +5,7 @@
 
 # debug option
 DEBUG=false
+#DEBUG=true
 
 if $DEBUG ; then
     old_PS4=$PS4
@@ -30,8 +31,8 @@ user_defined_deploy_targets_host_ip_list="10.6.28.135 10.6.28.28"
 #user_defined_project_top_directory_to_target_host="/data/docker/business-service/bs-core-01"
 #user_defined_docker_container_name="bs-core-01"
 user_defined_project_top_directory_to_target_host="/tmp/deploy_test_target"
-user_defined_docker_container_name="" # if you using a docker container other than a startup script located in sourcecode/bin/startup.sh, then set this to docker container name
-user_defined_project_conf_directory="" # if you do NOT want to use configurations from deploy target, you should set this variable to where pointed to config files
+user_defined_docker_container_name="testcontainer" # if you using a docker container other than a startup script located in sourcecode/bin/startup.sh, then set this to docker container name
+user_defined_project_conf_directory="backup" # if you do NOT want to use configurations from deploy target, you should set this variable to where pointed to config files
 user_defined_skip_check_network_and_resolver="true" # if system administrator disable ICMP protocol, set this any content but not null
 # Setting how many days do you want save old releases, default is 10 days
 save_old_releases_for_days=10
@@ -485,6 +486,21 @@ function scp_remote_files_to_local_host(){
     fi
 }
 
+function backup_single_file(){
+    set -o errexit
+    if [ "$#" -ne 1 ]; then
+        return 1
+    fi
+    backup_filename_origin="$1"
+    operation_date_time="`date +"%Y%m%d%H%M%S"`"
+    backup_filename_prefix=".backup_"
+    backup_filename_suffix="_origin_$operation_date_time~"
+    backup_filename_target="$backup_filename_prefix$backup_filename_origin$backup_filename_suffix"
+    test -f $backup_filename_origin && cp $backup_filename_origin $backup_filename_target
+    set +o errexit
+}
+
+
 # Function description: backup files
 # Note: accept $@ parameters
 function backup_files(){
@@ -523,7 +539,12 @@ function backup_directories(){
     if [ $# -ne 1 ]; then
         return 1
     fi
-    return
+    backup_filename_origin="$1"
+    operation_date_time="`date +"%Y%m%d%H%M%S"`"
+    backup_filename_prefix=".backup_"
+    backup_filename_suffix="_origin_$operation_date_time~"
+    backup_filename_target="$backup_filename_prefix$backup_filename_origin$backup_filename_suffix"
+    test -f $backup_filename_origin && cp -r $backup_filename_origin $backup_filename_target
 }
 
 function rollback_directories(){
@@ -534,6 +555,7 @@ function rollback_directories(){
 
 #
 function backup_remote_host_config_files(){
+    # TODO(Guodong Ding) did not throw a exception when first deploy and test -z "$user_defined_project_conf_directory"
     echo_b "backup remote host config files..."
 
     # backup operation only executed once time, using '$0 backup_manual' backup new configuration files.
@@ -569,7 +591,7 @@ function rollback_remote_host_config_files(){
     for file in ${WORKDIR}/backup/*;do
         scp_local_files_to_remote_host ${file} ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
         # override all configuration files to current
-        cp -r $file ${WORKDIR}/current
+        \cp -r ${file} ${WORKDIR}/current
     done
     cd ${WORKDIR}
     IFS=${saved_IFS}
@@ -582,7 +604,7 @@ function rollback_remote_host_config_files(){
 
 function make_current_workable_source(){
     # check a directories lock, Note: this is redundant
-    if [[ ! -f ${WORKDIR}/.lock ]]; then
+    if [[ ! -f ${WORKDIR}/.capistrano_ds_lock ]]; then
         setDirectoryStructureOnLocalHost
     fi
     clean_old_releases
@@ -637,7 +659,7 @@ function deploy() {
     echo_b "Do deploy on $user_defined_deploy_target_host_ip ..."
     # backup remote host config files
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
-#    scp_local_files_to_remote_host ${WORKDIR}/current/ ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
+
     saved_IFS=$IFS
     IFS=' '
     cd ${WORKDIR}/current
@@ -649,7 +671,7 @@ function deploy() {
 
     # rollback remote host config files
     [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
-    if [ ! -z ${user_defined_project_conf_directory} ]; then
+    if test ! -z "${user_defined_project_conf_directory}" -a -d ${user_defined_project_conf_directory} ; then
         saved_IFS=$IFS
         IFS=' '
         cd ${WORKDIR}/current
@@ -667,7 +689,6 @@ function deploy() {
 
     # Start service or validate status on remote host
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
-#        ${WORKDIR}/current/bin/startup.sh start
         ssh_execute_command_on_remote_host $user_defined_deploy_target_host_ip "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
         RETVAL=$?
     else
@@ -682,10 +703,8 @@ function deploy() {
         cat >${WORKDIR}/share/workable_program.log <<eof
 ${new_release_just_created}
 eof
-        echo_g "Deploy successfully! "
-        echo_g "current workable version is $(cat ${WORKDIR}/share/workable_program.log)"
-    #    ls --color=auto -l ${WORKDIR}/current
-    #    ls --color=auto -l ${WORKDIR}/current/
+        echo_g "Deploy successfully for $user_defined_deploy_target_host_ip! "
+        echo_g "Current workable version is $(cat ${WORKDIR}/share/workable_program.log)"
     else
         echo_r "Error: Deploy failed! "
         ${WORKDIR}/`basename $0` rollback
@@ -695,16 +714,14 @@ eof
 # Rollback to last right configuration
 function rollback() {
     echo_b "Rollback to last right configuration... "
-    # The key is find last files which can work
+    # The key point is find last files which can work
     WORKABLE_PROGRAM=`cat ${WORKDIR}/share/workable_program.log`
     if [[ -z ${WORKABLE_PROGRAM} ]]; then
         echo_r "Error: Can NOT find workable release version! Please check if it is first deployment! "
         exit 1
     fi
     # Stop service if we have
-#    test !  -z $user_defined_docker_container_name && docker stop $user_defined_docker_container_name
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
-#        ${WORKDIR}/current/bin/startup.sh stop
         ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh stop"
     fi
 
@@ -733,7 +750,7 @@ function rollback() {
 
     # rollback remote host config files
     [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
-    if [ ! -z ${user_defined_project_conf_directory} ]; then
+    if test ! -z "${user_defined_project_conf_directory}" -a -d ${user_defined_project_conf_directory}; then
         saved_IFS=$IFS
         IFS=' '
         cd ${WORKDIR}/current
@@ -746,7 +763,6 @@ function rollback() {
 
     # Start service or validate status
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
-#        ${WORKDIR}/current/bin/startup.sh restart
         ssh_execute_command_on_remote_host $user_defined_deploy_target_host_ip "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
         RETVAL=$?
     else
@@ -759,18 +775,19 @@ function rollback() {
     if [[ ${RETVAL} -eq 0 ]]; then
         echo_g "Rollback successfully! "
         echo_g "current workable version is $WORKABLE_PROGRAM"
-#        ls --color=auto -l ${WORKDIR}/current
     fi
 }
 
 # rollback to any workable version which user wished by manually
 function rollback_manual(){
     echo_b "This function will rollback to any workable version which user wished by manually."
+    # TODO(Guodong Ding) linux shell trap command several ctrl+c
+    echo_p "Enter 'reset' command to reset terminal when something go wrong."
     read -e -s -n 1 -p "Press any key to continue or Press 'Ctrl+C' exit."
     if test -d $WORKDIR/release -a "$(ls -A $WORKDIR/release 2>/dev/null)" ;then # judge a directory if is empty
-        echo_b "Current workable releases( Top 5 ) are here: "
-#        ls -d -1 $WORKDIR/release/*
-        ls -u -1 -d $WORKDIR/release/* | head -n5
+        echo_b "Current workable releases( Latest 5 ) are here: "
+        # Alternative implementation: ls -u -1 -d $WORKDIR/release/* | tail -n6 | sed -n '1,4p'
+        ls -u -1 -d $WORKDIR/release/* | tail -n6 | head -n4
         read -p "Which release do you want rollback? Press Enter after input. " user_input_release_to_rollback
         if test -d $user_input_release_to_rollback; then
             rm -rf ${WORKDIR}/current
@@ -782,28 +799,29 @@ function rollback_manual(){
             # backup remote host config files
             [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
-            #    scp_local_files_to_remote_host ${WORKDIR}/current/ ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
-            saved_IFS=$IFS
-            IFS=' '
-            cd ${WORKDIR}/current
-            for file in ${WORKDIR}/current/*;do
-                scp_local_files_to_remote_host ${file} ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
-            done
-            cd ${WORKDIR}
-            IFS=${saved_IFS}
+#            # rollback remote host config files
+#            [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
 
-            # rollback remote host config files
-            [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
-            if [ ! -z ${user_defined_project_conf_directory} ]; then
+            if test ! -z "${user_defined_project_conf_directory}" -a -d ${user_defined_project_conf_directory}; then
                 saved_IFS=$IFS
                 IFS=' '
                 cd ${WORKDIR}/current
                 for file in ${user_defined_project_conf_directory}/*;do
-                    scp_local_files_to_remote_host ${file} ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
+                    \cp -rf $file ${WORKDIR}/current
                 done
                 cd ${WORKDIR}
                 IFS=${saved_IFS}
             fi
+
+            saved_IFS=$IFS
+            IFS=' '
+            cd ${WORKDIR}/current
+            for file in ${WORKDIR}/current/*;do
+                # TODO(Guodong Ding) scp timeout
+                scp_local_files_to_remote_host ${file} ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
+            done
+            cd ${WORKDIR}
+            IFS=${saved_IFS}
 
             # Start service or validate status
             if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
@@ -819,7 +837,7 @@ function rollback_manual(){
             # if started ok, then create a workable program to a file
             if [[ ${RETVAL} -eq 0 ]]; then
                 echo_g "Rollback successfully! "
-                echo_g "current workable version is $user_defined_docker_container_name"
+                echo_g "current workable version is $user_input_release_to_rollback"
                 cat >${WORKDIR}/share/workable_program.log <<eof
 ${user_input_release_to_rollback}
 eof
@@ -837,8 +855,9 @@ eof
 # backup remote hosts config files only,
 # use this function when you modify some config files on remote host
 function backup_manual(){
+    set -o errexit
     echo_b "backup remote host config files..."
-    scp_remote_files_to_local_host ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}/* ${WORKDIR}/backup
+    scp_remote_files_to_local_host ${user_defined_deploy_target_host_ip} "${user_defined_project_top_directory_to_target_host}/*" ${WORKDIR}/backup
     # get config files
     [ "$(ls -A ${WORKDIR}/backup)" ] && find ${WORKDIR}/backup/. -type f ! -name . -a ! -name '*.xml*' -a ! -name '*.properties*' -a ! -name '*.version*' -exec rm -f -- '{}' \;
     # remove empty directory, 'for + rmdir'
@@ -846,7 +865,7 @@ function backup_manual(){
     # TODO(Guodong Ding) improvements here
     echo_g "backup remote host config files finished."
     echo "`date +%Y%m%d`" > ${WORKDIR}/backup/.backup_operation_once.log
-
+    set +o errexit
 }
 
 # distribute current workable files to remote hosts
@@ -868,7 +887,7 @@ function deploys() {
 
         # rollback remote host config files
         [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
-        if [ ! -z ${user_defined_project_conf_directory} ]; then
+        if test ! -z "${user_defined_project_conf_directory}" -a -d ${user_defined_project_conf_directory}; then
             saved_IFS=$IFS
             IFS=' '
             cd ${WORKDIR}/current
@@ -916,11 +935,13 @@ eof
 
 function rollbacks(){
     echo_b "This function will rollback to any workable version which user wished by manually."
-    read -e -s -n 1 -p "Press any key to continue or Press 'Ctrl+C' exit."
+    # TODO(Guodong Ding) linux shell trap command several ctrl+c
+    echo_p "Enter 'reset' command to reset terminal when something go wrong."
+    read -e -s -n 1 -p "Press any key to continue or Press 'Ctrl+C' exit. Enter 'reset' command to reset terminal when something go wrong."
     if test -d $WORKDIR/release -a "$(ls -A $WORKDIR/release 2>/dev/null)" ;then # judge a directory if is empty
-        echo_b "Current workable releases( Top 5 ) are here: "
+        echo_b "Current workable releases( Latest 5 ) are here: "
 #        ls -d -1 $WORKDIR/release/*
-        ls -u -1 -d $WORKDIR/release/* | head -n5
+        ls -u -1 -d $WORKDIR/release/* | tail -n5
         read -p "Which release do you want rollback? Press Enter after input. " user_input_release_to_rollback
         if test -d $user_input_release_to_rollback; then
             rm -rf ${WORKDIR}/current
@@ -957,8 +978,8 @@ function rollbacks(){
 
             # if started ok, then create a workable program to a file
             if [[ ${RETVAL} -eq 0 ]]; then
-                echo_g "Rollback successfully! "
-                echo_g "current workable version is $user_defined_docker_container_name"
+                echo_g "Rollback successfully on $user_defined_deploy_targets_host_ip_list! "
+                echo_g "Current workable version is $user_input_release_to_rollback"
                 cat >${WORKDIR}/share/workable_program.log <<eof
 ${user_input_release_to_rollback}
 eof
@@ -1030,6 +1051,13 @@ function main(){
         trap 'rm -f "$lock_filename_full_path"; exit $?' INT TERM EXIT
         [ ! -x ${WORKDIR}/`basename $0` ] && chmod +x ${WORKDIR}/`basename $0`
         [ -n "$header" ] && echo "$header"
+
+        # if exist file '.capistrano_ds_lock', then this is not first deployment, and unset
+        if test -f $WORKDIR/.capistrano_ds_lock; then
+            unset user_defined_project_conf_directory
+            user_defined_project_conf_directory=""
+        fi
+
         if [[ $# -ne 1 ]]; then
             ${WORKDIR}/`basename $0` deploy
             exit 0
@@ -1041,7 +1069,7 @@ function main(){
             rollback)
                 rollback
                 ;;
-            rollback_manual)
+            rollback_manual|rollbackup_manual)
                 rollback_manual
                 ;;
             backup_manual)
@@ -1050,14 +1078,15 @@ function main(){
             deploys)
                 deploys;
                 ;;
-            rollbackups|rollbackups)
+            rollbacks|rollbackups)
                 rollbacks
                 ;;
             destroy)
                 destroy
                 ;;
             help|*)
-                echo "Usage: $0 {deploy|rollback|rollback_manual|deploys|rollbacks|backup_manual|destroy} with $0 itself"
+                echo "Usage: $0 {deploy|rollback_manual|deploys|backup_manual} with $0 itself"
+                usage
                 exit 1
                 ;;
         esac

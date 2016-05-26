@@ -430,7 +430,7 @@ function get_hosts_file_from_backup_site(){
     if ! grep github /etc/hosts >/dev/null; then
         backup_old_hosts_file
     else
-        # TODO
+        # TODO(Guodong Ding)
         # rm: cannot remove ‘/etc/hosts’: Device or resource busy
         # it occurs in docker when mount /etc/hosts to container as a volume
         rm -f /etc/hosts
@@ -481,11 +481,18 @@ function get_hosts_file_from_github(){
         [ -f hosts/hosts ] && \cp -f hosts/hosts /etc/hosts || ( echo_r "can NOT find file \"hosts/hosts\"" && exit 1 )
         echo_g "Replace hosts file succeeded!"
     else
-        # TODO
+        # TODO(Guodong Ding)
         # rm: cannot remove ‘/etc/hosts’: Device or resource busy
         # it occurs in docker when mount /etc/hosts to container as a volume
         rm -f /etc/hosts
         [ -f hosts/hosts ] && \cp -f hosts/hosts /etc/hosts || ( echo_r "can NOT find file \"hosts/hosts\"" && exit 1 )
+
+        # check if able to resolve host `hostname -f`
+        echo "127.0.0.1 `hostname`" >> /etc/hosts
+        echo "127.0.0.1 `hostname -f`" >> /etc/hosts
+        echo "`ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'` `hostname`" >> /etc/hosts
+        echo "`ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'` `hostname -f`" >> /etc/hosts
+
         echo_g "Replace hosts file succeeded!"
     fi
 }
