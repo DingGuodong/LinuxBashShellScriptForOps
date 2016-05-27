@@ -10,6 +10,7 @@
       <w>dpkg</w>
       <w>elif</w>
       <w>fqdn</w>
+      <w>fullstack</w>
       <w>funcname</w>
       <w>histtimeformat</w>
       <w>icmp</w>
@@ -18,13 +19,16 @@
       <w>msmtp</w>
       <w>printf</w>
       <w>readlink</w>
+      <w>redirs</w>
       <w>repos</w>
       <w>slowlaris</w>
       <w>smtp</w>
       <w>subsys</w>
       <w>sudo</w>
       <w>uninstaller</w>
+      <w>vagrantup</w>
       <w>virtuozzo</w>
+      <w>wget</w>
       <w>xtrace</w>
       <w>zabbix</w>
       <w>zypper</w>

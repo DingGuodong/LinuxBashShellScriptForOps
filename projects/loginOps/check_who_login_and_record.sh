@@ -172,6 +172,7 @@ function get_current_login_users_ipaddress(){
 }
 
 function get_current_login_users_ipaddress_and_times(){
+    # AI: who -q # show all login names and number of users logged on
     echo -e "\t- Total count of users is: $(w -h | wc -l)"
     command_exists w && w -h | awk '/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/ {a[$3]++}END{for (i in a) print "\t- Still logged in IP address : "i", count is: "a[i]}'
 }

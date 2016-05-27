@@ -420,6 +420,8 @@ function ssh_config(){
     if grep "^#UseDNS" /etc/ssh/sshd_config >/dev/null 2>&1 && ! grep "UseDNS no" /etc/ssh/sshd_config >/dev/null 2>&1; then
         cp /etc/ssh/sshd_config /etc/ssh/sshd_config_origin_$(date +%Y%m%d%H%M%S)~
         sed -i "s/^#UseDNS.*.$/UseDNS no/g" /etc/ssh/sshd_config
+        #
+        sed -i 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/' /etc/ssh/sshd_config
         service sshd restart
     fi
 
