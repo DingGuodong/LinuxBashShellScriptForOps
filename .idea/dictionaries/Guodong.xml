@@ -16,11 +16,13 @@
       <w>icmp</w>
       <w>ipcalc</w>
       <w>lineno</w>
+      <w>logrotate</w>
       <w>msmtp</w>
       <w>printf</w>
       <w>readlink</w>
       <w>redirs</w>
       <w>repos</w>
+      <w>rsyslog</w>
       <w>slowlaris</w>
       <w>smtp</w>
       <w>subsys</w>

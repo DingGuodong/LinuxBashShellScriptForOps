@@ -1,6 +1,6 @@
 # How to kill a process?
-some useful commands as follows:
-````
+**some useful commands as follows:**
+```
 man 7 signal
 kill -TERM $pid # SIGTERM 15
 kill -KILL $pid # SIGKILL 9

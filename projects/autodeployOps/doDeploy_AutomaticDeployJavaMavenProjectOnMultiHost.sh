@@ -26,7 +26,7 @@ License: Open source software
 user_defined_project_clone_depends="ssh://git@git.huntor.cn:18082/core/business-service-base.git"
 user_defined_project_clone="ssh://git@git.huntor.cn:18082/core/business-service-core.git"
 # TODO(Guodong Ding) do deploy once time with multi-hosts support, try using 'for + deploy'
-user_defined_deploy_target_host_ip="10.6.28.135" #
+user_defined_deploy_target_host_ip="10.6.28.135" # this is a mandatory field, and must be same as the first ip in $user_defined_deploy_targets_host_ip_list
 user_defined_deploy_targets_host_ip_list="10.6.28.135 10.6.28.28"
 #user_defined_project_top_directory_to_target_host="/data/docker/business-service/bs-core-01"
 #user_defined_docker_container_name="bs-core-01"
@@ -42,6 +42,7 @@ save_old_releases_for_days=10
 test -z ${user_defined_project_clone_depends} || project_clone_target_depends_1="`echo ${user_defined_project_clone_depends} | awk -F '[/.]+' '{ print $(NF-1)}'`"
 project_clone_target="`echo ${user_defined_project_clone} | awk -F '[/.]+' '{ print $(NF-1)}'`"
 project_clone_repository_name=${project_clone_target}
+deployment_mode=""
 # end pretreatment
 
 # Public header
@@ -212,7 +213,7 @@ function check_other_dependencies() {
     # Note: test command is strongly typed, can recognize string type and integer type
     if test ! -z "$user_defined_deploy_target_host_ip" -a ! -z "$user_defined_deploy_targets_host_ip_list" ; then
         user_defined_deploy_targets_host_first_ip_in_list="`echo "$user_defined_deploy_targets_host_ip_list" | awk -F ' ' '{ print $1 }'`"
-        if test "$user_defined_deploy_target_host_ip" = "$user_defined_deploy_targets_host_first_ip_in_list"; then
+        if test "$user_defined_deploy_target_host_ip" = "$user_defined_deploy_targets_host_first_ip_in_list" -a "$deployment_mode" = "0" ; then
             echo_g "Run this shell script in multi-deployment mode, deploy to a group of hosts."
             saved_IFS=$IFS
             IFS=' '
@@ -224,7 +225,7 @@ function check_other_dependencies() {
             echo_r "$user_defined_deploy_targets_host_ip_list is not equal to $user_defined_deploy_target_host_ip, this is a must! "
             exit 1
         fi
-    elif test ! -z "$user_defined_deploy_target_host_ip" -a -z "$user_defined_deploy_targets_host_ip_list" ;then
+    elif test ! -z "$user_defined_deploy_target_host_ip" -a -z "$user_defined_deploy_targets_host_ip_list" -a "$deployment_mode" = "1" ;then
         echo_g "Run this shell script in standalone-deployment mode, deploy to single host."
     elif test -z "$user_defined_deploy_target_host_ip" -a -z "$user_defined_deploy_targets_host_ip_list" ;then
         echo_r "Error: both user_defined_deploy_target_host_ip and user_defined_deploy_targets_host_ip_list is undefined! "
@@ -511,7 +512,7 @@ function backup_files(){
     fi
     file_list=$@
     operation_date_time="_`date +"%Y%m%d%H%M%S"`"
-    log_filename=".log_$$_$RANDOM"
+    log_filename=".log_$$_${RANDOM}"
     log_filename_full_path=/tmp/$log_filename
     touch $log_filename_full_path
     old_IFS=$IFS
@@ -1044,7 +1045,7 @@ eof
 }
 
 function main(){
-    lock_filename="lock_$$_$RANDOM"
+    lock_filename="lock_$$_${RANDOM}"
 #    lock_filename_full_path="/var/lock/subsys/$lock_filename"
     lock_filename_full_path="/var/lock/$lock_filename"
     if ( set -o noclobber; echo "$$" > "$lock_filename_full_path") 2> /dev/null;then
@@ -1059,11 +1060,12 @@ function main(){
         fi
 
         if [[ $# -ne 1 ]]; then
-            ${WORKDIR}/`basename $0` deploy
+            ${WORKDIR}/`basename $0` help
             exit 0
         fi
         case $1 in
             deploy)
+                deployment_mode="1"
                 deploy
                 ;;
             rollback)
@@ -1076,6 +1078,7 @@ function main(){
                 backup_manual
                 ;;
             deploys)
+                deployment_mode="0"
                 deploys;
                 ;;
             rollbacks|rollbackups)
