@@ -1,11 +1,23 @@
 #!/bin/bash
-
+# Function description:
 #GoogleHostsFileForLinux
 #Google Hosts File For Linux, a Linux shell script make you access Google easily! Run it directly and enjoy Google services.
-
+#
+# Usage:
+# bash replaceLocalHostsFileAgainstGfw.sh
+#
+# Birth Time:
+# 2016-04-22 10:04:43.895515929 +0800
+#
+# Author:
+# Open Source Software written by 'Guodong Ding <dgdenterprise@gmail.com>'
+# Blog: http://dgd2010.blog.51cto.com/
+# Github: https://github.com/DingGuodong
+#
 # Public header
 # =============================================================================================================================
 # resolve links - $0 may be a symbolic link
+# learn from apache-tomcat-6.x.xx/bin/catalina.sh
 PRG="$0"
 
 while [ -h "$PRG" ]; do
@@ -21,75 +33,48 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-
-# echo color function
-function cecho {
-    # Usage:
-    # cecho -red sometext     #Error, Failed
-    # cecho -green sometext   # Success
-    # cecho -yellow sometext  # Warning
-    # cecho -blue sometext    # Debug
-    # cecho -white sometext   # info
-    # cecho -n                # new line
-    # end
-
-    while [ "$1" ]; do
-        case "$1" in
-            -normal)        color="\033[00m" ;;
-# -black)         color="\033[30;01m" ;;
--red)           color="\033[31;01m" ;;
--green)         color="\033[32;01m" ;;
--yellow)        color="\033[33;01m" ;;
--blue)          color="\033[34;01m" ;;
-# -magenta)       color="\033[35;01m" ;;
-# -cyan)          color="\033[36;01m" ;;
--white)         color="\033[37;01m" ;;
--n)             one_line=1;   shift ; continue ;;
-*)              echo -n "$1"; shift ; continue ;;
-esac
-
-shift
-echo -en "$color"
-echo -en "$1"
-echo -en "\033[00m"
-shift
-
-done
-if [ ! $one_line ]; then
-        echo
-fi
-}
-# end echo color function
-
-# echo color function, smarter
-function echo_r () {
-    #Error, Failed
-    [ $# -ne 1 ] && return 0
+# echo color function, smarter, learn from lnmp.org lnmp install.sh
+function echo_r (){
+    # Color red: Error, Failed
+    [ $# -ne 1 ] && return 1
     echo -e "\033[31m$1\033[0m"
 }
-function echo_g () {
-    # Success
-    [ $# -ne 1 ] && return 0
+function echo_g (){
+    # Color green: Success
+    [ $# -ne 1 ] && return 1
     echo -e "\033[32m$1\033[0m"
 }
-function echo_y () {
-    # Warning
-    [ $# -ne 1 ] && return 0
+function echo_y (){
+    # Color yellow: Warning
+    [ $# -ne 1 ] && return 1
     echo -e "\033[33m$1\033[0m"
 }
-function echo_b () {\
-    # Debug
-    [ $# -ne 1 ] && return 0
+function echo_b (){
+    # Color blue: Debug Level 1
+    [ $# -ne 1 ] && return 1
     echo -e "\033[34m$1\033[0m"
 }
+
+function echo_p (){
+    # Color purple: Debug Level 2
+    [ $# -ne 1 ] && return 1
+    echo -e "\033[35m$1\033[0m"
+}
+
+function echo_c (){
+    # Color cyan: friendly prompt, Level 1
+    [ $# -ne 1 ] && return 1
+    echo -e "\033[36m$1\033[0m"
+}
+
 # end echo color function, smarter
 
-WORKDIR=$PRGDIR
+WORKDIR="$PRGDIR"
 # end public header
 # =============================================================================================================================
 
 USER="`id -un`"
-LOGNAME=$USER
+LOGNAME="$USER"
 if [ $UID -ne 0 ]; then
     echo "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options"
 fi
@@ -108,15 +93,15 @@ Github: https://github.com/DingGuodong
 Last updated: 2016-4-19
 "
 
-check_network_connectivity(){
+function check_network_connectivity(){
     echo_b "checking network connectivity ... "
     network_address_to_check=8.8.4.4
     stable_network_address_to_check=114.114.114.114
     ping_count=2
-    ping -c $ping_count $network_address_to_check >/dev/null
+    ping -c ${ping_count} ${network_address_to_check} >/dev/null
     retval=$?
-    if [ $retval -ne 0 ] ; then
-        if ping -c $ping_count $stable_network_address_to_check >/dev/null;then
+    if [ ${retval} -ne 0 ] ; then
+        if ping -c ${ping_count} ${stable_network_address_to_check} >/dev/null;then
             echo_g "Network to $stable_network_address_to_check succeed! "
             echo_y "Note: network to $network_address_to_check failed once! maybe just some packages loss."
         elif ! ip route | grep default >/dev/null; then
@@ -129,33 +114,40 @@ check_network_connectivity(){
             echo_r "Network is blocked! "
             exit 1
         fi
-    elif [ $retval -eq 0 ]; then
+    elif [ ${retval} -eq 0 ]; then
         echo_g "Check network connectivity passed! "
+        echo
     fi
 }
 
-check_name_resolve(){
+function check_name_resolve(){
     echo_b "checking DNS name resolve ... "
     target_name_to_resolve="github.com"
     stable_target_name_to_resolve="www.aliyun.com"
     ping_count=1
-    if ! ping  -c$ping_count $target_name_to_resolve >/dev/null; then
+    if ! ping  -c${ping_count} ${target_name_to_resolve} >/dev/null; then
         echo_y "Name lookup failed for $target_name_to_resolve with $ping_count times "
-        if ping  -c$ping_count $stable_target_name_to_resolve >/dev/null; then
+        if ping  -c${ping_count} ${stable_target_name_to_resolve} >/dev/null; then
             echo_g "Name lookup success for $stable_target_name_to_resolve with $ping_count times "
+        fi
+        eval_md5sum_of_nameserver_config="`md5sum /etc/resolv.conf | awk '{ print $1 }'`"
+        if test ${eval_md5sum_of_nameserver_config} = "674ea91675cdfac353bffbf49dc593c3"; then
+            echo_y "Nameserver config file is validated, but name lookup failed for $target_name_to_resolve with $ping_count times"
+            return 0
         fi
         [ -f /etc/resolv.conf ] && cp /etc/resolv.conf /etc/resolv.conf_$(date +%Y%m%d%H%M%S)~
         cat >/etc/resolv.conf<<eof
-nameserver 8.8.4.4
 nameserver 114.114.114.114
+nameserver 8.8.4.4
 eof
     check_name_resolve
     else
         echo_g "Check DNS name resolve passed! "
-        return
+        echo
+        return 0
     fi
-
 }
+
 
 command_exists() {
     # which "$@" >/dev/null 2>&1
@@ -170,7 +162,7 @@ yum_install_packages(){
     echo_b "yum install $@ ..."
     yum -q -yy install $@
     retval=$?
-    if [ $retval -ne 0 ] ; then
+    if [ ${retval} -ne 0 ] ; then
         echo_r "yum install $@ failed! "
         exit 1
     else
@@ -182,7 +174,7 @@ apt_get_install_packages(){
     echo_b "apt-get install $@ ..."
     apt-get -qq -y install $@
     retval=$?
-    if [ $retval -ne 0 ] ; then
+    if [ ${retval} -ne 0 ] ; then
         echo_r "apt-get install $@ failed! "
         exit 1
     else
@@ -208,18 +200,20 @@ check_linux_distribution_forked() {
 
         # Check if the command has exited successfully, it means we're in a forked distro
         if [ "$lsb_release_exit_code" = "0" ]; then
-            # Print info about current distro
-            cat <<-EOF
-            You're using '$lsb_dist' version '$dist_version'.
-EOF
 
+            # Print info about current distro
             # Get the upstream release info
             lsb_dist=$(lsb_release -a -u 2>&1 | tr '[:upper:]' '[:lower:]' | grep -E 'id' | cut -d ':' -f 2 | tr -d '[[:space:]]')
             dist_version=$(lsb_release -a -u 2>&1 | tr '[:upper:]' '[:lower:]' | grep -E 'codename' | cut -d ':' -f 2 | tr -d '[[:space:]]')
 
+            cat <<-EOF
+            You're using '${lsb_dist}' version '${dist_version}'.
+EOF
+
+
             # Print info about upstream distro
             cat <<-EOF
-            Upstream release is '$lsb_dist' version '$dist_version'.
+            Upstream release is '${lsb_dist}' version '${dist_version}'.
 EOF
         else
             if [ -r /etc/debian_version ] && [ "$lsb_dist" != "ubuntu" ]; then
@@ -247,8 +241,9 @@ check_linux_distribution(){
     if command_exists lsb_release; then
         lsb_dist="$(lsb_release -si)"
     fi
+    DISTRIB_ID=""
     if [ -z "$lsb_dist" ] && [ -r /etc/lsb-release ]; then
-            lsb_dist="$(. /etc/lsb-release && echo "$DISTRIB_ID")"
+            lsb_dist="$(test -f /etc/lsb-release && . /etc/lsb-release && echo "$DISTRIB_ID")"
     fi
     if [ -z "$lsb_dist" ] && [ -r /etc/debian_version ]; then
         lsb_dist='debian'
@@ -264,6 +259,7 @@ check_linux_distribution(){
             lsb_dist='centos'
         fi
     fi
+    ID=""
     if [ -z "$lsb_dist" ] && [ -r /etc/os-release ]; then
         lsb_dist="$(. /etc/os-release && echo "$ID")"
     fi
@@ -275,6 +271,7 @@ check_linux_distribution(){
             if command_exists lsb_release; then
                 dist_version="$(lsb_release --codename | cut -f2)"
             fi
+            DISTRIB_CODENAME=""
             if [ -z "$dist_version" ] && [ -r /etc/lsb-release ]; then
                 dist_version="$(. /etc/lsb-release && echo "$DISTRIB_CODENAME")"
             fi
@@ -306,6 +303,7 @@ check_linux_distribution(){
             if command_exists lsb_release; then
                 dist_version="$(lsb_release --codename | cut -f2)"
             fi
+            VERSION_ID=""
             if [ -z "$dist_version" ] && [ -r /etc/os-release ]; then
                 dist_version="$(. /etc/os-release && echo "$VERSION_ID")"
             fi
@@ -402,12 +400,11 @@ function restorecon_if_selinux_is_enabled(){
     [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon -r $@
 }
 
-ops_time=
 function backup_old_hosts_file(){
     echo_b "backup old hosts file ... "
     ops_time="$(date +%Y%m%d%H%M%S)~"
-    [ -f /etc/hosts ] && cp /etc/hosts /etc/hosts_$ops_time
-    [ -f /etc/hosts_$ops_time ] && echo_g "backup old hosts file successfully! file is\"/etc/hosts_$ops_time\" "
+    [ -f /etc/hosts ] && cp /etc/hosts /etc/hosts_${ops_time}
+    [ -f /etc/hosts_${ops_time} ] && echo_g "backup old hosts file successfully! file is\"/etc/hosts_$ops_time\" "
 }
 
 function roll_back_to_old_hosts_file(){
@@ -416,10 +413,10 @@ function roll_back_to_old_hosts_file(){
         echo_y "Can NOT find backup files, try to find a oldest backup manually! \
 But do NOT worry, it usually because you have backup it last time"
         oldest_backup_file="`find /etc -name hosts*~ ! -type d -printf "%T@ %p\n" | sort -n | head -n1 | awk '{print $NF}'`"
-        [ -f oldest_backup_file ] && \mv -f $oldest_backup_file /etc/hosts
+        [ -f oldest_backup_file ] && \mv -f ${oldest_backup_file} /etc/hosts
         [ -s /etc/hosts ] && echo_g "Rolling back to old hosts file successfully! "
     else
-        \mv -f /etc/hosts_$ops_time /etc/hosts
+        \mv -f /etc/hosts_${ops_time} /etc/hosts
         restorecon_if_selinux_is_enabled /etc/hosts
         [ -s /etc/hosts ] && echo_g "Rolling back to old hosts file successfully! "
     fi
@@ -445,12 +442,13 @@ function get_hosts_file_from_backup_site(){
     fi
 }
 
+# AI: wget https://raw.githubusercontent.com/racaljk/hosts/master/hosts -qO /tmp/hosts && sudo sh -c 'cat /tmp/hosts > /etc/hosts'
 function get_hosts_file_from_github(){
     echo_b "getting hosts file from GitHub ... "
     if [ ! -d hosts ]; then
         command_exists git && git clone https://github.com/racaljk/hosts.git >/dev/null 2>&1
         retval=$?
-        if [ $retval -ne 0 ] ; then
+        if [ ${retval} -ne 0 ] ; then
             echo_r "git clone failed! "
             get_hosts_file_from_backup_site
             return
@@ -463,7 +461,7 @@ function get_hosts_file_from_github(){
         command_exists git && git pull >/dev/null 2>&1
 #        test 1 -eq 2 # debug
         retval=$?
-        if [ $retval -ne 0 ] ; then
+        if [ ${retval} -ne 0 ] ; then
             echo_r "git pull failed! "
             get_hosts_file_from_backup_site
             return
@@ -501,17 +499,17 @@ function validate_network_to_outside(){
     echo_b "validating hosts file ... "
     for (( i=1 ; i<=3 ; i++ )) do
         http_code=$(curl -o /dev/null -m 10 --connect-timeout 10 -s -w "%{http_code}" https://www.google.com.hk/)
-        RETVAL=$?
-        if test "$http_code" = "200" -o $http_code -eq 200 ; then
-            echo_g "Now you can access Google, etc easily! "
+        retval=$?
+        if test "$http_code" = "200" -o ${http_code} -eq 200 ; then
+            echo_g "Now you can access Google via HTTPS not HTTP protocol, etc easily! "
             break
         else
             echo "Process returned with HTTP code is: $http_code"
             echo_y "replace hosts file failed! Try again, times $i"
         fi
     done
-    if [[ $RETVAL -ne 0 ]]; then
-        echo "Process returned with exit RETURN code: $RETVAL"
+    if [[ ${retval} -ne 0 ]]; then
+        echo "Process returned with exit RETURN code: $retval"
         echo_r "Google can NOT be reached! Please let we know via email to \"dgdenterprise@gmail.com"\"
         exit 1
     fi
@@ -544,7 +542,7 @@ eof
 # main function
 # Run setup for each distro accordingly, install git here.
 cat -<<eof
-$header
+${header}
 eof
 check_network_connectivity
 validate_etc_host_conf
