@@ -2,18 +2,18 @@
 # Function description:
 #GoogleHostsFileForLinux
 #Google Hosts File For Linux, a Linux shell script make you access Google easily! Run it directly and enjoy Google services.
-#
+
 # Usage:
 # bash replaceLocalHostsFileAgainstGfw.sh
-#
+
 # Birth Time:
 # 2016-04-22 10:04:43.895515929 +0800
-#
+
 # Author:
 # Open Source Software written by 'Guodong Ding <dgdenterprise@gmail.com>'
 # Blog: http://dgd2010.blog.51cto.com/
 # Github: https://github.com/DingGuodong
-#
+
 # Public header
 # =============================================================================================================================
 # resolve links - $0 may be a symbolic link
