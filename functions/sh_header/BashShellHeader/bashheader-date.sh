@@ -6,5 +6,5 @@ sleep 2
 
 etime=$(date +%s)
 shetime=$(date +%H:%M:%S:%N)
-shptime=$(expr $etime  - $stime)
-echo $shptime
+shptime=$(expr ${etime} - ${stime})
+echo ${shptime}

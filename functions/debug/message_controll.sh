@@ -10,7 +10,7 @@ function backtrace {
     local deep
     deep=$((${#BASH_SOURCE[@]} - 1))
     echo "[Call Trace]"
-    while [ $level -le $deep ]; do
+    while [ ${level} -le ${deep} ]; do
         echo "${BASH_SOURCE[$deep]}:${BASH_LINENO[$deep-1]}:${FUNCNAME[$deep-1]}"
         deep=$((deep - 1))
     done
@@ -22,14 +22,14 @@ function die {
     local exitcode=$?
     set +o xtrace
     local line=$1; shift
-    if [ $exitcode == 0 ]; then
+    if [ ${exitcode} == 0 ]; then
         exitcode=1
     fi
     backtrace 2
-    err $line "$*"
+    err ${line} "$*"
     # Give buffers a second to flush
     sleep 1
-    exit $exitcode
+    exit ${exitcode}
 }
 
 # Checks an environment variable is not set or has length 0 OR if the
@@ -43,10 +43,10 @@ function die_if_not_set {
     set +o xtrace
     local line=$1; shift
     local evar=$1; shift
-    if ! is_set $evar || [ $exitcode != 0 ]; then
-        die $line "$*"
+    if ! is_set ${evar} || [ ${exitcode} != 0 ]; then
+        die ${line} "$*"
     fi
-    $xtrace
+    ${xtrace}
 }
 
 function deprecated {
@@ -63,12 +63,12 @@ function err {
     xtrace=$(set +o | grep xtrace)
     set +o xtrace
     local msg="[ERROR] ${BASH_SOURCE[2]}:$1 $2"
-    echo $msg 1>&2;
+    echo ${msg} 1>&2;
     if [[ -n ${LOGDIR} ]]; then
-        echo $msg >> "${LOGDIR}/error.log"
+        echo "$msg" >> "${LOGDIR}/error.log"
     fi
-    $xtrace
-    return $exitcode
+    ${xtrace}
+    return ${exitcode}
 }
 
 # Checks an environment variable is not set or has length 0 OR if the
@@ -82,18 +82,18 @@ function err_if_not_set {
     set +o xtrace
     local line=$1; shift
     local evar=$1; shift
-    if ! is_set $evar || [ $exitcode != 0 ]; then
-        err $line "$*"
+    if ! is_set ${evar} || [ ${exitcode} != 0 ]; then
+        err ${line} "$*"
     fi
-    $xtrace
-    return $exitcode
+    ${xtrace}
+    return ${exitcode}
 }
 
 # Test if the named environment variable is set and not zero length
 # is_set env-var
 function is_set {
     local var=\$"$1"
-    eval "[ -n \"$var\" ]" # For ex.: sh -c "[ -n \"$var\" ]" would be better, but several exercises depends on this
+    eval "[ -n \"${var}\" ]" # For ex.: sh -c "[ -n \"$var\" ]" would be better, but several exercises depends on this
 }
 
 # Prints line number and "message" in warning format
@@ -104,7 +104,7 @@ function warn {
     xtrace=$(set +o | grep xtrace)
     set +o xtrace
     local msg="[WARNING] ${BASH_SOURCE[2]}:$1 $2"
-    echo $msg
-    $xtrace
-    return $exitcode
+    echo ${msg}
+    ${xtrace}
+    return ${exitcode}
 }

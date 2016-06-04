@@ -15,9 +15,11 @@
       <w>histtimeformat</w>
       <w>icmp</w>
       <w>ipcalc</w>
+      <w>jsonlint</w>
       <w>lineno</w>
       <w>logrotate</w>
       <w>msmtp</w>
+      <w>nmap</w>
       <w>printf</w>
       <w>readlink</w>
       <w>redirs</w>
@@ -25,6 +27,7 @@
       <w>rsyslog</w>
       <w>slowlaris</w>
       <w>smtp</w>
+      <w>strace</w>
       <w>subsys</w>
       <w>sudo</w>
       <w>uninstaller</w>
