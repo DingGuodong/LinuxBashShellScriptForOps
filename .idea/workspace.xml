@@ -2,41 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="add new files">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bashsyntax/isInteractive.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/date/date.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/ReadMe.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/commandHistory.log" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/curlHttpHealthCheck.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/dnsHttpHealthCheck.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/dnsOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/filename" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/ipOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/key-value-config-example.conf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/key-value-parser.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/learningSelf.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/processOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/pythonCurlOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/pythonHttpOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/pythonRedisOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/pythonSmtpOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/smtpOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/stringDiffOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/urlOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/webspider.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/BashEnhancementProposals/CollectedThenSelected.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Guodong.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Guodong.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/process/processOps.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bashsyntax/syntax_for.sh" afterPath="$PROJECT_DIR$/bashsyntax/syntax_for.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/check_if_exists/check_if_command_exists.sh" afterPath="$PROJECT_DIR$/functions/check_if_exists/check_if_command_exists.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/debug/message_controll.sh" afterPath="$PROJECT_DIR$/functions/debug/message_controll.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/debug/print_line_number.sh" afterPath="$PROJECT_DIR$/functions/debug/print_line_number.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/file/compareFileSize.sh" afterPath="$PROJECT_DIR$/functions/file/compareFileSize.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-date.sh" afterPath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-date.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy.sh" afterPath="$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/emailOps/alertscripts_msmtp.sh" afterPath="$PROJECT_DIR$/projects/emailOps/alertscripts_msmtp.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/fileOps/GoogleHostsFileForLinux/replaceLocalHostsFileAgainstGfw.sh" afterPath="$PROJECT_DIR$/projects/fileOps/GoogleHostsFileForLinux/replaceLocalHostsFileAgainstGfw.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" afterPath="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,11 +35,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="checkRemoteHostPortStatus.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="processOps.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/functions/process/processOps.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="checkRemoteHostPortStatus.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.3755981">
-              <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding>
                 <element signature="e#59#72#0" expanded="true" />
               </folding>
@@ -79,22 +57,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sys.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-762174762/sys.py">
+      <file leaf-file-name="alterscript_msmtp.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="388" column="0" selection-start-line="388" selection-start-column="0" selection-end-line="388" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="nt.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-762174762/nt.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="394" column="4" selection-start-line="394" selection-start-column="4" selection-end-line="394" selection-end-column="4" />
-              <folding />
+            <state vertical-scroll-proportion="0.13986014">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -119,7 +89,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-resolvesoftlink2.sh" />
         <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-echowithcolor-C.sh" />
         <option value="$PROJECT_DIR$/functions/date/dateFormat.sh" />
         <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy-java-maven.sh" />
@@ -160,7 +129,6 @@
         <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-date.sh" />
         <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy.sh" />
         <option value="$PROJECT_DIR$/projects/emailOps/alertscripts_msmtp.sh" />
-        <option value="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" />
         <option value="$PROJECT_DIR$/functions/net/tcp/http/webspider.py" />
         <option value="$PROJECT_DIR$/functions/net/tcp/http/urlOps.py" />
         <option value="$PROJECT_DIR$/functions/net/tcp/http/ipOps.py" />
@@ -170,6 +138,8 @@
         <option value="$PROJECT_DIR$/references/docker/zabbix/run.sh" />
         <option value="$PROJECT_DIR$/references/docker/zabbix/mariadb-functions.sh" />
         <option value="$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py" />
+        <option value="$PROJECT_DIR$/functions/process/processOps.py" />
+        <option value="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" />
       </list>
     </option>
   </component>
@@ -179,10 +149,10 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
+    <option name="x" value="1358" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="1456" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -246,7 +216,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -376,6 +345,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="process" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="functions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="net" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -462,6 +449,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1019,7 +1007,13 @@
       <option name="project" value="LOCAL" />
       <updated>1464674814542</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="add new files">
+      <created>1465026280525</created>
+      <option name="number" value="00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1465026280525</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1032,30 +1026,30 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="1358" y="-8" width="1456" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2901146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32839838" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38896367" sideWeight="0.5028653" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3872549" sideWeight="0.49713466" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38709676" sideWeight="0.49713466" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243607" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3252688" sideWeight="0.49394855" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26960784" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32026145" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30181542" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28438395" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32026145" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39919356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2700491" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32166892" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39919356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1080,13 +1074,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/functions/file_lock/remove_lock_when_be_killed.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/net/ip/getIPAddress.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1314,13 +1301,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/date/dateFormat.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1381,7 +1361,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="9" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1389,7 +1368,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="123" column="1" selection-start-line="123" selection-start-column="1" selection-end-line="123" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1397,9 +1375,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="36" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
-          <folding>
-            <element signature="e#24#33#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1407,7 +1382,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1423,32 +1397,48 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.5287081">
           <caret line="406" column="8" selection-start-line="406" selection-start-column="8" selection-end-line="406" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-762174762/sys.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2326139">
+          <caret line="388" column="0" selection-start-line="388" selection-start-column="0" selection-end-line="388" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-762174762/nt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="394" column="4" selection-start-line="394" selection-start-column="4" selection-end-line="394" selection-end-column="4" />
-          <folding />
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="394" column="63" selection-start-line="394" selection-start-column="63" selection-end-line="394" selection-end-column="63" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-762174762/sys.py">
+    <entry file="file://$PROJECT_DIR$/functions/process/processOps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="388" column="0" selection-start-line="388" selection-start-column="0" selection-end-line="388" selection-end-column="0" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3755981">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding>
             <element signature="e#59#72#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13986014">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
