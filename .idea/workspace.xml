@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="add new files">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/process/processOps.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp_public.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/process/processOps.py" afterPath="$PROJECT_DIR$/functions/process/processOps.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" afterPath="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
@@ -18,9 +19,10 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$alterscript_msmtp.coverage" NAME="alterscript_msmtp Coverage Results" MODIFIED="1464745782013" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/emailOps" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$date.coverage" NAME="date Coverage Results" MODIFIED="1464839085633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/date" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$alterscript_msmtp.coverage" NAME="alterscript_msmtp Coverage Results" MODIFIED="1465202419365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/emailOps" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$urlOps.coverage" NAME="urlOps Coverage Results" MODIFIED="1464836949636" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$processOps.coverage" NAME="processOps Coverage Results" MODIFIED="1465205182843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/process" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$dnsOps.coverage" NAME="dnsOps Coverage Results" MODIFIED="1464847535231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$checkRemoteHostPortStatus.coverage" NAME="checkRemoteHostPortStatus Coverage Results" MODIFIED="1465022864812" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/port" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$ipOps.coverage" NAME="ipOps Coverage Results" MODIFIED="1464838707876" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http" />
@@ -39,31 +41,41 @@
         <entry file="file://$PROJECT_DIR$/functions/process/processOps.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="checkRemoteHostPortStatus.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py">
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Python27/Lib/site-packages/psutil/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+              <caret line="1700" column="4" selection-start-line="1700" selection-start-column="4" selection-end-line="1700" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="alterscript_msmtp.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="38" selection-start-line="0" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding>
-                <element signature="e#59#72#0" expanded="true" />
+                <element signature="e#59#73#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="alterscript_msmtp.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py">
+      <file leaf-file-name="alterscript_msmtp_public.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projects/emailOps/alterscript_msmtp_public.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.13986014">
-              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.37062937">
+              <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding>
-                <element signature="e#0#14#0" expanded="true" />
+                <element signature="e#59#73#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -89,7 +101,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/bashheader-echowithcolor-C.sh" />
         <option value="$PROJECT_DIR$/functions/date/dateFormat.sh" />
         <option value="$PROJECT_DIR$/functions/sh_header/BashShellHeader/example-deploy-java-maven.sh" />
         <option value="$PROJECT_DIR$/projects/others/startDockerContainersFirstTime.sh" />
@@ -138,8 +149,9 @@
         <option value="$PROJECT_DIR$/references/docker/zabbix/run.sh" />
         <option value="$PROJECT_DIR$/references/docker/zabbix/mariadb-functions.sh" />
         <option value="$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py" />
-        <option value="$PROJECT_DIR$/functions/process/processOps.py" />
         <option value="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" />
+        <option value="$PROJECT_DIR$/functions/process/processOps.py" />
+        <option value="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp_public.py" />
       </list>
     </option>
   </component>
@@ -216,7 +228,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -260,28 +271,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="references" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinuxBashShellScriptForOps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinuxBashShellScriptForOps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="references" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="docker" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zabbix" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -414,6 +403,10 @@
               <option name="myItemId" value="net" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ip" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -449,6 +442,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -476,7 +470,7 @@
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\fileOps\GoogleHostsFileForLinux" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.checkRemoteHostPortStatus">
+  <component name="RunManager" selected="Python.processOps">
     <configuration default="false" name="date" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -491,42 +485,6 @@
       <module name="LinuxBashShellScriptForOps" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/date/date.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="urlOps" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functions/net/tcp/http" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="LinuxBashShellScriptForOps" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/net/tcp/http/urlOps.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ipOps" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functions/net/tcp/http" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="LinuxBashShellScriptForOps" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/net/tcp/http/ipOps.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -563,6 +521,42 @@
       <module name="LinuxBashShellScriptForOps" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="alterscript_msmtp" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/emailOps" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LinuxBashShellScriptForOps" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="processOps" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functions/process" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LinuxBashShellScriptForOps" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/process/processOps.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -773,18 +767,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.date" />
-      <item index="1" class="java.lang.String" itemvalue="Python.urlOps" />
-      <item index="2" class="java.lang.String" itemvalue="Python.ipOps" />
-      <item index="3" class="java.lang.String" itemvalue="Python.dnsOps" />
-      <item index="4" class="java.lang.String" itemvalue="Python.checkRemoteHostPortStatus" />
+      <item index="1" class="java.lang.String" itemvalue="Python.dnsOps" />
+      <item index="2" class="java.lang.String" itemvalue="Python.checkRemoteHostPortStatus" />
+      <item index="3" class="java.lang.String" itemvalue="Python.alterscript_msmtp" />
+      <item index="4" class="java.lang.String" itemvalue="Python.processOps" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.checkRemoteHostPortStatus" />
-        <item index="1" class="java.lang.String" itemvalue="Python.dnsOps" />
-        <item index="2" class="java.lang.String" itemvalue="Python.date" />
-        <item index="3" class="java.lang.String" itemvalue="Python.ipOps" />
-        <item index="4" class="java.lang.String" itemvalue="Python.urlOps" />
+        <item index="0" class="java.lang.String" itemvalue="Python.processOps" />
+        <item index="1" class="java.lang.String" itemvalue="Python.alterscript_msmtp" />
+        <item index="2" class="java.lang.String" itemvalue="Python.checkRemoteHostPortStatus" />
+        <item index="3" class="java.lang.String" itemvalue="Python.dnsOps" />
+        <item index="4" class="java.lang.String" itemvalue="Python.date" />
       </list>
     </recent_temporary>
   </component>
@@ -1013,7 +1007,13 @@
       <option name="project" value="LOCAL" />
       <updated>1465026280525</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="add new files">
+      <created>1465182982904</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1465182982904</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1030,7 +1030,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2901146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2944126" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32839838" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38896367" sideWeight="0.5028653" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1045,7 +1045,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2700491" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26917902" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32166892" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1074,27 +1074,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/functions/net/ip/getIPAddress.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="40" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/ip/validate_ip_address.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/path/get_absolutely_path_of_file.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/path/system_path_setting.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1280,13 +1259,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/emailOps/alertscripts_msmtp.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/string.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1389,7 +1361,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6315789">
           <caret line="236" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="236" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1415,30 +1386,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/functions/process/processOps.py">
+    <entry file="file://$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/emailOps/alertscripts_msmtp.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.82684827">
+          <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/net/ip/getIPAddress.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.82684827">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/psutil/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1700" column="4" selection-start-line="1700" selection-start-column="4" selection-end-line="1700" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/port/checkRemoteHostPortStatus.py">
+    <entry file="file://$PROJECT_DIR$/functions/process/processOps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding>
-            <element signature="e#59#72#0" expanded="true" />
-          </folding>
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/emailOps/alterscript_msmtp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13986014">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="38" selection-start-line="0" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#59#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/emailOps/alterscript_msmtp_public.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37062937">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="e#59#73#0" expanded="true" />
           </folding>
         </state>
       </provider>

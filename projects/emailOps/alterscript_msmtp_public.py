@@ -9,22 +9,29 @@ import sys
 def usage():
     print("""
     Function: send email to somebody using smtp protocol
-    Usage: python %s <mailto> <subject> <message body>
-    Example: python %s "dinggd@huntor.cn" "Test email from Python" "Python rules them all!"
-""") % (__file__, sys.argv[0])
+
+    Usage:
+        no parameters:   python %s
+        with parameters: python %s <mailto> <subject> <message body>
+
+    Example: python %s "sendto" "subject" "message"
+""") % (__file__, __file__, sys.argv[0])
     sys.exit(0)
 
 
-EMAIL_HOST = "smtp.exmail.qq.com"
-EMAIL_PORT = 25
-EMAIL_HOST_USER = 'noreply@huntor.cn'
-EMAIL_HOST_PASSWORD = 'huntor_nor_123'
-DEFAULT_FROM_EMAIL = 'noreply@huntor.cn'
-CRLF = "\r\n"  # for Windows user
+EMAIL_HOST = "smtp.example.domain"  # change it
+EMAIL_PORT = 25  # default smtp port
+EMAIL_HOST_USER = 'noreply@example.domain'  # change it
+EMAIL_HOST_PASSWORD = 'your password'  # change it
+DEFAULT_FROM_EMAIL = 'noreply@example.domain'  # change it
+CRLF = "\r\n"  # for Windows user read easily
 
-EMAIL_TO = "dinggd@huntor.cn"  # user defined variable, in Zabbix is {ALERT.SENDTO}
-SUBJECT = "Test email from Python"  # user defined variable, in Zabbix is {ALERT.SUBJECT}
-text = "Python rules them all!"  # user defined variable, in Zabbix is {ALERT.MESSAGE}
+# user defined variable, in Zabbix is {ALERT.SENDTO}
+EMAIL_TO = "example@example.domain"
+# user defined variable, in Zabbix is {ALERT.SUBJECT}
+SUBJECT = "An email notification from Python"
+# user defined variable, in Zabbix is {ALERT.MESSAGE}
+text = "if you saw this content, it means it works and this is default content with no parameters."
 
 argc = len(sys.argv)
 if not (argc == 1 or argc == 4):
