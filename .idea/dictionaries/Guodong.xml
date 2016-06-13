@@ -19,10 +19,12 @@
       <w>lineno</w>
       <w>logrotate</w>
       <w>msmtp</w>
+      <w>nameservers</w>
       <w>nmap</w>
       <w>printf</w>
       <w>readlink</w>
       <w>redirs</w>
+      <w>referer</w>
       <w>repos</w>
       <w>rsyslog</w>
       <w>slowlaris</w>
