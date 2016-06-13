@@ -1,7 +1,12 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# fork and modify something from http://dl528888.blog.51cto.com/2382721/1660844
+
 import os
 import json
 import sys
 import subprocess
+import time
 
 try:
     from docker import Client
@@ -43,19 +48,27 @@ def check_container_stats(container_name, collect_item):
     # network_rx_packets=new_result['network']['rx_packets']
     # network_tx_packets=new_result['network']['tx_packets']
     elif collect_item == 'network_rx_bytes':
-        network_check_command = """docker exec %s awk '/eth0/ {print "{\\"rx\\":"$2",\\"tx\\":"$10"}"}'\
-         /proc/net/dev""" % container_name
-        network_result = eval(
+        network_check_command = """docker exec %s awk '/eth0/ {print "{\\"rx\\":"$2",\\"tx\\":"$10"}"}' /proc/net/dev""" \
+                                % container_name
+        network_old_result = eval(
             ((subprocess.Popen(network_check_command, shell=True, stdout=subprocess.PIPE)).stdout.readlines()[0]).strip(
                 '\n'))
-        result = int(network_result['rx'])
+        time.sleep(1)
+        network_new_result = eval(
+            ((subprocess.Popen(network_check_command, shell=True, stdout=subprocess.PIPE)).stdout.readlines()[0]).strip(
+                '\n'))
+        result = int(network_new_result['rx']) - int(network_old_result['rx'])
     elif collect_item == 'network_tx_bytes':
-        network_check_command = """docker exec %s awk '/eth0/ {print "{\\"rx\\":"$2",\\"tx\\":"$10"}"}' \
-        /proc/net/dev""" % container_name
-        network_result = eval(
+        network_check_command = """docker exec %s awk '/eth0/ {print "{\\"rx\\":"$2",\\"tx\\":"$10"}"}' /proc/net/dev""" \
+                                % container_name
+        network_old_result = eval(
             ((subprocess.Popen(network_check_command, shell=True, stdout=subprocess.PIPE)).stdout.readlines()[0]).strip(
                 '\n'))
-        result = int(network_result['tx'])
+        time.sleep(1)
+        network_new_result = eval(
+            ((subprocess.Popen(network_check_command, shell=True, stdout=subprocess.PIPE)).stdout.readlines()[0]).strip(
+                '\n'))
+        result = int(network_new_result['tx']) - int(network_old_result['tx'])
     return result
 
 
