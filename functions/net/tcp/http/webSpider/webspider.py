@@ -10,8 +10,8 @@ except ImportError:
         os.system(command_to_execute)
     except OSError:
         exit(1)
-
-import requests
+    finally:
+        import requests
 
 url = 'http://dgd2010.blog.51cto.com/1539422/1784390'
 fake_content_list = ["index.php", '%3F', "%091464773814", "%09", "%2F"]

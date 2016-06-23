@@ -12,10 +12,12 @@
       <w>fqdn</w>
       <w>fullstack</w>
       <w>funcname</w>
+      <w>getdefaultencoding</w>
       <w>histtimeformat</w>
       <w>icmp</w>
       <w>ipcalc</w>
       <w>jsonlint</w>
+      <w>khtml</w>
       <w>lineno</w>
       <w>logrotate</w>
       <w>msmtp</w>
@@ -27,6 +29,7 @@
       <w>referer</w>
       <w>repos</w>
       <w>rsyslog</w>
+      <w>servertime</w>
       <w>slowlaris</w>
       <w>smtp</w>
       <w>strace</w>
@@ -35,6 +38,7 @@
       <w>uninstaller</w>
       <w>vagrantup</w>
       <w>virtuozzo</w>
+      <w>weibo</w>
       <w>wget</w>
       <w>xtrace</w>
       <w>zabbix</w>
