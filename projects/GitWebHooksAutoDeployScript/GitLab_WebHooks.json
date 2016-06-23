@@ -1,0 +1,54 @@
+{
+  "total_commits_count": 3,
+  "commits": [
+    {
+      "author": {
+        "email": "qich2@huntor.cn",
+        "name": "qichunhua2"
+      },
+      "url": "http://git.huntor.cn:18081/liyang/OperationMaintenance/commit/4019b096cd4c0be8c521d3a2bd0cf086d9968d1c",
+      "timestamp": "2016-01-12T18:34:19+08:00",
+      "message": "init\n",
+      "id": "4019b096cd4c0be8c521d3a2bd0cf086d9968d1c"
+    },
+    {
+      "author": {
+        "email": "uberurey_ups@163.com",
+        "name": "DingGuodong"
+      },
+      "url": "http://git.huntor.cn:18081/liyang/OperationMaintenance/commit/b1c1b810ea248ffb19c063add6f56f0a623de131",
+      "timestamp": "2016-01-08T14:40:22+08:00",
+      "message": "office bug\n",
+      "id": "b1c1b810ea248ffb19c063add6f56f0a623de131"
+    },
+    {
+      "author": {
+        "email": "uberurey_ups@163.com",
+        "name": "DingGuodong"
+      },
+      "url": "http://git.huntor.cn:18081/liyang/OperationMaintenance/commit/969a4a83a742a36d9163245aaedcec6c98ecadf8",
+      "timestamp": "2016-01-08T14:30:57+08:00",
+      "message": "增加部分方案描述\n",
+      "id": "969a4a83a742a36d9163245aaedcec6c98ecadf8"
+    }
+  ],
+  "repository": {
+    "visibility_level": 20,
+    "git_ssh_url": "git@git.huntor.cn:liyang/OperationMaintenance.git",
+    "git_http_url": "http://git.huntor.cn:18081/liyang/OperationMaintenance.git",
+    "homepage": "http://git.huntor.cn:18081/liyang/OperationMaintenance",
+    "description": "",
+    "url": "git@git.huntor.cn:liyang/OperationMaintenance.git",
+    "name": "OperationMaintenance"
+  },
+  "project_id": 41,
+  "user_email": "dinggd@huntor.cn",
+  "object_kind": "push",
+  "before": "969a4a83a742a36d9163245aaedcec6c98ecadf8",
+  "after": "4019b096cd4c0be8c521d3a2bd0cf086d9968d1c",
+  "ref": "refs/heads/master",
+  "checkout_sha": "4019b096cd4c0be8c521d3a2bd0cf086d9968d1c",
+  "message": null,
+  "user_id": 40,
+  "user_name": "丁国栋"
+}

@@ -1,0 +1,14 @@
+{
+  "port": 9001,
+  "repositories": [
+    {
+      "url": "http://git.huntor.cn:18081/liyang/OperationMaintenance.git",
+      "path": "./OperationMaintenance",
+      "deploy": "echo deploying"
+    },
+    {
+      "url": "https://github.com/DingGuodong/Github-Auto-Deploy",
+      "path": "./GitAutoDeploy"
+    }
+  ]
+}

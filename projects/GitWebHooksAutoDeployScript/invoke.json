@@ -1,0 +1,9 @@
+{
+  "service_url": "http://123.56.234.219:9001/",
+  "http_methods": {
+    "method1": "GET",
+    "method2": "POST"
+  },
+  "GET": "GET requests simply return contents of the requested file with HTTP headers.",
+  "POST": "POST accept json and some custom header"
+}

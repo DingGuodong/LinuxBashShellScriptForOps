@@ -1,0 +1,14 @@
+{
+  "port": 9001,
+  "repositories": [
+    {
+      "url": "https://github.com/DingGuodong/BashShellHeader",
+      "path": "./BashShellHeader",
+      "deploy": "echo deploying"
+    },
+    {
+      "url": "https://github.com/DingGuodong/Github-Auto-Deploy",
+      "path": "./GitAutoDeploy"
+    }
+  ]
+}
