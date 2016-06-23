@@ -2,29 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="add new files">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/date/getDateFromTimeServer.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/date/getDateFromWebHost.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc/testZabbixApiPy3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc/testZabbixApi_impl1.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc/testZabbixApi_impl2.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/httpServer.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/webSpider/baiduLogin.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/webSpider/baiduSearch.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/webSpider/cookieOps.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/net/tcp/http/webSpider/weiboLogin.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/functions/string/pythonRegularExpression.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/autoOps/Ansible/startAnsible.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/emailOps/alertscripts_wechat.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/others/wechat/getToken.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/platform/platformOps.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/functions/net/tcp/http/webSpider/loginBaidu.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Guodong.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Guodong.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/net/tcp/http/pythonHttpOps.py" afterPath="$PROJECT_DIR$/functions/net/tcp/http/pythonHttpOps.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/net/tcp/http/urlOps.py" afterPath="$PROJECT_DIR$/functions/net/tcp/http/urlOps.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions/net/tcp/http/webSpider/webspider.py" afterPath="$PROJECT_DIR$/functions/net/tcp/http/webSpider/webspider.py" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -146,10 +124,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GitOSCAutoDeploy.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GitOSCAutoDeploy.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/projects/GitWebHooksAutoDeployScript/GitOSCAutoDeploy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.22680412">
               <caret line="166" column="12" selection-start-line="166" selection-start-column="12" selection-end-line="166" selection-end-column="12" />
               <folding />
             </state>
@@ -176,10 +154,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="update.sh" pinned="false" current-in-tab="true">
+      <file leaf-file-name="update.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projects/GitWebHooksAutoDeployScript/update.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334">
+            <state vertical-scroll-proportion="0.0">
               <caret line="343" column="17" selection-start-line="343" selection-start-column="17" selection-end-line="343" selection-end-column="17" />
               <folding />
             </state>
@@ -401,6 +379,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GitWebHooksAutoDeployScript" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -996,7 +992,13 @@
       <option name="project" value="LOCAL" />
       <updated>1465807014785</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="add new files">
+      <created>1466654138588</created>
+      <option name="number" value="00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1466654138588</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1010,9 +1012,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32569557" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3878887" sideWeight="0.5028653" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38297874" sideWeight="0.49713466" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26022914" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -1020,14 +1023,13 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2618658" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6666667" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41906202" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41906202" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32166892" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28008595" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39838493" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1430,14 +1432,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/GitWebHooksAutoDeployScript/GitOSCAutoDeploy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="166" column="12" selection-start-line="166" selection-start-column="12" selection-end-line="166" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projects/GitWebHooksAutoDeployScript/GitOSCAutoDeployWithLog.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1456,8 +1450,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/GitWebHooksAutoDeployScript/update.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
+        <state vertical-scroll-proportion="0.0">
           <caret line="343" column="17" selection-start-line="343" selection-start-column="17" selection-end-line="343" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/GitWebHooksAutoDeployScript/GitOSCAutoDeploy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22680412">
+          <caret line="166" column="12" selection-start-line="166" selection-start-column="12" selection-end-line="166" selection-end-column="12" />
           <folding />
         </state>
       </provider>
