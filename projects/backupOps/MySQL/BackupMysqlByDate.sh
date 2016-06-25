@@ -80,7 +80,7 @@ else
 fi
 
 saved_IFS=$IFS
-IFS=' '
+IFS=' '$'\t'$'\n'
 for mysql_database in ${mysql_databases_list};do
     ${mysql_bin_dump} --host=${mysql_host} --port=${mysql_port} --user=${mysql_username} --password=${mysql_password}\
         --routines --events --triggers --single-transaction --flush-logs \
