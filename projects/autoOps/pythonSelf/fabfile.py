@@ -1,0 +1,103 @@
+#!/usr/bin/python
+# encoding: utf-8
+# -*- coding: utf8 -*-
+# Refer: https://github.com/dlapiduz/fabistrano/blob/master/fabistrano/deploy.py
+# Refer: https://gist.github.com/mtigas/719452
+# fab -f .\projects\autoOps\pythonSelf\fabfile.py dotask -i c:\Users\Guodong\.ssh\exportedkey201310171355
+
+import os
+import datetime
+
+try:
+    from fabric.api import *
+except ImportError:
+    try:
+        command_to_execute = "pip install fabric"
+        os.system(command_to_execute)
+    except OSError:
+        exit(1)
+finally:
+    from fabric.api import *
+
+try:
+    import pytz
+except ImportError:
+    try:
+        command_to_execute = "pip install pytz"
+        os.system(command_to_execute)
+    except OSError:
+        exit(1)
+finally:
+    import pytz
+
+env.roledefs = {
+    'testEnvironment': ['root@10.6.28.28:22', ],
+    'productionEnvironment': ['root@10.6.28.28:22', ],
+}
+
+env.basedir = '/root/www'
+env.capistrano_ds_lock = env.basedir + '/.capistrano_ds_lock'
+
+
+def sudo_run(*args, **kwargs):
+    if env.use_sudo:
+        sudo(*args, **kwargs)
+    else:
+        run(*args, **kwargs)
+
+
+def check_runtime_dependencies():
+    pass
+
+
+@roles('testEnvironment')
+def check_network_connectivity():
+    internet_hostname = "www.aliyun.com"
+    ping = 'ping -c4 ' + internet_hostname
+    result_code = None
+    try:
+        run(ping)
+    except Exception:
+        result_code = 1
+    if result_code is not None:
+        print "Error   => connect to Internet failed!"
+    else:
+        print "Success => connect to Internet successfully!"
+
+
+def check_name_resolve():
+    internet_hostname = "www.aliyun.com"
+    nslookup = 'nslookup ' + internet_hostname
+    result_code = None
+    try:
+        run(nslookup)
+    except Exception:
+        result_code = 1
+    if result_code is not None:
+        print "Error   => name resolve to Internet failed!"
+    else:
+        print "Success => name resolve to Internet successfully!"
+
+
+def set_capistrano_directory_structure_over_fabric():
+    capistrano_release = env.basedir + '/release'
+    capistrano_repository = env.basedir + '/repository'
+    capistrano_share = env.basedir + '/share'
+    capistrano_backup = env.basedir + '/backup'
+    if os.path.exists(env.basedir):
+        pass
+    else:
+        if not os.path.exists(capistrano_release):
+            os.mkdir(capistrano_release)
+        if not os.path.exists(capistrano_repository):
+            os.mkdir(capistrano_repository)
+        if not os.path.exists(capistrano_share):
+            os.mkdir(capistrano_share)
+        if not os.path.exists(capistrano_backup):
+            os.mkdir(capistrano_backup)
+        with open(env.capistrano_ds_lock, 'w') as f:
+            f.write(str(datetime.datetime.now()))
+
+        if os.path.exists("/etc/timezone"):
+            tz = file("/etc/timezone").read().strip()
+            print pytz.timezone(tz)

@@ -7,7 +7,7 @@
 DEBUG=false
 #DEBUG=true
 
-if $DEBUG ; then
+if ${DEBUG} ; then
     old_PS4=$PS4
 #    export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
     export PS4='+${LINENO}: ${FUNCNAME[0]}: ' # if there is only one bash script, do not display ${BASH_SOURCE}
@@ -218,9 +218,9 @@ function check_other_dependencies() {
             saved_IFS=$IFS
             IFS=' '
             for ipaddress in ${user_defined_deploy_targets_host_ip_list}; do
-                check_ssh_can_be_connect $ipaddress
+                check_ssh_can_be_connect ${ipaddress}
             done
-            IFS=$saved_IFS
+            IFS=${saved_IFS}
         else
             echo_r "$user_defined_deploy_targets_host_ip_list is not equal to $user_defined_deploy_target_host_ip, this is a must! "
             exit 1
@@ -239,7 +239,7 @@ function check_other_dependencies() {
         exit 1
     fi
 
-    if test -z $user_defined_project_conf_directory; then
+    if test -z ${user_defined_project_conf_directory}; then
         echo_y "Warning: user defined project conf directory is not defined! "
     fi
 
@@ -497,7 +497,7 @@ function backup_single_file(){
     backup_filename_prefix=".backup_"
     backup_filename_suffix="_origin_$operation_date_time~"
     backup_filename_target="$backup_filename_prefix$backup_filename_origin$backup_filename_suffix"
-    test -f $backup_filename_origin && cp $backup_filename_origin $backup_filename_target
+    test -f ${backup_filename_origin} && cp ${backup_filename_origin} ${backup_filename_target}
     set +o errexit
 }
 
@@ -513,14 +513,14 @@ function backup_files(){
     file_list=$@
     operation_date_time="_`date +"%Y%m%d%H%M%S"`"
     log_filename=".log_$$_${RANDOM}"
-    log_filename_full_path=/tmp/$log_filename
-    touch $log_filename_full_path
+    log_filename_full_path=/tmp/${log_filename}
+    touch ${log_filename_full_path}
     old_IFS=$IFS
     IFS=" "
-    for file in $file_list;do
-        real_file=$(realpath $file)
-        [ -f $real_file ] && cp $real_file $file$operation_date_time~
-        [ -f $log_filename_full_path ] && echo "\mv -f $file$operation_date_time~ $file" >>$log_filename_full_path
+    for file in ${file_list};do
+        real_file=$(realpath ${file})
+        [ -f ${real_file} ] && cp ${real_file} ${file}${operation_date_time}~
+        [ -f ${log_filename_full_path} ] && echo "\mv -f $file$operation_date_time~ $file" >>${log_filename_full_path}
     done
     IFS="$old_IFS"
     set +o errexit
@@ -530,8 +530,8 @@ function backup_files(){
 # Function description:
 function rollback_files(){
     # TODO(Guodong Ding) improvements here
-    [ -f $log_filename_full_path ] && . $log_filename_full_path
-    \rm -f $log_filename_full_path
+    [ -f ${log_filename_full_path} ] && . ${log_filename_full_path}
+    \rm -f ${log_filename_full_path}
     exit 2
 }
 
@@ -545,7 +545,7 @@ function backup_directories(){
     backup_filename_prefix=".backup_"
     backup_filename_suffix="_origin_$operation_date_time~"
     backup_filename_target="$backup_filename_prefix$backup_filename_origin$backup_filename_suffix"
-    test -f $backup_filename_origin && cp -r $backup_filename_origin $backup_filename_target
+    test -f ${backup_filename_origin} && cp -r ${backup_filename_origin} ${backup_filename_target}
 }
 
 function rollback_directories(){
@@ -568,7 +568,7 @@ function backup_remote_host_config_files(){
     fi
 
     # TODO(Guodong Ding) if $user_defined_project_conf_directory is empty and remote host target directory is empty(first deploy), will cause exit with 1
-    ssh_execute_command_on_remote_host $user_defined_deploy_target_host_ip "test \"\$(ls -A $user_defined_project_top_directory_to_target_host 2>/dev/null)\""
+    ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "test \"\$(ls -A $user_defined_project_top_directory_to_target_host 2>/dev/null)\""
     if test $? -eq 0; then
         scp_remote_files_to_local_host ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}/* ${WORKDIR}/backup
         # get config files
@@ -611,7 +611,7 @@ function make_current_workable_source(){
     clean_old_releases
     clean_old_logs
     # do dependencies checking
-    if test ! -z $user_defined_skip_check_network_and_resolver; then
+    if test ! -z ${user_defined_skip_check_network_and_resolver}; then
         echo_g "skipping checking network connectivity and name resolve."
     else
         check_network_connectivity
@@ -679,7 +679,7 @@ function deploy() {
         for file in ${user_defined_project_conf_directory}/*;do
             scp_local_files_to_remote_host ${file} ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
             # override all configuration files to current
-            \cp -rf $file ${WORKDIR}/current
+            \cp -rf ${file} ${WORKDIR}/current
         done
         cd ${WORKDIR}
         IFS=${saved_IFS}
@@ -690,10 +690,10 @@ function deploy() {
 
     # Start service or validate status on remote host
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
-        ssh_execute_command_on_remote_host $user_defined_deploy_target_host_ip "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
+        ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
         RETVAL=$?
     else
-        test -z ${user_defined_docker_container_name} || restart_docker_container $user_defined_deploy_target_host_ip ${user_defined_docker_container_name}
+        test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
         # TODO(Guodong Ding) external health check
         RETVAL=$?
     fi
@@ -764,10 +764,10 @@ function rollback() {
 
     # Start service or validate status
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
-        ssh_execute_command_on_remote_host $user_defined_deploy_target_host_ip "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
+        ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
         RETVAL=$?
     else
-        test -z ${user_defined_docker_container_name} || restart_docker_container $user_defined_deploy_target_host_ip ${user_defined_docker_container_name}
+        test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
         # TODO(Guodong Ding) external health check
         RETVAL=$?
     fi
@@ -785,12 +785,12 @@ function rollback_manual(){
     # TODO(Guodong Ding) linux shell trap command several ctrl+c
     echo_p "Enter 'reset' command to reset terminal when something go wrong."
     read -e -s -n 1 -p "Press any key to continue or Press 'Ctrl+C' exit."
-    if test -d $WORKDIR/release -a "$(ls -A $WORKDIR/release 2>/dev/null)" ;then # judge a directory if is empty
+    if test -d ${WORKDIR}/release -a "$(ls -A ${WORKDIR}/release 2>/dev/null)" ;then # judge a directory if is empty
         echo_b "Current workable releases( Latest 5 ) are here: "
-        # Alternative implementation: ls -u -1 -d $WORKDIR/release/* | tail -n6 | sed -n '1,4p'
-        ls -u -1 -d $WORKDIR/release/* | tail -n6 | head -n4
+        # Alternative implementation: ls -u -1 -d ${WORKDIR}/release/* | tail -n6 | sed -n '1,4p'
+        ls -u -1 -d ${WORKDIR}/release/* | tail -n6 | head -n4
         read -p "Which release do you want rollback? Press Enter after input. " user_input_release_to_rollback
-        if test -d $user_input_release_to_rollback; then
+        if test -d ${user_input_release_to_rollback}; then
             rm -rf ${WORKDIR}/current
             ln -s ${user_input_release_to_rollback} ${WORKDIR}/current
             # Remake conf and logs symbolic link to current
@@ -808,7 +808,7 @@ function rollback_manual(){
                 IFS=' '
                 cd ${WORKDIR}/current
                 for file in ${user_defined_project_conf_directory}/*;do
-                    \cp -rf $file ${WORKDIR}/current
+                    \cp -rf ${file} ${WORKDIR}/current
                 done
                 cd ${WORKDIR}
                 IFS=${saved_IFS}
@@ -827,10 +827,10 @@ function rollback_manual(){
             # Start service or validate status
             if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
 #                ${WORKDIR}/current/bin/startup.sh restart
-                ssh_execute_command_on_remote_host $user_defined_deploy_target_host_ip "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
+                ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
                 RETVAL=$?
             else
-                test -z ${user_defined_docker_container_name} || restart_docker_container $user_defined_deploy_target_host_ip ${user_defined_docker_container_name}
+                test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
                 # TODO(Guodong Ding) external health check
                 RETVAL=$?
             fi
@@ -875,7 +875,7 @@ function deploys() {
     make_current_workable_source
 
     echo_b "Do deploy on $user_defined_deploy_targets_host_ip_list ..."
-    for remote_host_ip in $user_defined_deploy_targets_host_ip_list;do
+    for remote_host_ip in ${user_defined_deploy_targets_host_ip_list};do
         echo_b "Do deploy on $remote_host_ip ..."
         saved_IFS=$IFS
         IFS=' '
@@ -902,10 +902,10 @@ function deploys() {
         # Start service or validate status on remote host
         if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
     #        ${WORKDIR}/current/bin/startup.sh start
-            ssh_execute_command_on_remote_host $remote_host_ip "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
+            ssh_execute_command_on_remote_host ${remote_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
             RETVAL=$?
         else
-            test -z ${user_defined_docker_container_name} || restart_docker_container $remote_host_ip ${user_defined_docker_container_name}
+            test -z ${user_defined_docker_container_name} || restart_docker_container ${remote_host_ip} ${user_defined_docker_container_name}
             # TODO(Guodong Ding) external health check
             RETVAL=$?
         fi
@@ -939,12 +939,12 @@ function rollbacks(){
     # TODO(Guodong Ding) linux shell trap command several ctrl+c
     echo_p "Enter 'reset' command to reset terminal when something go wrong."
     read -e -s -n 1 -p "Press any key to continue or Press 'Ctrl+C' exit. Enter 'reset' command to reset terminal when something go wrong."
-    if test -d $WORKDIR/release -a "$(ls -A $WORKDIR/release 2>/dev/null)" ;then # judge a directory if is empty
+    if test -d ${WORKDIR}/release -a "$(ls -A ${WORKDIR}/release 2>/dev/null)" ;then # judge a directory if is empty
         echo_b "Current workable releases( Latest 5 ) are here: "
-#        ls -d -1 $WORKDIR/release/*
-        ls -u -1 -d $WORKDIR/release/* | tail -n5
+#        ls -d -1 ${WORKDIR}/release/*
+        ls -u -1 -d ${WORKDIR}/release/* | tail -n5
         read -p "Which release do you want rollback? Press Enter after input. " user_input_release_to_rollback
-        if test -d $user_input_release_to_rollback; then
+        if test -d ${user_input_release_to_rollback}; then
             rm -rf ${WORKDIR}/current
             ln -s ${user_input_release_to_rollback} ${WORKDIR}/current
             # Remake conf and logs symbolic link to current
@@ -958,7 +958,7 @@ function rollbacks(){
             saved_IFS=$IFS
             IFS=' '
             cd ${WORKDIR}/current
-            for host_ip in $user_defined_deploy_targets_host_ip_list;do
+            for host_ip in ${user_defined_deploy_targets_host_ip_list};do
                     for file in ${WORKDIR}/current/*;do
                         scp_local_files_to_remote_host ${file} ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
                     done
@@ -969,7 +969,7 @@ function rollbacks(){
             # Start service or validate status
             if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
 #                ${WORKDIR}/current/bin/startup.sh restart
-                ssh_execute_command_on_remote_host $user_defined_deploy_target_host_ip "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
+                ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
                 RETVAL=$?
             else
                 test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_docker_container_name}
@@ -1035,11 +1035,11 @@ function destroy() {
 
 function usage(){
     cat - << eof
-"$WORKDIR/`basename $0` deploy              new deploy/ update one remote target host
-"$WORKDIR/`basename $0` rollback_manual     rollback to any workable version to one remote target host by manual
-"$WORKDIR/`basename $0` deploys             new deploy/ update more then one remote target host
-"$WORKDIR/`basename $0` rollbacks           rollback to any workable version to more than one remote target host by manual
-"$WORKDIR/`basename $0` backup_manual       backup conf files to local by manual when you add/delete/update conf files on remote target host
+"${WORKDIR}/`basename $0` deploy              new deploy/ update one remote target host
+"${WORKDIR}/`basename $0` rollback_manual     rollback to any workable version to one remote target host by manual
+"${WORKDIR}/`basename $0` deploys             new deploy/ update more then one remote target host
+"${WORKDIR}/`basename $0` rollbacks           rollback to any workable version to more than one remote target host by manual
+"${WORKDIR}/`basename $0` backup_manual       backup conf files to local by manual when you add/delete/update conf files on remote target host
 eof
 
 }
@@ -1054,7 +1054,7 @@ function main(){
         [ -n "$header" ] && echo "$header"
 
         # if exist file '.capistrano_ds_lock', then this is not first deployment, and unset
-        if test -f $WORKDIR/.capistrano_ds_lock; then
+        if test -f ${WORKDIR}/.capistrano_ds_lock; then
             unset user_defined_project_conf_directory
             user_defined_project_conf_directory=""
         fi
@@ -1106,8 +1106,8 @@ fi
 main $@
 
 # debug option
-if $DEBUG ; then
-    export PS4=$old_PS4
+if ${DEBUG} ; then
+    export PS4=${old_PS4}
     ${_XTRACE_FUNCTIONS}
 fi
 
