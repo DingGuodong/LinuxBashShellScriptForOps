@@ -35,11 +35,11 @@ fi
 # TODO(Guodong Ding) check if there are repeated configs for same logfile
 
 for logfile in "$@"; do
-    if test -f $logfile; then
+    if test -f ${logfile}; then
         echo "set logrotate for $logfile ... "
         logrotate_config_file="/etc/logrotate.d/customized_logfile_${RANDOM}_$$"
-        cat >>$logrotate_config_file <<eof
-$logfile {
+        cat >>${logrotate_config_file} <<eof
+${logfile} {
     daily
 #    su user group
     rotate 12
@@ -50,7 +50,7 @@ $logfile {
 }
 
 eof
-        logrotate --debug $logrotate_config_file >/dev/null 2>&1 # -d, --debug    Don't do anything, just test (implies -v)
+        logrotate --debug ${logrotate_config_file} >/dev/null 2>&1 # -d, --debug    Don't do anything, just test (implies -v)
         if test "$?" = "0"; then
             echo "set logrotate for $logfile successfully! "
         else

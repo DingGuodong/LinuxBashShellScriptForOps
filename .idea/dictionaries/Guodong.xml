@@ -8,6 +8,7 @@
       <w>confold</w>
       <w>datadir</w>
       <w>dingguodong</w>
+      <w>distname</w>
       <w>distrib</w>
       <w>distros</w>
       <w>dpkg</w>
@@ -22,11 +23,14 @@
       <w>jsonlint</w>
       <w>khtml</w>
       <w>lineno</w>
+      <w>loadavg</w>
       <w>logrotate</w>
       <w>msmtp</w>
       <w>nameservers</w>
       <w>nmap</w>
+      <w>nslookup</w>
       <w>printf</w>
+      <w>psutil</w>
       <w>readlink</w>
       <w>redirs</w>
       <w>referer</w>
@@ -39,9 +43,11 @@
       <w>subsys</w>
       <w>sudo</w>
       <w>uninstaller</w>
+      <w>uptime</w>
       <w>vagrantup</w>
       <w>virtuozzo</w>
       <w>weibo</w>
+      <w>weixin</w>
       <w>wget</w>
       <w>xtrace</w>
       <w>zabbix</w>

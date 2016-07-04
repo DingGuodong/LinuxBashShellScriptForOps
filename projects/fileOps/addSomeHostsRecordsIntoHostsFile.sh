@@ -33,14 +33,14 @@ backup_files(){
     file_list=$@
     operation_date_time="_`date +"%Y%m%d%H%M%S"`"
     log_filename=".log_$$_$RANDOM"
-    log_filename_full_path=/tmp/$log_filename
-    touch $log_filename_full_path
+    log_filename_full_path=/tmp/${log_filename}
+    touch ${log_filename_full_path}
     old_IFS=$IFS
     IFS=" "
-    for file in $file_list;do
-        real_file=$(realpath $file)
-        [ -f $real_file ] && cp $real_file $file$operation_date_time~
-        [ -f $log_filename_full_path ] && echo "\mv -f $file$operation_date_time~ $file" >>$log_filename_full_path
+    for file in ${file_list};do
+        real_file=$(realpath ${file})
+        [ -f ${real_file} ] && cp ${real_file} ${file}${operation_date_time}~
+        [ -f ${log_filename_full_path} ] && echo "\mv -f $file$operation_date_time~ $file" >>${log_filename_full_path}
     done
     IFS="$old_IFS"
     set +o errexit
@@ -49,8 +49,8 @@ backup_files(){
 
 # Function description:
 rollback_files(){
-    [ -f $log_filename_full_path ] && . $log_filename_full_path
-    \rm -f $log_filename_full_path
+    [ -f ${log_filename_full_path} ] && . ${log_filename_full_path}
+    \rm -f ${log_filename_full_path}
     exit 2
 }
 

@@ -30,10 +30,10 @@
 # *  *  *  *  * user-name command to be executed
 # m h  dom mon dow   command
 # execute on 11:59 per sunday
-# 59 11 * * */0 /path/to/BackupMysqlByDate.sh >/tmp/log_backup_mysql_$(date +"%Y%m%d%H%M%S").log
+# 59 11 * * */0 /path/to/BackupMysqlByDate.sh >/tmp/log_backup_mysql_$(date +"\%Y\%m\%d\%H\%M\%S").log
 # or
 # execute on 23:59 per day
-# 59 23 * * * /path/to/BackupMysqlByDate.sh >/tmp/log_backup_mysql_$(date +"%Y%m%d%H%M%S").log
+# 59 23 * * * /path/to/BackupMysqlByDate.sh >/tmp/log_backup_mysql_$(date +"\%Y\%m\%d\%H\%M\%S").log
 
 USER="`id -un`"
 LOGNAME="$USER"
@@ -75,8 +75,8 @@ mysql_databases_list=""
 if [ -d ${mysql_datadir} ]; then
     mysql_databases_list=`ls -p ${mysql_datadir} | grep / |tr -d /`
 else
-    mysql_databases_list=$(${mysql_bin_mysql} -h${mysql_host} -P${mysql_port} -u${mysql_username} -p${mysql_password}\
-        -e "show databases;" | grep -Eiv '(database|information_schema|performance_schema|mysql)')
+    mysql_databases_list=$(${mysql_bin_mysql} -h${mysql_host} -P${mysql_port} -u${mysql_username} -p${mysql_password} \
+        -e "show databases;" |& grep -Eiv '(^database$|information_schema|performance_schema|^mysql$)')
 fi
 
 saved_IFS=$IFS
@@ -84,16 +84,16 @@ IFS=' '$'\t'$'\n'
 for mysql_database in ${mysql_databases_list};do
     ${mysql_bin_dump} --host=${mysql_host} --port=${mysql_port} --user=${mysql_username} --password=${mysql_password}\
         --routines --events --triggers --single-transaction --flush-logs \
-        --ignore-table=mysql.event --databases ${mysql_database} | \
+        --ignore-table=mysql.event --databases ${mysql_database} |& \
         gzip > ${mysql_backup_dir}/${date_format_type_dir}/${mysql_database}-backup-${date_format_type_file}.sql.gz
 
     [ $? -eq 0 ] && echo "${mysql_database} backup successfully! " || \
         echo "${mysql_database} backup failed! "
     /bin/sleep 2
 
-    ${mysql_bin_dump} --host=${mysql_host} --port=${mysql_port} --user=${mysql_username} --password=${mysql_password}\
+    ${mysql_bin_dump} --host=${mysql_host} --port=${mysql_port} --user=${mysql_username} --password=${mysql_password} \
          --routines --events --triggers --single-transaction --flush-logs \
-         --ignore-table=mysql.event --databases ${mysql_database} --no-data | \
+         --ignore-table=mysql.event --databases ${mysql_database} --no-data |& \
          gzip > ${mysql_backup_dir}/${date_format_type_dir}/${mysql_database}-backup-${date_format_type_file}_schema.sql.gz
 
     [ $? -eq 0 ] && echo "${mysql_database} schema backup successfully! " || \

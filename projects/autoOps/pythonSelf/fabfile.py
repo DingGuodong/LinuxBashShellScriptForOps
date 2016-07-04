@@ -10,6 +10,45 @@ import os
 import datetime
 import re
 import sys
+import logging
+import time
+import socket
+import requests
+import platform
+
+current_time = time.strftime("%Y%m%d")
+logpath = "/tmp"
+logfile = "log_fabfile_" + current_time + ".log"
+try:
+    os.makedirs(logpath)
+except OSError:
+    pass
+
+if os.path.exists(logpath):
+    logfile = logpath + "/" + logfile
+else:
+    logfile = "log_fabfile_" + current_time + ".log"
+
+formatter = "%(asctime)s %(filename)s:%(lineno)d %(levelname)s: %(message)s"
+logging.basicConfig(filename=logfile, level=logging.INFO, format=formatter)
+
+logging.info("Started.")
+
+os_release = platform.system()
+if os_release == "Windows":
+    pass
+elif os_release == "Linux":
+    distname = platform.linux_distribution()[0]
+    if str(distname).lower() == "ubuntu":
+        command_to_execute = "apt-get -y install libcurl4-openssl-dev python-pip"
+        os.system(command_to_execute)
+    elif str(distname).lower() == "centos":
+        command_to_execute = "yum -y install python-pip"
+        os.system(command_to_execute)
+else:
+    print "Error => Unsupported OS type."
+    logging.error("Unsupported OS type.")
+    sys.exit(1)
 
 try:
     from fabric.api import *
@@ -25,15 +64,48 @@ finally:
     from fabric.colors import *
 
 try:
+    import pycurl
+except ImportError:
+    try:
+        command_to_execute = "pip install pycurl"
+        os.system(command_to_execute)
+    except OSError:
+        sys.exit(1)
+finally:
+    import pycurl
+
+try:
     import pytz
 except ImportError:
     try:
         command_to_execute = "pip install pytz"
         os.system(command_to_execute)
     except OSError:
-        exit(1)
+        sys.exit(1)
 finally:
     import pytz
+
+try:
+    import shutil
+except ImportError:
+    try:
+        command_to_execute = "pip install shutil"
+        os.system(command_to_execute)
+    except OSError:
+        sys.exit(1)
+finally:
+    import shutil
+
+try:
+    import certifi
+except ImportError:
+    try:
+        command_to_execute = "pip install certifi"
+        os.system(command_to_execute)
+    except OSError:
+        sys.exit(1)
+finally:
+    import certifi
 
 env.roledefs = {
     'testEnvironment': ['root@10.6.28.28:22', ],
@@ -52,8 +124,38 @@ def sudo_run(*args, **kwargs):
         run(*args, **kwargs)
 
 
+def check_var_is_absent(var):
+    if var is None or var == "":
+        print var + " is None or empty, please check and fix it!"
+        sys.exit(1)
+
+
 def check_runtime_dependencies():
+    check_var_is_absent(env.basedir)
     pass
+
+
+def backup_file(path, extension='~'):
+    backup_filename = path + '.' + extension
+
+    if os.path.islink(path):
+        src = os.readlink(path)
+    else:
+        src = path
+
+    shutil.copy2(src, backup_filename)
+
+    return backup_filename
+
+
+def rollback_file(path, extension='~'):
+    if os.path.islink(path):
+        src = os.readlink(path)
+    else:
+        src = path
+    if os.path.exists(src + extension):
+        shutil.copy2(src + extension, src)
+    return src
 
 
 @roles('testEnvironment')
@@ -67,6 +169,7 @@ def check_network_connectivity():
         result_code = 1
     if result_code is not None:
         print red("Error   => connect to Internet failed!")
+        logging.error("connect to Internet failed!")
     else:
         print green("Success => connect to Internet successfully!")
 
@@ -81,8 +184,44 @@ def check_name_resolve():
         result_code = 1
     if result_code is not None:
         print red("Error   => name resolve to Internet failed!")
+        logging.error("name resolve to Internet failed!")
     else:
         print green("Success => name resolve to Internet successfully!")
+
+
+def set_dns_resolver():
+    pass
+
+
+@roles('testEnvironment')
+def set_hosts_file(hosts="/etc/hosts"):
+    if not os.path.exists(hosts):
+        if not os.path.exists(os.path.dirname(hosts)):
+            os.makedirs(os.path.dirname(hosts))
+
+    with open(hosts, "w") as f:
+        hosts_url = "https://raw.githubusercontent.com/racaljk/hosts/master/hosts"
+        conn = requests.head(hosts_url)
+        if conn.status_code != 200:
+            hosts_url = "https://coding.net/u/scaffrey/p/hosts/git/raw/master/hosts"
+        curl = pycurl.Curl()
+        curl.setopt(pycurl.URL, hosts_url)
+        curl.setopt(pycurl.CAINFO, certifi.where())
+        curl.setopt(pycurl.WRITEDATA, f)
+        curl.perform()
+        curl.close()
+    # TODO(Guodong Ding) Ubuntu Linux not passed here, but CentOS passed!
+    hostname = socket.gethostname()
+    try:
+        ip = socket.gethostbyname(socket.gethostname())
+    except Exception:
+        ip = None
+    with open(hosts, "a") as f:
+        if ip is not None:
+            appended_content = "\n" + "127.0.0.1 " + hostname + "\n" + ip + " " + hostname + "\n"
+        else:
+            appended_content = "\n" + "127.0.0.1 " + hostname + "\n"
+        f.write(appended_content)
 
 
 def set_capistrano_directory_structure_over_fabric():
@@ -120,9 +259,10 @@ def set_capistrano_directory_structure_local():
     local(set_capistrano_directory_structure_over_fabric())
 
 
-def git_clone():
+def git_clone_local():
     code_dir = env.basedir + '/repository'
-    local()
+    git_clone = "git clone " + env.git_address + " " + code_dir
+    local(git_clone)
 
 
 if __name__ == '__main__':
