@@ -5,3 +5,4 @@ echo "$original_ip_list" | tr ' ' '\n'
 # how to convert rows into column using awk?
 echo "$original_ip_list" | awk '{printf("%s ", $0)}'
 echo "$original_ip_list" | tr'\n' ' '
+echo "$original_ip_list" | xargs -n1
