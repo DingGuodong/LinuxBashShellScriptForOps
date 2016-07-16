@@ -14,20 +14,20 @@ ip addr show to 0.0.0.0/0 scope global | awk '/[[:space:]]inet / { print gensub(
 
 # Ubuntu
 DEVICE="`route -n | awk '/^0.0.0.0/ { print $NF  }'`"
-ip addr show to 0.0.0.0/0 scope global $DEVICE | awk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
+ip addr show to 0.0.0.0/0 scope global ${DEVICE} | awk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
 
 # Get all IP
 ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)" | cut -d ":" -f2 | cut -d " " -f1
 
 # CentOS IP
 DEVICE=$(route -n | awk '/^0.0.0.0/ && /UG/ {print $NF}')
-IP=$(ifconfig $DEVICE | awk -F '[ :]+' '/inet/ && !/inet6/ {print $3}')
-echo $IP
+IP=$(ifconfig ${DEVICE} | awk -F '[ :]+' '/inet/ && !/inet6/ {print $3}')
+echo "$IP"
 
 # Ubuntu IP
 DEVICE=$(route -n | awk '/^0.0.0.0/ && /UG/ {print $NF}')
-IP=$(ifconfig $DEVICE | awk -F '[ :]+' '/inet/ && !/inet6/ {print $4}')
-echo $IP
+IP=$(ifconfig ${DEVICE} | awk -F '[ :]+' '/inet/ && !/inet6/ {print $4}')
+echo "$IP"
 
 # general distro using ip command
 ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'
@@ -36,4 +36,7 @@ ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[
 IP1=$(ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)")
 IP2=${IP1#*addr:}
 IP=${IP2%% Bcast*}
-echo $IP
+echo "$IP"
+
+# using grep
+ifconfig | grep -Po '(?<=:).*(?=  B)'

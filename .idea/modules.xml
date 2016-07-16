@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/LinuxBashShellScriptForOps.iml" filepath="$PROJECT_DIR$/.idea/LinuxBashShellScriptForOps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../kissops/.idea/kissops.iml" filepath="$PROJECT_DIR$/../kissops/.idea/kissops.iml" />
     </modules>
   </component>
 </project>

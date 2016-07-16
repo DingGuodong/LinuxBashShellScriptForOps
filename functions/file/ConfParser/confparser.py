@@ -353,11 +353,11 @@ def writeDictToFile(pathFile, var):
 
             # Getting the values from dict
             # var.get(mydict_from_argument)
-            AttrType = var.get(dictType)
-            AttrCommented = var.get(dictStatus)
-            AttrValue = var.get(cleanConfName)
+            AttrType = var.get
+            AttrCommented = var.get
+            AttrValue = var.get
 
-            cleanConfName = var.get(dictKey)
+            cleanConfName = var.get
 
             # DEBUG
             """

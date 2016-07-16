@@ -6,6 +6,7 @@
       <w>blogs</w>
       <w>cidr</w>
       <w>confold</w>
+      <w>crontab</w>
       <w>datadir</w>
       <w>dingguodong</w>
       <w>distname</w>
@@ -18,10 +19,12 @@
       <w>funcname</w>
       <w>getdefaultencoding</w>
       <w>histtimeformat</w>
+      <w>htaccess</w>
       <w>icmp</w>
       <w>ipcalc</w>
       <w>jsonlint</w>
       <w>khtml</w>
+      <w>kissops</w>
       <w>lineno</w>
       <w>loadavg</w>
       <w>logrotate</w>
@@ -35,6 +38,7 @@
       <w>redirs</w>
       <w>referer</w>
       <w>repos</w>
+      <w>rsync</w>
       <w>rsyslog</w>
       <w>servertime</w>
       <w>slowlaris</w>
@@ -46,6 +50,7 @@
       <w>uptime</w>
       <w>vagrantup</w>
       <w>virtuozzo</w>
+      <w>wechat</w>
       <w>weibo</w>
       <w>weixin</w>
       <w>wget</w>

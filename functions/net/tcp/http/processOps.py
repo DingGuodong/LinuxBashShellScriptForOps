@@ -29,8 +29,8 @@ print disk
 
 disk_io = psutil.disk_io_counters(perdisk=True)
 print disk_io
-print disk_io.get('PhysicalDrive1')
-print disk_io.get('PhysicalDrive0')
+print disk_io.get
+print disk_io.get
 
 user = psutil.users()
 print user

@@ -4,7 +4,7 @@
 # Refer: http://docs.fabfile.org/en/1.6/tutorial.html#conclusion
 # Refer: https://github.com/dlapiduz/fabistrano/blob/master/fabistrano/deploy.py
 # Refer: https://gist.github.com/mtigas/719452
-# fab -f .\projects\autoOps\pythonSelf\fabfile.py dotask -i c:\Users\Guodong\.ssh\exportedkey201310171355
+# fab -i c:\Users\Guodong\.ssh\exportedkey201310171355 -f .\projects\autoOps\pythonSelf\fabfile.py dotask
 
 import os
 import datetime
@@ -40,10 +40,10 @@ if os_release == "Windows":
 elif os_release == "Linux":
     distname = platform.linux_distribution()[0]
     if str(distname).lower() == "ubuntu":
-        command_to_execute = "apt-get -y install libcurl4-openssl-dev python-pip"
+        command_to_execute = "which pip &>/dev/null || apt-get -y install libcurl4-openssl-dev python-pip"
         os.system(command_to_execute)
     elif str(distname).lower() == "centos":
-        command_to_execute = "yum -y install python-pip"
+        command_to_execute = "which pip &>/dev/null || yum -y install python-pip"
         os.system(command_to_execute)
 else:
     print "Error => Unsupported OS type."
@@ -112,6 +112,9 @@ env.roledefs = {
     'productionEnvironment': ['root@10.6.28.28:22', ],
 }
 
+env.user = "root"
+env.hosts = ["10.6.28.28"]
+
 env.git_address = ''
 env.basedir = '/root/www'
 env.capistrano_ds_lock = env.basedir + '/.capistrano_ds_lock'
@@ -158,7 +161,6 @@ def rollback_file(path, extension='~'):
     return src
 
 
-@roles('testEnvironment')
 def check_network_connectivity():
     internet_hostname = "www.aliyun.com"
     ping = 'ping -c4 ' + internet_hostname
@@ -193,7 +195,6 @@ def set_dns_resolver():
     pass
 
 
-@roles('testEnvironment')
 def set_hosts_file(hosts="/etc/hosts"):
     if not os.path.exists(hosts):
         if not os.path.exists(os.path.dirname(hosts)):
@@ -211,7 +212,8 @@ def set_hosts_file(hosts="/etc/hosts"):
         curl.perform()
         curl.close()
     # TODO(Guodong Ding) Ubuntu Linux not passed here, but CentOS passed!
-    hostname = socket.gethostname()
+    hostname = socket.gethostname()  # socket.getfqdn()
+    print hostname
     try:
         ip = socket.gethostbyname(socket.gethostname())
     except Exception:
@@ -224,6 +226,7 @@ def set_hosts_file(hosts="/etc/hosts"):
         f.write(appended_content)
 
 
+@roles('testEnvironment')
 def set_capistrano_directory_structure_over_fabric():
     print blue("setting capistrano directory structure ...")
     capistrano_release = env.basedir + '/release'
@@ -253,10 +256,6 @@ def set_capistrano_directory_structure_over_fabric():
                 content = datetime.datetime.now()
             f.write(str(content))
     print green("setting capistrano directory structure successfully!")
-
-
-def set_capistrano_directory_structure_local():
-    local(set_capistrano_directory_structure_over_fabric())
 
 
 def git_clone_local():
