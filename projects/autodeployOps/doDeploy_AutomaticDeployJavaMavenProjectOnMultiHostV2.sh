@@ -3,6 +3,16 @@
 # Name: doDeploy.sh
 #Execute this shell script to deploy Java projects built by Maven automatically on remote hosts.
 
+# About V2
+# Improvements: TODO(Guodong Ding) continue here
+#   1.backup remote host deploy target if target is not empty
+#   2.let user choose if restart docker container, if true then restart container, else load global restart script(Name:global_restart_containers_script.sh)
+#   3.whenever do backup operation, save every backup to a .zip file.
+# Bug fix:
+#   1.adding here
+#   2.adding here
+#   3.adding here
+
 # debug option
 DEBUG=false
 #DEBUG=true
@@ -31,6 +41,7 @@ user_defined_project_top_directory_to_target_host="/data/docker/business-service
 user_defined_docker_container_name="bs-core-02" # if you using a docker container other than a startup script located in sourcecode/bin/startup.sh, then set this to docker container name
 user_defined_project_conf_directory="config_backup" # if you do NOT want to use configurations from deploy target, you should set this variable to where pointed to config files
 user_defined_skip_check_network_and_resolver="true" # if system administrator disable ICMP protocol, set this any content but not null
+user_defined_global_restart_containers_script="/root/autodeploy/deploy_to_uat/global_restart_containers_script.sh"
 # Setting how many days do you want save old releases, default is 10 days
 save_old_releases_for_days=10
 # end define variables
@@ -460,6 +471,37 @@ function restart_docker_container(){
     fi
 }
 
+
+function restart_docker_containers(){
+    echo_b "Restarting docker containers..."
+    echo_y "Which way do you want to restart docker container? "
+    user_input_answer_want_do_restart="n"
+    read -p "(If you want to restart global please input: y ,if not please press the enter button):" user_input_answer_want_do_restart
+    case "$user_input_answer_want_do_restart" in
+        y|Y|Yes|YES|yes|yES|yEs|YeS|yeS )
+            if test -f ${user_defined_global_restart_containers_script}; then
+                if file ${user_defined_global_restart_containers_script} | grep 'shell script' >/dev/null; then
+                    bash ${user_defined_global_restart_containers_script}
+                else
+                    ${user_defined_global_restart_containers_script}
+                fi
+            else
+                echo_r "$user_defined_global_restart_containers_script can NOT be executed, please check it."
+                exit 1
+            fi
+        ;;
+        n|N|No|NO|no|nO)
+            restart_docker_container $@
+        ;;
+        *)
+            echo_r "Are you kidding me? You are a bad kid! "
+            exit 1
+        ;;
+    esac
+
+}
+
+
 # scp_local_files_to_remote_host local_path remote_hostname remote_path
 function scp_local_files_to_remote_host(){
     [ $# -ne 3 ] && return 1
@@ -699,7 +741,7 @@ function deploy() {
         ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
         RETVAL=$?
     else
-        test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
+        test -z ${user_defined_docker_container_name} || restart_docker_containers ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
         # TODO(Guodong Ding) external health check
         RETVAL=$?
     fi
@@ -773,7 +815,7 @@ function rollback() {
         ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
         RETVAL=$?
     else
-        test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
+        test -z ${user_defined_docker_container_name} || restart_docker_containers ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
         # TODO(Guodong Ding) external health check
         RETVAL=$?
     fi
@@ -836,7 +878,7 @@ function rollback_manual(){
                 ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
                 RETVAL=$?
             else
-                test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
+                test -z ${user_defined_docker_container_name} || restart_docker_containers ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
                 # TODO(Guodong Ding) external health check
                 RETVAL=$?
             fi
@@ -916,7 +958,7 @@ function deploys() {
             ssh_execute_command_on_remote_host ${remote_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
             RETVAL=$?
         else
-            test -z ${user_defined_docker_container_name} || restart_docker_container ${remote_host_ip} ${user_defined_docker_container_name}
+            test -z ${user_defined_docker_container_name} || restart_docker_containers ${remote_host_ip} ${user_defined_docker_container_name}
             # TODO(Guodong Ding) external health check
             RETVAL=$?
         fi
@@ -983,7 +1025,7 @@ function rollbacks(){
                 ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
                 RETVAL=$?
             else
-                test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
+                test -z ${user_defined_docker_container_name} || restart_docker_containers ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
                 # TODO(Guodong Ding) external health check
                 RETVAL=$?
             fi
@@ -1014,31 +1056,31 @@ function destroy() {
     read -p "(Default no,if you want please input: y ,if not please press the enter button):" user_input_answer_want_do_destroy
     case "$user_input_answer_want_do_destroy" in
         y|Y|Yes|YES|yes|yES|yEs|YeS|yeS )
-        # delete all file expect for this script self
-        # find: warning: Unix filenames usually don't contain slashes (though pathnames do).  That means that '-name `./deploy.sh'' will probably evaluate to false all the time on this system.  You might find the '-wholename' test more useful, or perhaps '-samefile'.  Alternatively, if you are using GNU grep, you could use 'find ... -print0 | grep -FzZ `./deploy.sh''.
-            # echo $WORKDIR/
-            #find -L $WORKDIR -type f ! -name "$(basename $0)" -exec ls --color=auto -al {} \;
-            # find -L . -type f ! -name "deploy.sh" -exec ls --color=auto -al {} \;
-            # find -L . -type d -exec ls --color=auto -al {} \;
-            # find -L ./ -maxdepth 1 ! -name "deploy.sh" ! -wholename "./"
-        # ls | grep -v "filename" | xargs rm -rf
-        find -L ${WORKDIR} -maxdepth 1 ! -name "$(basename $0)" ! -wholename "$WORKDIR"  -exec rm -rf '{}' \;
-        if [ $? -eq 0 ];then
-            test -f ${WORKDIR}/.capistrano_ds_lock && \rm -rf  ${WORKDIR}/.capistrano_ds_lock
-            echo_g "Destroy this project successfully! Now will exit with status 0. "
-            exit 0
-        else
-            echo_r "Error: something go wrong! Please check or alter to Admin user! "
-            exit 1
-        fi
+            # delete all file expect for this script self
+            # find: warning: Unix filenames usually don't contain slashes (though pathnames do).  That means that '-name `./deploy.sh'' will probably evaluate to false all the time on this system.  You might find the '-wholename' test more useful, or perhaps '-samefile'.  Alternatively, if you are using GNU grep, you could use 'find ... -print0 | grep -FzZ `./deploy.sh''.
+                # echo $WORKDIR/
+                #find -L $WORKDIR -type f ! -name "$(basename $0)" -exec ls --color=auto -al {} \;
+                # find -L . -type f ! -name "deploy.sh" -exec ls --color=auto -al {} \;
+                # find -L . -type d -exec ls --color=auto -al {} \;
+                # find -L ./ -maxdepth 1 ! -name "deploy.sh" ! -wholename "./"
+            # ls | grep -v "filename" | xargs rm -rf
+            find -L ${WORKDIR} -maxdepth 1 ! -name "$(basename $0)" ! -wholename "$WORKDIR"  -exec rm -rf '{}' \;
+            if [ $? -eq 0 ];then
+                test -f ${WORKDIR}/.capistrano_ds_lock && \rm -rf  ${WORKDIR}/.capistrano_ds_lock
+                echo_g "Destroy this project successfully! Now will exit with status 0. "
+                exit 0
+            else
+                echo_r "Error: something go wrong! Please check or alter to Admin user! "
+                exit 1
+            fi
         ;;
-        n|N|No|NO|no|nO)
-        echo_g "destroy action is cancel"
-        exit 0
+            n|N|No|NO|no|nO)
+            echo_g "destroy action is cancel"
+            exit 0
         ;;
         *)
-        echo_r "Are you kidding me? You are a bad kid! "
-        exit 1
+            echo_r "Are you kidding me? You are a bad kid! "
+            exit 1
         ;;
     esac
 
@@ -1098,6 +1140,9 @@ function main(){
                 ;;
             destroy)
                 destroy
+                ;;
+            restart)
+                restart_docker_containers
                 ;;
             help|*)
                 echo "Usage: $0 {deploy|rollback_manual|deploys|backup_manual} with $0 itself"
