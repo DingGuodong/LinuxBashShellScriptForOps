@@ -299,10 +299,10 @@ function check_other_dependencies() {
 function setDirectoryStructureOnLocalHost() {
     set -o errexit
     if [ -f ${WORKDIR}/.capistrano_ds_lock ];then
-        echo_g "Set directory structure has been done, skipping. "
+        echo_g "Set capistrano directory structure has been done, skipping. "
         return
     fi
-    echo_b "Setting directory structure... "
+    echo_b "Setting capistrano directory structure... "
     # learn from capistrano
     # Refer: http://capistranorb.com/documentation/getting-started/structure/
     # Refer: http://capistranorb.com/documentation/getting-started/structure/#
@@ -330,7 +330,7 @@ function setDirectoryStructureOnLocalHost() {
     # Check directories for deploy
     [ ! -d ${WORKDIR}/release ] && mkdir ${WORKDIR}/release
     [ ! -d ${WORKDIR}/repository ] && mkdir ${WORKDIR}/repository
-    [ ! -d ${WORKDIR}/share ] && mkdir ${WORKDIR}/share
+    [ ! -d ${WORKDIR}/shared ] && mkdir ${WORKDIR}/shared
     # end directories structure
 
     # Additional directories structure for full deploy operation
@@ -340,7 +340,7 @@ function setDirectoryStructureOnLocalHost() {
 
     # set a directories structure lock
     touch ${WORKDIR}/.capistrano_ds_lock
-    echo_g "Set directory structure successfully! "
+    echo_g "Set capistrano directory structure successfully! "
     echo
     set +o errexit
 }
@@ -394,7 +394,9 @@ function git_project_clone(){
     [ $# -ge 1 ] && project_clone_repository="$1"
     project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
-    if test -n $2; then
+    # TODO(Guodong Ding) let user set this variable("branch")
+    branch="develop"
+    if test -n "$2"; then
         branch="$2"
     else
         branch="develop"
@@ -402,38 +404,39 @@ function git_project_clone(){
     if test ! -d ${project_clone_directory}; then
         echo_b "git clone from $project_clone_repository"
         # git clone git@github.com:name/app.git -b master
-        git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/git_$(date +%Y%m%d)_$$.log 2>&1
+        git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
             # TODO(Guodong Ding) get branch names or revision numbers from VCS data
 
         cd ${project_clone_directory}
-        git checkout ${branch} >>${WORKDIR}/git_$(date +%Y%m%d)_$$.log 2>&1
-        cd ..
+        git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+        cd ${WORKDIR}
         echo_g "git clone from $project_clone_repository successfully! "
     else
         echo_b "git pull from $project_clone_repository"
         cd ${project_clone_directory}
-        git pull >>${WORKDIR}/git_$(date +%Y%m%d)_$$.log 2>&1
-        git checkout ${branch} >>${WORKDIR}/git_$(date +%Y%m%d)_$$.log 2>&1
+        git pull origin ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        current_branch_name="`git rev-parse --abbrev-ref HEAD`"
+        if test "$current_branch_name" == "$branch"; then
+            git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+        else
+            git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+            git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+        fi
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data
-        cd ..
+            # git rev-parse HEAD
+            # git rev-parse --verify HEAD
+            # git rev-parse HEAD | cut -c1-10
+            # git show-ref
+            # git for-each-ref
+            # git log --pretty=format:'%h' -n 1
+            # git log -1 --format="%H"
+            # git rev-list --max-count=1 HEAD
+            # git show --pretty=%h
+
+        cd ${WORKDIR}
         echo_g "git pull from $project_clone_repository successfully! "
     fi
-    set +o errexit
-}
-
-
-function maven_build_project_deprecated(){
-    set -o errexit
-    echo_b "Do mvn build java project... "
-    check_command_can_be_execute mvn
-    [ $# -ge 1 ] && project_clone_repository="$1"
-    project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
-    project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
-    cd ${project_clone_directory}
-    mvn install >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
-    mvn clean package >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
-    cd ..
-    echo_g "Do mvn build java project finished with exit code 0! "
     set +o errexit
 }
 
@@ -645,7 +648,7 @@ function backup_remote_host_target_files(){
     # TODO(Guodong Ding) continue here
     echo_b "Do backup operation before first deployment for the case which host target has been deployed by manual! "
     # only exec this function when first deploy. After first deploy, new backups will be found in "${WORKDIR}/release" directory.
-    test -f ${WORKDIR}/share/workable_program.log && return 0
+    test -f ${WORKDIR}/shared/workable_program.log && return 0
 
     [ $# -ne 1 ] && return 1
     ssh_execute_command_on_remote_host "$1" "tar czf $user_defined_project_top_directory_to_target_host /tmp/$(date +%Y%m%d).tar.gz"
@@ -743,7 +746,7 @@ function make_current_workable_source(){
 
     # links_target_directory_to_current
     # Make directory to release directory
-    if test ! -d ${WORKDIR}/release -o ! -d ${WORKDIR}/share; then
+    if test ! -d ${WORKDIR}/release -o ! -d ${WORKDIR}/shared; then
         echo_r "capistrano directory structure is broken, make sure the file .capistrano_ds_lock is deleted before a new deploy! "
 #        test -f ${WORKDIR}/.capistrano_ds_lock && \rm -rf  ${WORKDIR}/.capistrano_ds_lock
         exit 1
@@ -757,12 +760,12 @@ function make_current_workable_source(){
     ln -s ${new_release_just_created} ${WORKDIR}/current
 
     # Move conf and logs directives from release to share if found
-    [ -d ${WORKDIR}/release/conf ] && mv ${WORKDIR}/release/conf ${WORKDIR}/share/conf
-    [ -d ${WORKDIR}/release/logs ] && mv ${WORKDIR}/release/logs ${WORKDIR}/share/logs
+    [ -d ${WORKDIR}/release/conf ] && mv ${WORKDIR}/release/conf ${WORKDIR}/shared/conf
+    [ -d ${WORKDIR}/release/logs ] && mv ${WORKDIR}/release/logs ${WORKDIR}/shared/logs
 
     # Make conf and logs symbolic link to current
-    [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current/conf
-    [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current/logs
+    [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current/conf
+    [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current/logs
 }
 
 
@@ -775,6 +778,7 @@ function deploy() {
     backup_remote_host_target_files "$user_defined_deploy_target_host_ip"
 
     echo_b "Do deploy on $user_defined_deploy_target_host_ip ..."
+
     # backup remote host config files
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
@@ -818,11 +822,11 @@ function deploy() {
     # if started ok, then create a workable program to a file
     if [[ ${RETVAL} -eq 0 ]]; then
         # Note cat with eof must start at row 0, and with eof end only, such as no blank spaces, etc
-        cat >${WORKDIR}/share/workable_program.log <<eof
+        cat >${WORKDIR}/shared/workable_program.log <<eof
 ${new_release_just_created}
 eof
         echo_g "Deploy successfully for $user_defined_deploy_target_host_ip! "
-        echo_g "Current workable version is $(cat ${WORKDIR}/share/workable_program.log)"
+        echo_g "Current workable version is $(cat ${WORKDIR}/shared/workable_program.log)"
     else
         echo_r "Error: Deploy failed! "
         ${WORKDIR}/`basename $0` rollback
@@ -834,7 +838,7 @@ eof
 function rollback() {
     echo_b "Rollback to last right configuration... "
     # The key point is find last files which can work
-    WORKABLE_PROGRAM=`cat ${WORKDIR}/share/workable_program.log`
+    WORKABLE_PROGRAM=`cat ${WORKDIR}/shared/workable_program.log`
     if [[ -z ${WORKABLE_PROGRAM} ]]; then
         echo_r "Error: Can NOT find workable release version! Please check if it is first deployment! "
         exit 1
@@ -851,8 +855,8 @@ function rollback() {
     ln -s ${WORKABLE_PROGRAM} ${WORKDIR}/current
 
     # Remake conf and logs symbolic link to current
-    [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current
-    [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
+    [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
+    [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
 
     # backup remote host config files
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
@@ -913,8 +917,8 @@ function rollback_manual(){
             rm -rf ${WORKDIR}/current
             ln -s ${user_input_release_to_rollback} ${WORKDIR}/current
             # Remake conf and logs symbolic link to current
-            [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current
-            [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
+            [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
+            [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
 
             # backup remote host config files
             [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
@@ -958,7 +962,7 @@ function rollback_manual(){
             if [[ ${RETVAL} -eq 0 ]]; then
                 echo_g "Rollback successfully! "
                 echo_g "current workable version is $user_input_release_to_rollback"
-                cat >${WORKDIR}/share/workable_program.log <<eof
+                cat >${WORKDIR}/shared/workable_program.log <<eof
 ${user_input_release_to_rollback}
 eof
     fi
@@ -1051,11 +1055,11 @@ function deploys() {
     # if started ok, then create a workable program to a file
     if [[ ${RETVAL} -eq 0 ]]; then
         # Note cat with eof must start at row 0, and with eof end only, such as no blank spaces, etc
-    cat >${WORKDIR}/share/workable_program.log <<eof
+    cat >${WORKDIR}/shared/workable_program.log <<eof
 ${new_release_just_created}
 eof
         echo_g "Deploy finished! on $user_defined_deploy_targets_host_ip_list "
-        echo_g "current workable version is $(cat ${WORKDIR}/share/workable_program.log)"
+        echo_g "current workable version is $(cat ${WORKDIR}/shared/workable_program.log)"
     #    ls --color=auto -l ${WORKDIR}/current
     #    ls --color=auto -l ${WORKDIR}/current/
     else
@@ -1079,8 +1083,8 @@ function rollbacks(){
             rm -rf ${WORKDIR}/current
             ln -s ${user_input_release_to_rollback} ${WORKDIR}/current
             # Remake conf and logs symbolic link to current
-            [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current
-            [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
+            [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
+            [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
 
             # backup remote host config files
             [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
@@ -1112,7 +1116,7 @@ function rollbacks(){
             if [[ ${RETVAL} -eq 0 ]]; then
                 echo_g "Rollback successfully on $user_defined_deploy_targets_host_ip_list! "
                 echo_g "Current workable version is $user_input_release_to_rollback"
-                cat >${WORKDIR}/share/workable_program.log <<eof
+                cat >${WORKDIR}/shared/workable_program.log <<eof
 ${user_input_release_to_rollback}
 eof
     fi

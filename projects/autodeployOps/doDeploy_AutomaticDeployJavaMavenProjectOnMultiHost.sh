@@ -21,6 +21,11 @@ Function: Execute this shell script to deploy Java projects built by Maven autom
 License: Open source software
 "
 
+
+# set an empty function using for location this line quickly in PyCharm editor on purpose.
+function _empty() { return; }
+
+
 # user defined variables
 # Where to get source code
 user_defined_project_clone_depends="ssh://git@git.huntor.cn:18082/core/business-service-base.git"
@@ -354,7 +359,9 @@ function git_project_clone(){
     [ $# -ge 1 ] && project_clone_repository="$1"
     project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
-    if test -n $2; then
+    # TODO(Guodong Ding) let user set this variable("branch")
+    branch="develop"
+    if test -n "$2"; then
         branch="$2"
     else
         branch="develop"
@@ -362,20 +369,37 @@ function git_project_clone(){
     if test ! -d ${project_clone_directory}; then
         echo_b "git clone from $project_clone_repository"
         # git clone git@github.com:name/app.git -b master
-        git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/git_$(date +%Y%m%d)_$$.log 2>&1
+        git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
             # TODO(Guodong Ding) get branch names or revision numbers from VCS data
 
         cd ${project_clone_directory}
-        git checkout ${branch} >>${WORKDIR}/git_$(date +%Y%m%d)_$$.log 2>&1
-        cd ..
+        git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+        cd ${WORKDIR}
         echo_g "git clone from $project_clone_repository successfully! "
     else
         echo_b "git pull from $project_clone_repository"
         cd ${project_clone_directory}
-        git pull >>${WORKDIR}/git_$(date +%Y%m%d)_$$.log 2>&1
-        git checkout ${branch} >>${WORKDIR}/git_$(date +%Y%m%d)_$$.log 2>&1
+        git pull origin ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        current_branch_name="`git rev-parse --abbrev-ref HEAD`"
+        if test "$current_branch_name" == "$branch"; then
+            git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+        else
+            git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+            git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+        fi
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data
-        cd ..
+            # git rev-parse HEAD
+            # git rev-parse --verify HEAD
+            # git rev-parse HEAD | cut -c1-10
+            # git show-ref
+            # git for-each-ref
+            # git log --pretty=format:'%h' -n 1
+            # git log -1 --format="%H"
+            # git rev-list --max-count=1 HEAD
+            # git show --pretty=%h
+
+        cd ${WORKDIR}
         echo_g "git pull from $project_clone_repository successfully! "
     fi
     set +o errexit
@@ -391,7 +415,7 @@ function maven_build_project_deprecated(){
     cd ${project_clone_directory}
     mvn install >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
     mvn clean package >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
-    cd ..
+    cd ${WORKDIR}
     echo_g "Do mvn build java project finished with exit code 0! "
     set +o errexit
 }
