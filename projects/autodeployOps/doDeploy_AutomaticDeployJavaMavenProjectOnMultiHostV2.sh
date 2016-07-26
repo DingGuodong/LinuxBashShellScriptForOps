@@ -782,6 +782,9 @@ function deploy() {
     # backup remote host config files
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
+    # remove all file in remote host target directories and files
+    ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "rm -rf $user_defined_project_top_directory_to_target_host"
+
     saved_IFS=$IFS
     IFS=' '
     cd ${WORKDIR}/current
@@ -1011,6 +1014,10 @@ function deploys() {
         backup_remote_host_target_files "$remote_host_ip"
 
         echo_b "Do deploy on $remote_host_ip ..."
+
+        # remove all file in remote host target directories and files
+        ssh_execute_command_on_remote_host "$remote_host_ip" "rm -rf $user_defined_project_top_directory_to_target_host"
+
         saved_IFS=$IFS
         IFS=' '
         cd ${WORKDIR}/current

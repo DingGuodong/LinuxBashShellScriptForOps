@@ -688,8 +688,12 @@ function deploy() {
     make_current_workable_source
 
     echo_b "Do deploy on $user_defined_deploy_target_host_ip ..."
+
     # backup remote host config files
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+
+    # remove all file in remote host target directories and files
+    ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "rm -rf $user_defined_project_top_directory_to_target_host"
 
     saved_IFS=$IFS
     IFS=' '
@@ -702,6 +706,7 @@ function deploy() {
 
     # rollback remote host config files
     [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
+
     if test ! -z "${user_defined_project_conf_directory}" -a -d ${WORKDIR}/${user_defined_project_conf_directory} ; then
         saved_IFS=$IFS
         IFS=' '
@@ -912,6 +917,10 @@ function deploys() {
     echo_b "Do deploy on $user_defined_deploy_targets_host_ip_list ..."
     for remote_host_ip in ${user_defined_deploy_targets_host_ip_list};do
         echo_b "Do deploy on $remote_host_ip ..."
+
+        # remove all file in remote host target directories and files
+        ssh_execute_command_on_remote_host "$remote_host_ip" "rm -rf $user_defined_project_top_directory_to_target_host"
+
         saved_IFS=$IFS
         IFS=' '
         cd ${WORKDIR}/current

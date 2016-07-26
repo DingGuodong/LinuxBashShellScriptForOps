@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="add new files">
+    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="update git_project_clone()&#10;update cd .. to cd ${WORKDIR}">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" afterPath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh" afterPath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh" />
@@ -107,21 +107,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" pinned="false" current-in-tab="true">
+      <file leaf-file-name="doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.111358576">
-              <caret line="351" column="6" selection-start-line="351" selection-start-column="6" selection-end-line="351" selection-end-column="6" />
+            <state vertical-scroll-proportion="-6.633333">
+              <caret line="919" column="0" selection-start-line="919" selection-start-column="0" selection-end-line="922" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh" pinned="false" current-in-tab="false">
+      <file leaf-file-name="doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.3">
-              <caret line="468" column="7" selection-start-line="468" selection-start-column="4" selection-end-line="468" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.38752785">
+              <caret line="1017" column="10" selection-start-line="1017" selection-start-column="10" selection-end-line="1017" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -837,12 +837,6 @@
       <option name="number" value="Default" />
       <updated>1461225723867</updated>
     </task>
-    <task id="LOCAL-00008" summary="add new files">
-      <created>1461839076998</created>
-      <option name="number" value="00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1461839076998</updated>
-    </task>
     <task id="LOCAL-00009" summary="add new files">
       <created>1462245552552</created>
       <option name="number" value="00009" />
@@ -1131,7 +1125,13 @@
       <option name="project" value="LOCAL" />
       <updated>1469505672043</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="update git_project_clone()&#10;update cd .. to cd ${WORKDIR}">
+      <created>1469523970459</created>
+      <option name="number" value="00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1469523970459</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1239,7 +1239,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="add new files" />
-    <option name="LAST_COMMIT_MESSAGE" value="add new files" />
+    <MESSAGE value="update git_project_clone()&#10;update cd .. to cd ${WORKDIR}" />
+    <option name="LAST_COMMIT_MESSAGE" value="update git_project_clone()&#10;update cd .. to cd ${WORKDIR}" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1623,18 +1624,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh">
+    <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.3">
-          <caret line="468" column="7" selection-start-line="468" selection-start-column="4" selection-end-line="468" selection-end-column="7" />
+        <state vertical-scroll-proportion="-6.633333">
+          <caret line="919" column="0" selection-start-line="919" selection-start-column="0" selection-end-line="922" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh">
+    <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.111358576">
-          <caret line="351" column="6" selection-start-line="351" selection-start-column="6" selection-end-line="351" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.38752785">
+          <caret line="1017" column="10" selection-start-line="1017" selection-start-column="10" selection-end-line="1017" selection-end-column="69" />
           <folding />
         </state>
       </provider>
