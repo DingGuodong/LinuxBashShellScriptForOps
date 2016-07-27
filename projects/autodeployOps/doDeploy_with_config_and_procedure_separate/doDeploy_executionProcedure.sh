@@ -3,16 +3,6 @@
 # Name: doDeploy.sh
 #Execute this shell script to deploy Java projects built by Maven automatically on remote hosts.
 
-# About V2
-# Improvements: TODO(Guodong Ding) continue here
-#   1.backup remote host deploy target if target is not empty
-#   2.let user choose if restart docker container, if true then restart container, else load global restart script(Name:global_restart_containers_script.sh)
-#   3.whenever do backup operation, save every backup to a .zip file.
-# Bug fix:
-#   1.adding here
-#   2.adding here
-#   3.adding here
-
 # debug option
 DEBUG=false
 #DEBUG=true
@@ -31,24 +21,17 @@ Function: Execute this shell script to deploy Java projects built by Maven autom
 License: Open source software
 "
 
+
 # set an empty function using for location this line quickly in PyCharm editor on purpose.
 function _empty() { return; }
 
 
-# user defined variables
+# load user defined variables
 # Where to get source code
-user_defined_project_clone_depends="ssh://git@git.huntor.cn:18082/core/business-service-base.git"
-user_defined_project_clone="ssh://git@git.huntor.cn:18082/core/business-service-core.git"
-user_defined_deploy_target_host_ip="10.6.28.125" # this is a mandatory field, and must be same as the first ip in $user_defined_deploy_targets_host_ip_list
-user_defined_deploy_targets_host_ip_list="10.6.28.125" # deploy to multi-hosts setting here, using space as delimiter
-user_defined_project_top_directory_to_target_host="/data/docker/business-service/bs-core-02"
-user_defined_docker_container_name="bs-core-02" # if you using a docker container other than a startup script located in sourcecode/bin/startup.sh, then set this to docker container name
-user_defined_project_conf_directory="config_backup" # if you do NOT want to use configurations from deploy target, you should set this variable to where pointed to config files
-user_defined_skip_check_network_and_resolver="true" # if system administrator disable ICMP protocol, set this any content but not null
-user_defined_global_restart_containers_script="/root/autodeploy/deploy_to_uat/global_restart_containers_script.sh" # external shell script path should be full(absolute path)
-user_defined_remote_host_target_backup_directory="target_backup"
-# Setting how many days do you want save old releases, default is 10 days
-save_old_releases_for_days=10
+# TODO(Guodong Ding) using with `basename $0`
+if test -f doDeploy_userConfig.sh ; then
+    source doDeploy_userConfig.sh
+fi
 # end define variables
 
 # pretreatment predefined variables
@@ -78,29 +61,22 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-
 # echo color function, smarter, learn from lnmp.org lnmp install.sh
 function echo_r (){
     # Color red: Error, Failed
     [ $# -ne 1 ] && return 1
     echo -e "\033[31m$1\033[0m"
 }
-
-
 function echo_g (){
     # Color green: Success
     [ $# -ne 1 ] && return 1
     echo -e "\033[32m$1\033[0m"
 }
-
-
 function echo_y (){
     # Color yellow: Warning
     [ $# -ne 1 ] && return 1
     echo -e "\033[33m$1\033[0m"
 }
-
-
 function echo_b (){
     # Color blue: Debug Level 1
     [ $# -ne 1 ] && return 1
@@ -112,7 +88,6 @@ function echo_p (){
     [ $# -ne 1 ] && return 1
     echo -e "\033[35m$1\033[0m"
 }
-
 
 function echo_c (){
     # Color cyan: friendly prompt, Level 1
@@ -133,18 +108,15 @@ if [ $UID -ne 0 ]; then
     echo "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options"
 fi
 
-
 function command_exists() {
     # which "$@" >/dev/null 2>&1
     command -v "$@" >/dev/null 2>&1
 }
 
-
 function check_command_can_be_execute(){
     [ $# -ne 1 ] && return 1
     command_exists $1
 }
-
 
 function check_network_connectivity(){
     echo_b "checking network connectivity ... "
@@ -156,7 +128,7 @@ function check_network_connectivity(){
     if [ ${retval} -ne 0 ] ; then
         if ping -c ${ping_count} ${stable_network_address_to_check} >/dev/null;then
             echo_g "Network to $stable_network_address_to_check succeed! "
-            echo_y "Note: network to $network_address_to_check failed once! maybe just some packages loss."
+            echo_y "Note: network to $network_address_to_check failed once time! maybe just some packages loss."
         elif ! ip route | grep default >/dev/null; then
             echo_r "Network is unreachable, gateway is not set."
             exit 1
@@ -172,7 +144,6 @@ function check_network_connectivity(){
         echo
     fi
 }
-
 
 function check_name_resolve(){
     echo_b "checking DNS name resolve ... "
@@ -202,7 +173,6 @@ eof
     fi
 }
 
-
 function check_ssh_can_be_connect(){
     [ $# -ne 1 ] && return 1
     echo_b "Check if can ssh to remote host $1 ... "
@@ -217,7 +187,6 @@ function check_ssh_can_be_connect(){
         echo_g "Check ssh to remote host $1 successfully! "
     fi
 }
-
 
 function check_other_dependencies() {
     echo_b "Checking other dependencies for deploy procedure... "
@@ -267,16 +236,11 @@ function check_other_dependencies() {
         exit 1
     fi
     if test -z ${user_defined_project_conf_directory}; then
+    # TODO(Guodong Ding) check directory if exist
         if test -d ${WORKDIR}/${user_defined_project_conf_directory}; then
             echo_y "Warning: ${WORKDIR}/${user_defined_project_conf_directory} is not exist!"
         fi
         echo_y "Warning: user defined project conf directory is not defined! "
-    fi
-    if test -z ${user_defined_remote_host_target_backup_directory}; then
-        if test -d ${WORKDIR}/${user_defined_remote_host_target_backup_directory}; then
-            echo_y "Warning: ${WORKDIR}/${user_defined_remote_host_target_backup_directory} is not exist!"
-        fi
-        echo_y "Warning: user defined remote host backup directory is not defined! "
     fi
 
     echo_g "\tChecking user customized and defined variables passed! "
@@ -295,14 +259,13 @@ function check_other_dependencies() {
 
 }
 
-
 function setDirectoryStructureOnLocalHost() {
     set -o errexit
     if [ -f ${WORKDIR}/.capistrano_ds_lock ];then
-        echo_g "Set capistrano directory structure has been done, skipping. "
+        echo_g "Set directory structure has been done, skipping. "
         return
     fi
-    echo_b "Setting capistrano directory structure... "
+    echo_b "Setting directory structure... "
     # learn from capistrano
     # Refer: http://capistranorb.com/documentation/getting-started/structure/
     # Refer: http://capistranorb.com/documentation/getting-started/structure/#
@@ -330,21 +293,23 @@ function setDirectoryStructureOnLocalHost() {
     # Check directories for deploy
     [ ! -d ${WORKDIR}/release ] && mkdir ${WORKDIR}/release
     [ ! -d ${WORKDIR}/repository ] && mkdir ${WORKDIR}/repository
-    [ ! -d ${WORKDIR}/shared ] && mkdir ${WORKDIR}/shared
+    [ ! -d ${WORKDIR}/share ] && mkdir ${WORKDIR}/share
     # end directories structure
 
     # Additional directories structure for full deploy operation
     # for backup remote host config file
     [ ! -d ${WORKDIR}/${user_defined_project_conf_directory} ] && mkdir ${WORKDIR}/${user_defined_project_conf_directory}
-    [ ! -d ${WORKDIR}/${user_defined_remote_host_target_backup_directory} ] && mkdir ${WORKDIR}/${user_defined_remote_host_target_backup_directory}
+
+    # deploy logs for git/mvn/ssh
+    [ ! -d ${WORKDIR}/logs ] && mkdir ${WORKDIR}/logs
+
 
     # set a directories structure lock
     touch ${WORKDIR}/.capistrano_ds_lock
-    echo_g "Set capistrano directory structure successfully! "
+    echo_g "Set directory structure successfully! "
     echo
     set +o errexit
 }
-
 
 function clean_old_releases(){
     echo_b "Clean old releases... "
@@ -368,7 +333,6 @@ function clean_old_releases(){
 
 }
 
-
 function clean_old_logs(){
     echo_b "Clean old logs... "
     save_days=${save_old_releases_for_days:-10}
@@ -387,7 +351,6 @@ function clean_old_logs(){
 
 }
 
-
 # git_project_clone repository branch
 function git_project_clone(){
     set -o errexit
@@ -404,24 +367,25 @@ function git_project_clone(){
     if test ! -d ${project_clone_directory}; then
         echo_b "git clone from $project_clone_repository"
         # git clone git@github.com:name/app.git -b master
-        git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
             # TODO(Guodong Ding) get branch names or revision numbers from VCS data
 
         cd ${project_clone_directory}
-        git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-        git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+        git checkout -b ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git pull origin ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
         cd ${WORKDIR}
         echo_g "git clone from $project_clone_repository successfully! "
     else
         echo_b "git pull from $project_clone_repository"
         cd ${project_clone_directory}
-        git pull origin ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git pull origin ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
         current_branch_name="`git rev-parse --abbrev-ref HEAD`"
         if test "$current_branch_name" == "$branch"; then
-            git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+            git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
         else
-            git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-            git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+            git checkout -b ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+            git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
         fi
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data
             # git rev-parse HEAD
@@ -440,6 +404,20 @@ function git_project_clone(){
     set +o errexit
 }
 
+function maven_build_project_deprecated(){
+    set -o errexit
+    echo_b "Do mvn build java project... "
+    check_command_can_be_execute mvn
+    [ $# -ge 1 ] && project_clone_repository="$1"
+    project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
+    project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
+    cd ${project_clone_directory}
+    mvn install >>${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+    mvn clean package >>${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+    cd ${WORKDIR}
+    echo_g "Do mvn build java project finished with exit code 0! "
+    set +o errexit
+}
 
 function maven_build_project(){
     echo_b "Do mvn build java project for `echo $1 | awk -F '[/.]+' '{ print $(NF-1)}'`... "
@@ -449,19 +427,19 @@ function maven_build_project(){
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
 
     cd ${project_clone_directory}
-    mvn install >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    mvn install >>${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "mvn install failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
+        echo_r "mvn install failed! More details refer to ${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log"
         exit 1
     else
         echo_g "mvn install for ${project_clone_repository_name} successfully! "
     fi
 
-    mvn clean package >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    mvn clean package >>${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
+        echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log"
         exit 1
     else
         echo_g "mvn clean package for ${project_clone_repository_name} successfully! "
@@ -472,21 +450,65 @@ function maven_build_project(){
 }
 
 
+function maven_install(){
+    echo_b "Do mvn install java project for `echo $1 | awk -F '[/.]+' '{ print $(NF-1)}'`... "
+    check_command_can_be_execute mvn
+    [ $# -ge 1 ] && project_clone_repository="$1"
+    project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
+    project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
+
+    cd ${project_clone_directory}
+    mvn install >>${WORKDIR}/logs/mvn_install_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+    retval=$?
+    if [ ${retval} -ne 0 ] ; then
+        echo_r "mvn install failed! More details refer to ${WORKDIR}/logs/mvn_install_$(date +%Y%m%d%H%M%S)_$$.log"
+        exit 1
+    else
+        echo_g "mvn install for ${project_clone_repository_name} successfully! "
+    fi
+    cd ${WORKDIR}
+    echo_g "Do mvn install java project finished for ${project_clone_repository_name} with exit code 0! "
+    echo
+
+}
+
+
+function maven_clean_package(){
+    echo_b "Do mvn clean package java project for `echo $1 | awk -F '[/.]+' '{ print $(NF-1)}'`... "
+    check_command_can_be_execute mvn
+    [ $# -ge 1 ] && project_clone_repository="$1"
+    project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
+    project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
+
+    cd ${project_clone_directory}
+    mvn clean package >>${WORKDIR}/logs/mvn_clean_package_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+    retval=$?
+    if [ ${retval} -ne 0 ] ; then
+        echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/logs/mvn_clean_package_$(date +%Y%m%d%H%M%S)_$$.log"
+        exit 1
+    else
+        echo_g "mvn clean package for ${project_clone_repository_name} successfully! "
+    fi
+    cd ${WORKDIR}
+    echo_g "Do mvn clean package java project finished for ${project_clone_repository_name} with exit code 0! "
+    echo
+
+}
+
 # ssh_execute_command_on_remote_host hostname command
 function ssh_execute_command_on_remote_host(){
     [ $# -ne 2 ] && return 1
-    ssh -i /etc/ssh/ssh_host_rsa_key -p 22 -oStrictHostKeyChecking=no root@$1 "$2" >>${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log 2>&1
+    ssh -i /etc/ssh/ssh_host_rsa_key -p 22 -oStrictHostKeyChecking=no root@$1 "$2" >>${WORKDIR}/logs/ssh_command_$(date +%Y%m%d)_$$.log 2>&1
     retval=$?
     if [ ${retval} -ne 0 ] ; then
         echo_r "ssh execute command on remote host $2 failed! "
-        test -s ${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log && echo_r "\tMore details refer to ${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log"
+        test -s ${WORKDIR}/logs/ssh_command_$(date +%Y%m%d)_$$.log && echo_r "\tMore details refer to ${WORKDIR}/logs/ssh_command_$(date +%Y%m%d)_$$.log"
         return 1
     else
         echo_g "ssh execute command on remote host $2 successfully! "
         return 0
     fi
 }
-
 
 function restart_docker_container(){
     echo_b "Restarting docker container..."
@@ -507,37 +529,6 @@ function restart_docker_container(){
     fi
 }
 
-
-function restart_docker_containers(){
-    echo_b "Restarting docker containers..."
-    echo_y "Which way do you want to restart docker container? "
-    user_input_answer_want_do_restart="n"
-    read -p "(If you want to restart global please input: y ,if not please press the enter button):" user_input_answer_want_do_restart
-    case "$user_input_answer_want_do_restart" in
-        y|Y|Yes|YES|yes|yES|yEs|YeS|yeS )
-            if test -f ${user_defined_global_restart_containers_script}; then
-                if file ${user_defined_global_restart_containers_script} | grep 'shell script' >/dev/null; then
-                    bash ${user_defined_global_restart_containers_script}
-                else
-                    ${user_defined_global_restart_containers_script}
-                fi
-            else
-                echo_r "$user_defined_global_restart_containers_script can NOT be executed, please check it."
-                exit 1
-            fi
-        ;;
-        n|N|No|NO|no|nO)
-            restart_docker_container $@
-        ;;
-        *)
-            echo_r "Are you kidding me? You are a bad kid! "
-            exit 1
-        ;;
-    esac
-
-}
-
-
 # scp_local_files_to_remote_host local_path remote_hostname remote_path
 function scp_local_files_to_remote_host(){
     [ $# -ne 3 ] && return 1
@@ -555,7 +546,6 @@ function scp_local_files_to_remote_host(){
 
 }
 
-
 # scp_remote_files_to_local_host remote_hostname remote_path local_path
 function scp_remote_files_to_local_host(){
     [ $# -ne 3 ] && return 1
@@ -569,7 +559,6 @@ function scp_remote_files_to_local_host(){
         echo_g "scp remote files to local host successfully! "
     fi
 }
-
 
 function backup_single_file(){
     set -o errexit
@@ -611,7 +600,6 @@ function backup_files(){
     return 0
 }
 
-
 # Function description:
 function rollback_files(){
     # TODO(Guodong Ding) improvements here
@@ -635,36 +623,9 @@ function backup_directories(){
     test -f ${backup_filename_origin} && cp -r ${backup_filename_origin} ${backup_filename_target}
 }
 
-
 function rollback_directories(){
     # TODO(Guodong Ding) continue here
     return
-}
-
-
-# backup remote host target, only exec this function when first deploy
-# after first deploy, new backups will be found in "release" directory.
-function backup_remote_host_target_files(){
-    # TODO(Guodong Ding) continue here
-    echo_b "Do backup operation before first deployment for the case which host target has been deployed by manual! "
-    # only exec this function when first deploy. After first deploy, new backups will be found in "${WORKDIR}/release" directory.
-    test -f ${WORKDIR}/shared/workable_program.log && return 0
-
-    [ $# -ne 1 ] && return 1
-    ssh_execute_command_on_remote_host "$1" "tar czf $user_defined_project_top_directory_to_target_host /tmp/$(date +%Y%m%d).tar.gz"
-    if test ! -d ${WORKDIR}/${user_defined_remote_host_target_backup_directory}; then
-        echo_r "$WORKDIR/$user_defined_remote_host_target_backup_directory can NOT be found! "
-        exit 1
-    fi
-    scp -i /etc/ssh/ssh_host_rsa_key -P 22 -oStrictHostKeyChecking=no root@$1:/tmp/$(date +%Y%m%d).tar.gz ${WORKDIR}/${user_defined_remote_host_target_backup_directory}/backup-$(date +%Y%m%d%H%M%S).tar.gz
-    if [ $? -eq 0 ];then
-        echo_g "Backup this project successfully! Now will return with status 0. "
-        ssh_execute_command_on_remote_host "$1" "test -f /tmp/$(date +%Y%m%d).tar.gz && rm -rf /tmp/$(date +%Y%m%d).tar.gz"
-        return 0
-    else
-        echo_r "Error: something is wrong! Please check or alter to Admin user! "
-        exit 1
-    fi
 }
 
 
@@ -697,7 +658,6 @@ function backup_remote_host_config_files(){
     fi
 }
 
-
 function rollback_remote_host_config_files(){
     echo_b "rollback remote host config files..."
     #scp_local_files_to_remote_host ${WORKDIR}/${user_defined_project_conf_directory} ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
@@ -717,7 +677,6 @@ function rollback_remote_host_config_files(){
     # TODO(Guodong Ding) improvements here
     echo_g "rollback remote host config files finished."
 }
-
 
 function make_current_workable_source(){
     # check a directories lock, Note: this is redundant
@@ -740,50 +699,59 @@ function make_current_workable_source(){
     # TODO(Guodong Ding) if we need a git_project_clone "$user_defined_project_clone_depends" here using auto judgment statement
     test -z ${user_defined_project_clone_depends} || git_project_clone "$user_defined_project_clone_depends"
     git_project_clone "$user_defined_project_clone"
-    test -z ${user_defined_project_clone_depends} || maven_build_project "$user_defined_project_clone_depends"
-    maven_build_project "$user_defined_project_clone"
+    test -z ${user_defined_project_clone_depends} || maven_install "$user_defined_project_clone_depends"
+    maven_clean_package "$user_defined_project_clone"
     cd ${WORKDIR}
 
     # links_target_directory_to_current
     # Make directory to release directory
-    if test ! -d ${WORKDIR}/release -o ! -d ${WORKDIR}/shared; then
+    if test ! -d ${WORKDIR}/release -o ! -d ${WORKDIR}/share; then
         echo_r "capistrano directory structure is broken, make sure the file .capistrano_ds_lock is deleted before a new deploy! "
 #        test -f ${WORKDIR}/.capistrano_ds_lock && \rm -rf  ${WORKDIR}/.capistrano_ds_lock
         exit 1
     fi
     new_release_just_created="$WORKDIR/release/$(date +%Y%m%d%H%M%S)"
     [ ! -d ${new_release_just_created} ] && mkdir ${new_release_just_created}
-    [ -d ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/ ] && \
+
+    # for special project, such as a project have different name from its git repository name, for example here, "chatter"
+    # TODO(Guodong Ding) find more this foreseeable exception here
+    if [ -d ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/ ]; then
         \cp -rf ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/* ${new_release_just_created}
+    elif [ -d ${WORKDIR}/repository/${project_clone_repository_name}/target/chatter ]; then
+        \cp -rf ${WORKDIR}/repository/${project_clone_repository_name}/target/chatter/* ${new_release_just_created}
+    else
+        echo_r "A foreseeable error occurred, please alter to Developer & Administrator. "
+        exit 1
+    fi
+
      # Make source code symbolic link to current
     ( [ -f ${WORKDIR}/current ] || [ -d ${WORKDIR}/current ] ) && rm -rf ${WORKDIR}/current
     ln -s ${new_release_just_created} ${WORKDIR}/current
 
+    # for some bash scripts in the ${WORKDIR}/current
+    find ${WORKDIR}/current/ -type f -name "*.sh" -exec chmod +x '{}' \;
+
     # Move conf and logs directives from release to share if found
-    [ -d ${WORKDIR}/release/conf ] && mv ${WORKDIR}/release/conf ${WORKDIR}/shared/conf
-    [ -d ${WORKDIR}/release/logs ] && mv ${WORKDIR}/release/logs ${WORKDIR}/shared/logs
+    [ -d ${WORKDIR}/release/conf ] && mv ${WORKDIR}/release/conf ${WORKDIR}/share/conf
+    [ -d ${WORKDIR}/release/logs ] && mv ${WORKDIR}/release/logs ${WORKDIR}/share/logs
 
     # Make conf and logs symbolic link to current
-    [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current/conf
-    [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current/logs
+    [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current/conf
+    [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current/logs
 }
-
 
 # distribute current workable files to remote host
 function deploy() {
     # do make_current_workable_source before deploy every time
     make_current_workable_source
 
-    # do single backup operation before deploy in case of there is a present deploy by manual
-    backup_remote_host_target_files "$user_defined_deploy_target_host_ip"
-
     echo_b "Do deploy on $user_defined_deploy_target_host_ip ..."
 
     # backup remote host config files
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
-    # remove all file in remote host target directories and files
-    ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "cd $user_defined_project_top_directory_to_target_host && rm -rf ./*"
+    # remove all file in remote host target directories and files, if target is not exist, then create it.
+    ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "if test -d $user_defined_project_top_directory_to_target_host; then find -L $user_defined_project_top_directory_to_target_host  -maxdepth 1 ! -name "logs" ! -wholename "${user_defined_project_top_directory_to_target_host}" -exec rm -rf {} \; ; else mkdir -p $user_defined_project_top_directory_to_target_host; fi"
 
     saved_IFS=$IFS
     IFS=' '
@@ -796,6 +764,7 @@ function deploy() {
 
     # rollback remote host config files
     [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
+
     if test ! -z "${user_defined_project_conf_directory}" -a -d ${WORKDIR}/${user_defined_project_conf_directory} ; then
         saved_IFS=$IFS
         IFS=' '
@@ -817,7 +786,7 @@ function deploy() {
         ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
         RETVAL=$?
     else
-        test -z ${user_defined_docker_container_name} || restart_docker_containers ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
+        test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
         # TODO(Guodong Ding) external health check
         RETVAL=$?
     fi
@@ -825,23 +794,22 @@ function deploy() {
     # if started ok, then create a workable program to a file
     if [[ ${RETVAL} -eq 0 ]]; then
         # Note cat with eof must start at row 0, and with eof end only, such as no blank spaces, etc
-        cat >${WORKDIR}/shared/workable_program.log <<eof
+        cat >${WORKDIR}/share/workable_program.log <<eof
 ${new_release_just_created}
 eof
         echo_g "Deploy successfully for $user_defined_deploy_target_host_ip! "
-        echo_g "Current workable version is $(cat ${WORKDIR}/shared/workable_program.log)"
+        echo_g "Current workable version is $(cat ${WORKDIR}/share/workable_program.log)"
     else
         echo_r "Error: Deploy failed! "
         ${WORKDIR}/`basename $0` rollback
     fi
 }
 
-
 # Rollback to last right configuration
 function rollback() {
     echo_b "Rollback to last right configuration... "
     # The key point is find last files which can work
-    WORKABLE_PROGRAM=`cat ${WORKDIR}/shared/workable_program.log`
+    WORKABLE_PROGRAM=`cat ${WORKDIR}/share/workable_program.log`
     if [[ -z ${WORKABLE_PROGRAM} ]]; then
         echo_r "Error: Can NOT find workable release version! Please check if it is first deployment! "
         exit 1
@@ -858,8 +826,8 @@ function rollback() {
     ln -s ${WORKABLE_PROGRAM} ${WORKDIR}/current
 
     # Remake conf and logs symbolic link to current
-    [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
-    [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
+    [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current
+    [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
 
     # backup remote host config files
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
@@ -892,7 +860,7 @@ function rollback() {
         ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
         RETVAL=$?
     else
-        test -z ${user_defined_docker_container_name} || restart_docker_containers ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
+        test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
         # TODO(Guodong Ding) external health check
         RETVAL=$?
     fi
@@ -904,12 +872,11 @@ function rollback() {
     fi
 }
 
-
 # rollback to any workable version which user wished by manually
 function rollback_manual(){
     echo_b "This function will rollback to any workable version which user wished by manually."
     # TODO(Guodong Ding) linux shell trap command several ctrl+c
-    echo_p "Enter 'reset' command to reset terminal when something is wrong."
+    echo_p "Enter 'reset' command to reset terminal when something go wrong."
     read -e -s -n 1 -p "Press any key to continue or Press 'Ctrl+C' exit."
     if test -d ${WORKDIR}/release -a "$(ls -A ${WORKDIR}/release 2>/dev/null)" ;then # judge a directory if is empty
         echo_b "Current workable releases( Latest 5 ) are here: "
@@ -920,8 +887,8 @@ function rollback_manual(){
             rm -rf ${WORKDIR}/current
             ln -s ${user_input_release_to_rollback} ${WORKDIR}/current
             # Remake conf and logs symbolic link to current
-            [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
-            [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
+            [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current
+            [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
 
             # backup remote host config files
             [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
@@ -956,7 +923,7 @@ function rollback_manual(){
                 ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
                 RETVAL=$?
             else
-                test -z ${user_defined_docker_container_name} || restart_docker_containers ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
+                test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
                 # TODO(Guodong Ding) external health check
                 RETVAL=$?
             fi
@@ -965,7 +932,7 @@ function rollback_manual(){
             if [[ ${RETVAL} -eq 0 ]]; then
                 echo_g "Rollback successfully! "
                 echo_g "current workable version is $user_input_release_to_rollback"
-                cat >${WORKDIR}/shared/workable_program.log <<eof
+                cat >${WORKDIR}/share/workable_program.log <<eof
 ${user_input_release_to_rollback}
 eof
     fi
@@ -978,7 +945,6 @@ eof
     fi
 
 }
-
 
 # backup remote hosts config files only,
 # use this function when you modify some config files on remote host
@@ -996,12 +962,10 @@ function backup_manual(){
     # remove empty directory, 'for + rmdir'
     find ${WORKDIR}/${user_defined_project_conf_directory}/. -empty -type d -delete
     # TODO(Guodong Ding) improvements here
-
     echo_g "backup remote host config files finished."
     echo "`date +%Y%m%d`" > ${WORKDIR}/${user_defined_project_conf_directory}/.backup_operation_once.log
     set +o errexit
 }
-
 
 # distribute current workable files to remote hosts
 function deploys() {
@@ -1010,13 +974,10 @@ function deploys() {
 
     echo_b "Do deploy on $user_defined_deploy_targets_host_ip_list ..."
     for remote_host_ip in ${user_defined_deploy_targets_host_ip_list};do
-        # do single backup operation before deploy in case of there is a present deploy by manual
-        backup_remote_host_target_files "$remote_host_ip"
-
         echo_b "Do deploy on $remote_host_ip ..."
 
         # remove all file in remote host target directories and files
-        ssh_execute_command_on_remote_host "$remote_host_ip" "cd $user_defined_project_top_directory_to_target_host && rm -rf ./*"
+        ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "if test -d $user_defined_project_top_directory_to_target_host; then cd $user_defined_project_top_directory_to_target_host && rm $user_defined_project_top_directory_to_target_host/*; else mkdir -p $user_defined_project_top_directory_to_target_host; fi"
 
         saved_IFS=$IFS
         IFS=' '
@@ -1046,7 +1007,7 @@ function deploys() {
             ssh_execute_command_on_remote_host ${remote_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh start"
             RETVAL=$?
         else
-            test -z ${user_defined_docker_container_name} || restart_docker_containers ${remote_host_ip} ${user_defined_docker_container_name}
+            test -z ${user_defined_docker_container_name} || restart_docker_container ${remote_host_ip} ${user_defined_docker_container_name}
             # TODO(Guodong Ding) external health check
             RETVAL=$?
         fi
@@ -1062,11 +1023,11 @@ function deploys() {
     # if started ok, then create a workable program to a file
     if [[ ${RETVAL} -eq 0 ]]; then
         # Note cat with eof must start at row 0, and with eof end only, such as no blank spaces, etc
-    cat >${WORKDIR}/shared/workable_program.log <<eof
+    cat >${WORKDIR}/share/workable_program.log <<eof
 ${new_release_just_created}
 eof
         echo_g "Deploy finished! on $user_defined_deploy_targets_host_ip_list "
-        echo_g "current workable version is $(cat ${WORKDIR}/shared/workable_program.log)"
+        echo_g "current workable version is $(cat ${WORKDIR}/share/workable_program.log)"
     #    ls --color=auto -l ${WORKDIR}/current
     #    ls --color=auto -l ${WORKDIR}/current/
     else
@@ -1075,12 +1036,11 @@ eof
     fi
 }
 
-
 function rollbacks(){
     echo_b "This function will rollback to any workable version which user wished by manually."
     # TODO(Guodong Ding) linux shell trap command several ctrl+c
-    echo_p "Enter 'reset' command to reset terminal when something is wrong."
-    read -e -s -n 1 -p "Press any key to continue or Press 'Ctrl+C' exit. Enter 'reset' command to reset terminal when something is wrong."
+    echo_p "Enter 'reset' command to reset terminal when something go wrong."
+    read -e -s -n 1 -p "Press any key to continue or Press 'Ctrl+C' exit. Enter 'reset' command to reset terminal when something go wrong."
     if test -d ${WORKDIR}/release -a "$(ls -A ${WORKDIR}/release 2>/dev/null)" ;then # judge a directory if is empty
         echo_b "Current workable releases( Latest 5 ) are here: "
 #        ls -d -1 ${WORKDIR}/release/*
@@ -1090,8 +1050,8 @@ function rollbacks(){
             rm -rf ${WORKDIR}/current
             ln -s ${user_input_release_to_rollback} ${WORKDIR}/current
             # Remake conf and logs symbolic link to current
-            [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
-            [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
+            [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current
+            [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
 
             # backup remote host config files
             [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
@@ -1114,7 +1074,7 @@ function rollbacks(){
                 ssh_execute_command_on_remote_host ${user_defined_deploy_target_host_ip} "$user_defined_project_top_directory_to_target_host/bin/startup.sh restart"
                 RETVAL=$?
             else
-                test -z ${user_defined_docker_container_name} || restart_docker_containers ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
+                test -z ${user_defined_docker_container_name} || restart_docker_container ${user_defined_deploy_target_host_ip} ${user_defined_docker_container_name}
                 # TODO(Guodong Ding) external health check
                 RETVAL=$?
             fi
@@ -1123,7 +1083,7 @@ function rollbacks(){
             if [[ ${RETVAL} -eq 0 ]]; then
                 echo_g "Rollback successfully on $user_defined_deploy_targets_host_ip_list! "
                 echo_g "Current workable version is $user_input_release_to_rollback"
-                cat >${WORKDIR}/shared/workable_program.log <<eof
+                cat >${WORKDIR}/share/workable_program.log <<eof
 ${user_input_release_to_rollback}
 eof
     fi
@@ -1137,7 +1097,6 @@ eof
 
 }
 
-
 function destroy() {
     # echo a Warning message
     echo_y "Warning: This action will destroy all this project, and this is unrecoverable! "
@@ -1146,36 +1105,35 @@ function destroy() {
     read -p "(Default no,if you want please input: y ,if not please press the enter button):" user_input_answer_want_do_destroy
     case "$user_input_answer_want_do_destroy" in
         y|Y|Yes|YES|yes|yES|yEs|YeS|yeS )
-            # delete all file expect for this script self
-            # find: warning: Unix filenames usually don't contain slashes (though pathnames do).  That means that '-name `./deploy.sh'' will probably evaluate to false all the time on this system.  You might find the '-wholename' test more useful, or perhaps '-samefile'.  Alternatively, if you are using GNU grep, you could use 'find ... -print0 | grep -FzZ `./deploy.sh''.
-                # echo $WORKDIR/
-                #find -L $WORKDIR -type f ! -name "$(basename $0)" -exec ls --color=auto -al {} \;
-                # find -L . -type f ! -name "deploy.sh" -exec ls --color=auto -al {} \;
-                # find -L . -type d -exec ls --color=auto -al {} \;
-                # find -L ./ -maxdepth 1 ! -name "deploy.sh" ! -wholename "./"
-            # ls | grep -v "filename" | xargs rm -rf
-            find -L ${WORKDIR} -maxdepth 1 ! -name "$(basename $0)" ! -wholename "$WORKDIR"  -exec rm -rf '{}' \;
-            if [ $? -eq 0 ];then
-                test -f ${WORKDIR}/.capistrano_ds_lock && \rm -rf  ${WORKDIR}/.capistrano_ds_lock
-                echo_g "Destroy this project successfully! Now will exit with status 0. "
-                exit 0
-            else
-                echo_r "Error: something is wrong! Please check or alter to Admin user! "
-                exit 1
-            fi
-        ;;
-            n|N|No|NO|no|nO)
-            echo_g "destroy action is cancel"
+        # delete all file expect for this script self
+        # find: warning: Unix filenames usually don't contain slashes (though pathnames do).  That means that '-name `./deploy.sh'' will probably evaluate to false all the time on this system.  You might find the '-wholename' test more useful, or perhaps '-samefile'.  Alternatively, if you are using GNU grep, you could use 'find ... -print0 | grep -FzZ `./deploy.sh''.
+            # echo $WORKDIR/
+            #find -L $WORKDIR -type f ! -name "$(basename $0)" -exec ls --color=auto -al {} \;
+            # find -L . -type f ! -name "deploy.sh" -exec ls --color=auto -al {} \;
+            # find -L . -type d -exec ls --color=auto -al {} \;
+            # find -L ./ -maxdepth 1 ! -name "deploy.sh" ! -wholename "./"
+        # ls | grep -v "filename" | xargs rm -rf
+        find -L ${WORKDIR} -maxdepth 1 ! -name "$(basename $0)" ! -wholename "$WORKDIR"  -exec rm -rf '{}' \;
+        if [ $? -eq 0 ];then
+            test -f ${WORKDIR}/.capistrano_ds_lock && \rm -rf  ${WORKDIR}/.capistrano_ds_lock
+            echo_g "Destroy this project successfully! Now will exit with status 0. "
             exit 0
+        else
+            echo_r "Error: something go wrong! Please check or alter to Admin user! "
+            exit 1
+        fi
+        ;;
+        n|N|No|NO|no|nO)
+        echo_g "destroy action is cancel"
+        exit 0
         ;;
         *)
-            echo_r "Are you kidding me? You are a bad kid! "
-            exit 1
+        echo_r "Are you kidding me? You are a bad kid! "
+        exit 1
         ;;
     esac
 
 }
-
 
 function usage(){
     cat - << eof
@@ -1187,7 +1145,6 @@ function usage(){
 eof
 
 }
-
 
 function main(){
     lock_filename="lock_$$_${RANDOM}"
@@ -1232,9 +1189,6 @@ function main(){
                 ;;
             destroy)
                 destroy
-                ;;
-            restart)
-                restart_docker_containers
                 ;;
             help|*)
                 echo "Usage: $0 {deploy|rollback_manual|deploys|backup_manual} with $0 itself"

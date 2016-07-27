@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="update git_project_clone()&#10;update cd .. to cd ${WORKDIR}">
+    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="remove all file in remote host target directories and files">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_userConfig.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" afterPath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh" afterPath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh" />
@@ -107,31 +109,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" pinned="false" current-in-tab="false">
+      <file leaf-file-name="doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.633333">
-              <caret line="919" column="0" selection-start-line="919" selection-start-column="0" selection-end-line="922" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.035014007">
+              <caret line="641" column="24" selection-start-line="641" selection-start-column="24" selection-end-line="641" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh">
+      <file leaf-file-name="doDeploy_executionProcedure.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38752785">
-              <caret line="1017" column="10" selection-start-line="1017" selection-start-column="10" selection-end-line="1017" selection-end-column="69" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="backup.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projects/backupOps/FileSystem/backup.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+            <state vertical-scroll-proportion="-11.766666">
+              <caret line="730" column="0" selection-start-line="730" selection-start-column="0" selection-end-line="732" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -158,8 +150,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/projects/dingguodong.github.io/_posts/2016-06-23-welcome-to-my-pages.markdown" />
-        <option value="$PROJECT_DIR$/references/rvm/rvm-installer.sh" />
         <option value="$PROJECT_DIR$/projects/dingguodong.github.io/README.md" />
         <option value="$PROJECT_DIR$/functions/string/Others.md" />
         <option value="$PROJECT_DIR$/projects/backupOps/MySQL/BackupMyqlByDate.sh" />
@@ -207,8 +197,10 @@
         <option value="$PROJECT_DIR$/projects/backupOps/FileSystem/backup.sh" />
         <option value="$PROJECT_DIR$/projects/others/zabbix/http_running_status.py" />
         <option value="$PROJECT_DIR$/functions/distribution-release/README.md" />
+        <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_userConfig.sh" />
         <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" />
         <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh" />
+        <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh" />
       </list>
     </option>
   </component>
@@ -315,8 +307,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -389,8 +379,50 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autodeployOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autodeployOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doDeploy_with_config_and_procedure_separate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -428,19 +460,19 @@
     </excluded-roots>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\autodeployOps\doDeploy_with_config_and_procedure_separate" />
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\autodeployOps" />
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\web\django" />
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\tencent\im" />
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\functions\options" />
       <recent name="C:\Users\Guodong\PycharmProjects\kissops" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\functions\net\tcp\http\webSpider" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\fileOps\GoogleHostsFileForLinux" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\autodeployOps" />
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\web\django" />
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\tencent\im" />
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others" />
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\functions\net\tcp\http" />
     </key>
   </component>
   <component name="RunManager" selected="Python tests.Unittests in http_running_status (3)">
@@ -837,12 +869,6 @@
       <option name="number" value="Default" />
       <updated>1461225723867</updated>
     </task>
-    <task id="LOCAL-00009" summary="add new files">
-      <created>1462245552552</created>
-      <option name="number" value="00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1462245552552</updated>
-    </task>
     <task id="LOCAL-00010" summary="add new files">
       <created>1462326384274</created>
       <option name="number" value="00010" />
@@ -1131,7 +1157,13 @@
       <option name="project" value="LOCAL" />
       <updated>1469523970459</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="remove all file in remote host target directories and files">
+      <created>1469524435120</created>
+      <option name="number" value="00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1469524435120</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1177,21 +1209,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-102" width="1456" height="876" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38108882" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38108882" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243607" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3176312" sideWeight="0.50832075" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31628534" sideWeight="0.49167928" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31628534" sideWeight="0.49167928" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25841185" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32189542" sideWeight="0.48487142" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18911175" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19197708" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5181696" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934534" sideWeight="0.48940998" order="5" side_tool="false" content_ui="tabs" />
@@ -1201,29 +1233,6 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39838493" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243607" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3176312" sideWeight="0.50832075" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934534" sideWeight="0.48940998" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3768506" sideWeight="0.49713466" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25841185" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32189542" sideWeight="0.48487142" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44680852" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5181696" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38108882" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31628534" sideWeight="0.49167928" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18911175" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39838493" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -1240,7 +1249,8 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="add new files" />
     <MESSAGE value="update git_project_clone()&#10;update cd .. to cd ${WORKDIR}" />
-    <option name="LAST_COMMIT_MESSAGE" value="update git_project_clone()&#10;update cd .. to cd ${WORKDIR}" />
+    <MESSAGE value="remove all file in remote host target directories and files" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove all file in remote host target directories and files" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1257,20 +1267,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/weiboLogin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projects/others/tickets/tickets/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="78" column="17" selection-start-line="78" selection-start-column="12" selection-end-line="78" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/python-skeletons/__builtin__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.4204545">
@@ -1356,6 +1352,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/dingguodong.github.io/about.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor vertical-scroll-proportion="0.075987846">
@@ -1363,9 +1362,6 @@
           </first_editor>
           <second_editor />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../kissops/kissops/urls.py">
@@ -1521,6 +1517,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor vertical-scroll-proportion="0.0">
@@ -1528,9 +1527,6 @@
           </first_editor>
           <second_editor />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/functions/net/ip/getIP.py">
@@ -1597,6 +1593,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/functions/distribution-release/README.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor vertical-scroll-proportion="0.0">
@@ -1604,9 +1603,6 @@
           </first_editor>
           <second_editor />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/functions/distribution-release/getPlatform.py">
@@ -1624,18 +1620,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh">
+    <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_userConfig.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.633333">
-          <caret line="919" column="0" selection-start-line="919" selection-start-column="0" selection-end-line="922" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="11" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHostV2.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38752785">
-          <caret line="1017" column="10" selection-start-line="1017" selection-start-column="10" selection-end-line="1017" selection-end-column="69" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="387" column="1" selection-start-line="387" selection-start-column="1" selection-end-line="387" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.766666">
+          <caret line="730" column="0" selection-start-line="730" selection-start-column="0" selection-end-line="732" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.035014007">
+          <caret line="641" column="24" selection-start-line="641" selection-start-column="24" selection-end-line="641" selection-end-column="24" />
           <folding />
         </state>
       </provider>

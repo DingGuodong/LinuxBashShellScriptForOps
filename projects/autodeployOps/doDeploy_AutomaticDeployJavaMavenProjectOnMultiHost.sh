@@ -374,6 +374,7 @@ function git_project_clone(){
 
         cd ${project_clone_directory}
         git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git pull origin ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
         git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
         cd ${WORKDIR}
         echo_g "git clone from $project_clone_repository successfully! "
@@ -448,6 +449,52 @@ function maven_build_project(){
     cd ${WORKDIR}
     echo_g "Do mvn build java project finished for ${project_clone_repository_name} with exit code 0! "
     echo
+}
+
+
+function maven_install(){
+    echo_b "Do mvn install java project for `echo $1 | awk -F '[/.]+' '{ print $(NF-1)}'`... "
+    check_command_can_be_execute mvn
+    [ $# -ge 1 ] && project_clone_repository="$1"
+    project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
+    project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
+
+    cd ${project_clone_directory}
+    mvn install >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    retval=$?
+    if [ ${retval} -ne 0 ] ; then
+        echo_r "mvn install failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
+        exit 1
+    else
+        echo_g "mvn install for ${project_clone_repository_name} successfully! "
+    fi
+    cd ${WORKDIR}
+    echo_g "Do mvn install java project finished for ${project_clone_repository_name} with exit code 0! "
+    echo
+
+}
+
+
+function maven_clean_package(){
+    echo_b "Do mvn clean package java project for `echo $1 | awk -F '[/.]+' '{ print $(NF-1)}'`... "
+    check_command_can_be_execute mvn
+    [ $# -ge 1 ] && project_clone_repository="$1"
+    project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
+    project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
+
+    cd ${project_clone_directory}
+    mvn clean package >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    retval=$?
+    if [ ${retval} -ne 0 ] ; then
+        echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
+        exit 1
+    else
+        echo_g "mvn clean package for ${project_clone_repository_name} successfully! "
+    fi
+    cd ${WORKDIR}
+    echo_g "Do mvn clean package java project finished for ${project_clone_repository_name} with exit code 0! "
+    echo
+
 }
 
 # ssh_execute_command_on_remote_host hostname command
@@ -592,7 +639,7 @@ function backup_remote_host_config_files(){
     # backup operation only executed once time, using '$0 backup_manual' backup new configuration files.
     # if ${WORKDIR}/${user_defined_project_conf_directory} is not empty then return 0 to exit
     if [ "$(ls -A ${WORKDIR}/${user_defined_project_conf_directory})" ]; then
-        [ -f ${WORKDIR}${user_defined_project_conf_directory}.backup_operation_once.log ] && backup_operation="`cat ${WORKDIR}/${user_defined_project_conf_directory}/.backup_operation_once.log`"
+        [ -f ${WORKDIR}/${user_defined_project_conf_directory}.backup_operation_once.log ] && backup_operation="`cat ${WORKDIR}/${user_defined_project_conf_directory}/.backup_operation_once.log`"
         echo_g "Backup remote host config files operation had been done, $backup_operation, now skipping ... "
         return 0
     fi
@@ -654,8 +701,8 @@ function make_current_workable_source(){
     # TODO(Guodong Ding) if we need a git_project_clone "$user_defined_project_clone_depends" here using auto judgment statement
     test -z ${user_defined_project_clone_depends} || git_project_clone "$user_defined_project_clone_depends"
     git_project_clone "$user_defined_project_clone"
-    test -z ${user_defined_project_clone_depends} || maven_build_project "$user_defined_project_clone_depends"
-    maven_build_project "$user_defined_project_clone"
+    test -z ${user_defined_project_clone_depends} || maven_install "$user_defined_project_clone_depends"
+    maven_clean_package "$user_defined_project_clone"
     cd ${WORKDIR}
 
     # links_target_directory_to_current
@@ -692,8 +739,8 @@ function deploy() {
     # backup remote host config files
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
-    # remove all file in remote host target directories and files
-    ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "rm -rf $user_defined_project_top_directory_to_target_host"
+    # remove all file in remote host target directories and files, if target is not exist, then create it.
+    ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "if test -d $user_defined_project_top_directory_to_target_host; then cd $user_defined_project_top_directory_to_target_host && rm $user_defined_project_top_directory_to_target_host/*; else mkdir -p $user_defined_project_top_directory_to_target_host; fi"
 
     saved_IFS=$IFS
     IFS=' '
@@ -919,7 +966,7 @@ function deploys() {
         echo_b "Do deploy on $remote_host_ip ..."
 
         # remove all file in remote host target directories and files
-        ssh_execute_command_on_remote_host "$remote_host_ip" "rm -rf $user_defined_project_top_directory_to_target_host"
+        ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "if test -d $user_defined_project_top_directory_to_target_host; then cd $user_defined_project_top_directory_to_target_host && rm $user_defined_project_top_directory_to_target_host/*; else mkdir -p $user_defined_project_top_directory_to_target_host; fi"
 
         saved_IFS=$IFS
         IFS=' '
