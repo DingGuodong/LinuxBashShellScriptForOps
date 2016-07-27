@@ -303,7 +303,6 @@ function setDirectoryStructureOnLocalHost() {
     # deploy logs for git/mvn/ssh
     [ ! -d ${WORKDIR}/logs ] && mkdir ${WORKDIR}/logs
 
-
     # set a directories structure lock
     touch ${WORKDIR}/.capistrano_ds_lock
     echo_g "Set directory structure successfully! "
@@ -352,6 +351,9 @@ function clean_old_logs(){
 }
 
 # git_project_clone repository branch
+# Note:
+#   git checkout <branch name>, change current branch to another branch
+#   git checkout -b <branch name>, create current branch to new branch
 function git_project_clone(){
     set -o errexit
     [ $# -ge 1 ] && project_clone_repository="$1"
@@ -368,12 +370,16 @@ function git_project_clone(){
         echo_b "git clone from $project_clone_repository"
         # git clone git@github.com:name/app.git -b master
         git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-            # TODO(Guodong Ding) get branch names or revision numbers from VCS data
+        # TODO(Guodong Ding) get branch names or revision numbers from VCS data
 
         cd ${project_clone_directory}
-        git checkout -b ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-        git pull origin ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-        git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
+        current_branch_name="`git rev-parse --abbrev-ref HEAD`"
+        if test "$current_branch_name" == "$branch"; then
+            git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
+        else
+            git checkout ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+            git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
+        fi
         cd ${WORKDIR}
         echo_g "git clone from $project_clone_repository successfully! "
     else
@@ -384,7 +390,7 @@ function git_project_clone(){
         if test "$current_branch_name" == "$branch"; then
             git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
         else
-            git checkout -b ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+            git checkout ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
             git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
         fi
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data

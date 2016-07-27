@@ -31,6 +31,7 @@ Function: Execute this shell script to deploy Java projects built by Maven autom
 License: Open source software
 "
 
+
 # set an empty function using for location this line quickly in PyCharm editor on purpose.
 function _empty() { return; }
 
@@ -389,6 +390,9 @@ function clean_old_logs(){
 
 
 # git_project_clone repository branch
+# Note:
+#   git checkout <branch name>, change current branch to another branch
+#   git checkout -b <branch name>, create current branch to new branch
 function git_project_clone(){
     set -o errexit
     [ $# -ge 1 ] && project_clone_repository="$1"
@@ -405,10 +409,10 @@ function git_project_clone(){
         echo_b "git clone from $project_clone_repository"
         # git clone git@github.com:name/app.git -b master
         git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-            # TODO(Guodong Ding) get branch names or revision numbers from VCS data
+        # TODO(Guodong Ding) get branch names or revision numbers from VCS data
 
         cd ${project_clone_directory}
-        git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git checkout ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
         git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
         cd ${WORKDIR}
         echo_g "git clone from $project_clone_repository successfully! "
@@ -420,7 +424,7 @@ function git_project_clone(){
         if test "$current_branch_name" == "$branch"; then
             git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
         else
-            git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+            git checkout ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
             git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
         fi
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data

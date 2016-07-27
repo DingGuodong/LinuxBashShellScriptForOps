@@ -134,7 +134,7 @@ function check_network_connectivity(){
     if [ ${retval} -ne 0 ] ; then
         if ping -c ${ping_count} ${stable_network_address_to_check} >/dev/null;then
             echo_g "Network to $stable_network_address_to_check succeed! "
-            echo_y "Note: network to $network_address_to_check failed once! maybe just some packages loss."
+            echo_y "Note: network to $network_address_to_check failed once time! maybe just some packages loss."
         elif ! ip route | grep default >/dev/null; then
             echo_r "Network is unreachable, gateway is not set."
             exit 1
@@ -306,6 +306,9 @@ function setDirectoryStructureOnLocalHost() {
     # for backup remote host config file
     [ ! -d ${WORKDIR}/${user_defined_project_conf_directory} ] && mkdir ${WORKDIR}/${user_defined_project_conf_directory}
 
+    # deploy logs for git/mvn/ssh
+    [ ! -d ${WORKDIR}/logs ] && mkdir ${WORKDIR}/logs
+
     # set a directories structure lock
     touch ${WORKDIR}/.capistrano_ds_lock
     echo_g "Set directory structure successfully! "
@@ -354,6 +357,9 @@ function clean_old_logs(){
 }
 
 # git_project_clone repository branch
+# Note:
+#   git checkout <branch name>, change current branch to another branch
+#   git checkout -b <branch name>, create current branch to new branch
 function git_project_clone(){
     set -o errexit
     [ $# -ge 1 ] && project_clone_repository="$1"
@@ -369,25 +375,25 @@ function git_project_clone(){
     if test ! -d ${project_clone_directory}; then
         echo_b "git clone from $project_clone_repository"
         # git clone git@github.com:name/app.git -b master
-        git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-            # TODO(Guodong Ding) get branch names or revision numbers from VCS data
+        git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        # TODO(Guodong Ding) get branch names or revision numbers from VCS data
 
         cd ${project_clone_directory}
-        git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-        git pull origin ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-        git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+        git checkout ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git pull origin ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
         cd ${WORKDIR}
         echo_g "git clone from $project_clone_repository successfully! "
     else
         echo_b "git pull from $project_clone_repository"
         cd ${project_clone_directory}
-        git pull origin ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+        git pull origin ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
         current_branch_name="`git rev-parse --abbrev-ref HEAD`"
         if test "$current_branch_name" == "$branch"; then
-            git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+            git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
         else
-            git checkout -b ${branch} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
-            git status 2>&1 | tee ${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log
+            git checkout ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+            git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M%S)_$$.log
         fi
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data
             # git rev-parse HEAD
@@ -414,8 +420,8 @@ function maven_build_project_deprecated(){
     project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
     cd ${project_clone_directory}
-    mvn install >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
-    mvn clean package >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    mvn install >>${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
+    mvn clean package >>${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
     cd ${WORKDIR}
     echo_g "Do mvn build java project finished with exit code 0! "
     set +o errexit
@@ -429,19 +435,19 @@ function maven_build_project(){
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
 
     cd ${project_clone_directory}
-    mvn install >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    mvn install >>${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "mvn install failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
+        echo_r "mvn install failed! More details refer to ${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log"
         exit 1
     else
         echo_g "mvn install for ${project_clone_repository_name} successfully! "
     fi
 
-    mvn clean package >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    mvn clean package >>${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
+        echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/logs/mvn_build_$(date +%Y%m%d%H%M%S)_$$.log"
         exit 1
     else
         echo_g "mvn clean package for ${project_clone_repository_name} successfully! "
@@ -460,10 +466,10 @@ function maven_install(){
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
 
     cd ${project_clone_directory}
-    mvn install >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    mvn install >>${WORKDIR}/logs/mvn_install_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "mvn install failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
+        echo_r "mvn install failed! More details refer to ${WORKDIR}/logs/mvn_install_$(date +%Y%m%d%H%M%S)_$$.log"
         exit 1
     else
         echo_g "mvn install for ${project_clone_repository_name} successfully! "
@@ -483,10 +489,10 @@ function maven_clean_package(){
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
 
     cd ${project_clone_directory}
-    mvn clean package >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
+    mvn clean package >>${WORKDIR}/logs/mvn_clean_package_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
+        echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/logs/mvn_clean_package_$(date +%Y%m%d%H%M%S)_$$.log"
         exit 1
     else
         echo_g "mvn clean package for ${project_clone_repository_name} successfully! "
@@ -500,11 +506,11 @@ function maven_clean_package(){
 # ssh_execute_command_on_remote_host hostname command
 function ssh_execute_command_on_remote_host(){
     [ $# -ne 2 ] && return 1
-    ssh -i /etc/ssh/ssh_host_rsa_key -p 22 -oStrictHostKeyChecking=no root@$1 "$2" >>${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log 2>&1
+    ssh -i /etc/ssh/ssh_host_rsa_key -p 22 -oStrictHostKeyChecking=no root@$1 "$2" >>${WORKDIR}/logs/ssh_command_$(date +%Y%m%d)_$$.log 2>&1
     retval=$?
     if [ ${retval} -ne 0 ] ; then
         echo_r "ssh execute command on remote host $2 failed! "
-        test -s ${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log && echo_r "\tMore details refer to ${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log"
+        test -s ${WORKDIR}/logs/ssh_command_$(date +%Y%m%d)_$$.log && echo_r "\tMore details refer to ${WORKDIR}/logs/ssh_command_$(date +%Y%m%d)_$$.log"
         return 1
     else
         echo_g "ssh execute command on remote host $2 successfully! "
@@ -714,11 +720,24 @@ function make_current_workable_source(){
     fi
     new_release_just_created="$WORKDIR/release/$(date +%Y%m%d%H%M%S)"
     [ ! -d ${new_release_just_created} ] && mkdir ${new_release_just_created}
-    [ -d ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/ ] && \
+
+    # for special project, such as a project have different name from its git repository name, for example here, "chatter"
+    # TODO(Guodong Ding) find more this foreseeable exception here
+    if [ -d ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/ ]; then
         \cp -rf ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/* ${new_release_just_created}
+    elif [ -d ${WORKDIR}/repository/${project_clone_repository_name}/target/chatter ]; then
+        \cp -rf ${WORKDIR}/repository/${project_clone_repository_name}/target/chatter/* ${new_release_just_created}
+    else
+        echo_r "A foreseeable error occurred, please alter to Developer & Administrator. "
+        exit 1
+    fi
+
      # Make source code symbolic link to current
     ( [ -f ${WORKDIR}/current ] || [ -d ${WORKDIR}/current ] ) && rm -rf ${WORKDIR}/current
     ln -s ${new_release_just_created} ${WORKDIR}/current
+
+    # for some bash scripts in the ${WORKDIR}/current
+    find ${WORKDIR}/current/ -type f -name "*.sh" -exec chmod +x '{}' \;
 
     # Move conf and logs directives from release to share if found
     [ -d ${WORKDIR}/release/conf ] && mv ${WORKDIR}/release/conf ${WORKDIR}/share/conf
@@ -740,7 +759,7 @@ function deploy() {
     [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
     # remove all file in remote host target directories and files, if target is not exist, then create it.
-    ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "if test -d $user_defined_project_top_directory_to_target_host; then cd $user_defined_project_top_directory_to_target_host && rm $user_defined_project_top_directory_to_target_host/*; else mkdir -p $user_defined_project_top_directory_to_target_host; fi"
+    ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "if test -d $user_defined_project_top_directory_to_target_host; then find -L $user_defined_project_top_directory_to_target_host  -maxdepth 1 ! -name "logs" ! -wholename "${user_defined_project_top_directory_to_target_host}" -exec rm -rf {} \; ; else mkdir -p $user_defined_project_top_directory_to_target_host; fi"
 
     saved_IFS=$IFS
     IFS=' '
