@@ -57,15 +57,17 @@ def centos_or_ubuntu():
         if linux_type is not None:
             return linux_type
 
-    return "Unknown and unsupported system"
-
 
 def yum_or_dpkg():
     distro_type = centos_or_ubuntu()
+    if distro_type is None:
+        return
     if 'centos' in distro_type or 'redhat' in distro_type or 'rhel' in distro_type:
         return 'yum'
     elif 'ubuntu' in distro_type or 'debian' in distro_type:
         return 'dpkg'
+    else:
+        pass
 
 
 if __name__ == '__main__':

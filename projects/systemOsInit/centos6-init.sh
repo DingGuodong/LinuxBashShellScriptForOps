@@ -119,11 +119,10 @@ check_command_can_be_execute(){
 }
 
 function check_user_defined_variables(){
-    # TODO(Guodong Ding) continue
-    test -z $user_defined_hostname
-    test -z $user_defined_username
-    test -z $user_defined_user_can_run_sudo
-    test -z $user_defined_log_absolute_path
+    test -z ${user_defined_hostname}
+    test -z ${user_defined_username}
+    test -z ${user_defined_user_can_run_sudo}
+    test -z ${user_defined_log_absolute_path}
 
 }
 
@@ -137,7 +136,7 @@ function backup_single_file(){
     backup_filename_prefix=".backup_"
     backup_filename_suffix="_origin_$operation_date_time~"
     backup_filename_target="$backup_filename_prefix$backup_filename_origin$backup_filename_suffix"
-    test -f $backup_filename_origin && cp $backup_filename_origin $backup_filename_target
+    test -f ${backup_filename_origin} && cp ${backup_filename_origin} ${backup_filename_target}
     set +o errexit
 
 }
@@ -153,19 +152,19 @@ backup_files(){
     file_list=$@
     operation_date_time="_`date +"%Y%m%d%H%M%S"`"
     log_filename=".log_$0_$$_$RANDOM"
-    if test -z $user_defined_log_absolute_path; then
-        log_filename_full_path=/tmp/$log_filename
+    if test -z ${user_defined_log_absolute_path}; then
+        log_filename_full_path=/tmp/${log_filename}
     else
-        log_filename_full_path=$user_defined_log_absolute_path
+        log_filename_full_path=${user_defined_log_absolute_path}
     fi
-    touch $log_filename_full_path
+    touch ${log_filename_full_path}
     old_IFS=$IFS
     IFS=" "
-    for file in $file_list;do
+    for file in ${file_list};do
         # is there a bin named 'realpath' ?
-        real_file=$(readlink -f $file)
-        [ -f $real_file ] && cp $real_file $file$operation_date_time~
-        [ -f $log_filename_full_path ] && echo "\mv -f $file$operation_date_time~ $file" >>$log_filename_full_path
+        real_file=$(readlink -f ${file})
+        [ -f ${real_file} ] && cp ${real_file} ${file}${operation_date_time}~
+        [ -f ${log_filename_full_path} ] && echo "\mv -f $file$operation_date_time~ $file" >>${log_filename_full_path}
     done
     IFS="$old_IFS"
     set +o errexit
@@ -174,8 +173,8 @@ backup_files(){
 
 # Function description: rollback files
 rollback_files(){
-    [ -f $log_filename_full_path ] && . $log_filename_full_path
-    \rm -f $log_filename_full_path
+    [ -f ${log_filename_full_path} ] && . ${log_filename_full_path}
+    \rm -f ${log_filename_full_path}
     exit 2
 }
 
@@ -233,13 +232,36 @@ eof
     fi
 }
 
+function set_hosts_file(){
+    hosts_url="https://raw.githubusercontent.com/racaljk/hosts/master/hosts"
+    http_code=`curl -o /dev/null -m 10 --connect-timeout 10 -s -w "%{http_code}" ${hosts_url}`
+    if test ${http_code} -ne 200; then
+        hosts_url="https://coding.net/u/scaffrey/p/hosts/git/raw/master/hosts"
+    fi
+    backup_single_file /etc/hosts
+    bash -c 'wget ${hosts_url} -qO /tmp/hosts && mv -f /tmp/hosts /etc/hosts'
+    # TODO(Guodong Ding) dos2unix
+#    if cat -A /etc/hosts | grep '\^M\\\$' >/dev/null || file /etc/hosts | grep "with CRLF line terminators" >/dev/null ; then
+#        which dos2unix >/dev/null 2>&1 || yum -q -y install dos2unix || apt-get -qq -y install dos2unix
+#        dos2unix /etc/hosts >/dev/null
+#    fi
+
+    # check if able to resolve host `hostname -f`, if not, sudo will throw a exception 'sudo: unable to resolve host xxx'
+    echo "127.0.0.1 `hostname` `hostname -f`" >> /etc/hosts
+    echo "`ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'` `hostname` `hostname -f`" >> /etc/hosts
+
+    SELINUX_STATE=$(cat "/selinux/enforce")
+    [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon /etc/hosts
+
+}
+
 function set_hostname_fqdn_format(){
     current_hostname_fqdn="`hostname -A`"
     dot_appear_times_to_match_fqdn_rule=`echo "$current_hostname_fqdn" | grep -o '\.' | wc -l`
-    if test $dot_appear_times_to_match_fqdn_rule -gt 1; then
+    if test ${dot_appear_times_to_match_fqdn_rule} -gt 1; then
         echo_g "current hostname $current_hostname_fqdn is a fqdn name, check passed! "
     else
-        if test ! -z $user_defined_hostname; then
+        if test ! -z ${user_defined_hostname}; then
             new_hostname_to_set="$user_defined_hostname"
         else
             read -p 'Input hostname you want, then press Enter ' user_input_hostname
@@ -269,7 +291,7 @@ function yum_install_extra_packages(){
 }
 function customized_commands(){
     # customized commands, alternatively, echo into .bashrc file as a function or alias
-    cat >delsc.sh <<eof
+    cat >/usr/local/bin/delsc <<eof
 #!/bin/bash
 # delete all spaces and comments of specialized file, using with \$0 filename
 [[ "\$1" == "" ]] && echo "delete all spaces and comments of specialized file, using with \$0 filename" && exit 1
@@ -288,15 +310,19 @@ fi
 # Refer: https://github.com/mysfitt/nocomment/blob/master/nocomment.sh
 # grep -Ev '^\s*#|^//|^\s\*|^/\*|^\*/' \$1 | grep -Ev '^$|^\s+$'
 eof
-    chmod +x ./delsc.sh
-    \cp delsc.sh /usr/local/bin/delsc
-    rm -f ./delsc.sh
+    chmod +x /usr/local/bin/delsc
     SELINUX_STATE=$(cat "/selinux/enforce")
     [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon -r /usr/local/bin
 
 }
 
 function inject_ssh_key_for_root(){
+    ## Allow us to SSH passwordless to localhost
+    # ssh-keygen -f ~/.ssh/id_rsa -N ""
+    # cp ~/.ssh/{id_rsa.pub,authorized_keys}
+    ## Creation of an SSH agent for testing forwarding
+    # eval $(ssh-agent)
+    # ssh-add
     test ! -d /root/.ssh && ssh-keygen -N "" -f /root/.ssh/id_rsa
     test ! -f /root/.ssh/authorized_keys && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
     cat >>/root/.ssh/authorized_keys<<eof
@@ -436,7 +462,7 @@ function add_user_as_user_defined(){
         return 0
     else
         useradd ${user_defined_username}
-        test -d /etc/sudoers.d && echo "$user_defined_username ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_$user_defined_username.conf
+        test -d /etc/sudoers.d && echo "$user_defined_username ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/user_${user_defined_username}.conf
     fi
 
 }

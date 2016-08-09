@@ -389,6 +389,42 @@ function clean_old_logs(){
 }
 
 
+function clean_old_files_older_than_day(){
+    save_days=10
+    files_ops="/data/docker/logs/myApp/"
+    need_clean=$(find ${files_ops} -name "*.log" -mtime +${save_days} -exec ls '{}' \;)
+    if [ ! -z ${need_clean} ]; then
+        echo "Old logs have been found, clean old logs now. "
+        find -L ${files_ops} -maxdepth 1 -name "*.log" -a ! -name "^." -mtime +${save_days} -exec rm -rf '{}' \;
+    else
+        echo "All logs are not expired, skipping. "
+    fi
+}
+
+function keep_some_newest_files(){
+    num_save=10
+    files_ops="/data/backup/db/mysql/"
+    num_files=$(find ${files_ops} -type d -printf "%C@ %p\n" | sort -n | wc -l)
+    if test ${num_files} -gt ${num_save};then
+        echo "total number of files is $num_files."
+        num_ops=$(expr ${num_files} - ${num_save})
+        echo "$num_ops files are going to be handled."
+        list_ops=$(find ${files_ops} -type d -printf "%C@ %p\n" | sort -n | head -n${num_ops} | awk -F '[ ]+' '{print $2}')
+        # IFS=' '$'\t'$'\n', If IFS is unset, or its value is exactly <space><tab><newline>
+        old_IFS=$IFS
+        IFS=" "
+        for file_ops in ${list_ops};do
+            echo "$file_ops"
+            test -d ${file_ops} && rm -rf ${file_ops}
+        done
+        IFS="$old_IFS"
+    else
+        echo "total number of files is $num_files."
+        echo "0 files are going to be handled, skipping."
+    fi
+
+}
+
 # git_project_clone repository branch
 # Note:
 #   git checkout <branch name>, change current branch to another branch
@@ -408,6 +444,7 @@ function git_project_clone(){
     if test ! -d ${project_clone_directory}; then
         echo_b "git clone from $project_clone_repository"
         # git clone git@github.com:name/app.git -b master
+        # git clone --depth=50 --branch=master https://github.com/racaljk/hosts.git racaljk/hosts
         git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/git_$(date +%Y%m%d%H%M%S)_$$.log 2>&1
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data
 

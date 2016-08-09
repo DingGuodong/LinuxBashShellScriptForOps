@@ -7,8 +7,8 @@ try:
 except ImportError:
     command_to_execute = "pip install IPy"
     os.system(command_to_execute)
-
-from IPy import IP
+finally:
+    from IPy import IP
 
 i = datetime.datetime.now()
 print i.strftime('%Y/%m/%d %H:%M:%S')

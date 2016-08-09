@@ -8,7 +8,8 @@ except ImportError:
         os.system(command_to_execute)
     except OSError:
         exit(1)
-import dns.resolver
+    finally:
+        import dns.resolver
 
 # domain = raw_input("Please input a domain name: ")
 domain = "www.baidu.com"

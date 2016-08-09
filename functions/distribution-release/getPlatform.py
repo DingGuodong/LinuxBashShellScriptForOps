@@ -11,9 +11,18 @@ except ImportError:
     pass
 else:
     print platform.uname()
-    print platform.linux_distribution()
+    if platform.linux_distribution()[0] == "":
+        pass
+    else:
+        print platform.linux_distribution()
     print platform.system()
-# TODO(Guodong Ding) , continue here
+    print platform.platform()
+    print platform.architecture()
+    print platform.version()
+    print platform.release()
+    print platform.node()
+    print platform.machine()
+
 
 print os.name
 print sys.platform

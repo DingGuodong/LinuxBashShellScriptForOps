@@ -211,11 +211,11 @@ def set_hosts_file(hosts="/etc/hosts"):
         curl.setopt(pycurl.WRITEDATA, f)
         curl.perform()
         curl.close()
-    # TODO(Guodong Ding) Ubuntu Linux not passed here, but CentOS passed!
+
     hostname = socket.gethostname()  # socket.getfqdn()
     print hostname
     try:
-        ip = socket.gethostbyname(socket.gethostname())
+        ip = socket.gethostbyname(socket.gethostname())  # TODO(Guodong Ding) Ubuntu not passed here, but CentOS passed!
     except Exception:
         ip = None
     with open(hosts, "a") as f:

@@ -2,7 +2,8 @@
 import urllib2
 import datetime
 import time
-import os
+
+# import os
 
 host = 'https://www.baidu.com'
 request = urllib2.Request(host)

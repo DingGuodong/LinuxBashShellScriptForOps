@@ -33,6 +33,7 @@
       <w>nameservers</w>
       <w>nmap</w>
       <w>nslookup</w>
+      <w>pidfile</w>
       <w>printf</w>
       <w>psutil</w>
       <w>readlink</w>
@@ -44,6 +45,8 @@
       <w>servertime</w>
       <w>slowlaris</w>
       <w>smtp</w>
+      <w>stderr</w>
+      <w>stdout</w>
       <w>strace</w>
       <w>subsys</w>
       <w>sudo</w>
