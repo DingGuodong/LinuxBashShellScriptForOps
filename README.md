@@ -1,2 +1,2 @@
 # LinuxBashShellScriptForOps
-Linux Bash Shell Script For Ops
+Linux Bash Shell Scripts For Ops, some python scripts here also.

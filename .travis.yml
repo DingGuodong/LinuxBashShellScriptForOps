@@ -7,7 +7,7 @@ python:
   - "pypy"
 # command to install dependencies
 install:
-  - pip install .
   - pip install -r requirements.txt
 # command to run tests
-script: nosetests
+script:
+  - bash projects\systemOSInit\centos6-init.sh
