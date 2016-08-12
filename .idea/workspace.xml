@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="Travis CI test">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" />
+    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="remove some vars">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/.odbp_db.sqlite3" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/.odbp_db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,7 +43,7 @@
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$manage__1_.coverage" NAME="manage (1) Coverage Results" MODIFIED="1468050853990" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../kissops" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$cookieOps.coverage" NAME="cookieOps Coverage Results" MODIFIED="1466233068490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/webSpider" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$getServerList.coverage" NAME="getServerList Coverage Results" MODIFIED="1465959356071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/wechat" />
-    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_getToken_usage_example.coverage" NAME="odbp_getToken_usage_example Coverage Results" MODIFIED="1470973863082" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_getToken_usage_example.coverage" NAME="odbp_getToken_usage_example Coverage Results" MODIFIED="1470983213879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$sampleHttpServer.coverage" NAME="sampleHttpServer Coverage Results" MODIFIED="1470211106662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/PythonHTTPServer" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$examples.coverage" NAME="examples Coverage Results" MODIFIED="1470814189407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$progress.coverage" NAME="progress Coverage Results" MODIFIED="1470812766647" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants" />
@@ -62,6 +64,7 @@
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$getDateFromTimeServer.coverage" NAME="getDateFromTimeServer Coverage Results" MODIFIED="1466072574008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/date" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$platformOps.coverage" NAME="platformOps Coverage Results" MODIFIED="1466145472422" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/platform" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$dockerStats.coverage" NAME="dockerStats Coverage Results" MODIFIED="1465784421668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/docker" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$unicodeOps.coverage" NAME="unicodeOps Coverage Results" MODIFIED="1470989819357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/testOps" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$lld_cpu.coverage" NAME="lld_cpu Coverage Results" MODIFIED="1466590742759" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/zabbix" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$getPublicIPAddress_curlImpl.coverage" NAME="getPublicIPAddress_curlImpl Coverage Results" MODIFIED="1469672943795" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/ip" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$Unittests_in_http_running_status__4_.coverage" NAME="Unittests in http_running_status (4) Coverage Results" MODIFIED="1468907096331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/zabbix" />
@@ -70,7 +73,9 @@
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$testZabbixApiPy3.coverage" NAME="testZabbixApiPy3 Coverage Results" MODIFIED="1466213575585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$core.coverage" NAME="core Coverage Results" MODIFIED="1465973622398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/tickets/tickets" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$Unittests_in_http_running_status__1_.coverage" NAME="Unittests in http_running_status (1) Coverage Results" MODIFIED="1468908844630" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/zabbix" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_sendMessage.coverage" NAME="odbp_sendMessage Coverage Results" MODIFIED="1470991105755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$somethingFun.coverage" NAME="somethingFun Coverage Results" MODIFIED="1468552658184" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/testOps" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_sendMessage_usage_example.coverage" NAME="odbp_sendMessage_usage_example Coverage Results" MODIFIED="1470991684842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$webserver.coverage" NAME="webserver Coverage Results" MODIFIED="1470121734066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/testOps/webserver" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$testZabbixApi_impl1.coverage" NAME="testZabbixApi_impl1 Coverage Results" MODIFIED="1466213905849" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$getPlatformUseBuildin.coverage" NAME="getPlatformUseBuildin Coverage Results" MODIFIED="1470646942985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/distribution-release" />
@@ -130,41 +135,60 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="odbp_getToken.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py">
+      <file leaf-file-name="odbp_sendMessage.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_sendMessage.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.49019608">
-              <caret line="35" column="32" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.5714286">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
-                <element signature="e#59#235#1" expanded="true" />
-                <marker date="1470974349443" expanded="true" signature="2079:2313" placeholder="CREATE TABLE... weixin_token" />
-                <marker date="1470974349443" expanded="true" signature="2542:2758" placeholder="CREATE TABLE... weixin_account" />
-                <marker date="1470974349443" expanded="true" signature="3014:3248" placeholder="CREATE TABLE... weixin_token" />
-                <marker date="1470974349443" expanded="true" signature="3302:3518" placeholder="CREATE TABLE... weixin_account" />
-                <marker date="1470974349443" expanded="true" signature="3776:4038" placeholder="INSERT INTO &quot;weixin_account&quot;... " />
-                <marker date="1470974349443" expanded="true" signature="4441:4797" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
-                <marker date="1470974349443" expanded="true" signature="5231:5296" placeholder="SELECT &quot;corp... weixin_account" />
-                <marker date="1470974349443" expanded="true" signature="5888:5965" placeholder="SELECT &quot;acce... weixin_token" />
-                <marker date="1470974349443" expanded="true" signature="6525:6675" placeholder="UPDATE &quot;weix... " />
+                <element signature="e#59#238#1" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="odbp_getToken.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="276" column="12" selection-start-line="276" selection-start-column="12" selection-end-line="276" selection-end-column="95" />
+              <folding>
+                <marker date="1470981688569" expanded="true" signature="2139:2373" placeholder="CREATE TABLE... weixin_token" />
+                <marker date="1470981688569" expanded="true" signature="2602:2818" placeholder="CREATE TABLE... weixin_account" />
+                <marker date="1470981688569" expanded="true" signature="3074:3308" placeholder="CREATE TABLE... weixin_token" />
+                <marker date="1470981688569" expanded="true" signature="3362:3578" placeholder="CREATE TABLE... weixin_account" />
+                <marker date="1470981688569" expanded="true" signature="3836:4098" placeholder="INSERT INTO &quot;weixin_account&quot;... " />
+                <marker date="1470981688569" expanded="true" signature="4501:4857" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
+                <marker date="1470981688569" expanded="true" signature="5291:5356" placeholder="SELECT &quot;corp... weixin_account" />
+                <marker date="1470981688569" expanded="true" signature="5948:6025" placeholder="SELECT &quot;acce... weixin_token" />
+                <marker date="1470981688569" expanded="true" signature="6585:6735" placeholder="UPDATE &quot;weix... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="odbp_sendMessage_usage_example.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="13" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="odbp_sendMessage.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="51" column="8" selection-start-line="51" selection-start-column="8" selection-end-line="51" selection-end-column="77" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="odbp_getToken_usage_example.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="18" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="42" />
-              <folding>
-                <element signature="e#59#249#1" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/__init__.py">
+        <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken_usage_example.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -173,11 +197,33 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="getToken.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projects/others/wechat/getToken.py">
+      <file leaf-file-name="odbp_getToken_usage_example.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="35" selection-end-column="15" />
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="api.py" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Python27/Lib/site-packages/requests/api.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+              <folding>
+                <element signature="e#257#2513#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="unicodeOps.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/others/testOps/unicodeOps.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -205,9 +251,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh" />
-        <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProjectOnMultiHost.sh" />
-        <option value="$PROJECT_DIR$/functions/net/ip/getPublicIPAddress.py" />
         <option value="$PROJECT_DIR$/functions/net/ip/getPublicIPAddress_urllib2Impl.py" />
         <option value="$PROJECT_DIR$/functions/net/ip/getPublicIPAddress_curlImpl.py" />
         <option value="$PROJECT_DIR$/projects/others/testOps/tmp/1" />
@@ -252,10 +295,13 @@
         <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/README.md" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/c1a8a636-9264-4ed0-bd5f-b995122c9085/console.sql" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/0ee59e88-c4b1-4705-a06f-bfe8147dc3fb/console.sql" />
-        <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken.py" />
         <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/__init__.py" />
-        <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" />
+        <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken.py" />
         <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py" />
+        <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" />
+        <option value="$PROJECT_DIR$/projects/others/testOps/unicodeOps.py" />
+        <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_sendMessage.py" />
+        <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py" />
       </list>
     </option>
   </component>
@@ -401,6 +447,54 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="others" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wechat" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OpsDevBestPractice" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="others" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="WeChatOps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -472,68 +566,14 @@
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\WeChatOps\OpsDevBestPractice" />
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\wechat" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\WeChatOps" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\Standing_on_the_shoulders_of_giants" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\testOps\webserver" />
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\wechat\wechat_web" />
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\autodeployOps\doDeploy_with_config_and_procedure_separate" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.odbp_getToken_usage_example">
-    <configuration default="false" name="progress" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="LinuxBashShellScriptForOps" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/progress.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="examples" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="LinuxBashShellScriptForOps" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master/examples.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="odbp_getToken" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="LinuxBashShellScriptForOps" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.odbp_sendMessage_usage_example">
     <configuration default="false" name="odbp_getToken (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -566,6 +606,60 @@
       <module name="LinuxBashShellScriptForOps" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="odbp_sendMessage" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LinuxBashShellScriptForOps" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_sendMessage.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="unicodeOps" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/testOps" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LinuxBashShellScriptForOps" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/testOps/unicodeOps.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="odbp_sendMessage_usage_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LinuxBashShellScriptForOps" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -822,19 +916,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Django server.kissops" />
-      <item index="1" class="java.lang.String" itemvalue="Python.progress" />
-      <item index="2" class="java.lang.String" itemvalue="Python.examples" />
-      <item index="3" class="java.lang.String" itemvalue="Python.odbp_getToken" />
-      <item index="4" class="java.lang.String" itemvalue="Python.odbp_getToken (1)" />
-      <item index="5" class="java.lang.String" itemvalue="Python.odbp_getToken_usage_example" />
+      <item index="1" class="java.lang.String" itemvalue="Python.odbp_getToken (1)" />
+      <item index="2" class="java.lang.String" itemvalue="Python.odbp_getToken_usage_example" />
+      <item index="3" class="java.lang.String" itemvalue="Python.odbp_sendMessage" />
+      <item index="4" class="java.lang.String" itemvalue="Python.unicodeOps" />
+      <item index="5" class="java.lang.String" itemvalue="Python.odbp_sendMessage_usage_example" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.odbp_getToken_usage_example" />
-        <item index="1" class="java.lang.String" itemvalue="Python.odbp_getToken (1)" />
-        <item index="2" class="java.lang.String" itemvalue="Python.odbp_getToken" />
-        <item index="3" class="java.lang.String" itemvalue="Python.examples" />
-        <item index="4" class="java.lang.String" itemvalue="Python.progress" />
+        <item index="0" class="java.lang.String" itemvalue="Python.odbp_sendMessage_usage_example" />
+        <item index="1" class="java.lang.String" itemvalue="Python.odbp_sendMessage" />
+        <item index="2" class="java.lang.String" itemvalue="Python.unicodeOps" />
+        <item index="3" class="java.lang.String" itemvalue="Python.odbp_getToken_usage_example" />
+        <item index="4" class="java.lang.String" itemvalue="Python.odbp_getToken (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -852,12 +946,6 @@
       <created>1461225723867</created>
       <option name="number" value="Default" />
       <updated>1461225723867</updated>
-    </task>
-    <task id="LOCAL-00015" summary="add new files">
-      <created>1463380007868</created>
-      <option name="number" value="00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1463380007868</updated>
     </task>
     <task id="LOCAL-00016" summary="add new files">
       <created>1463392423385</created>
@@ -1147,7 +1235,13 @@
       <option name="project" value="LOCAL" />
       <updated>1470972407179</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="remove some vars">
+      <created>1470974570282</created>
+      <option name="number" value="00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1470974570282</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1193,17 +1287,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-102" width="1456" height="876" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243607" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44414535" sideWeight="0.504298" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36473754" sideWeight="0.495702" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25841185" sideWeight="0.47994268" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32166892" sideWeight="0.4820917" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.77523553" sideWeight="0.49713466" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23853868" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23853868" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31359354" sideWeight="0.49167928" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21203439" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1262,7 +1356,8 @@
     <MESSAGE value="change log files and add some bug fix" />
     <MESSAGE value="reformat code" />
     <MESSAGE value="Travis CI test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Travis CI test" />
+    <MESSAGE value="remove some vars" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove some vars" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1279,76 +1374,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/dnsHttpHealthCheck.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/Lib/site-packages/dns/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/Lib/site-packages/django/utils/dateformat.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.467787">
-          <caret line="63" column="8" selection-start-line="63" selection-start-column="8" selection-end-line="63" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/dnsOps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.464285">
-          <caret line="25" column="51" selection-start-line="25" selection-start-column="50" selection-end-line="25" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/filename">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/httpServer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/ipOps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.714286">
-          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/key-value-config-example.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/key-value-parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/learningSelf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/processOps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.6785715">
@@ -1516,21 +1541,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/others/wechat/sendMessage2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.0770308">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projects/others/zabbix/alter_by_wechat/WeChat.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projects/others/wechat/sendMessage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1621,7 +1632,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/others/wechat/getToken.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="1.3544018">
           <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="35" selection-end-column="15" />
           <folding />
         </state>
@@ -1635,31 +1646,146 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py">
+    <entry file="dbDummy://dbtable:/d9561820/3ce99a6f-aad2-4027-88f2-5cc0625085b7/weixin_token">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/sendMessage2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="18" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="42" />
+          <caret line="80" column="25" selection-start-line="80" selection-start-column="21" selection-end-line="80" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/sendMessage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/requests/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="727" column="8" selection-start-line="727" selection-start-column="8" selection-end-line="727" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-762174762/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1779" column="0" selection-start-line="1769" selection-start-column="0" selection-end-line="1779" selection-end-column="0" />
           <folding>
-            <element signature="e#59#249#1" expanded="true" />
+            <element signature="e#59456#59966#1" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49019608">
-          <caret line="35" column="32" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="284" column="16" selection-start-line="284" selection-start-column="16" selection-end-line="284" selection-end-column="16" />
           <folding>
             <element signature="e#59#235#1" expanded="true" />
-            <marker date="1470974349443" expanded="true" signature="2079:2313" placeholder="CREATE TABLE... weixin_token" />
-            <marker date="1470974349443" expanded="true" signature="2542:2758" placeholder="CREATE TABLE... weixin_account" />
-            <marker date="1470974349443" expanded="true" signature="3014:3248" placeholder="CREATE TABLE... weixin_token" />
-            <marker date="1470974349443" expanded="true" signature="3302:3518" placeholder="CREATE TABLE... weixin_account" />
-            <marker date="1470974349443" expanded="true" signature="3776:4038" placeholder="INSERT INTO &quot;weixin_account&quot;... " />
-            <marker date="1470974349443" expanded="true" signature="4441:4797" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
-            <marker date="1470974349443" expanded="true" signature="5231:5296" placeholder="SELECT &quot;corp... weixin_account" />
-            <marker date="1470974349443" expanded="true" signature="5888:5965" placeholder="SELECT &quot;acce... weixin_token" />
-            <marker date="1470974349443" expanded="true" signature="6525:6675" placeholder="UPDATE &quot;weix... " />
+            <marker date="1470981688584" expanded="true" signature="2079:2313" placeholder="CREATE TABLE... weixin_token" />
+            <marker date="1470981688584" expanded="true" signature="2542:2758" placeholder="CREATE TABLE... weixin_account" />
+            <marker date="1470981688584" expanded="true" signature="3014:3248" placeholder="CREATE TABLE... weixin_token" />
+            <marker date="1470981688584" expanded="true" signature="3302:3518" placeholder="CREATE TABLE... weixin_account" />
+            <marker date="1470981688584" expanded="true" signature="3776:4038" placeholder="INSERT INTO &quot;weixin_account&quot;... " />
+            <marker date="1470981688584" expanded="true" signature="4441:4797" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
+            <marker date="1470981688584" expanded="true" signature="5231:5296" placeholder="SELECT &quot;corp... weixin_account" />
+            <marker date="1470981688584" expanded="true" signature="5888:5965" placeholder="SELECT &quot;acce... weixin_token" />
+            <marker date="1470981688584" expanded="true" signature="6525:6675" placeholder="UPDATE &quot;weix... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/testOps/unicodeOps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/requests/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
+          <folding>
+            <element signature="e#257#2513#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken_usage_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="51" column="8" selection-start-line="51" selection-start-column="8" selection-end-line="51" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="13" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="276" column="12" selection-start-line="276" selection-start-column="12" selection-end-line="276" selection-end-column="95" />
+          <folding>
+            <marker date="1470981688569" expanded="true" signature="2139:2373" placeholder="CREATE TABLE... weixin_token" />
+            <marker date="1470981688569" expanded="true" signature="2602:2818" placeholder="CREATE TABLE... weixin_account" />
+            <marker date="1470981688569" expanded="true" signature="3074:3308" placeholder="CREATE TABLE... weixin_token" />
+            <marker date="1470981688569" expanded="true" signature="3362:3578" placeholder="CREATE TABLE... weixin_account" />
+            <marker date="1470981688569" expanded="true" signature="3836:4098" placeholder="INSERT INTO &quot;weixin_account&quot;... " />
+            <marker date="1470981688569" expanded="true" signature="4501:4857" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
+            <marker date="1470981688569" expanded="true" signature="5291:5356" placeholder="SELECT &quot;corp... weixin_account" />
+            <marker date="1470981688569" expanded="true" signature="5948:6025" placeholder="SELECT &quot;acce... weixin_token" />
+            <marker date="1470981688569" expanded="true" signature="6585:6735" placeholder="UPDATE &quot;weix... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_sendMessage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5714286">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#59#238#1" expanded="true" />
           </folding>
         </state>
       </provider>

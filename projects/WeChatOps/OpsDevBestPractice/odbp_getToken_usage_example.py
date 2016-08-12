@@ -10,5 +10,5 @@ Create Time:        11:43
  """
 import odbp_getToken
 
-t = odbp_getToken.WeiXinTokenClass().get()
+t = odbp_getToken.WeiXinTokenClass()
 print t.get()

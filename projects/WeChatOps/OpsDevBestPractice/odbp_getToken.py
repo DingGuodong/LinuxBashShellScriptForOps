@@ -274,6 +274,7 @@ class WeiXinTokenClass(object):
         token_json = json.loads(result)
         if token_json['access_token'] is not None:
             get_time_now = datetime.datetime.now()
+            # TODO(Guodong Ding) token will expired ahead of time or not expired after the time
             expire_time = get_time_now + datetime.timedelta(seconds=token_json['expires_in'])
             token_json['expires_on'] = str(expire_time)
             self.__access_token = token_json['access_token']
