@@ -285,10 +285,29 @@ function yum_repository_config(){
 }
 
 function yum_install_extra_packages(){
+    # Programmable completion for Bash
     yum info bash-completion >/dev/null 2>&1 && yum -y install bash-completion >/dev/null 2>&1
+    # Ask the user to install command line programs automatically
+    yum info PackageKit-command-not-found >/dev/null 2>&1 && yum -y install PackageKit-command-not-found >/dev/null 2>&1
+    # Bash tab completion for argparse
+    yum info python-argcomplete >/dev/null 2>&1 && yum -y install python-argcomplete >/dev/null 2>&1
     yum -y update
 
 }
+
+
+function set_limits(){
+    backup_single_file /etc/security/limits.conf
+    cat >>/etc/security/limits.conf<<eof
+# refer to the free inodes number, by "df -i" commands
+* soft nofile 200000
+* hard nofile 200000
+
+eof
+
+}
+
+
 function customized_commands(){
     # customized commands, alternatively, echo into .bashrc file as a function or alias
     cat >/usr/local/bin/delsc <<eof
@@ -330,7 +349,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCawuOgQup3Qc1OILytyH+u3S9te85ctEKTvzPtRjHf
 ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAumQ2srRwd9slaeYTdr/dGd0H4NzJ3uQdBQABTe/nhJsUFWVG3titj7JiOYjCb54dmpHoi4rAYIElwrolQttZSCDKTVjamnzXfbV8HvJapLLLJTdKraSXhiUkdS4D004uleMpaqhmgNxCLu7onesCCWQzsNw9Hgpx5Hicpko6Xh0=
 eof
     SELINUX_STATE=$(cat "/selinux/enforce")
-    [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon -r /root/.ssh
+    [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon -r /root/.ssh || chcon --user=system_u --role=object_r --type=net_conf_t --range=s0 /etc/hosts
 
 }
 

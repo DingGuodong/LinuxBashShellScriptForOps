@@ -6,6 +6,13 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="kissops" />
   </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/../kissops/templates" />
+      </list>
+    </option>
+  </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />
   </component>

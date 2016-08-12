@@ -33,6 +33,7 @@
       <w>nameservers</w>
       <w>nmap</w>
       <w>nslookup</w>
+      <w>odbp</w>
       <w>pidfile</w>
       <w>printf</w>
       <w>psutil</w>
@@ -45,6 +46,7 @@
       <w>servertime</w>
       <w>slowlaris</w>
       <w>smtp</w>
+      <w>sqlite</w>
       <w>stderr</w>
       <w>stdout</w>
       <w>strace</w>

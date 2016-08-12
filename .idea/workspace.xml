@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="Travis CI test">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/.odbp_db.sqlite3" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/LinuxBashShellScriptForOps.iml" afterPath="$PROJECT_DIR$/.idea/LinuxBashShellScriptForOps.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Guodong.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Guodong.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/systemOsInit/centos6-init.sh" afterPath="$PROJECT_DIR$/projects/systemOsInit/centos6-init.sh" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,10 +33,12 @@
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$testC.coverage" NAME="testC Coverage Results" MODIFIED="1465960424999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/wechat" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$testZabbixApi.coverage" NAME="testZabbixApi Coverage Results" MODIFIED="1466213306414" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$getPublicIPAddress.coverage" NAME="getPublicIPAddress Coverage Results" MODIFIED="1469609643921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/ip" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_getToken.coverage" NAME="odbp_getToken Coverage Results" MODIFIED="1470971584075" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$http_running_status.coverage" NAME="http_running_status Coverage Results" MODIFIED="1468912473511" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/zabbix" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$baiduSearch.coverage" NAME="baiduSearch Coverage Results" MODIFIED="1466233159552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/webSpider" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$Unittests_in_http_running_status__3_.coverage" NAME="Unittests in http_running_status (3) Coverage Results" MODIFIED="1468912480254" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/zabbix" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$dnsQueryOps.coverage" NAME="dnsQueryOps Coverage Results" MODIFIED="1465355316949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/dns" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$yum.coverage" NAME="yum Coverage Results" MODIFIED="1470811603344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$pythonRegularExpression.coverage" NAME="pythonRegularExpression Coverage Results" MODIFIED="1466494572135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/string" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$tempC.coverage" NAME="tempC Coverage Results" MODIFIED="1465916249753" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/wechat" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$loginBaidu.coverage" NAME="loginBaidu Coverage Results" MODIFIED="1466221207928" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/webSpider" />
@@ -39,11 +46,14 @@
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$cookieOps.coverage" NAME="cookieOps Coverage Results" MODIFIED="1466233068490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/webSpider" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$getServerList.coverage" NAME="getServerList Coverage Results" MODIFIED="1465959356071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/wechat" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$sampleHttpServer.coverage" NAME="sampleHttpServer Coverage Results" MODIFIED="1470211106662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/PythonHTTPServer" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$examples.coverage" NAME="examples Coverage Results" MODIFIED="1470814189407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$progress.coverage" NAME="progress Coverage Results" MODIFIED="1470812766647" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$Unittests_in_http_running_status__5_.coverage" NAME="Unittests in http_running_status (5) Coverage Results" MODIFIED="1468907134364" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/zabbix" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$ipOps.coverage" NAME="ipOps Coverage Results" MODIFIED="1464838707876" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$dnsOps__1_.coverage" NAME="dnsOps (1) Coverage Results" MODIFIED="1465287695824" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/dns" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$baiduLogin.coverage" NAME="baiduLogin Coverage Results" MODIFIED="1466234165069" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/webSpider" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$Unittests_in_http_running_status__2_.coverage" NAME="Unittests in http_running_status (2) Coverage Results" MODIFIED="1468906963617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/zabbix" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_getToken__1_.coverage" NAME="odbp_getToken (1) Coverage Results" MODIFIED="1470971968248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$alterscript_msmtp.coverage" NAME="alterscript_msmtp Coverage Results" MODIFIED="1465202419365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/emailOps" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$getLoadAverage__1_.coverage" NAME="getLoadAverage (1) Coverage Results" MODIFIED="1467621500263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/performances/linux" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$WeixinBot.coverage" NAME="WeixinBot Coverage Results" MODIFIED="1469689212735" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/wechat/wechat_web" />
@@ -103,8 +113,14 @@
         <option name="myItemType" value="com.intellij.database.view.DatabaseStructure$Root" />
       </PATH_ELEMENT>
       <PATH_ELEMENT>
-        <option name="myItemId" value="Django default" />
+        <option name="myItemId" value="Sqlite (Xerial) - .odbp_db.sqlite3" />
         <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+    </PATH>
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" />
+        <option name="myItemType" value="com.intellij.database.view.DatabaseStructure$Root" />
       </PATH_ELEMENT>
     </PATH>
   </component>
@@ -117,58 +133,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="centos6-init.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projects/systemOsInit/centos6-init.sh">
+      <file leaf-file-name="odbp_getToken.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="324" column="13" selection-start-line="324" selection-start-column="13" selection-end-line="324" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/requirements.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="34" column="7" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider editor-type-id="MarkdownFxPreviewEditor">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-            <state split_layout="FIRST">
-              <first_editor vertical-scroll-proportion="0.037993923">
-                <caret line="1" column="64" selection-start-line="1" selection-start-column="64" selection-end-line="1" selection-end-column="64" />
-                <folding />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".travis.yml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.travis.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42016807">
-              <caret line="12" column="46" selection-start-line="12" selection-start-column="46" selection-end-line="12" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="getDateFromTimeServer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/functions/date/getDateFromTimeServer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
-              <folding />
+            <state vertical-scroll-proportion="0.609375">
+              <caret line="343" column="0" selection-start-line="343" selection-start-column="0" selection-end-line="343" selection-end-column="0" />
+              <folding>
+                <element signature="e#59#235#1" expanded="true" />
+                <marker date="1470972393640" expanded="true" signature="2139:2373" placeholder="CREATE TABLE... weixin_token" />
+                <marker date="1470972393640" expanded="true" signature="2602:2818" placeholder="CREATE TABLE... weixin_account" />
+                <marker date="1470972393640" expanded="true" signature="3074:3308" placeholder="CREATE TABLE... weixin_token" />
+                <marker date="1470972393640" expanded="true" signature="3362:3578" placeholder="CREATE TABLE... weixin_account" />
+                <marker date="1470972393640" expanded="true" signature="3836:4098" placeholder="INSERT INTO &quot;weixin_account&quot;... " />
+                <marker date="1470972393640" expanded="true" signature="4501:4857" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
+                <marker date="1470972393640" expanded="true" signature="5291:5356" placeholder="SELECT &quot;corp... weixin_account" />
+                <marker date="1470972393640" expanded="true" signature="5948:6025" placeholder="SELECT &quot;acce... weixin_token" />
+                <marker date="1470972393640" expanded="true" signature="6585:6735" placeholder="UPDATE &quot;weix... " />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -195,15 +176,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../kissops/kissops/settings.py" />
-        <option value="$PROJECT_DIR$/../kissops/kissops/shell.py" />
-        <option value="$PROJECT_DIR$/../kissops/shell.py" />
-        <option value="$PROJECT_DIR$/functions/net/ip/getIP.py" />
-        <option value="$PROJECT_DIR$/projects/others/testOps/somethingFun.py" />
-        <option value="$PROJECT_DIR$/projects/backupOps/FileSystem/backup-parameters.sh" />
-        <option value="$PROJECT_DIR$/functions/options/parametersSelector.sh" />
-        <option value="$PROJECT_DIR$/projects/backupOps/FileSystem/backup.sh" />
-        <option value="$PROJECT_DIR$/projects/others/zabbix/http_running_status.py" />
         <option value="$PROJECT_DIR$/functions/distribution-release/README.md" />
         <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_userConfig.sh" />
         <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh" />
@@ -213,7 +185,6 @@
         <option value="$PROJECT_DIR$/functions/net/ip/getPublicIPAddress_curlImpl.py" />
         <option value="$PROJECT_DIR$/projects/others/testOps/tmp/1" />
         <option value="$PROJECT_DIR$/projects/others/testOps/tmp/2" />
-        <option value="$PROJECT_DIR$/projects/others/zabbix/alter_by_wechat/WeChat.py" />
         <option value="$PROJECT_DIR$/projects/others/wechat/wechat_web/WeixinBot-win.py" />
         <option value="$PROJECT_DIR$/projects/others/wechat/wechat_web/api_test.py" />
         <option value="$PROJECT_DIR$/projects/others/wechat/wechat_web/WeixinBot.py" />
@@ -242,10 +213,20 @@
         <option value="$PROJECT_DIR$/functions/net/tcp/http/dnsOps.py" />
         <option value="$PROJECT_DIR$/functions/net/tcp/http/ipOps.py" />
         <option value="$PROJECT_DIR$/functions/net/tcp/http/processOps.py" />
-        <option value="$PROJECT_DIR$/projects/systemOsInit/centos6-init.sh" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/projects/systemOsInit/centos6-init.sh" />
+        <option value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/yum.py" />
+        <option value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/progress.py" />
+        <option value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master/examples.py" />
+        <option value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master/progressbar/progressbar.py" />
+        <option value="$PROJECT_DIR$/projects/others/zabbix/alter_by_wechat/WeChat.py" />
+        <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/README.md" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/c1a8a636-9264-4ed0-bd5f-b995122c9085/console.sql" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/0ee59e88-c4b1-4705-a06f-bfe8147dc3fb/console.sql" />
+        <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken.py" />
+        <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py" />
       </list>
     </option>
   </component>
@@ -304,7 +285,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -319,16 +300,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="kissops" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinuxBashShellScriptForOps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="LinuxBashShellScriptForOps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -346,8 +317,22 @@
               <option name="myItemId" value="projects" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="systemOsInit" />
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="others" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -364,6 +349,14 @@
               <option name="myItemId" value="projects" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="others" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wechat" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -375,7 +368,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="functions" />
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeChatOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OpsDevBestPractice" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -395,12 +396,12 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="C:/Python35/python.exe" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/.odbp_db.sqlite3" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
@@ -442,100 +443,100 @@
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\WeChatOps" />
+      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\Standing_on_the_shoulders_of_giants" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\testOps\webserver" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\wechat\wechat_web" />
       <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\autodeployOps\doDeploy_with_config_and_procedure_separate" />
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\autodeployOps" />
-      <recent name="C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\others\web\django" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.dnsOps">
-    <configuration default="false" name="pydaemon" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.odbp_getToken (1)">
+    <configuration default="false" name="yum" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/PythonDaemon" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="LinuxBashShellScriptForOps" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/PythonDaemon/pydaemon.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/yum.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="osinfo" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="progress" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functions/distribution-release" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="LinuxBashShellScriptForOps" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/distribution-release/osinfo.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/progress.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="getPlatformUseBuildin" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="examples" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functions/distribution-release" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="LinuxBashShellScriptForOps" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/distribution-release/getPlatformUseBuildin.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master/examples.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="getPlatform" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="odbp_getToken" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functions/distribution-release" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="LinuxBashShellScriptForOps" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/distribution-release/getPlatform.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="dnsOps" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="odbp_getToken (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functions/net/tcp/http" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="LinuxBashShellScriptForOps" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functions/net/tcp/http/dnsOps.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -792,19 +793,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Django server.kissops" />
-      <item index="1" class="java.lang.String" itemvalue="Python.pydaemon" />
-      <item index="2" class="java.lang.String" itemvalue="Python.osinfo" />
-      <item index="3" class="java.lang.String" itemvalue="Python.getPlatformUseBuildin" />
-      <item index="4" class="java.lang.String" itemvalue="Python.getPlatform" />
-      <item index="5" class="java.lang.String" itemvalue="Python.dnsOps" />
+      <item index="1" class="java.lang.String" itemvalue="Python.yum" />
+      <item index="2" class="java.lang.String" itemvalue="Python.progress" />
+      <item index="3" class="java.lang.String" itemvalue="Python.examples" />
+      <item index="4" class="java.lang.String" itemvalue="Python.odbp_getToken" />
+      <item index="5" class="java.lang.String" itemvalue="Python.odbp_getToken (1)" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.dnsOps" />
-        <item index="1" class="java.lang.String" itemvalue="Python.getPlatform" />
-        <item index="2" class="java.lang.String" itemvalue="Python.getPlatformUseBuildin" />
-        <item index="3" class="java.lang.String" itemvalue="Python.osinfo" />
-        <item index="4" class="java.lang.String" itemvalue="Python.pydaemon" />
+        <item index="0" class="java.lang.String" itemvalue="Python.odbp_getToken (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.odbp_getToken" />
+        <item index="2" class="java.lang.String" itemvalue="Python.examples" />
+        <item index="3" class="java.lang.String" itemvalue="Python.progress" />
+        <item index="4" class="java.lang.String" itemvalue="Python.yum" />
       </list>
     </recent_temporary>
   </component>
@@ -822,12 +823,6 @@
       <created>1461225723867</created>
       <option name="number" value="Default" />
       <updated>1461225723867</updated>
-    </task>
-    <task id="LOCAL-00013" summary="add new files">
-      <created>1463123668164</created>
-      <option name="number" value="00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1463123668164</updated>
     </task>
     <task id="LOCAL-00014" summary="add new files">
       <created>1463378983446</created>
@@ -1117,7 +1112,13 @@
       <option name="project" value="LOCAL" />
       <updated>1470727072565</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Travis CI test">
+      <created>1470728062046</created>
+      <option name="number" value="00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1470728062046</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1166,50 +1167,28 @@
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243607" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5141319" sideWeight="0.5028653" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44414535" sideWeight="0.504298" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36473754" sideWeight="0.495702" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25841185" sideWeight="0.47994268" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32166892" sideWeight="0.4820917" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44549125" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5141319" sideWeight="0.49713466" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.77523553" sideWeight="0.49713466" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3918338" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23853868" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31359354" sideWeight="0.49167928" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20630373" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21203439" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39838493" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934534" sideWeight="0.48940998" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3768506" sideWeight="0.49713466" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243607" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25841185" sideWeight="0.5200573" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934534" sideWeight="0.48940998" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3768506" sideWeight="0.49713466" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25841185" sideWeight="0.47994268" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32166892" sideWeight="0.4820917" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44549125" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5141319" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3918338" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31359354" sideWeight="0.49167928" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20630373" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39838493" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -1242,214 +1221,15 @@
           <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="22" />
+      <option name="time" value="24" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/functions/file/ConfParser/linuxConfToDict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/file/ConfParser/testList.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/dns/dnsOps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/Lib/platform.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/distribution-release/osinfo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14431487">
-          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/distribution-release/getPlatformUseBuildin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4373178">
-          <caret line="12" column="18" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/distribution-release/getPlatform.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.98039216">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding>
-            <element signature="e#59#68#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/dns/dnsQueryOps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6785715">
-          <caret line="3" column="19" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/ip/getPublicIPAddress_urllib2Impl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc/testZabbixApi_impl1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc/testZabbixApi_impl2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6785715">
-          <caret line="3" column="15" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/ip/getPublicIPAddress_curlImpl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/ip/getIP.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/webspider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#9#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/cookieOps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/cookie.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/baiduSearch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/baiduLogin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc/testZabbixApiPy3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/webSpider2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.9110787">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/weibo_login_cookies.dat">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/webSpider/weiboLogin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/commandHistory.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/curlHttpHealthCheck.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.464286">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <element signature="e#24#33#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/dnsHttpHealthCheck.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1457,7 +1237,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1465,7 +1244,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.467787">
           <caret line="63" column="8" selection-start-line="63" selection-start-column="8" selection-end-line="63" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1473,7 +1251,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-16.464285">
           <caret line="25" column="51" selection-start-line="25" selection-start-column="50" selection-end-line="25" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1481,7 +1258,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1489,7 +1265,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1497,9 +1272,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.714286">
           <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#9#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1507,7 +1279,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1515,9 +1286,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#19#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1525,9 +1293,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#46#1" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1535,9 +1300,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.6785715">
           <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1545,7 +1307,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1553,7 +1314,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1561,7 +1321,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1569,9 +1328,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1579,7 +1335,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="11" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1587,7 +1342,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1595,7 +1349,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1603,7 +1356,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1611,7 +1363,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1619,7 +1370,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1627,53 +1377,219 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="FIRST">
+          <first_editor vertical-scroll-proportion="0.037993923">
+            <caret line="1" column="64" selection-start-line="1" selection-start-column="64" selection-end-line="1" selection-end-column="64" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.1666665">
+          <caret line="5" column="12" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/functions/date/dateFormat.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/functions/date/getDateFromTimeServer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
-          <folding />
+        <state vertical-scroll-proportion="0.4047619">
+          <caret line="20" column="18" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-        <state split_layout="FIRST">
-          <first_editor vertical-scroll-proportion="0.037993923">
-            <caret line="1" column="64" selection-start-line="1" selection-start-column="64" selection-end-line="1" selection-end-column="64" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="7" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
-          <folding />
+        <state vertical-scroll-proportion="0.38515407">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/systemOsInit/centos6-init.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="324" column="13" selection-start-line="324" selection-start-column="13" selection-end-line="324" selection-end-column="13" />
+          <caret line="296" column="0" selection-start-line="296" selection-start-column="0" selection-end-line="296" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/yum.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="94" column="29" selection-start-line="94" selection-start-column="22" selection-end-line="94" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/progress.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="27" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master/examples.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="16" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master/progressbar/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/Standing_on_the_shoulders_of_giants/python-progressbar-master/progressbar/progressbar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="19" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/sendMessage2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.0770308">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/zabbix/alter_by_wechat/WeChat.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/sendMessage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/django/db/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="11" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../kissops/kissops/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="24" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/django/db/models/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="14" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../kissops/kissops/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3347339">
+          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="83" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/sqlite3/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75490195">
+          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/.wechat_lock">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="190" selection-start-line="0" selection-start-column="180" selection-end-line="0" selection-end-column="190" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/c1a8a636-9264-4ed0-bd5f-b995122c9085/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.8333333">
+          <caret line="1" column="14" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/15d6d962-2312-4ec4-8500-e021325704ed/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/0ee59e88-c4b1-4705-a06f-bfe8147dc3fb/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="63" selection-start-line="0" selection-start-column="63" selection-end-line="0" selection-end-column="63" />
+          <folding>
+            <marker date="1470906194022" expanded="true" signature="0:63" placeholder="SELECT &quot;acce... weixin_token" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/getToken.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="35" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.travis.yml">
+    <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-762174762/_sqlite3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42016807">
-          <caret line="12" column="46" selection-start-line="12" selection-start-column="46" selection-end-line="12" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.33182845">
+          <caret line="260" column="8" selection-start-line="260" selection-start-column="8" selection-end-line="260" selection-end-column="8" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3ce99a6f-aad2-4027-88f2-5cc0625085b7/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.609375">
+          <caret line="343" column="0" selection-start-line="343" selection-start-column="0" selection-end-line="343" selection-end-column="0" />
+          <folding>
+            <element signature="e#59#235#1" expanded="true" />
+            <marker date="1470972393640" expanded="true" signature="2139:2373" placeholder="CREATE TABLE... weixin_token" />
+            <marker date="1470972393640" expanded="true" signature="2602:2818" placeholder="CREATE TABLE... weixin_account" />
+            <marker date="1470972393640" expanded="true" signature="3074:3308" placeholder="CREATE TABLE... weixin_token" />
+            <marker date="1470972393640" expanded="true" signature="3362:3578" placeholder="CREATE TABLE... weixin_account" />
+            <marker date="1470972393640" expanded="true" signature="3836:4098" placeholder="INSERT INTO &quot;weixin_account&quot;... " />
+            <marker date="1470972393640" expanded="true" signature="4501:4857" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
+            <marker date="1470972393640" expanded="true" signature="5291:5356" placeholder="SELECT &quot;corp... weixin_account" />
+            <marker date="1470972393640" expanded="true" signature="5948:6025" placeholder="SELECT &quot;acce... weixin_token" />
+            <marker date="1470972393640" expanded="true" signature="6585:6735" placeholder="UPDATE &quot;weix... " />
+          </folding>
         </state>
       </provider>
     </entry>
