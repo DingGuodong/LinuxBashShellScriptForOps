@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="remove some vars">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/.odbp_db.sqlite3" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/.odbp_db.sqlite3" />
+    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="Python实现通过微信企业号发送文本消息的Class">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" afterPath="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -75,7 +71,7 @@
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$Unittests_in_http_running_status__1_.coverage" NAME="Unittests in http_running_status (1) Coverage Results" MODIFIED="1468908844630" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/zabbix" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_sendMessage.coverage" NAME="odbp_sendMessage Coverage Results" MODIFIED="1470991105755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$somethingFun.coverage" NAME="somethingFun Coverage Results" MODIFIED="1468552658184" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/testOps" />
-    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_sendMessage_usage_example.coverage" NAME="odbp_sendMessage_usage_example Coverage Results" MODIFIED="1470991684842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice" />
+    <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$odbp_sendMessage_usage_example.coverage" NAME="odbp_sendMessage_usage_example Coverage Results" MODIFIED="1470992775701" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$webserver.coverage" NAME="webserver Coverage Results" MODIFIED="1470121734066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projects/others/testOps/webserver" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$testZabbixApi_impl1.coverage" NAME="testZabbixApi_impl1 Coverage Results" MODIFIED="1466213905849" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/net/tcp/http/api/jsonrpc" />
     <SUITE FILE_PATH="coverage/LinuxBashShellScriptForOps$getPlatformUseBuildin.coverage" NAME="getPlatformUseBuildin Coverage Results" MODIFIED="1470646942985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/functions/distribution-release" />
@@ -135,10 +131,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="odbp_sendMessage.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="odbp_sendMessage.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_sendMessage.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5714286">
+            <state vertical-scroll-proportion="0.0">
               <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
                 <element signature="e#59#238#1" expanded="true" />
@@ -171,7 +167,33 @@
         <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="13" selection-end-column="38" />
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="FIRST">
+              <first_editor vertical-scroll-proportion="0.4521964">
+                <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+          <provider editor-type-id="MarkdownFxPreviewEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -251,7 +273,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/functions/net/ip/getPublicIPAddress_urllib2Impl.py" />
         <option value="$PROJECT_DIR$/functions/net/ip/getPublicIPAddress_curlImpl.py" />
         <option value="$PROJECT_DIR$/projects/others/testOps/tmp/1" />
         <option value="$PROJECT_DIR$/projects/others/testOps/tmp/2" />
@@ -302,6 +323,7 @@
         <option value="$PROJECT_DIR$/projects/others/testOps/unicodeOps.py" />
         <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_sendMessage.py" />
         <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -947,12 +969,6 @@
       <option name="number" value="Default" />
       <updated>1461225723867</updated>
     </task>
-    <task id="LOCAL-00016" summary="add new files">
-      <created>1463392423385</created>
-      <option name="number" value="00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1463392423385</updated>
-    </task>
     <task id="LOCAL-00017" summary="add new files">
       <created>1463392806292</created>
       <option name="number" value="00017" />
@@ -1241,7 +1257,13 @@
       <option name="project" value="LOCAL" />
       <updated>1470974570282</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Python实现通过微信企业号发送文本消息的Class">
+      <created>1470992721906</created>
+      <option name="number" value="00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1470992721906</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1287,17 +1309,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-102" width="1456" height="876" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3243607" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44414535" sideWeight="0.504298" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36473754" sideWeight="0.495702" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36473754" sideWeight="0.495702" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25841185" sideWeight="0.47994268" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32166892" sideWeight="0.4820917" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.77523553" sideWeight="0.49713466" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23853868" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23853868" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31359354" sideWeight="0.49167928" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21203439" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1357,7 +1379,8 @@
     <MESSAGE value="reformat code" />
     <MESSAGE value="Travis CI test" />
     <MESSAGE value="remove some vars" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove some vars" />
+    <MESSAGE value="Python实现通过微信企业号发送文本消息的Class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Python实现通过微信企业号发送文本消息的Class" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1374,20 +1397,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/processOps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6785715">
-          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/pythonCurlOps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/functions/net/tcp/http/pythonHttpOps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1754,11 +1763,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py">
+    <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_sendMessage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="13" selection-end-column="38" />
-          <folding />
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#59#238#1" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1780,13 +1791,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_sendMessage.py">
+    <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5714286">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="e#59#238#1" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="FIRST">
+          <first_editor vertical-scroll-proportion="0.4521964">
+            <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
