@@ -32,8 +32,8 @@ def debug(msg, code=None):
 
 AUTHOR_MAIL = "uberurey_ups@163.com"
 
-weixin_qy_CorpID = "wx4dd961cd206edb07"
-weixin_qy_Secret = "L0mUOp3vWrpdsnIrTwhfYx1via6M5VXyCLn7gYVoXqe_vSLArMVnC_IzVWUSwc17"
+weixin_qy_CorpID = "your_corpid"
+weixin_qy_Secret = "your_secret"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
