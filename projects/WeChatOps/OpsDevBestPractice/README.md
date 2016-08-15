@@ -5,4 +5,7 @@
 ##CorpID
     - wx4dd961cd206edb07
 ##Secret
-    - L0mUOp3vWrpdsnIrTwhfYx1via6M5VXyCLn7gYVoXqe_vSLArMVnC_IzVWUSwc17
+    - UZ4e4jCFHySnH6i3X8Ayr-aHvoUhAFhH6yrMI6qnmtGZnIWrEIM7PTEHPvaf30zD
+##发消息限制
+    - http://qydev.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E6%B6%88%E6%81%AF
+    - 企业可以主动发消息给成员，每天可发的数量为：帐号上限数*30人次/天。即200*30=600人次/天。

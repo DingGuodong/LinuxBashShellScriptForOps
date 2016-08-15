@@ -243,6 +243,18 @@ def sqlite3_update_token(access_token, expires_on):
     sqlite3_close(sql_conn)
 
 
+def sqlite3_update_account(new_corpid, new_secret):
+    sql_conn = sqlite3_conn(sqlite3_db_file)
+    sql_cursor = sql_conn.cursor()
+    sql_cursor.execute('''UPDATE "weixin_account" SET
+                          corpid=?,
+                          secret=?
+                          WHERE _ROWID_ = 1;''', (new_corpid, new_secret)
+                       )
+    sqlite3_commit(sql_conn)
+    sqlite3_close(sql_conn)
+
+
 class WeiXinTokenClass(object):
     def __init__(self):
         self.__corpid = None
@@ -261,6 +273,13 @@ class WeiXinTokenClass(object):
             self.__corpid = weixin_qy_CorpID
             self.__corpsecret = weixin_qy_Secret
 
+        if self.__corpid != weixin_qy_CorpID or self.__corpsecret != weixin_qy_Secret:
+            sqlite3_update_account(weixin_qy_CorpID, weixin_qy_Secret)
+            self.__corpid = sqlite3_get_credential()[0][0]
+            self.__corpsecret = sqlite3_get_credential()[0][1]
+        else:
+            pass
+
     def __get_token_from_weixin_qy_api(self):
         parameters = {
             "corpid": self.__corpid,
@@ -272,6 +291,11 @@ class WeiXinTokenClass(object):
         response = urllib2.urlopen(url)
         result = response.read()
         token_json = json.loads(result)
+        if 'access_token' in token_json:
+            pass
+        else:
+            print "WeiXin_Qy Api Error, result is %s" % token_json
+            sys.exit(1)
         if token_json['access_token'] is not None:
             get_time_now = datetime.datetime.now()
             # TODO(Guodong Ding) token will expired ahead of time or not expired after the time
