@@ -310,17 +310,17 @@ function setDirectoryStructureOnLocalHost() {
     set +o errexit
 }
 
-function clean_old_releases(){
+function clean_old_releases_discarded(){
     echo_b "Clean old releases... "
     save_days=${save_old_releases_for_days:-10}
     if [ ! -d ${WORKDIR}/release ]; then
         echo_b "Can NOT find release directory, skipping . "
         return
     fi
-    need_clean=$(find ${WORKDIR}/release -mtime +${save_days} -exec ls '{}' \;)
-    if [ ! -z ${need_clean} ]; then
+    need_clean=$(find ${WORKDIR}/release -mtime +${save_days} -exec ls '{}' \; | wc -l)
+    if [ ${need_clean} -gt 0 ]; then
         echo_c "Expired releases found and will be removed from project! "
-        find ${WORKDIR}/release -mtime +${save_days} -exec rm -rf '{}' \;
+        find ${WORKDIR}/release -mtime +${save_days} -exec rm -rf '{}' \; >/dev/null 2>&1
         if [ $? -eq 0 ]; then
             echo_g "Expired releases have removed from project! "
         else
@@ -332,13 +332,39 @@ function clean_old_releases(){
 
 }
 
+
+function clean_old_releases(){
+    echo_b "Clean old releases... "
+    num_save=${save_old_releases_for_numbers:-10}
+    files_ops=${WORKDIR}/release
+    num_files=$(find ${files_ops} -maxdepth 1 -type d  -a ! -wholename "." -a ! -wholename ".." -a -wholename "$files_ops" -printf "%C@ %p\n" | sort -n | wc -l)
+    if test ${num_files} -gt ${num_save};then
+        echo_c "Extra releases found and will be removed from project! "
+        num_ops=$(expr ${num_files} - ${num_save})
+        list_ops=$(find ${files_ops} -maxdepth 1 -type d -a ! -wholename "." -a ! -wholename ".." -a -wholename "$files_ops" -printf "%C@ %p\n" | sort -n | head -n${num_ops} | awk -F '[ ]+' '{print $2}')
+        # IFS=' '$'\t'$'\n', If IFS is unset, or its value is exactly <space><tab><newline>
+        old_IFS=$IFS
+        IFS=' '$'\t'$'\n'  # \n is a must
+        for file_ops in ${list_ops};do
+            echo "$file_ops"
+            test -d ${file_ops} && rm -rf ${file_ops}
+        done
+        IFS="$old_IFS"
+        echo_g "Extra releases have been removed from project! "
+    else
+        echo_g "All releases are essential, skipping. "
+    fi
+
+}
+
+
 function clean_old_logs(){
     echo_b "Clean old logs... "
     save_days=${save_old_releases_for_days:-10}
-    need_clean=$(find ${WORKDIR}/ -name "*.log" -mtime +${save_days} -exec ls '{}' \;)
-    if [ ! -z ${need_clean} ]; then
+    need_clean=$(find ${WORKDIR}/logs -name "*.log" -mtime +${save_days} -exec ls '{}' \; | wc -l)
+    if [ ${need_clean} -gt 0 ]; then
         echo_c "Expired releases found and will be removed from project! "
-        find -L ${WORKDIR}/ -maxdepth 1 -name "*.log" -a ! -name "^." -mtime +${save_days} -exec rm -rf '{}' \;
+        find -L ${WORKDIR}/logs -maxdepth 1 -name "*.log" -a ! -name "^." -mtime +${save_days} -exec rm -rf '{}' \; >/dev/null 2>&1
         if [ $? -eq 0 ]; then
             echo_g "Expired logs have removed from project! "
         else
@@ -349,6 +375,7 @@ function clean_old_logs(){
     fi
 
 }
+
 
 # git_project_clone repository branch
 # Note:
@@ -657,6 +684,7 @@ function backup_remote_host_config_files(){
         # remove empty directory, 'for + rmdir'
         find ${WORKDIR}/${user_defined_project_conf_directory}/. -empty -type d -delete
         # TODO(Guodong Ding) improvements here
+        test ! -z ${user_defined_project_conf_directory} -a -d ${WORKDIR}/${user_defined_project_conf_directory}/WEB-INF/classes/com && rm -rf ${WORKDIR}/${user_defined_project_conf_directory}/WEB-INF/classes/com
         echo_g "backup remote host config files finished."
         echo "`date +%Y%m%d`" > ${WORKDIR}/${user_defined_project_conf_directory}/.backup_operation_once.log
     else
@@ -754,7 +782,7 @@ function deploy() {
     echo_b "Do deploy on $user_defined_deploy_target_host_ip ..."
 
     # backup remote host config files
-    [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+    [ ! -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
     # remove all file in remote host target directories and files, if target is not exist, then create it.
     ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "if test -d $user_defined_project_top_directory_to_target_host; then find -L $user_defined_project_top_directory_to_target_host  -maxdepth 1 ! -name "logs" ! -wholename "${user_defined_project_top_directory_to_target_host}" -exec rm -rf {} \; ; else mkdir -p $user_defined_project_top_directory_to_target_host; fi"
@@ -836,7 +864,7 @@ function rollback() {
     [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
 
     # backup remote host config files
-    [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+    [ ! -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
 #    scp_local_files_to_remote_host ${WORKDIR}/current/ ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
     saved_IFS=$IFS
@@ -897,7 +925,7 @@ function rollback_manual(){
             [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
 
             # backup remote host config files
-            [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+            [ ! -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
 #            # rollback remote host config files
 #            [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
@@ -968,6 +996,7 @@ function backup_manual(){
     # remove empty directory, 'for + rmdir'
     find ${WORKDIR}/${user_defined_project_conf_directory}/. -empty -type d -delete
     # TODO(Guodong Ding) improvements here
+    test ! -z ${user_defined_project_conf_directory} -a -d ${WORKDIR}/${user_defined_project_conf_directory}/WEB-INF/classes/com && rm -rf ${WORKDIR}/${user_defined_project_conf_directory}/WEB-INF/classes/com
     echo_g "backup remote host config files finished."
     echo "`date +%Y%m%d`" > ${WORKDIR}/${user_defined_project_conf_directory}/.backup_operation_once.log
     set +o errexit
@@ -996,6 +1025,7 @@ function deploys() {
 
         # rollback remote host config files
         [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
+
         if test ! -z "${user_defined_project_conf_directory}" -a -d ${WORKDIR}/${user_defined_project_conf_directory}; then
             saved_IFS=$IFS
             IFS=' '
@@ -1060,7 +1090,7 @@ function rollbacks(){
             [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
 
             # backup remote host config files
-            [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+            [ ! -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
 
             #    scp_local_files_to_remote_host ${WORKDIR}/current/ ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
             saved_IFS=$IFS

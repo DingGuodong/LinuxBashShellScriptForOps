@@ -11,5 +11,6 @@ user_defined_project_conf_directory="config_backup" # if you do NOT want to use 
 user_defined_skip_check_network_and_resolver="true" # if system administrator disable ICMP protocol, set this any content but not null
 # Setting how many days do you want save old releases, default is 10 days
 save_old_releases_for_days=10
+save_old_releases_for_numbers=10
 # end define variables
 
