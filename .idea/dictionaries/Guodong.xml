@@ -53,6 +53,7 @@
       <w>stderr</w>
       <w>stdout</w>
       <w>strace</w>
+      <w>subshells</w>
       <w>subsys</w>
       <w>sudo</w>
       <w>uninstaller</w>
