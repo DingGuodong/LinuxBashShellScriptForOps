@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="增加对微信发送消息数量限制的计数功能，每次发送统计发送次数，超过600（额定数值），则取消发送。">
+    <list default="true" id="e946bf12-c67c-434f-8b3a-e75625750e56" name="Default" comment="test">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh" afterPath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_userConfig.sh" afterPath="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_userConfig.sh" />
     </list>
     <ignored path="LinuxBashShellScriptForOps.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -188,31 +187,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="odbp_database.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_database.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="294" column="28" selection-start-line="294" selection-start-column="27" selection-end-line="294" selection-end-column="28" />
-              <folding>
-                <element signature="e#239#248#0" expanded="true" />
-                <marker date="1471316081374" expanded="true" signature="2084:2318" placeholder="CREATE TABLE... weixin_token" />
-                <marker date="1471316081374" expanded="true" signature="2547:2763" placeholder="CREATE TABLE... weixin_account" />
-                <marker date="1471316081374" expanded="true" signature="2991:3189" placeholder="CREATE TABLE... weixin_limit" />
-                <marker date="1471316081374" expanded="true" signature="3487:3749" placeholder="INSERT INTO &quot;weixin_account&quot;... " />
-                <marker date="1471316081374" expanded="true" signature="4152:4508" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
-                <marker date="1471316081374" expanded="true" signature="4945:5239" placeholder="INSERT INTO &quot;weixin_token&quot;... " />
-                <marker date="1471316081374" expanded="true" signature="5620:5685" placeholder="SELECT &quot;corp... weixin_account" />
-                <marker date="1471316081374" expanded="true" signature="6277:6354" placeholder="SELECT &quot;acce... weixin_token" />
-                <marker date="1471316081374" expanded="true" signature="6930:6992" placeholder="SELECT &quot;acce... weixin_limit" />
-                <marker date="1471316081374" expanded="true" signature="6930:6994" placeholder="SELECT &quot;used... weixin_limit" />
-                <marker date="1471316081374" expanded="true" signature="7575:7725" placeholder="UPDATE &quot;weix... " />
-                <marker date="1471316081374" expanded="true" signature="8000:8142" placeholder="UPDATE &quot;weix... " />
-                <marker date="1471316081374" expanded="true" signature="8413:8553" placeholder="UPDATE &quot;weix... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="odbp_sendMessagewithCount_usage_example.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessagewithCount_usage_example.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -228,16 +202,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="odbp_sendMessage_usage_example.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -265,13 +229,39 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="doDeploy_executionProcedure.sh" pinned="false" current-in-tab="true">
+      <file leaf-file-name="doDeploy_executionProcedure.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.04621849">
+            <state vertical-scroll-proportion="0.0">
               <caret line="336" column="35" selection-start-line="336" selection-start-column="35" selection-end-line="336" selection-end-column="35" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.09380863">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bashStyle.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/BashEnhancementProposals/bashStyle.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="FIRST">
+              <first_editor vertical-scroll-proportion="0.075987846">
+                <caret line="2" column="57" selection-start-line="2" selection-start-column="57" selection-end-line="2" selection-end-column="57" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+          <provider editor-type-id="MarkdownFxPreviewEditor">
+            <state />
           </provider>
         </entry>
       </file>
@@ -362,7 +352,6 @@
         <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_getToken_usage_example.py" />
         <option value="$PROJECT_DIR$/projects/others/testOps/unicodeOps.py" />
         <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/odbp_sendMessage_usage_example.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/projects/WeChatOps/OpsDevBestPractice/README.md" />
         <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken.py" />
         <option value="$PROJECT_DIR$/projects/others/wechat/OpsDevBestPractice/odbp_getToken_usage_example.py" />
@@ -378,6 +367,7 @@
         <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_AutomaticDeployJavaMavenProject.sh" />
         <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_userConfig.sh" />
         <option value="$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -505,6 +495,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="doDeploy_with_config_and_procedure_separate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinuxBashShellScriptForOps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BashEnhancementProposals" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -939,18 +947,6 @@
       <option name="number" value="Default" />
       <updated>1461225723867</updated>
     </task>
-    <task id="LOCAL-00020" summary="add new files">
-      <created>1463476701044</created>
-      <option name="number" value="00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1463476701044</updated>
-    </task>
-    <task id="LOCAL-00021" summary="add new files">
-      <created>1463538426068</created>
-      <option name="number" value="00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1463538426068</updated>
-    </task>
     <task id="LOCAL-00022" summary="add new files">
       <created>1463538698928</created>
       <option name="number" value="00022" />
@@ -1233,7 +1229,19 @@
       <option name="project" value="LOCAL" />
       <updated>1471319913242</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="1.更换清理过期release的方法，由原先的保留10天改为保留最近10份；2，忽略某个特殊目录下的配置文件，让此配置文件保持与git版本库中的一直，即与git版本库中保持同步更新；3.修改一些已知的bug">
+      <created>1471337607174</created>
+      <option name="number" value="00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1471337607175</updated>
+    </task>
+    <task id="LOCAL-00070" summary="test">
+      <created>1471340277107</created>
+      <option name="number" value="00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1471340277107</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1289,10 +1297,10 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36473754" sideWeight="0.495702" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.77523553" sideWeight="0.49713466" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3538682" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3538682" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31359354" sideWeight="0.49167928" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21203439" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21203439" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39838493" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1353,7 +1361,9 @@
     <MESSAGE value="移除某些文件" />
     <MESSAGE value="修复用户定义的微信企业号secret变更后，数据库不随之变更导致无法获取token的错误" />
     <MESSAGE value="增加对微信发送消息数量限制的计数功能，每次发送统计发送次数，超过600（额定数值），则取消发送。" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加对微信发送消息数量限制的计数功能，每次发送统计发送次数，超过600（额定数值），则取消发送。" />
+    <MESSAGE value="1.更换清理过期release的方法，由原先的保留10天改为保留最近10份；2，忽略某个特殊目录下的配置文件，让此配置文件保持与git版本库中的一直，即与git版本库中保持同步更新；3.修改一些已知的bug" />
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1370,13 +1380,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../kissops/kissops/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3347339">
-          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="83" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/sqlite3/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.75490195">
@@ -1476,14 +1479,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.8287293">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1801,8 +1796,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projects/autodeployOps/doDeploy_with_config_and_procedure_separate/doDeploy_executionProcedure.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.04621849">
+        <state vertical-scroll-proportion="0.0">
           <caret line="336" column="35" selection-start-line="336" selection-start-column="35" selection-end-line="336" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/BashEnhancementProposals/bashStyle.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="FIRST">
+          <first_editor vertical-scroll-proportion="0.075987846">
+            <caret line="2" column="57" selection-start-line="2" selection-start-column="57" selection-end-line="2" selection-end-column="57" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09380863">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
       </provider>
