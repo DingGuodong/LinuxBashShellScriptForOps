@@ -47,6 +47,7 @@
       <w>rsync</w>
       <w>rsyslog</w>
       <w>servertime</w>
+      <w>shopt</w>
       <w>slowlaris</w>
       <w>smtp</w>
       <w>sqlite</w>
