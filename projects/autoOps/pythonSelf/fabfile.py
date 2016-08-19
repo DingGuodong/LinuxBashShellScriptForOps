@@ -1,9 +1,12 @@
 #!/usr/bin/python
 # encoding: utf-8
-# -*- coding: utf8 -*-
+# -*- coding: utf8 -*-\
+
+# Pythonic remote execution
 # Refer: http://docs.fabfile.org/en/1.6/tutorial.html#conclusion
 # Refer: https://github.com/dlapiduz/fabistrano/blob/master/fabistrano/deploy.py
 # Refer: https://gist.github.com/mtigas/719452
+# Refer: http://docs.fabfile.org/en/1.12/usage/env.html
 # fab -i c:\Users\Guodong\.ssh\exportedkey201310171355 -f .\projects\autoOps\pythonSelf\fabfile.py dotask
 
 import os
@@ -11,28 +14,60 @@ import datetime
 import re
 import sys
 import logging
+import logging.handlers
 import time
 import socket
 import requests
 import platform
 
-current_time = time.strftime("%Y%m%d")
-logpath = "/tmp"
-logfile = "log_fabfile_" + current_time + ".log"
-try:
-    os.makedirs(logpath)
-except OSError:
-    pass
 
-if os.path.exists(logpath):
-    logfile = logpath + "/" + logfile
-else:
+def win_or_linux():
+    # os.name ->(sames to) sys.builtin_module_names
+    if 'posix' in sys.builtin_module_names:
+        os_type = 'Linux'
+    elif 'nt' in sys.builtin_module_names:
+        os_type = 'Windows'
+    return os_type
+
+
+def is_windows():
+    if "windows" in win_or_linux().lower():
+        return True
+    else:
+        return False
+
+
+def is_linux():
+    if "linux" in win_or_linux().lower():
+        return True
+    else:
+        return False
+
+
+def initLoggerWithRotate():
+    current_time = time.strftime("%Y%m%d%H")
+    logpath = "/tmp"
     logfile = "log_fabfile_" + current_time + ".log"
+    if not os.path.exists(logpath):
+        os.makedirs(logpath)
+    else:
+        logfile = os.path.join(logpath, logfile)
 
-formatter = "%(asctime)s %(filename)s:%(lineno)d %(levelname)s: %(message)s"
-logging.basicConfig(filename=logfile, level=logging.INFO, format=formatter)
+    logger = logging.getLogger("fabric")
+    log_formatter = logging.Formatter("%(asctime)s %(filename)s:%(lineno)d %(name)s %(levelname)s: %(message)s",
+                                      "%Y-%m-%d %H:%M:%S")
+    file_handler = logging.handlers.RotatingFileHandler(logfile, maxBytes=104857600, backupCount=5)
+    file_handler.setFormatter(log_formatter)
+    stream_handler = logging.StreamHandler(sys.stderr)
+    logger.addHandler(file_handler)
+    logger.addHandler(stream_handler)
+    logger.setLevel(logging.DEBUG)
+    return logger
 
-logging.info("Started.")
+
+logger = initLoggerWithRotate()
+
+logger.info("Started.")
 
 os_release = platform.system()
 if os_release == "Windows":
@@ -40,10 +75,10 @@ if os_release == "Windows":
 elif os_release == "Linux":
     distname = platform.linux_distribution()[0]
     if str(distname).lower() == "ubuntu":
-        command_to_execute = "which pip &>/dev/null || apt-get -y install libcurl4-openssl-dev python-pip"
+        command_to_execute = "which pip >/dev/null 2>&1 || apt-get -y install libcurl4-openssl-dev python-pip"
         os.system(command_to_execute)
     elif str(distname).lower() == "centos":
-        command_to_execute = "which pip &>/dev/null || yum -y install python-pip"
+        command_to_execute = "which pip &>/dev/null 1>&2 || yum -y install python-pip"
         os.system(command_to_execute)
 else:
     print "Error => Unsupported OS type."
@@ -57,7 +92,7 @@ except ImportError:
         command_to_execute = "pip install fabric"
         os.system(command_to_execute)
     except OSError:
-        exit(1)
+        sys.exit(1)
 finally:
     from fabric.api import *
     from fabric.main import main
@@ -109,19 +144,62 @@ finally:
 
 env.roledefs = {
     'testEnvironment': ['root@10.6.28.28:22', ],
-    'productionEnvironment': ['root@10.6.28.28:22', ],
+    'productionEnvironment': ['root@10.6.28.46:22', 'root@10.6.28.27:22', ],
+    'nginx': ['root@10.6.28.46:22', 'root@10.6.28.27:22', ],
 }
 
 env.user = "root"
-env.hosts = ["10.6.28.28"]
+env.hosts = ["10.6.28.27", "10.6.28.28", "10.6.28.35", "10.6.28.46", "10.6.28.93", "10.6.28.125", "10.6.28.135"]
 
-env.git_address = ''
-env.basedir = '/root/www'
-env.capistrano_ds_lock = env.basedir + '/.capistrano_ds_lock'
+
+def show_uname():
+    try:
+        out = run("uname -a")
+    except KeyboardInterrupt:
+        logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
+        sys.exit(1)
+    if out.return_code == 0:
+        logger.info("task finished successfully on " + env.host + " .")
+    else:
+        logger.error("task finished failed on " + env.host + " .")
+
+
+def show_ping():
+    try:
+        out = run("ping -c1 www.aliyun.com >/dev/null 2>&1")
+    except KeyboardInterrupt:
+        logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
+        sys.exit(1)
+    if out.return_code == 0:
+        logger.info("task finished successfully on " + env.host + " .")
+    else:
+        logger.error("task finished failed on " + env.host + " .")
+
+
+# Call method: ping:www.qq.com
+def ping(host):
+    if host is not None:
+        try:
+            out = run("ping -c1 " + host + " >/dev/null 2>&1")
+        except KeyboardInterrupt:
+            logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
+            sys.exit(1)
+        if out.return_code == 0:
+            logger.info("task finished successfully on " + env.host + " .")
+        else:
+            logger.error("task finished failed on " + env.host + " .")
+
+
+def showDiskUsage():
+    try:
+        run("df -h")
+    except KeyboardInterrupt:
+        logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
+        sys.exit(1)
 
 
 def sudo_run(*args, **kwargs):
-    if env.use_sudo:
+    if env.use_sudo is not None:
         sudo(*args, **kwargs)
     else:
         run(*args, **kwargs)
@@ -226,7 +304,6 @@ def set_hosts_file(hosts="/etc/hosts"):
         f.write(appended_content)
 
 
-@roles('testEnvironment')
 def set_capistrano_directory_structure_over_fabric():
     print blue("setting capistrano directory structure ...")
     capistrano_release = env.basedir + '/release'
@@ -264,7 +341,19 @@ def git_clone_local():
     local(git_clone)
 
 
+def terminal_debug(defName):
+    command = "fab -i c:\Users\Guodong\.ssh\exportedkey201310171355\
+                -f C:/Users/Guodong/PycharmProjects/LinuxBashShellScriptForOps/projects/autoOps/pythonSelf/fabfile.py \
+                %s" % defName
+    os.system(command)
+    sys.exit(0)
+
+
 if __name__ == '__main__':
+    if len(sys.argv) == 1 and is_windows():
+        terminal_debug("showDiskUsage")
+
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print "Please use 'fab -f %s'" % sys.argv[0:]
+    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    logger.error("Syntax error. Exit now.")
     sys.exit(1)

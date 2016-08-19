@@ -18,6 +18,8 @@
       <w>distros</w>
       <w>dpkg</w>
       <w>elif</w>
+      <w>fname</w>
+      <w>fpath</w>
       <w>fqdn</w>
       <w>fullstack</w>
       <w>funcname</w>
@@ -34,12 +36,14 @@
       <w>logrotate</w>
       <w>msmtp</w>
       <w>nameservers</w>
+      <w>nginx</w>
       <w>nmap</w>
       <w>nslookup</w>
       <w>odbp</w>
       <w>pidfile</w>
       <w>printf</w>
       <w>psutil</w>
+      <w>pythonic</w>
       <w>readlink</w>
       <w>redirs</w>
       <w>referer</w>
