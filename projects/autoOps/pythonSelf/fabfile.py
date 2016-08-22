@@ -16,7 +16,6 @@ import sys
 import logging
 import logging.handlers
 import time
-import socket
 import requests
 import platform
 
@@ -67,8 +66,6 @@ def initLoggerWithRotate():
 
 logger = initLoggerWithRotate()
 
-logger.info("Started.")
-
 os_release = platform.system()
 if os_release == "Windows":
     pass
@@ -97,6 +94,8 @@ finally:
     from fabric.api import *
     from fabric.main import main
     from fabric.colors import *
+    from fabric.context_managers import *
+    from fabric.contrib.console import confirm
 
 try:
     import pycurl
@@ -106,7 +105,6 @@ except ImportError:
         os.system(command_to_execute)
     except OSError:
         sys.exit(1)
-finally:
     import pycurl
 
 try:
@@ -117,7 +115,6 @@ except ImportError:
         os.system(command_to_execute)
     except OSError:
         sys.exit(1)
-finally:
     import pytz
 
 try:
@@ -128,7 +125,6 @@ except ImportError:
         os.system(command_to_execute)
     except OSError:
         sys.exit(1)
-finally:
     import shutil
 
 try:
@@ -139,34 +135,26 @@ except ImportError:
         os.system(command_to_execute)
     except OSError:
         sys.exit(1)
-finally:
     import certifi
 
 env.roledefs = {
-    'testEnvironment': ['root@10.6.28.28:22', ],
-    'productionEnvironment': ['root@10.6.28.46:22', 'root@10.6.28.27:22', ],
+    'test': ['root@10.6.28.28:22', ],
     'nginx': ['root@10.6.28.46:22', 'root@10.6.28.27:22', ],
+    'db': ['root@10.6.28.35:22', 'root@10.6.28.93:22', ],
+    'sit': ['root@10.6.28.46:22', 'root@10.6.28.135:22', 'root@10.6.28.35:22', ],
+    'uat': ['root@10.6.28.27:22', 'root@10.6.28.125:22', 'root@10.6.28.93:22', ],
+    'all': ["10.6.28.27", "10.6.28.28", "10.6.28.35", "10.6.28.46", "10.6.28.93", "10.6.28.125", "10.6.28.135"]
 }
 
 env.user = "root"
 env.hosts = ["10.6.28.27", "10.6.28.28", "10.6.28.35", "10.6.28.46", "10.6.28.93", "10.6.28.125", "10.6.28.135"]
+env.command_timeout = 15
+env.connection_attempts = 2
 
 
 def show_uname():
     try:
         out = run("uname -a")
-    except KeyboardInterrupt:
-        logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
-        sys.exit(1)
-    if out.return_code == 0:
-        logger.info("task finished successfully on " + env.host + " .")
-    else:
-        logger.error("task finished failed on " + env.host + " .")
-
-
-def show_ping():
-    try:
-        out = run("ping -c1 www.aliyun.com >/dev/null 2>&1")
     except KeyboardInterrupt:
         logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
         sys.exit(1)
@@ -185,9 +173,9 @@ def ping(host):
             logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
             sys.exit(1)
         if out.return_code == 0:
-            logger.info("task finished successfully on " + env.host + " .")
+            logger.info("task ping finished successfully on " + env.host + " .")
         else:
-            logger.error("task finished failed on " + env.host + " .")
+            logger.error("task ping finished failed on " + env.host + " .")
 
 
 def showDiskUsage():
@@ -196,6 +184,43 @@ def showDiskUsage():
     except KeyboardInterrupt:
         logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
         sys.exit(1)
+
+
+def setNameServer(server=None):
+    nameServerList = ""
+    if isinstance(server, list) and len(server) >= 1:
+        for host in server:
+            nameServerList += ("namserver %s\n" % host)
+    else:
+        nameServerList = "nameserver 182.254.116.116\n"
+
+    print("Executing on %(host)s as %(user)s" % env)
+    try:
+        out = run('test -f /etc/resolv.conf && echo "%s" > /etc/resolv.conf' % nameServerList.strip('\n'))
+    except KeyboardInterrupt:
+        logger.warning("We catch 'Ctrl + C' pressed, task canceled!")
+        sys.exit(1)
+    if out.return_code == 0:
+        logger.info("task finished successfully on " + env.host + " .")
+        run('test -f /etc/resolv.conf && cat /etc/resolv.conf')
+    else:
+        logger.error("task finished failed on " + env.host + " .")
+        abort("task finished failed on " + env.host + " .")
+
+
+def checkWeChatApi():
+    qy_api = "qyapi.weixin.qq.com"
+    api = "api.weixin.qq.com"
+    ping(qy_api)
+    ping(api)
+
+
+def putSelf():
+    try:
+        put(__file__, '/tmp/fabric.py')
+    except Exception as e:
+        logger.error("task putSelf failed! msg: %s" % e)
+        abort("task putSelf failed! msg: %s" % e)
 
 
 def sudo_run(*args, **kwargs):
@@ -270,10 +295,12 @@ def check_name_resolve():
 
 
 def set_dns_resolver():
-    pass
+    serverList = ['182.254.116.116', '202.106.196.115', '202.106.0.20']
+    setNameServer(serverList)
 
 
 def set_hosts_file(hosts="/etc/hosts"):
+    import socket
     if not os.path.exists(hosts):
         if not os.path.exists(os.path.dirname(hosts)):
             os.makedirs(os.path.dirname(hosts))
@@ -351,7 +378,8 @@ def terminal_debug(defName):
 
 if __name__ == '__main__':
     if len(sys.argv) == 1 and is_windows():
-        terminal_debug("showDiskUsage")
+        logger.info("Started.")
+        terminal_debug("putSelf")
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
     print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))

@@ -7,7 +7,6 @@ try:
 except ImportError:
     command_to_execute = "pip install IPy"
     os.system(command_to_execute)
-finally:
     from IPy import IP
 
 i = datetime.datetime.now()

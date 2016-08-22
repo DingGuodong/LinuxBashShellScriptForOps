@@ -6,7 +6,6 @@ try:
 except ImportError:
     command_to_execute = "pip install psutil"
     os.system(command_to_execute)
-finally:
     import psutil
 
 cpu = psutil.cpu_times()
