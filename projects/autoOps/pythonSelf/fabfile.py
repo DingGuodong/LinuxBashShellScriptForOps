@@ -215,6 +215,10 @@ def checkWeChatApi():
     ping(api)
 
 
+def showUptime():
+    run("uptime")
+
+
 def putSelf():
     try:
         put(__file__, '/tmp/fabric.py')
@@ -379,7 +383,7 @@ def terminal_debug(defName):
 if __name__ == '__main__':
     if len(sys.argv) == 1 and is_windows():
         logger.info("Started.")
-        terminal_debug("putSelf")
+        terminal_debug("showUptime")
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
     print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))

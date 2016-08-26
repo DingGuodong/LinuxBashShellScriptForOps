@@ -44,11 +44,10 @@ def getMemory():
 
 
 def getUptime():
-    return time.time() - psutil.boot_time()
+    uptime_file = "/proc/uptime"
+    if os.path.exists(uptime_file):
+        with open(uptime_file, 'r') as f:
+            return f.read().split(' ')[0].strip("\n")
+    else:
+        return time.time() - psutil.boot_time()
 
-
-print getHostname()
-print getCPU()
-print getMemory()
-print getUptime()
-print getLoadAverage()

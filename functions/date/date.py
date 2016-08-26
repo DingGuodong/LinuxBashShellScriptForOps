@@ -13,3 +13,12 @@ i = datetime.datetime.now()
 print str(i)
 print i.strftime('%Y/%m/%d %H:%M:%S')
 print ("%s" % i.isoformat())
+
+# Get Unix timestamp
+print time.time()
+
+# Unix timestamp to Time
+print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(1471932539.15))
+
+# Time to Unix timestamp
+print time.mktime(time.strptime('2016-08-23 14:08:01', '%Y-%m-%d %H:%M:%S'))

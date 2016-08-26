@@ -15,8 +15,8 @@ except ImportError:
     except OSError:
         print "failed install psutil"
         sys.exit(1)
-finally:
     import psutil
+
 
 boot_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(psutil.boot_time()))
 print "system start at: %s" % boot_time
@@ -38,7 +38,7 @@ for user_tuple in psutil.users():
     user_host = user_tuple[2]
     user_login_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(user_tuple[3]))
     print "\t|- user online: %s, login from %s with terminal %s at %s" % (
-    user_name, user_host, user_terminal, user_login_time)
+        user_name, user_host, user_terminal, user_login_time)
 
 cpu_count = psutil.cpu_count()
 try:
