@@ -6,6 +6,11 @@ import sys
 # import os
 import time
 
+host = ""
+port = 0
+timeout = 3
+retry = 3
+
 
 def usage():
     print("""
@@ -22,11 +27,6 @@ def usage():
 """) % (__file__, sys.argv[0])
     sys.exit(0)
 
-
-host = ""
-port = 0
-timeout = 3
-retry = 3
 
 argc = len(sys.argv)
 if not (argc == 1 or argc == 3):
@@ -63,7 +63,7 @@ for attempt in range(0, retry):
         s.connect((str(host), int(port)))
         print "connect to server %s port %s successfully!" % (host, port)
         break
-    except Exception:
+    except Exception as e:
         print "connect to server %s port %s failed in %s times! " % (host, port, attempt + 1)
         # os.system("sleep 1")
         time.sleep(1)

@@ -78,6 +78,10 @@ class Git(object):
     def clone(self):
         local("git clone --branch %s %s %s" % (self.branch, self.repo_url, self.repo_path))
 
+    def check(self):
+        with lcd(self.repo_path):
+            return local("git ls-remote --heads %s" % self.repo_url, capture=True)
+
     def pull(self):
         with lcd(self.repo_path):
             if os.path.exists(os.path.join(self.repo_path, ".git")):
@@ -104,6 +108,10 @@ class Git(object):
     def short_id(self):
         with lcd(self.repo_path):
             return local("git rev-parse --short HEAD", capture=True)
+
+    def fetch_revision(self):
+        with lcd(self.repo_path):
+            return local("git rev-list --max-count=1 %s" % self.branch, capture=True)
 
     def user(self):
         if is_linux():
@@ -193,6 +201,9 @@ class Capistrano(object):
                     for release in releases[0:(len(releases) - keep_releases)]:
                         local("rm -rf %s" % os.path.join(self.releases_path(), release))
 
+            def rollback(self):
+                pass
+
 
 c = Capistrano.DSL.Paths()
 c.makepaths()
@@ -200,6 +211,8 @@ c.makepaths()
 g = Git()
 g.set("https://github.com/DingGuodong/GoogleHostsFileForLinux.git", repo_path=c.repo_path())
 g.pull()
+print g.check()
+print g.fetch_revision()
 
 c.make_release_dirs()
 c.make_current()
