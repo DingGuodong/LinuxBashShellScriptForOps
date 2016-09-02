@@ -32,7 +32,7 @@ class GetIP(object):
         curl.setopt(pycurl.URL, self.api_url)
         curl.setopt(pycurl.CAINFO, certifi.where())
         curl.setopt(pycurl.HTTPHEADER, ['User-Agent: curl/7.35.0', 'Content-Type: text/plain; charset=utf-8'])
-        return type(curl.perform())
+        return curl.perform()
 
     def json(self):
         curl = pycurl.Curl()
@@ -57,7 +57,7 @@ class GetIP(object):
 
 
 c = GetIP()
-print c.cli()
-print c.json()
-# print c.country()
-# print c.city()
+c.cli()
+# c.json()
+# c.country()
+# c.city()

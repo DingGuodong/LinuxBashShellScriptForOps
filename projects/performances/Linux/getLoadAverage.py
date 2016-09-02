@@ -52,11 +52,11 @@ try:
             loadavg['nr'] = loadavg_c[3]
             loadavg['last_pid'] = loadavg_c[4]
     print "load average: %s, %s, %s" % (loadavg['lavg_1'], loadavg['lavg_5'], loadavg['lavg_15'])
-    if loadavg['lavg_15'] > cpu_count:
+    if float(loadavg['lavg_15']) > cpu_count:
         print "Note: cpu 15 min load is high!"
-    if loadavg['lavg_5'] > cpu_count:
+    if float(loadavg['lavg_5']) > cpu_count:
         print "Note: cpu 5 min load is high!"
-    if loadavg['lavg_1'] > cpu_count:
+    if float(loadavg['lavg_1']) > cpu_count:
         print "Note: cpu 1 min load is high!"
 except IOError:
     pass

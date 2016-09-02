@@ -5,7 +5,7 @@
 import socket
 
 
-class GetIP(object):
+class GetLocalIP(object):
     def __init__(self, ip_type):
         self.ip = None
         self.ip_type = ip_type
@@ -38,8 +38,8 @@ class GetIP(object):
             return None
 
 
-ips = GetIP("all")
+ips = GetLocalIP("all")
 print ips.get()
 
-ipa = GetIP("local")
+ipa = GetLocalIP("local")
 print ipa.get()

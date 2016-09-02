@@ -52,7 +52,7 @@ class GetIP(object):
 
 
 c = GetIP()
-# print c.cli()
+print c.cli()
 # print c.json()
 # print c.country()
 print c.city()

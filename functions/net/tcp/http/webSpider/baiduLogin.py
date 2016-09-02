@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # Do not reinventing the wheel
 
-# TODO
 # http://developer.baidu.com/
 
 import cookielib
