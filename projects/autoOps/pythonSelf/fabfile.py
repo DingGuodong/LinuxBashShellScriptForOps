@@ -79,7 +79,7 @@ elif os_release == "Linux":
         os.system(command_to_execute)
 else:
     print "Error => Unsupported OS type."
-    logging.error("Unsupported OS type.")
+    logger.error("Unsupported OS type.")
     sys.exit(1)
 
 try:
@@ -278,7 +278,7 @@ def check_network_connectivity():
         result_code = 1
     if result_code is not None:
         print red("Error   => connect to Internet failed!")
-        logging.error("connect to Internet failed!")
+        logger.error("connect to Internet failed!")
     else:
         print green("Success => connect to Internet successfully!")
 
@@ -293,7 +293,7 @@ def check_name_resolve():
         result_code = 1
     if result_code is not None:
         print red("Error   => name resolve to Internet failed!")
-        logging.error("name resolve to Internet failed!")
+        logger.error("name resolve to Internet failed!")
     else:
         print green("Success => name resolve to Internet successfully!")
 
