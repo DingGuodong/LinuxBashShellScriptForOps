@@ -53,7 +53,7 @@ Python: "2.7"
 此项目完全开源，允许自由复制和使用代码。
 
 ## 提交bugs和feature requests以及联系信息
-可以使用https://github.com/DingGuodong/LinuxBashShellScriptForOps/issues页面进行issue提交。
+可以使用 https://github.com/DingGuodong/LinuxBashShellScriptForOps/issues 页面进行issue提交。
 
 我的51CTO博客中写了大量的关于运维类的原创文章和总结。
 
