@@ -31,6 +31,9 @@ function _empty() { return; }
 # TODO(Guodong Ding) using with `basename $0`
 if test -f deploy_conf ; then
     source deploy_conf
+else
+    echo "Fatal error: can NOT found file: deploy_conf "
+    exit 1
 fi
 # end define variables
 
