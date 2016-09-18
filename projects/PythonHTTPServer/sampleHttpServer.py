@@ -14,6 +14,9 @@ import json
 import sys
 import signal
 import datetime
+import socket
+
+hostname = socket.gethostname()
 
 
 class S(BaseHTTPRequestHandler):
@@ -65,7 +68,7 @@ class S(BaseHTTPRequestHandler):
             with open("index.html", "r") as f:
                 self.wfile.write(f.read())
         except IOError:
-            self.wfile.write("<html><body><h1>It works!</h1></body></html>")
+            self.wfile.write("<html><body><h1>It works! on host: %s.</h1></body></html>" % hostname)
 
     def do_HEAD(self):
         print self.headers.get('User-Agent')
@@ -108,7 +111,7 @@ def run(server_class=HTTPServer, handler_class=S, port=80):
     try:
         server_address = ('', port)
         httpd = server_class(server_address, handler_class)
-        print 'Starting httpd...'
+        print 'Starting httpd(Port:%s)...' % port
         httpd.serve_forever()
     except (KeyboardInterrupt, SystemExit) as e:
         if e:  # wtf, why is this creating a new line?

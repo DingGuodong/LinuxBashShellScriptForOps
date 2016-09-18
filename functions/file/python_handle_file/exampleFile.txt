@@ -1,0 +1,50 @@
+
+Function: Execute this shell script to deploy Java projects built by Maven automatically on remote hosts.
+License: Open source software
+
+Clean old releases...
+All releases are essential, skipping.
+Clean old logs...
+All logs are not expired, skipping.
+skipping checking network connectivity and name resolve.
+Checking other dependencies for deploy procedure...
+	Checking user customized variables...
+	Checking user customized and defined variables passed!
+	Checking disk space available...
+	Checking disk space available passed!
+All required dependencies check passed!
+
+git pull from ssh://git@git.huntor.cn:18082/core/business-service-base.git
+位于分支 develop
+您的分支与上游分支 'origin/develop' 一致。
+
+无文件要提交，干净的工作区
+git pull from ssh://git@git.huntor.cn:18082/core/business-service-base.git successfully!
+git pull from ssh://git@git.huntor.cn:18082/core/business-service-sale.git
+位于分支 develop
+您的分支与上游分支 'origin/develop' 一致。
+
+无文件要提交，干净的工作区
+git pull from ssh://git@git.huntor.cn:18082/core/business-service-sale.git successfully!
+Do mvn install java project for business-service-base...
+mvn install for business-service-base successfully!
+Do mvn install java project finished for business-service-base with exit code 0!
+
+Do mvn clean package java project for business-service-sale...
+mvn clean package for business-service-sale successfully!
+Do mvn clean package java project finished for business-service-sale with exit code 0!
+
+Do deploy on 10.6.28.135 ...
+backup remote host config files...
+Backup remote host config files operation had been done, , now skipping ...
+ssh execute command on remote host if test -d /data/docker/business-service/bs-sale-01; then find -L /data/docker/business-service/bs-sale-01  -maxdepth 1 ! -name logs ! -wholename /data/docker/business-service/bs-sale-01 -exec rm -rf {} \; ; else mkdir -p /data/docker/business-service/bs-sale-01; fi successfully!
+scp local files to remote host successfully!
+scp local files to remote host successfully!
+scp local files to remote host successfully!
+backup remote host config files...
+Backup remote host config files operation had been done, , now skipping ...
+Restarting docker container...
+ssh execute command on remote host docker restart bs-sale-01 successfully!
+restart docker container for bs-sale-01 on 10.6.28.135 successfully!
+Deploy successfully for 10.6.28.135!
+Current workable version is /root/autodeploy/deploy_to_sit/bs-sale-01/release/20160906140255

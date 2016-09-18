@@ -15,10 +15,13 @@ import certifi
 # http://icanhazip.com/
 # http://ipecho.net/plain
 # https://ifconfig.co/
+# http://ip.taobao.com/service/getIpInfo.php?ip=113.200.54.58&qq-pf-to=pcqq.group
 
 api_url = "https://ifconfig.co/"
 api_country = "https://ifconfig.co/country"
 api_city = "https://ifconfig.co/city"
+
+api_taobao = "http://ip.taobao.com/service/getIpInfo.php?ip="
 
 
 class GetIP(object):
