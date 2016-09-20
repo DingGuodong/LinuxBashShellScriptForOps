@@ -377,13 +377,14 @@ def terminal_debug(defName):
                 -f C:/Users/Guodong/PycharmProjects/LinuxBashShellScriptForOps/projects/autoOps/pythonSelf/fabfile.py \
                 %s" % defName
     os.system(command)
-    sys.exit(0)
 
 
 if __name__ == '__main__':
     if len(sys.argv) == 1 and is_windows():
         logger.info("Started.")
         terminal_debug("showUptime")
+        terminal_debug("showDiskUsage")
+        sys.exit(0)
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
     print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))

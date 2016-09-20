@@ -387,15 +387,14 @@ function git_project_clone(){
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
     # TODO(Guodong Ding) let user set this variable("branch")
     # Note: branch is equal to tag, so using tag as branch or using branch as a tag
-    if test -n "$2"; then
-        branch="$2"
-    else
-        branch=""
-    fi
     if [[ "x$branch_or_tag" != "x" ]]; then
         branch=${branch_or_tag}
     else
         branch=""
+    fi
+
+    if test -n "$2"; then
+        branch="$2"
     fi
 
     if [[ "x$branch" == "x" ]]; then
@@ -407,6 +406,7 @@ function git_project_clone(){
         echo_b "git clone from $project_clone_repository"
         # git clone git@github.com:name/app.git -b master
         git clone ${project_clone_repository} ${project_clone_directory} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log 2>&1
+        echo_g "git clone from $project_clone_repository successfully! "
             # TODO(Guodong Ding) get branch names or revision numbers from VCS data
 
         cd ${project_clone_directory}
@@ -417,10 +417,11 @@ function git_project_clone(){
             git checkout ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log 2>&1
             git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log
         fi
+        echo_b "git pull from $project_clone_repository with branch or tag name $branch."
         git pull origin ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log 2>&1
         git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log
         cd ${WORKDIR}
-        echo_g "git clone from $project_clone_repository successfully! "
+        echo_g "git pull from $project_clone_repository  with branch or tag name $branch successfully! "
     else
         echo_b "git pull from $project_clone_repository with branch or tag name $branch."
         cd ${project_clone_directory}
@@ -433,6 +434,7 @@ function git_project_clone(){
             git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log
         fi
         git pull origin ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log 2>&1
+        echo_g "git pull from $project_clone_repository  with branch or tag name $branch successfully! "
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data
             # git rev-parse HEAD
             # git rev-parse --verify HEAD
@@ -445,7 +447,6 @@ function git_project_clone(){
             # git show --pretty=%h
 
         cd ${WORKDIR}
-        echo_g "git pull from $project_clone_repository  with branch or tag name $branch successfully! "
     fi
     set +o errexit
 }
