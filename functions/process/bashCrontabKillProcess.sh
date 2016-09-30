@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# goal&demand: tail -f <file>, exit after 2 seconds
+# purpose&goal&demand: tail -f <file>, exit after 2 seconds
 sleep_seconds=2
 pid_this=$$
 if [[ "x$1" == "x" && -f $1 ]]; then

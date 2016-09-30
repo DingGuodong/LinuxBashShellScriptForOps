@@ -410,7 +410,7 @@ function keep_some_newest_files(){
         num_ops=$(expr ${num_files} - ${num_save})
         echo "$num_ops files are going to be handled."
         list_ops=$(find ${files_ops} -type d -printf "%C@ %p\n" | sort -n | head -n${num_ops} | awk -F '[ ]+' '{print $2}')
-        # IFS=' '$'\t'$'\n', If IFS is unset, or its value is exactly <space><tab><newline>
+        # IFS=' '$'\t'$'\n', IFS=$' \t\n', If IFS is unset, or its value is exactly <space><tab><newline>
         old_IFS=$IFS
         IFS=" "
         for file_ops in ${list_ops};do
