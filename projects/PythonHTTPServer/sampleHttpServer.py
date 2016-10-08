@@ -19,6 +19,16 @@ import socket
 hostname = socket.gethostname()
 
 
+def RegexURLResolver(regex, string):
+    import re
+    p = re.compile(str(regex), re.IGNORECASE)
+    match = p.match(str(string))
+    if match:
+        return True
+    else:
+        return False
+
+
 class S(BaseHTTPRequestHandler):
     def date_time_string(self, timestamp=None):
         now = datetime.datetime.now()
@@ -60,15 +70,24 @@ class S(BaseHTTPRequestHandler):
         self._end_headers()
 
         path = self.path
-        if "?" in path:
+
+        if RegexURLResolver(r'\?', path):
             path, tmp = path.split('?', 1)
             qs = urlparse.parse_qs(tmp)
             print path, qs
-        try:
-            with open("index.html", "r") as f:
-                self.wfile.write(f.read())
-        except IOError:
-            self.wfile.write("<html><body><h1>It works! on host: %s.</h1></body></html>" % hostname)
+
+        if RegexURLResolver(r'^/$', path):
+            try:
+                with open("index.html", "r") as f:
+                    self.wfile.write(f.read())
+            except IOError:
+                self.wfile.write("<html><body><h1>It works! on host: %s.</h1></body></html>" % hostname)
+        elif RegexURLResolver(r'^/admin/$', path):
+            self.wfile.write(
+                "<html><body><h1>It works! on host: %s, request is: %s.</h1></body></html>" % (hostname, path))
+        else:
+            self.wfile.write(self.responses[404])
+            self.finish()
 
     def do_HEAD(self):
         print self.headers.get('User-Agent')
