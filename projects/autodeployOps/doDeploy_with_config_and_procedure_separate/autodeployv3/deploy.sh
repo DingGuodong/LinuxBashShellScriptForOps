@@ -341,11 +341,11 @@ function clean_old_releases(){
     echo_b "Clean old releases... "
     num_save=${save_old_releases_for_numbers:-10}
     files_ops=${WORKDIR}/release
-    num_files=$(find ${files_ops} -maxdepth 1 -type d  -a ! -wholename "." -a ! -wholename ".." -a -wholename "$files_ops" -printf "%C@ %p\n" | sort -n | wc -l)
+    num_files=$(find ${files_ops} -maxdepth 1 -type d  -a ! -wholename "." -a ! -wholename ".." -a ! -wholename "$files_ops" -printf "%C@ %p\n" | sort -n | wc -l)
     if test ${num_files} -gt ${num_save};then
         echo_c "Extra releases found and will be removed from project! "
         num_ops=$(expr ${num_files} - ${num_save})
-        list_ops=$(find ${files_ops} -maxdepth 1 -type d -a ! -wholename "." -a ! -wholename ".." -a -wholename "$files_ops" -printf "%C@ %p\n" | sort -n | head -n${num_ops} | awk -F '[ ]+' '{print $2}')
+        list_ops=$(find ${files_ops} -maxdepth 1 -type d -a ! -wholename "." -a ! -wholename ".." -a ! -wholename "$files_ops" -printf "%C@ %p\n" | sort -n | head -n${num_ops} | awk -F '[ ]+' '{print $2}')
         # IFS=' '$'\t'$'\n', If IFS is unset, or its value is exactly <space><tab><newline>
         old_IFS=$IFS
         IFS=' '$'\t'$'\n'
