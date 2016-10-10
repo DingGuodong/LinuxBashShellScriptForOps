@@ -450,6 +450,21 @@ eof
 
     # TODO(Guodong Ding) 5% reserved-blocks-percentage(tune2fs, dump2fs, man tune2fs)
 
+    # TODO(Guodong Ding) Forward & redirects
+    #net.ipv4.ip_forward = 1
+    #net.ipv4.ip_forward_use_pmtu = 0
+    #net.ipv4.conf.default.accept_source_route = 0
+    #net.ipv4.conf.all.rp_filter = 2
+    #net.ipv4.conf.default.rp_filter = 2
+
+    #net.ipv4.conf.all.accept_redirects = 1
+    #net.ipv4.conf.default.accept_redirects = 1
+    #net.ipv4.conf.all.secure_redirects = 1
+    #net.ipv4.conf.default.secure_redirects = 1
+    #net.ipv4.conf.all.send_redirects = 1
+    #net.ipv4.conf.default.send_redirects = 1
+
+
     sysctl -p >/dev/null 2>&1
 
 }
