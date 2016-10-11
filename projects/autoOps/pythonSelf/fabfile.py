@@ -382,8 +382,7 @@ def terminal_debug(defName):
 if __name__ == '__main__':
     if len(sys.argv) == 1 and is_windows():
         logger.info("Started.")
-        terminal_debug("showUptime")
-        terminal_debug("showDiskUsage")
+        terminal_debug("showUptime showDiskUsage")
         sys.exit(0)
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
