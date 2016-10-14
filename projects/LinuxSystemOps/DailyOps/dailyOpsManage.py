@@ -69,7 +69,6 @@ def is_linux():
 
 
 def get_hosts_list():
-    host = ''
     hosts_list = list()
     while True:
         if len(hosts_list) == 0:
@@ -81,7 +80,7 @@ def get_hosts_list():
             try:
                 host = str(IP(host, ipversion=4))
                 hosts_list.append(host)
-            except ValueError, e:
+            except ValueError:
                 print red("Please input a valid IP address.")
                 # want_continue = raw_input("Continue? y/n <default is NO>:\n")
                 # if want_continue in ['Yes', 'YES', 'yes', 'Y', 'y']:
@@ -202,7 +201,7 @@ def terminal_debug(defName):
     try:
         os.system(command)
         print green("Command execute successfully! Finished!")
-    except Exception:
+    except SystemExit:
         pass
     finally:
         if os.path.exists(debug_lock_filename):
