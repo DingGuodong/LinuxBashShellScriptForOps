@@ -177,8 +177,11 @@ class dockerContainerUtils(object):
     def getCmdlineChain(self):
         pidChain = self.getPidChain()
         pidCmdlineChain = OrderedDict()
+        oldPid = self.pid
         for pid in pidChain:
+            self.pid = pid
             pidCmdlineChain[pid] = self.getCmdline()
+        self.pid = oldPid
         return pidCmdlineChain
 
     def isDockerRelatedProcess(self):
@@ -201,10 +204,10 @@ class dockerContainerUtils(object):
         match = re.findall(r'(?<=docker-containerd-shim )\S+', string)
         if len(match) != 0:
             return match
-        elif len(self.getContainerShortIDWithPort()) != 0:
-            return self.getContainerShortIDWithPort()
         elif len(self.getContainerLongIdUsingDockerInspectAllContainerID()) != 0:
             return self.getContainerLongIdUsingDockerInspectAllContainerID()[1]
+        elif len(self.getContainerShortIDWithPort()) != 0:
+            return self.getContainerShortIDWithPort()
         else:
             return []
 
