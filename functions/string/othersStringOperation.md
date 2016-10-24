@@ -5,7 +5,7 @@
     grep -Eiv '(database|information_schema|performance_schema|mysql)')
 
 # string replace
-    # using bash buildin
+    # using bash builtin
     # refer to http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameters
     # ${parameter/pattern/string}
     touch 2009abcd001{1..10}001.mhi
@@ -17,6 +17,6 @@
     # using awk
     echo '001.mhi' | awk 'gsub('001.mhi','002.mhi') {print $0}'
 
-    # python
+    # using python
     str.replace()
     re.sub()
