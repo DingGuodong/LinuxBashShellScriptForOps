@@ -272,6 +272,27 @@ class dockerContainerUtils(object):
         else:
             return []
 
+    def truncateId(self):
+        containerID = self.getContainerId()
+        if len(containerID) != 0:
+            return str(containerID[0])[:12]
+        else:
+            return None
+
+    def getContainerShortID(self):
+        return self.truncateId()
+
+    def listContainer(self):
+        # a python implementation for 'docker ps'
+        containerId = self.getContainerShortID()
+        if len(containerId) != 0:
+            import subprocess
+            result = subprocess.Popen("docker ps | grep %s" % containerId, shell=True, stdout=subprocess.PIPE,
+                                      stderr=subprocess.STDOUT)
+            return result.stdout.read()
+        else:
+            return None
+
     def getContainerInfo(self):
         containerId = self.getContainerId()
         if len(containerId) != 0:
@@ -304,4 +325,6 @@ if __name__ == '__main__':
     # print "Pid number ContainerShortId is %s" % p.getContainerShortIDWithPort()
 
     print "Pid number ContainerId is %s" % p.getContainerId()
+    print "Pid number short ContainerId is %s" % p.getContainerShortID()
+    print "Pid number list container: %s" % p.listContainer()
     print "Pid number Container info is: %s" % p.getContainerInfo()
