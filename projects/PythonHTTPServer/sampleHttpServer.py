@@ -71,7 +71,7 @@ class S(BaseHTTPRequestHandler):
 
         path = self.path
 
-        if RegexURLResolver(r'\?', path):
+        if RegexURLResolver(r'^/\?', path):
             path, tmp = path.split('?', 1)
             qs = urlparse.parse_qs(tmp)
             print path, qs
