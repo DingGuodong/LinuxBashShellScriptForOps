@@ -39,21 +39,25 @@ else:
         host = sys.argv[1]
 
     if sys.argv[2] is not None:
-        port = sys.argv[2]
+        try:
+            port = int(sys.argv[2])
+        except ValueError:
+            pass
 
-if host == "":
-    print "host is empty, please sign new one."
-    sys.exit(1)
-if port == 0:
-    print "port is empty, please sign new one."
-    sys.exit(1)
-else:
-    try:
-        type(int(port)) is not int
-    except ValueError:
-        print type(port)
-        print "type port \"%s\" is not int, please sign new one" % port
-        sys.exit(1)
+while True:
+    if host == "":
+        print "host is empty, please sign new one."
+        host = raw_input()
+    elif port == 0 or not isinstance(port, int):
+        print "port is empty or illegal, please sign new one."
+        try:
+            port = int(raw_input())
+        except ValueError:
+            pass
+    else:
+        break
+
+print "checking server %s port %s status." % (host, port)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.settimeout(timeout)
