@@ -30,9 +30,9 @@ statusCode = {
 status = win32serviceutil.QueryServiceStatus(serviceName)[1]
 print "service %s state is: %s" % (serviceName, statusCode[status])
 
-# TODO(Guodong Ding) run a command as administrator with administrative privilege
+# TODO(Guodong Ding) run a command as administrator with administrative privilege, use 'runas' command?
 state_command = "C:\WINDOWS\System32\sc.exe query MySQL56"
-start_command = 'runas /user:administrator /savecred "C:\WINDOWS\System32\sc.exe start MySQL56"'
-stop_command = "C:\WINDOWS\System32\sc.exe query MySQL56"
-os.system(start_command)
-print start_command
+start_command = "C:\WINDOWS\System32\sc.exe start MySQL56"
+stop_command = "C:\WINDOWS\System32\sc.exe stop MySQL56"
+# os.system(stop_command)
+# print start_command
