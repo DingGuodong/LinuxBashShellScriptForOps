@@ -31,9 +31,6 @@ function _empty() { return; }
 # TODO(Guodong Ding) using with `basename $0`
 if test -f deploy_conf ; then
     source deploy_conf
-else
-    echo "Fatal error: can NOT found file: deploy_conf "
-    exit 1
 fi
 # end define variables
 
@@ -434,7 +431,6 @@ function git_project_clone(){
             git status 2>&1 | tee ${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log
         fi
         git pull origin ${branch} >>${WORKDIR}/logs/git_$(date +%Y%m%d%H%M).log 2>&1
-        echo_g "git pull from $project_clone_repository  with branch or tag name $branch successfully! "
         # TODO(Guodong Ding) get branch names or revision numbers from VCS data
             # git rev-parse HEAD
             # git rev-parse --verify HEAD
@@ -447,6 +443,7 @@ function git_project_clone(){
             # git show --pretty=%h
 
         cd ${WORKDIR}
+        echo_g "git pull from $project_clone_repository  with branch or tag name $branch successfully! "
     fi
     set +o errexit
 }
@@ -1236,10 +1233,10 @@ function main(){
         elif [[ "x$tag_from_cli" != "x" ]];then
             branch_or_tag=${tag_from_cli}
         else
-            echo_y "missing parameter -b <branch name> or -t <tag name>, this para for deploy func is required!"
+             echo_y "missing parameter -b <branch name> or -t <tag name>, this para for deploy func is required!"
 #             echo_r "missing parameter -b <branch name> or -t <tag name>"
 #             exit 1
-##            branch_or_tag=${user_defined_project_clone_branch_or_tag}
+#            branch_or_tag=${user_defined_project_clone_branch_or_tag}
         fi
 
         if [[ $# -lt 1 ]]; then
@@ -1296,4 +1293,5 @@ if ${DEBUG} ; then
     export PS4=${old_PS4}
     ${_XTRACE_FUNCTIONS}
 fi
+
 
