@@ -26,6 +26,7 @@ def getDmesg():
             print time.strftime('%Y-%m-%d %H:%M:%S',
                                 time.localtime(
                                     (float(psutil.boot_time()) + float(message.split('] ')[0][2:].strip())))), message
+            sys.stdout.flush()
         except ValueError:
             pass
 
@@ -45,3 +46,4 @@ if __name__ == '__main__':
             # close failed in file object destructor:
             # sys.excepthook is missing
             # lost sys.stderr
+            # Fix: print with sys.stdout.flush()
