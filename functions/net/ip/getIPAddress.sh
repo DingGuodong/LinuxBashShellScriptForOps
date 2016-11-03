@@ -3,6 +3,8 @@
 # get_default_host_ip
 #校验验证IP是否合法
 ipcalc -c  10.20.0.7
+# 验证一个IP是否是合法的IP需要与子网掩码一起计算
+ipcalc -c 10.104.28.0/255.255.192.0
 
 #egrep is the same as grep -E.
 IP=$(ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)" | awk -F ":" '{print $2}' | awk '{print $1}')
