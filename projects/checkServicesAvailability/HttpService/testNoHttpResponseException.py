@@ -72,6 +72,10 @@ def testNoHttpResponseException(url):
                 if errorCounts >= errorStopCounts:
                     globalEndTime = time.time()
                     tryFlag = False
+            except Exception as e:
+                # Exception, such as 'error: [Errno 104] Connection reset by peer'
+                print "Error occurred, %s on %s" % (e, url)
+                time.sleep(2)
         else:
             globalEndTime = time.time()
             break
