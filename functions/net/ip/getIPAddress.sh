@@ -32,6 +32,7 @@ IP=$(ifconfig ${DEVICE} | awk -F '[ :]+' '/inet/ && !/inet6/ {print $4}')
 echo "$IP"
 
 # general distro using ip command
+# TODO(Guodong Ding) Ubuntu 16.04.1 LTS maybe not support, see 'ip route' for detail
 ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'
 
 #without awk or cut

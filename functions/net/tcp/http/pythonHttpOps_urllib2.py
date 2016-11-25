@@ -19,12 +19,12 @@ def is_valid_url(p_url):
     # return url is not None and regex.search(url)
     if p_url is None:
         print "url parameter is missing."
-        exit(1)
+        sys.exit(1)
     elif p_url is not None and regex.search(p_url):
         return p_url
     else:
         print "url is invalid."
-        exit(1)
+        sys.exit(1)
 
 
 def get_html_charset(p_html):
@@ -34,6 +34,7 @@ def get_html_charset(p_html):
     if charset is None:
         charset = "utf-8"
     return charset
+
 
 url = "http://blog.csdn.net/"
 req_header = {
@@ -49,32 +50,15 @@ req_timeout = 5
 req = urllib2.Request(url, None, req_header)
 resp = urllib2.urlopen(req, None, req_timeout)
 html = resp.read()
-print html
-
-encoding_of_system = sys.getfilesystemencoding()
-# encoding_of_system = sys.getdefaultencoding()
 
 # urlAddress = "http://dgd2010.blog.51cto.com/"
 # urlAddress = "http://blog.csdn.net/zhoudaxia/article/details/23176731"
 urlAddress = "http://daily.zhihu.com/"
 validUrlAddress = is_valid_url(urlAddress)
-print urlparse.urlparse(validUrlAddress)
+urlparse.urlparse(validUrlAddress)
 
 url_file_object = urllib.urlopen(validUrlAddress)
 print "Open URL is ", url_file_object.geturl()
 url_file_object_list = url_file_object.readlines()
-
-if isinstance(url_file_object_list, list):
-    print "It is a list"
-
-for html in url_file_object_list:
-    encoding_of_html_body = get_html_charset(html)
-
 for html in url_file_object_list:
     print html
-    try:
-        html.decode(encoding_of_html_body)
-    except Exception as e:
-        print "debug trace: \n\t", e
-        exit(0)
-    print html.decode(encoding_of_html_body).encode(encoding_of_system)
