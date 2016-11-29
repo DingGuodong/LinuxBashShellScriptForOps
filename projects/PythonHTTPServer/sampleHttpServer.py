@@ -15,8 +15,22 @@ import sys
 import signal
 import datetime
 import socket
+import os
 
 hostname = socket.gethostname()
+
+
+def usage():
+    print("""Help message:
+    Function: A sample http server writen with Python, using it to test if the port can be reached.
+    Usage: %s [<tcp port>]
+        port options is optional, default is 80.
+    Example:
+        python %s
+        python %s 80
+
+""") % (__file__, sys.argv[0], sys.argv[0])
+    sys.exit(0)
 
 
 def RegexURLResolver(regex, string):
@@ -130,7 +144,12 @@ def run(server_class=HTTPServer, handler_class=S, port=80):
     try:
         server_address = ('', port)
         httpd = server_class(server_address, handler_class)
-        print 'Starting httpd(Port:%s)...' % port
+
+        print 'Starting httpd ...'
+        # TODO(GuodongDing): Add bind address support
+        print 'Server %s (bind-address): \'*\'; port: %s' % (hostname, port)
+        print '%s: ready for connections.' % os.path.basename(__file__)
+        print sys.version
         httpd.serve_forever()
     except (KeyboardInterrupt, SystemExit) as e:
         if e:  # wtf, why is this creating a new line?
@@ -141,13 +160,18 @@ def run(server_class=HTTPServer, handler_class=S, port=80):
             sys.exit(0)
     finally:
         print "httpd stopped."
+        print "%s: Shutdown complete" % os.path.basename(__file__)
+        sys.exit(0)
 
 
 if __name__ == "__main__":
     signal.signal(signal.SIGTERM, sigterm_handler)
     from sys import argv
 
-    if len(argv) == 2:
+    if len(argv) == 2 and argv[1].isdigit():
         run(port=int(argv[1]))
-    else:
+    if len(argv) == 1:
         run()
+    else:
+        print "Bad usage: %s" % argv
+        usage()
