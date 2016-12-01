@@ -125,13 +125,13 @@ IFS=${saved_IFS}
 
 save_days=${save_old_backups_for_days:-10}
 need_clean=$(find ${mysql_backup_dir} -mtime +${save_days} -exec ls '{}' \;)
-#    if [ ! -z ${need_clean} ]; then
-    if [ "x${need_clean}" != "x" ]; then
-        find ${mysql_backup_dir} -mtime +${save_days} -exec rm -rf '{}' \;
-        echo "old backups have been cleaned! "
-    else
-        echo "nothing can be cleaned, skipped! "
-    fi
+# if [ ! -z ${need_clean} ]; then
+if [ "x${need_clean}" != "x" ]; then
+    find ${mysql_backup_dir} -mtime +${save_days} -exec rm -rf '{}' \;
+    echo "old backups have been cleaned! "
+else
+    echo "nothing can be cleaned, skipped! "
+fi
 
 echo "=> do backup scheduler finished at $(date +%Y%m%d%H%M%S)"
 echo -e "\n\n\n"

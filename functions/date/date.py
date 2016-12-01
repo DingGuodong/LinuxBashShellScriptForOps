@@ -15,6 +15,9 @@ print str(i)
 print i.strftime('%Y/%m/%d %H:%M:%S')
 print ("%s" % i.isoformat())
 
+GMT_FORMAT = '%b %d %H:%M:%S %Y GMT'
+print datetime.datetime.utcnow().strftime(GMT_FORMAT)
+
 # Get Unix timestamp
 print time.time()
 
@@ -32,3 +35,5 @@ print delorean.Delorean(timezone="Asia/Shanghai").epoch
 print delorean.Delorean(timezone="Asia/Shanghai").date
 print delorean.Delorean(timezone="Asia/Shanghai").start_of_day
 print delorean.Delorean(timezone="Asia/Shanghai").end_of_day
+
+# 20161229235959Z, Z代表0时区，或者叫UTC统一时间。

@@ -7,6 +7,9 @@ File:               LinuxBashShellScriptForOps:pyConntect.py
 User:               Guodong
 Create Date:        2016/9/13
 Create Time:        11:29
+
+pip install MySQL-python
+
  """
 
 import MySQLdb

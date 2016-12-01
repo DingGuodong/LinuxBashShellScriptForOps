@@ -7,6 +7,9 @@ File:               LinuxBashShellScriptForOps:pyUpdateMysql.py
 User:               Guodong
 Create Date:        2016/9/28
 Create Time:        14:35
+
+pip install MySQL-python
+
  """
 import MySQLdb
 import datetime
