@@ -16,6 +16,25 @@ import signal
 import datetime
 import socket
 import os
+import locale
+import codecs
+
+
+def get_system_encoding():
+    """
+    The encoding of the default system locale but falls back to the given
+    fallback encoding if the encoding is unsupported by python or could
+    not be determined.  See tickets #10335 and #5846
+    """
+    try:
+        encoding = locale.getdefaultlocale()[1] or 'ascii'
+        codecs.lookup(encoding)
+    except Exception:
+        encoding = 'ascii'
+    return encoding
+
+
+DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 hostname = socket.gethostname()
 
@@ -89,16 +108,21 @@ class S(BaseHTTPRequestHandler):
             path, tmp = path.split('?', 1)
             qs = urlparse.parse_qs(tmp)
             print path, qs
-
+            for key, value in qs.items():
+                print key, value[0]
+                self.wfile.write("<html><body><h1>%s:%s</h1></body></html>" % (key, value[0]))
+            self.finish()
         if RegexURLResolver(r'^/$', path):
             try:
                 with open("index.html", "r") as f:
                     self.wfile.write(f.read())
             except IOError:
                 self.wfile.write("<html><body><h1>It works! on host: %s.</h1></body></html>" % hostname)
+                self.finish()
         elif RegexURLResolver(r'^/admin/$', path):
             self.wfile.write(
                 "<html><body><h1>It works! on host: %s, request is: %s.</h1></body></html>" % (hostname, path))
+            self.finish()
         else:
             self.wfile.write(self.responses[404])
             self.finish()
@@ -144,11 +168,12 @@ def run(server_class=HTTPServer, handler_class=S, port=80):
     try:
         server_address = ('', port)
         httpd = server_class(server_address, handler_class)
-
-        print 'Starting httpd ...'
-        # TODO(GuodongDing): Add bind address support
+        quit_command = 'CTRL-BREAK' if sys.platform == 'win32' else 'CONTROL-C'
+        print 'Starting httpd server at http://%s:%s' % (hostname, port)
+        # TODO(GuodongDing): Add bind address support, 'print' can using 'sys.stdout.write()' with a python 'dict'
         print 'Server %s (bind-address): \'*\'; port: %s' % (hostname, port)
         print '%s: ready for connections.' % os.path.basename(__file__)
+        print 'Quit the server with %s.' % quit_command
         print sys.version
         httpd.serve_forever()
     except (KeyboardInterrupt, SystemExit) as e:

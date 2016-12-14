@@ -10,12 +10,13 @@ Create Time:        14:27
  """
 import sys
 import getopt
+import os
 
 
 def usage():
-    print "%s -h    show this help message." % sys.argv[0]
-    print "%s -i    do something." % sys.argv[0]
-    print "%s -o    do something else." % sys.argv[0]
+    print "%s -h    show this help message." % os.path.basename(sys.argv[0])
+    print "%s -i    do something." % os.path.basename(sys.argv[0])
+    print "%s -o    do something else." % os.path.basename(__file__)
 
 
 para_i = ""
