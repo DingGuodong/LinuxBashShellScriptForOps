@@ -17,7 +17,7 @@ Usage:
   ServiceControl.py --help | -h
 Arguments:
   SERVICE_NAME  service name
-  SERVICE_ACTION service action
+  SERVICE_ACTION service action in ["start", "stop", "restart", "status"]
 Options:
   -h --help            show this help message and exit
   -v --version         show version and exit
@@ -25,9 +25,10 @@ Options:
 import sys
 import codecs
 import locale
-
+import psutil
 import win32serviceutil
 import time
+from collections import OrderedDict
 
 from docopt import docopt
 
@@ -205,28 +206,51 @@ def do_service(service_name, service_action):
         raise RuntimeError("bad service_action '%s', valid action is %s" % (service_action, valid_action))
 
 
+def list_service():
+    service_dict = OrderedDict()
+    for service in psutil.win_service_iter():
+        service_dict[service.name()] = service.display_name()
+    return service_dict
+
+
+def is_valid_service_name(service_name):
+    if service_name.lower() in [name.lower() for name, display_name in list_service().items()]:
+        return True
+    else:
+        return False
+
+
 if __name__ == '__main__':
     SERVICE_ACTION = ["start", "stop", "restart", "status"]
     arguments = docopt(__doc__, version='1.0.0rc2')
-    if arguments['SERVICE_ACTION'] in SERVICE_ACTION:
-        pass
-    elif arguments['SERVICE_NAME'] in SERVICE_ACTION:
-        tmp = arguments['SERVICE_ACTION']
-        arguments['SERVICE_ACTION'] = arguments['SERVICE_NAME']
-        arguments['SERVICE_NAME'] = tmp
+
+    if arguments['SERVICE_NAME'] != "" and arguments['SERVICE_ACTION'] != "":
+        if arguments['SERVICE_ACTION'] in SERVICE_ACTION:
+            pass
+        elif arguments['SERVICE_NAME'] in SERVICE_ACTION:
+            tmp = arguments['SERVICE_ACTION']
+            arguments['SERVICE_ACTION'] = arguments['SERVICE_NAME']
+            arguments['SERVICE_NAME'] = tmp
+        else:
+            print __doc__
+            sys.exit(1)
+
+        if is_valid_service_name(arguments['SERVICE_NAME']):
+            pass
+        else:
+            raise RuntimeError("server '%s' not exist" % arguments['SERVICE_NAME'])
+
+        return_code = do_service(arguments['SERVICE_NAME'], arguments['SERVICE_ACTION'])
+
+        try:
+            print status_code[return_code]
+        except KeyError:
+            print "return_code is %s." % return_code
     else:
         print __doc__
         sys.exit(1)
-    return_code = do_service(arguments['SERVICE_NAME'], arguments['SERVICE_ACTION'])
-
-    try:
-        print status_code[return_code]
-    except KeyError:
-        print "return_code is %s." % return_code
 
 # TODO(Guodong Ding) run a command as administrator with administrative privilege, use 'runas' command?
 state_command = "C:\WINDOWS\System32\sc.exe query MySQL56"
 start_command = "C:\WINDOWS\System32\sc.exe start MySQL56"
 stop_command = "C:\WINDOWS\System32\sc.exe stop MySQL56"
-# os.system(stop_command)
-# print start_command
