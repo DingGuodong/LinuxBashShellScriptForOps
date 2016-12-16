@@ -43,7 +43,6 @@ if mswindows:
         proc_obj = subprocess.Popen(r'ping -n %d %s' % (1, hostname), shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
         result = proc_obj.stdout.read().lower().decode(DEFAULT_LOCALE_ENCODING)
-        print result
         if "ttl" in result:
             print "ping %s successfully!" % hostname
         else:
