@@ -8,20 +8,30 @@ import re
 try:
     import platform
 except ImportError:
+    try:
+        command_to_execute = "pip install platform || easy_install platform"
+        os.system(command_to_execute)
+    except OSError:
+        print "Can NOT install 'platform', Aborted!"
+        sys.exit(1)
+    except Exception as e:
+        print "Uncaught exception, %s" % e.message
+        sys.exit(1)
+    import platform
+
+print platform.uname()
+if platform.linux_distribution()[0] == "":
     pass
 else:
-    print platform.uname()
-    if platform.linux_distribution()[0] == "":
-        pass
-    else:
-        print platform.linux_distribution()
-    print platform.system()
-    print platform.platform()
-    print platform.architecture()
-    print platform.version()
-    print platform.release()
-    print platform.node()
-    print platform.machine()
+    print platform.linux_distribution()
+print platform.system()
+print platform.platform()
+print platform.architecture()
+print platform.version()
+print platform.release()
+print platform.node()
+print platform.machine()
+print platform.win32_ver()
 
 
 print os.name
