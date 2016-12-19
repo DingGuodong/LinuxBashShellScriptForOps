@@ -260,6 +260,7 @@ class WeiXinTokenClass(object):
         self.__corpid = None
         self.__corpsecret = None
         self.__use_persistence = True
+        self.__prefer_using_persistence = True
 
         self.__access_token = None
         self.__expires_in = None
@@ -273,12 +274,13 @@ class WeiXinTokenClass(object):
             self.__corpid = weixin_qy_CorpID
             self.__corpsecret = weixin_qy_Secret
 
-        if self.__corpid != weixin_qy_CorpID or self.__corpsecret != weixin_qy_Secret:
-            sqlite3_update_account(weixin_qy_CorpID, weixin_qy_Secret)
-            self.__corpid = sqlite3_get_credential()[0][0]
-            self.__corpsecret = sqlite3_get_credential()[0][1]
-        else:
-            pass
+        if not self.__prefer_using_persistence:
+            if self.__corpid != weixin_qy_CorpID or self.__corpsecret != weixin_qy_Secret:
+                sqlite3_update_account(weixin_qy_CorpID, weixin_qy_Secret)
+                self.__corpid = sqlite3_get_credential()[0][0]
+                self.__corpsecret = sqlite3_get_credential()[0][1]
+            else:
+                pass
 
     def __get_token_from_weixin_qy_api(self):
         parameters = {
