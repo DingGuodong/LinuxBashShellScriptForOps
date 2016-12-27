@@ -10,7 +10,7 @@ Create Time:        14:02
  """
 
 # if is None?
-var = ""
+var = ""  # var is False
 if var is None:
     pass
 
