@@ -1,0 +1,26 @@
+{
+  "object": "afms",
+  "errcode": 0,
+  "errmsg": {
+    "simple-loan-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "memcached-loan-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "afmsadmin-app-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "afmsadmin-memcached": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "afms-web": {
+      "code": 0,
+      "msg": "ok"
+    }
+  }
+}

@@ -9,7 +9,7 @@ if sys.version_info[0] != 3:
 elif sys.version_info[0] == 3:
     import http.client
 
-    conn = http.client.HTTPSConnection("ops.huntor.cn")
+    conn = http.client.HTTPSConnection("xxx.xxx.xxx.xxx")
 
     payload = "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"user.login\",\r\n    \"params\": {\r\n        \"user\": \"Admin\",\r\n        \"password\": \"Pc608qq2Cd\"\r\n    },\r\n    \"id\": 1,\r\n    \"auth\": null\r\n}"
 

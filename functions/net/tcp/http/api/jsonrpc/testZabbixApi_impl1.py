@@ -12,7 +12,7 @@ username = "Admin"
 password = "Pc608qq2Cd"
 
 # first url request
-zabbixBaseUrl = "https://ops.huntor.cn/"
+zabbixBaseUrl = "https://xxx.xxx.xxx.xxx/"
 cookie = cookielib.CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
 urllib2.install_opener(opener)

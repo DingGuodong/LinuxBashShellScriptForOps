@@ -1,0 +1,34 @@
+{
+  "object": "os",
+  "errcode": 0,
+  "errmsg": {
+    "os-gw-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "os-msg-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "os-inte-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "os-web-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "redis-os-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "memcached-os-dynamic": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "memcached-os-static": {
+      "code": 0,
+      "msg": "ok"
+    }
+  }
+}

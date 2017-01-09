@@ -4,6 +4,7 @@ import time
 import datetime
 import sys
 import delorean
+import pytz
 
 system_encoding = sys.getfilesystemencoding()
 print "Current system encoding is \"%s\"." % system_encoding
@@ -24,6 +25,7 @@ print time.time()
 # Unix timestamp to Time
 print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(1471932539.15))
 print datetime.datetime.fromtimestamp(1471932539.15).strftime("%Y-%m-%d %H:%M")
+print datetime.datetime.fromtimestamp(1471932539.15, pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %Z%z')
 
 # Time to Unix timestamp
 print time.mktime(time.strptime('2016-08-23 14:08:01', '%Y-%m-%d %H:%M:%S'))

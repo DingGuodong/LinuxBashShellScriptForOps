@@ -1,0 +1,70 @@
+{
+  "object": "afms",
+  "errcode": 0,
+  "errmsg": {
+    "scrm-app": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "scrm-memcached": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "coupon-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "membercenter-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "tp_activity-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "tuiguanghui-prize-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "mscrm-examstack-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "examstack-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "examstackmq-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "amq-server-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "oauth-php-apache-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "envelope-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "chatroom-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "mscrm-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "memcached-envelope-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "memcached-activity-service": {
+      "code": 0,
+      "msg": "ok"
+    }
+  }
+}

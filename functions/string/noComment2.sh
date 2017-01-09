@@ -48,6 +48,10 @@ function del_comment_in_c_cpp_file(){
 function del_comment_in_sh_conf_file(){
     #ignore the comment line end with '# comment'
     grep -v "^[ \t]*\#" ${file} | grep -v "^$"
+#    grep -vP "^[ \t]*\#|^$" ${file}
+#    grep -vP "^\s\#|^$" ${file}  #Perl regular expressions give additional functionality, and are documented in
+    # pcresyntax(3)  and pcrepattern(3), but only work if pcre is available in the system.
+
 }
 
 function del_comment_in_xml_file(){
@@ -63,6 +67,7 @@ function del_comment_in_xml_file(){
 function del_comment_in_general_file(){
     #ignore the comment line end with '# comment'
     grep -v "^[ \t]*\#" ${file} | grep -v "^[ \t]*\;" |grep -v "^$"
+    # TODO(Guodong Ding) comment style in python using ''', """
 }
 
 

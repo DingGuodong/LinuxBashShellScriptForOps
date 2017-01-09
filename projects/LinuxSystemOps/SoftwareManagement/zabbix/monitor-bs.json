@@ -1,0 +1,62 @@
+{
+  "object": "bs",
+  "errcode": 0,
+  "errmsg": {
+    "bs-core-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-iot-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-qrcode-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-coupon-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-activity-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-serviceorder-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-message-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-publish-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-chatter-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-dsp-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "bs-mobile-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "redis-bs-service": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "memcached-bs-dynamic": {
+      "code": 0,
+      "msg": "ok"
+    },
+    "memcached-bs-static": {
+      "code": 0,
+      "msg": "ok"
+    }
+  }
+}

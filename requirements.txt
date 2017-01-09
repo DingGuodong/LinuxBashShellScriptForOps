@@ -1,4 +1,4 @@
-ansible==2.1.2.0
+ansible==2.2.0.0
 APScheduler==2.1.2
 argh==0.26.2
 Babel==2.3.4
