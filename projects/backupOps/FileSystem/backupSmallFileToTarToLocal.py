@@ -3,7 +3,7 @@
 # -*- coding: utf8 -*-
 """
 Created by PyCharm.
-File:               LinuxBashShellScriptForOps:backupFileToLocal.py
+File:               LinuxBashShellScriptForOps:backupSmallFileToTarToLocal.py
 User:               Guodong
 Create Date:        2016/10/25
 Create Time:        10:08
