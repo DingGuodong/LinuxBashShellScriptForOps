@@ -32,6 +32,7 @@ import logging
 import logging.handlers
 import time
 
+task_name = 'gitlab'  # task name will be used in log file
 backup_source = r".."
 backup_target = r'C:\Users\Guodong\Desktop\target'  # please using abs path here.
 validate = True  # using validate will require more long time
