@@ -118,14 +118,21 @@ def getCPU():
 
 
 def getLoadAverage():
-    import multiprocessing
-    k = 1.0
-    k /= multiprocessing.cpu_count()
-    if os.path.exists('/proc/loadavg'):
-        return [float(open('/proc/loadavg').read().split()[x]) * k for x in range(3)]
-    else:
-        tokens = subprocess.check_output(['uptime']).split()
-        return [float(x.strip(',')) * k for x in tokens[-3:]]
+    if linux:
+        import multiprocessing
+        k = 1.0
+        k /= multiprocessing.cpu_count()
+        if os.path.exists('/proc/loadavg'):
+            return [float(open('/proc/loadavg').read().split()[x]) * k for x in range(3)]
+        else:
+            tokens = subprocess.check_output(['uptime']).split()
+            return [float(x.strip(',')) * k for x in tokens[-3:]]
+    if mswindows:
+        # print psutil.cpu_percent()
+        # print psutil.cpu_times_percent()
+        # print psutil.cpu_times()
+        # print psutil.cpu_stats()
+        return "%.2f%%" % psutil.cpu_percent()
 
 
 def getMemory():
