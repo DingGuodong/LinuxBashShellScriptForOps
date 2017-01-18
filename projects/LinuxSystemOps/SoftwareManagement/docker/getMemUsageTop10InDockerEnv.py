@@ -3,10 +3,10 @@
 # -*- coding: utf8 -*-
 """
 Created by PyCharm.
-File:               LinuxBashShellScriptForOps:getDockerContainerInfoWithPidNumber.py
+File:               LinuxBashShellScriptForOps:getMemUsageTop10InDockerEnv.py
 User:               Guodong
-Create Date:        2016/10/18
-Create Time:        10:25
+Create Date:        2017/1/17
+Create Time:        16:04
 
 Some helpful message:
     For CentOS: yum -y install python-devel python-pip; pip install psutil
@@ -14,6 +14,7 @@ Some helpful message:
     For Windows: pip install psutil
 
  """
+
 import os
 import sys
 from collections import OrderedDict
@@ -25,8 +26,6 @@ class dockerContainerUtils(object):
         self.proc = processInformationPseudoFileSystem
         self.debugEnabled = True
         self.pid = 0
-        self.pid = self.getPidInput()
-        self.checkDockerServerVersion()
 
     def getContainerLongIdUsingDockerInspectAllContainerID(self):
         import subprocess
@@ -346,23 +345,33 @@ class dockerContainerUtils(object):
             return None
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    # top -b -n1 -o '%MEM' -c
+    # ps -eo uname,pid,ppid,pcpu,pmem,args --sort -pmem | head
+    import psutil
+    from operator import itemgetter
+
+    top = 10
+
+    if len(sys.argv) > 1:
+        if sys.argv[1] is not None and sys.argv[1].isdigit():
+            top = int(sys.argv[1])
+
+    ps_mem_raw_data = list()
+    for _item in psutil.process_iter():
+        ps_mem_raw_data.append((_item.pid, _item.memory_percent()))
+
+    ps_mem_sorted_data = sorted(ps_mem_raw_data, key=itemgetter(1), reverse=True)
+
+    ps_mem_sorted_data_dict = dict(ps_mem_sorted_data)
+    pid_mem_sorted_data = [data[0] for data in ps_mem_sorted_data]
+
     p = dockerContainerUtils()
-    print "Pid number is: %d" % p.pid
-    print "Pid number ContainerId is %s" % p.getContainerLongIdUsingDockerInspectAllContainerID()
-    print "Pid number cmdline is: %s" % p.getCmdline()
-    print "Parent pid number is: %s" % p.getPPid()
-    print "Parent pid number cmdline is: %s" % p.getPPidCmdline()
-    print "Parent parent pid number is: %s" % p.getPPPid()
-    print "Pid chain is: %s" % p.getPidChain()
-    print "Pid Cmdline chain is: %s" % p.getCmdlineChain()
-
-    # TODO(Guodong Ding) pid should use 'docker-proxy's' pid.
-    # print "Pid number's socket inode number is %s" % p.getFDSocketInodeNumber()
-    # print "Pid number's port number is %s" % p.getPortNumberWithInodeNumber()
-    # print "Pid number ContainerShortId is %s" % p.getContainerShortIDWithPort()
-
-    print "Pid number ContainerId is %s" % p.getContainerId()
-    print "Pid number short ContainerId is %s" % p.getContainerShortID()
-    print "Pid number list container: %s" % p.listContainer()
-    # print "Pid number Container info is: %s" % p.getContainerInfo()
+    for num, _pid in enumerate(pid_mem_sorted_data[0:top]):
+        p.pid = _pid
+        try:
+            print "  %d\t%d\t%.2f%%\t%s\t%s" % (
+                num + 1, _pid, ps_mem_sorted_data_dict[_pid], p.getContainerShortID(), p.getContainerNameById(),)
+        except (RuntimeError, SystemExit) as e:
+            # not docker container process
+            print "  %d\t%d\t%.2f%%\t%s" % (num + 1, _pid, ps_mem_sorted_data_dict[_pid], e)

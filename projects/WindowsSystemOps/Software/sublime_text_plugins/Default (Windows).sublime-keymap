@@ -1,0 +1,8 @@
+[
+    {
+        "command": "add_Info",
+        "keys": [
+            "ctrl+shift+;"
+        ]
+    }
+]

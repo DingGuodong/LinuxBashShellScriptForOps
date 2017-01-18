@@ -128,6 +128,7 @@ def getLoadAverage():
             tokens = subprocess.check_output(['uptime']).split()
             return [float(x.strip(',')) * k for x in tokens[-3:]]
     if mswindows:
+        # TODO(Guodong Ding) get this field data like on Linux for Windows
         # print psutil.cpu_percent()
         # print psutil.cpu_times_percent()
         # print psutil.cpu_times()
