@@ -1,0 +1,38 @@
+---
+# file begin with '---'
+
+# list
+- item1
+- item2
+- item3
+
+# dict
+key1: value1
+key2: value2
+key3: value3
+
+# vars
+foo: {{ key1 }}
+boo: {{ key2 }}
+
+# boolean
+create_key: yes
+needs_agent: no
+knows_oop: True
+likes_emacs: TRUE
+uses_cvs: false
+
+# a record of staff
+name: Example Developer
+job: Developer
+skill: Elite
+employed: True
+foods:
+    - Apple
+    - Orange
+    - Strawberry
+    - Mango
+languages:
+    ruby: Elite
+    python: Elite
+    dotnet: Lame
