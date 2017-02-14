@@ -76,3 +76,6 @@ tail -n20 -f /var/spool/insight
 # bash -c '{ time_now=$(date +%F\ %T); last_history=$(history 1|sed "s/^[\ 0-9]\+//"); real_ip=$(who -m 2>/dev/null| awk "{print \$NF}"|sed -e "s/[()]//g"); ssh_client=$(echo $SSH_CLIENT | cut -f1,2 -d " "); echo "{\"TIME\":\"${time_now}\",\"USER\":\"${USER}\",\"REAL_IP\":\"${real_ip}\",\"SSH_CLIENT\":\"${ssh_client}\",\"CMD\":\"${last_history}\"}"; }'
 
 
+# others
+echo readonly PROMPT_COMMAND="'"'{ echo "$(date "+%F %T") $(who am i |awk "{print \$1\" \"\$2\" \"\$5}") $(whoami) $(pwd) # $(history 1 | { read a b c cmd; echo "$cmd"; })"; } >> /var/log/cmd.log'"'" > /etc/profile.d/cmd_log.sh
+
