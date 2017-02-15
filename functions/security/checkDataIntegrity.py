@@ -7,15 +7,42 @@ File:               LinuxBashShellScriptForOps:checkDataIntegrity.py
 User:               Guodong
 Create Date:        2017/2/14
 Create Time:        14:45
- """
+
+Python script to check data integrity on UNIX/Linux or Windows
+accept options using 'docopt' module, using 'docopt' to accept parameters and command switch
+
+Usage:
+  checkDataIntegrity.py [-g FILE HASH_FILE]
+  checkDataIntegrity.py [-c FILE HASH_FILE]
+  checkDataIntegrity.py [-r HASH_FILE]
+  checkDataIntegrity.py generate FILE HASH_FILE
+  checkDataIntegrity.py validate FILE HASH_FILE
+  checkDataIntegrity.py reset HASH_FILE
+  checkDataIntegrity.py (--version | -v)
+  checkDataIntegrity.py --help | -h | -?
+
+Arguments:
+  FILE                  the path to single file or directory to data protect
+  HASH_FILE             the path to hash data saved
+
+Options:
+  -? -h --help          show this help message and exit
+  -v --version          show version and exit
+
+Example, try:
+  checkDataIntegrity.py generate /tmp /tmp/data.json
+  checkDataIntegrity.py validate /tmp /tmp/data.json
+  checkDataIntegrity.py reset /tmp/data.json
+  checkDataIntegrity.py -g /tmp /tmp/data.json
+  checkDataIntegrity.py -c /tmp /tmp/data.json
+  checkDataIntegrity.py -r /tmp/data.json
+  checkDataIntegrity.py --help
+"""
+from docopt import docopt
 import os
 import sys
 import hashlib
 
-
-# TODO(Guodong Ding) using 'docopt' to accept parameters and command switch, import docopt
-
-# TODO(Guodong Ding) define a help doc in function here
 
 def get_hash_sum(filename, method="sha256", block_size=65536):
     if not os.path.exists(filename):
@@ -137,16 +164,19 @@ def remakeDataIntegrity(filename):
         else:
             print "[warning] data integrity file \'%s\'is not remade." % filename
             sys.exit(0)
+    else:
+        print >> sys.stderr, "[error] data integrity file \'%s\'is not exist." % filename
 
 
 def checkDataIntegrity(path_to_check, file_to_save):
     from time import sleep
 
     if not os.path.exists(file_to_save):
-        print "[info] Do make a data integrity file to %s" % file_to_save
+        print "[info] data integrity file \'%s\' is not exist." % file_to_save
+        print "[info] make a data integrity file to \'%s\'" % file_to_save
         data = makeDataIntegrity(path_to_check)
         saveDataIntegrity(data, file_to_save)
-        print "[successful] Do make a data integrity file to %s, finished!" % file_to_save,
+        print "[successful] make a data integrity file to \'%s\', finished!" % file_to_save,
         print "Now you can use this script later to check data integrity."
     else:
         old_data = readDataIntegrity(file_to_save)
@@ -163,6 +193,17 @@ def checkDataIntegrity(path_to_check, file_to_save):
 
 
 if __name__ == '__main__':
-    # remakeDataIntegrity("/tmp/data_integrity_1.json")
-    checkDataIntegrity(r"E:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\functions\security",
-                       "/tmp/data_integrity_1.json")
+    arguments = docopt(__doc__, version='1.0.0rc2')
+    if arguments['-r'] or arguments['reset']:
+        if arguments['HASH_FILE']:
+            remakeDataIntegrity(arguments['HASH_FILE'])
+    elif arguments['-g'] or arguments['generate']:
+        if arguments['FILE'] and arguments['HASH_FILE']:
+            checkDataIntegrity(arguments['FILE'], arguments['HASH_FILE'])
+    elif arguments['-c'] or arguments['validate']:
+        if arguments['FILE'] and arguments['HASH_FILE']:
+            checkDataIntegrity(arguments['FILE'], arguments['HASH_FILE'])
+    else:
+        print >> sys.stderr, "bad parameters"
+        sys.stderr.flush()
+        print docopt(__doc__, argv="--help")
