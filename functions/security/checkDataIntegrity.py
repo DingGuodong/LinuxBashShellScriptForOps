@@ -183,10 +183,14 @@ def checkDataIntegrity(path_to_check, file_to_save):
         new_data = makeDataIntegrity(path_to_check)
         error_flag = True
         for item in old_data.keys():
-            if not old_data[item] == new_data[item]:
-                print>> sys.stderr, new_data[item], item
-                sleep(0.01)
-                print "\told hash data is %s" % old_data[item], item
+            try:
+                if not old_data[item] == new_data[item]:
+                    print>> sys.stderr, new_data[item], item
+                    sleep(0.01)
+                    print "\told hash data is %s" % old_data[item], item
+                    error_flag = False
+            except KeyError as e:
+                print >> sys.stderr, "[error]", e.message, "Not Exist!"
                 error_flag = False
         if error_flag:
             print "[ successful ] passed, All files integrity is ok!"
