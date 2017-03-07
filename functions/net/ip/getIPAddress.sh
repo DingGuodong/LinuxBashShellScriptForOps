@@ -12,11 +12,11 @@ IP=$(ifconfig | grep inet | grep -Ev "(inet6|127.0.0.1)" | awk -F ":" '{print $2
 hostname -i
 facter ipaddress_eth0
 # A system used standard method to get ip address from  '/etc/rc.d/rc.sysinit' line 346 on CentOS, useless for Ubuntu
-ip addr show to 0.0.0.0/0 scope global | awk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
+ip addr show to 0.0.0.0/0 scope global | gawk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
 
 # Ubuntu
 DEVICE="`route -n | awk '/^0.0.0.0/ { print $NF  }'`"
-ip addr show to 0.0.0.0/0 scope global ${DEVICE} | awk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
+ip addr show to 0.0.0.0/0 scope global ${DEVICE} | gawk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
 
 # Get all IP
 ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)" | cut -d ":" -f2 | cut -d " " -f1
