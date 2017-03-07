@@ -72,7 +72,7 @@ def get_hosts_list():
     hosts_list = list()
     while True:
         if len(hosts_list) == 0:
-            print cyan("Please input host's IP. <Press Enter again to end input>")
+            print cyan("Please input host's IP (input 1 at least). <Press Enter again to end input>")
         host = raw_input()
         if host == "":
             break

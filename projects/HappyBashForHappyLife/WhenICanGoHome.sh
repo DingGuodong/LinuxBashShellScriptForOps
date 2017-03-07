@@ -6,6 +6,8 @@
 # Please feel free to using it and share to your friends.
 # :)
 
+# Note:
+# binary command 'bc' is required.
 
 # Public header
 # =============================================================================================================================
@@ -59,7 +61,7 @@ echo -en "\033[00m"
 shift
 
 done
-if [ ! $one_line ]; then
+if [ ! ${one_line} ]; then
         echo
 fi
 }
@@ -77,7 +79,7 @@ function echo_g () {
     echo -e "\033[32m$1\033[0m"
 }
 function echo_y () {
-    # Warnning
+    # Warning
     [ $# -ne 1 ] && return 0
     echo -e "\033[33m$1\033[0m"
 }
@@ -88,7 +90,7 @@ function echo_b () {\
 }
 # end echo color function, smarter
 
-WORKDIR=$PRGDIR
+WORKDIR=${PRGDIR}
 # end public header
 # =============================================================================================================================
 
@@ -108,16 +110,16 @@ function validate_input_time(){
         exit 1
     fi
     input_time=$1
-    echo $input_time | grep -E "^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$" >/dev/null 2>&1
+    echo ${input_time} | grep -E "^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$" >/dev/null 2>&1
     rc=$?
-    if [[ $rc -ne 0 ]]; then
+    if [[ ${rc} -ne 0 ]]; then
         echo "Bad input time"
         exit 1
     fi
-    return $rc
+    return ${rc}
 }
 
-function mintues_to_seconds(){
+function minutes_to_seconds(){
     if [[ $# -ne 1 ]]; then
         echo "Bad line, need 1 parameter at least! "
         exit 1
@@ -133,9 +135,9 @@ function hours_to_minutes(){
     hours=`echo $1 | awk -F ':' '{print $1}'`
     minutes=`echo $1 | awk -F ':' '{print $2}'`
     total_minutes=`echo "$hours * 60 + $minutes" | bc`
-    if [[ $? -eq 0 && $total_minutes != "" && $total_minutes -ge 0 ]]; then
+    if [[ $? -eq 0 && ${total_minutes} != "" && ${total_minutes} -ge 0 ]]; then
         # here can NOT use a return
-        echo $total_minutes
+        echo ${total_minutes}
     else
         echo "Exception occurs! "
         exit 1
@@ -144,41 +146,41 @@ function hours_to_minutes(){
 
 
 function validate_late_to_work(){
-    least_minutes=$(hours_to_minutes $least_time)
-    last_minutes=`hours_to_minutes $last_time`
-    late_minutes=`hours_to_minutes $late_time`
-    open_minutes=`hours_to_minutes $open_time`
-    if [ $open_minutes -lt $least_minutes ] || [ $open_minutes -gt $late_minutes ]; then
+    least_minutes=$(hours_to_minutes ${least_time})
+    last_minutes=`hours_to_minutes ${last_time}`
+    late_minutes=`hours_to_minutes ${late_time}`
+    open_minutes=`hours_to_minutes ${open_time}`
+    if [ ${open_minutes} -lt ${least_minutes} ] || [ ${open_minutes} -gt ${late_minutes} ]; then
         echo "You are late! "
         exit 1
     fi
 }
 
 function computing_close_time(){
-    open_minutes=`hours_to_minutes $open_time`
+    open_minutes=`hours_to_minutes ${open_time}`
     close_minutes=`echo "$work_time * 60 + $open_minutes" | bc`
     close_hours=`echo "$close_minutes / 60" | bc`
     close_minutes=`echo "$close_minutes % 60" | bc | awk -F '.' '{print $1}'`
     close_time="$close_hours:$close_minutes"
-    echo $close_time
+    echo ${close_time}
 }
 
 function computing_worked_hours(){
-    open_minutes=`hours_to_minutes $open_time`
+    open_minutes=`hours_to_minutes ${open_time}`
     now_time=$(date +%H:%M)
-    now_minutes=`hours_to_minutes $now_time`
+    now_minutes=`hours_to_minutes ${now_time}`
     worked_minutes=`echo "$now_minutes - $open_minutes" | bc`
     worked_hours=`echo "$worked_minutes / 60" | bc`
-    echo $worked_hours
+    echo ${worked_hours}
 }
 
 function computing_worked_minutes(){
-    open_minutes=`hours_to_minutes $open_time`
+    open_minutes=`hours_to_minutes ${open_time}`
     now_time=$(date +%H:%M)
-    now_minutes=`hours_to_minutes $now_time`
+    now_minutes=`hours_to_minutes ${now_time}`
     worked_minutes=`echo "$now_minutes - $open_minutes" | bc`
     worked_minutes=`echo "$worked_minutes % 60" | bc | awk -F '.' '{print $1}'`
-    echo $worked_minutes
+    echo ${worked_minutes}
 }
 
 function work_report(){
@@ -200,8 +202,8 @@ function read_user_input(){
 
 function main(){
     read_user_input
-    validate_input_time $open_time
-    validate_late_to_work $open_time
+    validate_input_time ${open_time}
+    validate_late_to_work
     work_report
 }
 

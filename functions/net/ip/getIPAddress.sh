@@ -43,3 +43,6 @@ echo "$IP"
 
 # using grep
 ifconfig | grep -Po '(?<=:).*(?=  B)'
+
+# others
+ifconfig eth0 |awk -F '[ :]+' 'NR==2 {print $4}'

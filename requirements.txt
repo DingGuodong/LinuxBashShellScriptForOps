@@ -5,6 +5,7 @@ attrs==16.3.0
 Babel==2.3.4
 backports.ssl-match-hostname==3.5.0.1
 beautifulsoup4==4.5.3
+bs4==0.0.1
 certifi==2016.9.26
 cffi==1.9.1
 chardet==2.3.0
