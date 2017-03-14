@@ -203,11 +203,50 @@ def scan_host_ssh_public_key():
                     % host)
 
 
+@roles('base')
+def config_apt_source_list():
+    sudo('cp /etc/apt/sources.list /etc/apt/sources.list$(date +%Y%m%d%H%M%S)~')
+    sudo("if grep '^[a-z].*us.archive.ubuntu.com' /etc/apt/sources.list >/dev/null; then \
+    sed -i 's/us.archive.ubuntu.com/cn.archive.ubuntu.com/g' /etc/apt/sources.list; \
+    else  sed -i 's/\/archive.ubuntu.com/cn.archive.ubuntu.com/g' /etc/apt/sources.list; fi")
+    sudo('apt-get update -y')
+
+
 @roles('all')
-def config_ssh_connection():
+def install_basic_packages():
+    sudo('apt-get install gcc g++ make -y')
+
+
+@roles('all')
+def install_docker_engine():
+    sudo('apt-get update -y')
+    sudo('apt-get install -y --no-install-recommends \
+    apt-transport-https  ca-certificates curl software-properties-common')
+    sudo('curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add -')
+    sudo('sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 \
+    --recv-keys 58118E89F3A912897C070ADBF76221572C52609D')
+    sudo('add-apt-repository "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main"')
+    sudo('apt-get update -y')
+    sudo('apt-get upgrade -y')
+    sudo('apt-get install docker-engine -y')
+    sudo('sed -i \'s/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"/g\' \
+    /etc/default/grub')
+    sudo('update-grub')
+    sudo('service docker restart || systemctl restart docker.service ')
+
+
+@roles('all')
+def exec_config_ssh_connection():
     reset_ssh_public_host_key()
     inject_admin_ssh_public_key()
     scan_host_ssh_public_key()
+
+
+@roles('all')
+def exec_config_docker_engine():
+    config_apt_source_list()
+    install_basic_packages()
+    install_docker_engine()
 
 
 def terminal_debug_win32(func):
@@ -229,10 +268,12 @@ if __name__ == '__main__':
 
     if len(sys.argv) == 1:
         if is_windows():
-            terminal_debug_win32("config_ssh_connection")
+            terminal_debug_win32("exec_config_ssh_connection")
+            terminal_debug_win32("exec_config_docker_engine")
             sys.exit(0)
         if is_linux():
-            terminal_debug_posix("config_ssh_connection")
+            terminal_debug_win32("exec_config_ssh_connection")
+            terminal_debug_win32("exec_config_docker_engine")
             sys.exit(0)
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
