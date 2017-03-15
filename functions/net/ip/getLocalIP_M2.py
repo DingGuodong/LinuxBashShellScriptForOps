@@ -23,6 +23,7 @@ print i.strftime('%Y/%m/%d %H:%M:%S')
 hostname = socket.getfqdn(socket.gethostname())
 print hostname
 
+# TODO(Guodong Ding) Get A Wrong IP Address When There Are More Than One NIC Adapter Or IP Address!!!
 ip = socket.gethostbyname(hostname)
 print ip
 
