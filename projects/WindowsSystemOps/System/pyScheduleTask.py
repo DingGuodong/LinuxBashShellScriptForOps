@@ -34,9 +34,9 @@ def get_system_encoding():
 DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 
-def shutdown_NetEaseCloudMusic():
+def shutdown_NetEaseCloudMusic(name):
     # define NetEaseCloudMusic process name
-    ProcessNameToKill = 'cloudmusic.exe'
+    ProcessNameToKill = name
 
     print
     import psutil
@@ -53,8 +53,8 @@ def shutdown_NetEaseCloudMusic():
 
         import os
 
-        for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
-            user = os.environ.get(name)
+        for username in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+            user = os.environ.get(username)
             if user:
                 return user
 
@@ -77,7 +77,7 @@ def shutdown_NetEaseCloudMusic():
                 print e
 
 
-def display_countdown():
+def display_countdown(sec):
     def countdown(secs):
         """
         blocking process 1
@@ -97,28 +97,31 @@ def display_countdown():
             secs -= 1
 
     # set a human readable timer here, such as display how much time left to shutdown
-    countdown(10)
+    countdown(int(sec))
 
 
-def display_scheduler():
+def display_scheduler(name):
     """
     blocking process 2
     :return:
     """
     s = sched.scheduler(time.time, time.sleep)
-    s.enter(10, 1, shutdown_NetEaseCloudMusic, ())
+    s.enter(10, 1, shutdown_NetEaseCloudMusic, (name,))
     s.run()
     now = time.strftime("%Y-%m-%d %H:%M:%S %Z").decode(DEFAULT_LOCALE_ENCODING).encode("utf-8")
     print "Time finished: %s\nGood bye!" % now
 
 
-threadingPool = list()
-threading_1 = threading.Thread(target=display_countdown)
-threading_2 = threading.Thread(target=display_scheduler)
-threadingPool.append(threading_1)
-threadingPool.append(threading_2)
-
 if __name__ == '__main__':
+    seconds_to_shutdown = 10
+    process_name_to_shutdown = "cloudmusic.exe"
+
+    threadingPool = list()
+    threading_1 = threading.Thread(target=display_countdown, args=(seconds_to_shutdown,))
+    threading_2 = threading.Thread(target=display_scheduler, args=(process_name_to_shutdown,))
+    threadingPool.append(threading_1)
+    threadingPool.append(threading_2)
+
     for thread in threadingPool:
         thread.setDaemon(False)
         thread.start()
