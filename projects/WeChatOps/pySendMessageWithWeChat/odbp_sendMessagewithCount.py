@@ -94,7 +94,11 @@ class WeiXinSendMsgClass(object):
                 limit = odbp_database.sqlite3_get_limits()
             except odbp_database.sqlite3.Error as e:
                 print e
-                sys.exit(1)
+                try:
+                    odbp_database.sqlite3_create_table_limits()
+                except odbp_database.sqlite3.Error as e:
+                    print e
+                    sys.exit(1)
             else:
                 if limit is not None:
                     odbp_database.sqlite3_update_limit(limit[0][0] + 1, date)

@@ -2,10 +2,10 @@
 references/
 /projects/others/
 /projects/dingguodong.github.io/
-/projects/WeChatOps/OpsDevBestPractice/README.md
+/projects/WeChatOps/pySendMessageWithWeChat/README.md
 /bashsyntax/
 /templates/
-/projects/WeChatOps/OpsDevBestPractice/.odbp_db.sqlite3
+/projects/WeChatOps/pySendMessageWithWeChat/.odbp_db.sqlite3
 /projects/emailOps/alterscript_msmtp.py
 /projects/autoOps/Ansible/playbooks/DirectoryLayout/
 /projects/autoOps/Ansible/playbooks/ansible-examples/

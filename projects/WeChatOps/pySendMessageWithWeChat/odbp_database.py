@@ -3,19 +3,14 @@
 # -*- coding: utf8 -*-
 """
 Created by PyCharm.
-File:               LinuxBashShellScriptForOps:odbp_getToken.py
+File:               LinuxBashShellScriptForOps:odbp_database.py.py
 User:               Guodong
-Create Date:        2016/8/10
-Create Time:        17:04
+Create Date:        2016/8/15
+Create Time:        14:30
  """
-
 import os
 import sqlite3
 import sys
-import urllib
-import urllib2
-import json
-import datetime
 
 # import time
 
@@ -128,30 +123,23 @@ def sqlite3_create_table_account():
     sqlite3_close(sql_conn)
 
 
-def sqlite3_create_tables():
-    print "sqlite3_create_tables"
+def sqlite3_create_table_limits():
     sql_conn = sqlite3_conn(sqlite3_db_file)
     sql_cursor = sql_conn.cursor()
-    sql_cursor.execute('''CREATE TABLE "main"."weixin_token" (
-                "id"  INTEGER ,
-                "access_token"  TEXT,
-                "expires_in"  TEXT,
-                "expires_on"  TEXT,
-                "is_expired"  INTEGER
-                )
-                ;
-    ''')
-    sql_cursor.execute('''CREATE TABLE "main"."weixin_account" (
-                "id"  INTEGER,
-                "name"  TEXT,
-                "corpid"  TEXT,
-                "secret"  TEXT,
-                "current"  INTEGER
+    sql_cursor.execute('''CREATE TABLE "main"."weixin_limit" (
+                "id"  INTEGER PRIMARY KEY ,
+                "limit"  INTEGER,
+                "used"  INTEGER,
+                "datetime"  TEXT
                 )
                 ;
     ''')
     sqlite3_commit(sql_conn)
     sqlite3_close(sql_conn)
+
+
+def sqlite3_create_tables():
+    pass
 
 
 def sqlite3_set_credential(corpid, secret):
@@ -193,6 +181,26 @@ def sqlite3_set_token(access_token, expires_in, expires_on, is_expired):
         sqlite3_set_token(access_token, expires_in, expires_on, is_expired)
 
 
+def sqlite3_set_limit(limit, used, datetime):
+    try:
+        sql_conn = sqlite3_conn(sqlite3_db_file)
+        sql_cursor = sql_conn.cursor()
+        sql_cursor.execute('''INSERT INTO "weixin_limit"
+                              ("id", "limit", "used", "datetime") VALUES
+                              (
+                              1,
+                              ?,
+                              ?,
+                              ?
+                              )
+''', (limit, used, datetime))
+        sqlite3_commit(sql_conn)
+        sqlite3_close(sql_conn)
+    except sqlite3.Error:
+        sqlite3_create_table_limits()
+        sqlite3_set_limit(limit, used, datetime)
+
+
 def sqlite3_get_credential():
     try:
         sql_conn = sqlite3_conn(sqlite3_db_file)
@@ -231,6 +239,27 @@ def sqlite3_get_token():
             return None
 
 
+def sqlite3_get_limits():
+    try:
+        sql_conn = sqlite3_conn(sqlite3_db_file)
+        sql_cursor = sql_conn.cursor()
+        limit = sql_cursor.execute(
+            '''SELECT "used", "datetime" FROM weixin_limit WHERE _ROWID_ == 1 ;''')
+        result = limit.fetchall()
+        sqlite3_close(sql_conn)
+    except sqlite3.Error:
+        info = sys.exc_info()
+        print info[0], ":", info[1]
+        raise sqlite3.Error
+    else:
+        if result is not None and len(result) != 0:
+            return result
+        else:
+            # print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
+            # sys.exit(1)
+            return None
+
+
 def sqlite3_update_token(access_token, expires_on):
     sql_conn = sqlite3_conn(sqlite3_db_file)
     sql_cursor = sql_conn.cursor()
@@ -255,116 +284,13 @@ def sqlite3_update_account(new_corpid, new_secret):
     sqlite3_close(sql_conn)
 
 
-class WeiXinTokenClass(object):
-    def __init__(self):
-        self.__corpid = None
-        self.__corpsecret = None
-        self.__use_persistence = True
-        self.__prefer_using_persistence = True
-
-        self.__access_token = None
-        self.__expires_in = None
-        self.__expires_on = None
-        self.__is_expired = None
-
-        if self.__use_persistence:
-            self.__corpid = sqlite3_get_credential()[0][0]
-            self.__corpsecret = sqlite3_get_credential()[0][1]
-        else:
-            self.__corpid = weixin_qy_CorpID
-            self.__corpsecret = weixin_qy_Secret
-
-        if not self.__prefer_using_persistence:
-            if self.__corpid != weixin_qy_CorpID or self.__corpsecret != weixin_qy_Secret:
-                sqlite3_update_account(weixin_qy_CorpID, weixin_qy_Secret)
-                self.__corpid = sqlite3_get_credential()[0][0]
-                self.__corpsecret = sqlite3_get_credential()[0][1]
-            else:
-                pass
-
-    def __get_token_from_weixin_qy_api(self):
-        parameters = {
-            "corpid": self.__corpid,
-            "corpsecret": self.__corpsecret
-        }
-        url_parameters = urllib.urlencode(parameters)
-        token_url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?"
-        url = token_url + url_parameters
-        response = urllib2.urlopen(url)
-        result = response.read()
-        token_json = json.loads(result)
-        if 'access_token' in token_json:
-            pass
-        else:
-            print "WeiXin_Qy Api Error, result is %s" % token_json
-            sys.exit(1)
-        if token_json['access_token'] is not None:
-            get_time_now = datetime.datetime.now()
-            # TODO(Guodong Ding) token will expired ahead of time or not expired after the time
-            expire_time = get_time_now + datetime.timedelta(seconds=token_json['expires_in'])
-            token_json['expires_on'] = str(expire_time)
-            self.__access_token = token_json['access_token']
-            self.__expires_in = token_json['expires_in']
-            self.__expires_on = token_json['expires_on']
-            self.__is_expired = 1
-
-            try:
-                token_result_set = sqlite3_get_token()
-            except sqlite3.Error:
-                token_result_set = None
-            if token_result_set is None and len(token_result_set) == 0:
-                sqlite3_set_token(self.__access_token, self.__expires_in, self.__expires_on, self.__is_expired)
-            else:
-                if self.__is_token_expired() is True:
-                    sqlite3_update_token(self.__access_token, self.__expires_on)
-                else:
-                    debug("pass")
-                    return
-        else:
-            if token_json['errcode'] is not None:
-                print "errcode is: %s" % token_json['errcode']
-                print "errmsg is: %s" % token_json['errmsg']
-            else:
-                print result
-
-    def __get_token_from_persistence_storage(self):
-        try:
-            token_result_set = sqlite3_get_token()
-        except sqlite3.Error:
-            self.__get_token_from_weixin_qy_api()
-        finally:
-            if token_result_set is None:
-                self.__get_token_from_weixin_qy_api()
-                token_result_set = sqlite3_get_token()
-                access_token = token_result_set[0][0]
-                expire_time = token_result_set[0][1]
-            else:
-                access_token = token_result_set[0][0]
-                expire_time = token_result_set[0][1]
-        expire_time = datetime.datetime.strptime(expire_time, '%Y-%m-%d %H:%M:%S.%f')
-        now_time = datetime.datetime.now()
-        if now_time < expire_time:
-            # print "The token is %s" % access_token
-            # print "The token will expire on %s" % expire_time
-            return access_token
-        else:
-            self.__get_token_from_weixin_qy_api()
-            return self.__get_token_from_persistence_storage()
-
-    @staticmethod
-    def __is_token_expired():
-        try:
-            token_result_set = sqlite3_get_token()
-        except sqlite3.Error as e:
-            print e
-            sys.exit(1)
-        expire_time = token_result_set[0][1]
-        expire_time = datetime.datetime.strptime(expire_time, '%Y-%m-%d %H:%M:%S.%f')
-        now_time = datetime.datetime.now()
-        if now_time < expire_time:
-            return False
-        else:
-            return True
-
-    def get(self):
-        return self.__get_token_from_persistence_storage()
+def sqlite3_update_limit(new_used, new_datetime):
+    sql_conn = sqlite3_conn(sqlite3_db_file)
+    sql_cursor = sql_conn.cursor()
+    sql_cursor.execute('''UPDATE "weixin_limit" SET
+                          used=?,
+                          datetime=?
+                          WHERE _ROWID_ = 1;''', (new_used, new_datetime)
+                       )
+    sqlite3_commit(sql_conn)
+    sqlite3_close(sql_conn)
