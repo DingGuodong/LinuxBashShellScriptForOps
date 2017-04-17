@@ -27,8 +27,8 @@ def debug(msg, code=None):
 
 AUTHOR_MAIL = "uberurey_ups@163.com"
 
-weixin_qy_CorpID = "your_corpid"
-weixin_qy_Secret = "your_secret"
+weixin_qy_CorpID = "wx4dd961cd206edb07"
+weixin_qy_Secret = "UZ4e4jCFHySnH6i3X8Ayr-aHvoUhAFhH6yrMI6qnmtGZnIWrEIM7PTEHPvaf30zD"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -205,14 +205,14 @@ def sqlite3_get_credential():
     try:
         sql_conn = sqlite3_conn(sqlite3_db_file)
         sql_cursor = sql_conn.cursor()
-        credential = sql_cursor.execute('''SELECT "corpid", "secret"  FROM weixin_account WHERE current == 1;''')
+        credential = sql_cursor.execute('''SELECT "corpid", "secret"  FROM weixin_account WHERE current = 1;''')
         result = credential.fetchall()
         sqlite3_close(sql_conn)
     except sqlite3.Error:
         sqlite3_set_credential(weixin_qy_CorpID, weixin_qy_Secret)
         return sqlite3_get_credential()
     else:
-        if result is not None and len(result) != 0:
+        if result is not None:
             return result
         else:
             print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
@@ -224,14 +224,14 @@ def sqlite3_get_token():
         sql_conn = sqlite3_conn(sqlite3_db_file)
         sql_cursor = sql_conn.cursor()
         credential = sql_cursor.execute(
-            '''SELECT "access_token", "expires_on" FROM weixin_token WHERE "is_expired" == 1 ;''')
+            '''SELECT "access_token", "expires_on" FROM weixin_token WHERE "is_expired" = 1 ;''')
         result = credential.fetchall()
         sqlite3_close(sql_conn)
     except sqlite3.Error:
         info = sys.exc_info()
         print info[0], ":", info[1]
     else:
-        if result is not None and len(result) != 0:
+        if result is not None:
             return result
         else:
             # print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
@@ -240,24 +240,25 @@ def sqlite3_get_token():
 
 
 def sqlite3_get_limits():
+    result = None
     try:
         sql_conn = sqlite3_conn(sqlite3_db_file)
         sql_cursor = sql_conn.cursor()
         limit = sql_cursor.execute(
-            '''SELECT "used", "datetime" FROM weixin_limit WHERE _ROWID_ == 1 ;''')
+            '''SELECT "used", "datetime" FROM weixin_limit WHERE _ROWID_ = 1 ;''')
         result = limit.fetchall()
         sqlite3_close(sql_conn)
     except sqlite3.Error:
-        info = sys.exc_info()
-        print info[0], ":", info[1]
-        raise sqlite3.Error
+        try:
+            sqlite3_create_table_limits()
+        except sqlite3.Error:
+            pass
+    if result is not None and len(result) != 0:
+        return result
     else:
-        if result is not None and len(result) != 0:
-            return result
-        else:
-            # print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
-            # sys.exit(1)
-            return None
+        # print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
+        # sys.exit(1)
+        return None
 
 
 def sqlite3_update_token(access_token, expires_on):

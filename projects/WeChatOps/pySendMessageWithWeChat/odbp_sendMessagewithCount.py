@@ -39,31 +39,38 @@ class WeiXinSendMsgClass(object):
             "safe": self.safe
         }
 
-    def send(self, to_user, content):
-        limit = None
-        date = None
-        try:
-            limit = odbp_database.sqlite3_get_limits()
-        except odbp_database.sqlite3.Error:
-            pass
-
-        if limit is not None:
+    @staticmethod
+    def get_used():
+        default_limit = 600
+        limit = odbp_database.sqlite3_get_limits()
+        if limit is not None and len(limit) != 0:
             date = limit[0][1]
             day_in_database = time.strftime("%d", time.strptime(date, "%Y-%m-%d %H:%M:%S"))
             day_in_local = time.strftime("%d", time.localtime(time.time()))
             if day_in_database < day_in_local:
-                used = 600
+                used = default_limit
                 date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             else:
                 used = limit[0][0]
                 date = limit[0][1]
 
-            if used > 600:
+            if used > default_limit:
                 print "reached to limit, please try again tomorrow!"
-            else:
-                pass
+                sys.exit(1)
+
+            return used, date
+
         else:
-            print "Get limit from database failed! result is %s" % limit
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            odbp_database.sqlite3_set_limit(default_limit, 0, now)
+            return 0, now
+
+    @staticmethod
+    def increase_used(used, date):
+        odbp_database.sqlite3_update_limit(used + 1, date)
+
+    def send(self, to_user, content):
+        used, date = self.get_used()
 
         if to_user is not None and content is not None:
             self.data['touser'] = to_user
@@ -71,9 +78,9 @@ class WeiXinSendMsgClass(object):
         else:
             print "parameters wrong!"
             raise RuntimeError
+
         import requests
         import json
-
         url = "https://qyapi.weixin.qq.com/cgi-bin/message/send"
 
         querystring = {"access_token": self.access_token}
@@ -90,20 +97,7 @@ class WeiXinSendMsgClass(object):
         return_content = json.loads(response.content)
         if return_content["errcode"] == 0 and return_content["errmsg"] == "ok":
             print "Send successfully! %s " % return_content
-            try:
-                limit = odbp_database.sqlite3_get_limits()
-            except odbp_database.sqlite3.Error as e:
-                print e
-                try:
-                    odbp_database.sqlite3_create_table_limits()
-                except odbp_database.sqlite3.Error as e:
-                    print e
-                    sys.exit(1)
-            else:
-                if limit is not None:
-                    odbp_database.sqlite3_update_limit(limit[0][0] + 1, date)
-                    print "The limit used times is %s." % (limit[0][0] + 1)
-                else:
-                    odbp_database.sqlite3_set_limit(600, 1, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            print "The limit used times is %s." % (used + 1)
+            self.increase_used(used, date)
         else:
             print "Send failed! %s " % return_content

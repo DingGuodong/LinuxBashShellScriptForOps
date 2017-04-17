@@ -17,8 +17,6 @@ import urllib2
 import json
 import datetime
 
-# import time
-
 enable_debug = True
 
 
@@ -32,8 +30,8 @@ def debug(msg, code=None):
 
 AUTHOR_MAIL = "uberurey_ups@163.com"
 
-weixin_qy_CorpID = "your_corpid"
-weixin_qy_Secret = "your_secret"
+weixin_qy_CorpID = "wx4dd961cd206edb07"
+weixin_qy_Secret = "UZ4e4jCFHySnH6i3X8Ayr-aHvoUhAFhH6yrMI6qnmtGZnIWrEIM7PTEHPvaf30zD"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -204,7 +202,7 @@ def sqlite3_get_credential():
         sqlite3_set_credential(weixin_qy_CorpID, weixin_qy_Secret)
         return sqlite3_get_credential()
     else:
-        if result is not None and len(result) != 0:
+        if result is not None:
             return result
         else:
             print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
@@ -220,10 +218,9 @@ def sqlite3_get_token():
         result = credential.fetchall()
         sqlite3_close(sql_conn)
     except sqlite3.Error:
-        info = sys.exc_info()
-        print info[0], ":", info[1]
+        pass
     else:
-        if result is not None and len(result) != 0:
+        if result is not None:
             return result
         else:
             # print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
@@ -328,6 +325,7 @@ class WeiXinTokenClass(object):
                 print result
 
     def __get_token_from_persistence_storage(self):
+        token_result_set = None
         try:
             token_result_set = sqlite3_get_token()
         except sqlite3.Error:
