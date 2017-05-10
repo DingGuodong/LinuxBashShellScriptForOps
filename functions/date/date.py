@@ -6,6 +6,9 @@ import sys
 import delorean
 import pytz
 
+print time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+
 system_encoding = sys.getfilesystemencoding()
 print "Current system encoding is \"%s\"." % system_encoding
 
