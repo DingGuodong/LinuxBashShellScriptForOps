@@ -32,6 +32,7 @@ class GetIP(object):
 
     def cli(self):
         curl = pycurl.Curl()
+        curl.setopt(pycurl.TIMEOUT, 10)
         curl.setopt(pycurl.URL, self.api_url)
         curl.setopt(pycurl.CAINFO, certifi.where())
         curl.setopt(pycurl.HTTPHEADER, ['User-Agent: curl/7.35.0', 'Content-Type: text/plain; charset=utf-8'])
