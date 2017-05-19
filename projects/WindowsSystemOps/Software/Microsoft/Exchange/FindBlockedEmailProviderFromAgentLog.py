@@ -14,7 +14,7 @@ Prerequisites:
     Exchange 2010, 
     Access Permission to 'C:\Program Files\Microsoft\Exchange Server\V14\TransportRoles\Logs\AgentLog' on Exchange 2010
 References:
-    
+    https://technet.microsoft.com/zh-CN/library/bb691337(v=exchg.141).aspx
  """
 
 import os
@@ -80,6 +80,9 @@ def search_block_info(log):
                                               log_list_separate_by_comma[6], log_list_separate_by_comma[8]
         return time, ip_from, email_from, email_to
 
+
+# TODO(Guodong Ding) use 'Exchange Management Shell' do more amazing thing
+# Get-ExCommand, Get-IPAllowListEntry, Add-IPAllowListEntry, Add-IPBlockListEntry
 
 if __name__ == '__main__':
     if REMOTE_DEBUG:
