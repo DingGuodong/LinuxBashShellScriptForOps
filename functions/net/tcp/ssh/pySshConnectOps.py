@@ -12,7 +12,7 @@ import paramiko
 
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-client.connect("10.6.28.36", port=20122, username="root", key_filename="id_rsa")
+client.connect("10.6.28.36", port=20122, username="root", key_filename="id_rsa", timeout=2)
 stdin, stdout, stderr = client.exec_command("uname -a")
 for line in stdout:
     print line,
