@@ -29,7 +29,7 @@ if __name__ == '__main__':
     import time
 
     keep_running_flag = True
-    times = 0
+    times = 1
     while keep_running_flag:
         print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), times
         try:
