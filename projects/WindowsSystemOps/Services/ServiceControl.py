@@ -26,6 +26,7 @@ import sys
 import codecs
 import locale
 import psutil
+import win32service
 import win32serviceutil
 import time
 from collections import OrderedDict
@@ -33,10 +34,11 @@ from collections import OrderedDict
 from docopt import docopt
 
 UNKNOWN = 0
-STOPPED = 1
-START_PENDING = 2
-STOP_PENDING = 3
-RUNNING = 4
+STOPPED = win32service.SERVICE_STOP or 1
+START_PENDING = win32service.SERVICE_START_PENDING or 2
+STOP_PENDING = win32service.SERVICE_STOP_PENDING or 3
+RUNNING = win32service.SERVICE_RUNNING or 4
+
 
 status_code = {
     0: "UNKNOWN",
