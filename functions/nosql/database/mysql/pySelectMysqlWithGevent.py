@@ -21,7 +21,7 @@ import sys
 
 def mysql_query(sql):
     import pymysql
-    connection = pymysql.connect(host='localhosts', user='dev', passwd='dEvp@ssw0rd', db='test', port=3306,
+    connection = pymysql.connect(host='localhost', user='dev', passwd='dEvp@ssw0rd', db='test', port=3306,
                                  charset='utf8',
                                  cursorclass=pymysql.cursors.DictCursor)
 

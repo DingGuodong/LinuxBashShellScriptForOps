@@ -39,7 +39,7 @@ def login():
     from splinter import Browser
 
     login_name = "urep_pp"
-    password = "MduAdmin2012#"
+    password = "DbEhppuhJ/MvU"
     url = "http://home.51cto.com/index?reback=http://dgd2010.blog.51cto.com/"
     browser = Browser('chrome')
     browser.visit(url)

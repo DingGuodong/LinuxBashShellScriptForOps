@@ -88,4 +88,4 @@ if __name__ == '__main__':
     if REMOTE_DEBUG:
         if not os.path.exists(LOG_DIR):
             os.makedirs(LOG_DIR)
-    get_block_info_unique()
+    get_block_info_all()
