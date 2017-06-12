@@ -2,19 +2,22 @@
 # remove old app files, not restrict, NO QA
 #set -o errexit
 #set -o xtrace
-apps_dir="/opt/ebt/apps"
+apps_dir="/opt/ebt/apps/app-files"
 current_pwd=$(pwd)
 if [[ ${current_pwd} != ${apps_dir} ]]; then
     cd ${apps_dir}
 fi
 app_list="
 agent-management
+cashier
 dataexchange
 ebtdatres
 erisk
 erp
+message
 policy
 proposal
+resource
 user
 "
 
@@ -25,13 +28,19 @@ old_IFS=$IFS
 IFS=' '$'\t'$'\n'
 
 for app in ${app_list};do
+    all_app_count=0
+    old_app_count=0
     if echo "$current_app_list" | grep ${app} >/dev/null 2>&1; then #if [[ ${current_app_list} =~ ${app} ]]; then
         all_app_count=$(ls -t . | grep ${app}| wc -l)
-        if [[ ${all_app_count} > 2 ]]; then
+        if [[ ${all_app_count} -gt 2 ]]; then # Note: do NOT use '>', use '-gt' in '[[ EXPRESSION ]]' instead
             old_app_count=$(expr ${all_app_count} - 2 ) # old_app_count=$((all_app_count-2))
-            echo "Found:$app, Old files count:$old_app_count"
-            ls -t . | grep ${app} | tail -${old_app_count} | xargs rm -rf
+            echo "Info: Found:$app, Old files count: $old_app_count, clean them"
+            ls -t . | grep ${app} | tail -${old_app_count} | xargs rm -f
+         else
+            echo "Warning: Found:$app, Old files count: $all_app_count, pass"
         fi
+    else
+        echo "Error: $app not found! "
     fi
 done
 
