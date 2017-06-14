@@ -38,17 +38,25 @@ win32api.ShellExecute(0, 'runas', 'notepad.exe', '', '', 1)
 '''
 
 run_app_list = [
+    "C:\Program Files (x86)\Tencent\QQ\Bin\QQScLauncher.exe",
+    "C:\Program Files (x86)\Tencent\WeChat\WeChat.exe",
+    "C:\Program Files\Sublime Text 2\sublime_text.exe",
     "C:\Program Files\Everything\Everything.exe",
     "C:\Program Files (x86)\NetSarang\Xmanager Enterprise 4\Xshell.exe",
     "C:\Program Files (x86)\Evernote\Evernote\Evernote.exe",
     "C:\Program Files (x86)\Skype\Phone\Skype.exe",
-    "C:\Program Files (x86)\Tencent\QQ\Bin\QQScLauncher.exe",
     r'C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE',
-    "C:\Program Files (x86)\Tencent\WeChat\WeChat.exe",
     "C:\Users\Guodong\Desktop\XX-Net-3.2.8\start.vbs"
 ]
 
 win32api.ShellExecute(0, 'open', r'C:\Windows\system32\taskmgr.exe', '/7', '', 1)
+
+win32api.ShellExecute(0, 'open', r'C:\Windows\explorer.exe',
+                      r'D:\C盘桌面未整理\EBT\admin-playbook'.decode('utf-8').encode(DEFAULT_LOCALE_ENCODING), '', 1)
+
+win32api.ShellExecute(0, 'open', r"C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE",
+                      r'D:\C盘桌面未整理\EBT\20170508-EBT-Chris丁国栋-2017年周报.xlsx'.decode('utf-8').encode(
+                          DEFAULT_LOCALE_ENCODING), '', 1)
 
 try:
     for app in run_app_list:
