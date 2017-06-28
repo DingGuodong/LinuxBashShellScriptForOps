@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# filename: remove_old_app_files.sh
-# remove old app files, not restrict
+# filename: remove_old_app.sh
+# remove old apps, not restrict
 #set -o errexit
 #set -o xtrace
-apps_dir="/opt/ebt/apps/app-files"  # app files dir to clear
+apps_dir="/opt/ebt/apps"  # apps dir to clear
 app_list="
 agent-management
 agent-stats
@@ -40,8 +40,9 @@ for app in ${app_list};do
         all_app_count=$(ls -t . | grep ${app}| wc -l)
         if [[ ${all_app_count} -gt 2 ]]; then # Note: do NOT use '>', use '-gt' in '[[ EXPRESSION ]]' instead
             old_app_count=$(expr ${all_app_count} - 2 ) # old_app_count=$((all_app_count-2))
-            echo "Info: Found:$app, Old files count: $old_app_count, clean them"
-            ls -t . | grep ${app} | tail -${old_app_count} | xargs rm -f
+            echo "Info: Found:$app, Total files count: $all_app_count, Old files count: $old_app_count, clean them"
+#            ls -dt ./* | grep ${app} | tail -${old_app_count} | xargs ls -dl
+            ls -dt ./* | grep ${app} | tail -${old_app_count} | xargs rm -rf
          else
             echo "Warning: Found:$app, Total files count: $all_app_count, pass"
         fi
