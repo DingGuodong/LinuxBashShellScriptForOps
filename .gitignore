@@ -1,4 +1,6 @@
 .idea/
+*.pyc
+*/*.pyc
 references/
 /projects/others/
 /projects/dingguodong.github.io/
