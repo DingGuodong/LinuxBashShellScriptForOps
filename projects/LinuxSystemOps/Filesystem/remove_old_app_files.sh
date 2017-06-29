@@ -7,6 +7,7 @@ apps_dir="/opt/ebt/apps/app-files"  # app files dir to clear
 app_list="
 agent-management
 agent-stats
+canal-to-kafka
 cashier
 customer
 dataexchange
