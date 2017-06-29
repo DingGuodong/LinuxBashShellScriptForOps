@@ -82,6 +82,7 @@ WORKDIR="`readlink -f ${PRGDIR}`"
 real_rm='/bin/rm'
 trash_dir="$HOME/.trash"  # if do not use "$HOME" or "~" to resolve permission problem, should use "chmod o+t $trash_dir" .chmod --help: Each MODE is of the form `[ugoa]*([-+=]([rwxXst]*|[ugo]))+'.
 log_dir="$trash_dir"
+log_file="$log_dir/operation.log "
 trash_save_days=3
 
 function real_rm() {
@@ -144,7 +145,7 @@ function safe_rm() {
 }
 
 function log_operation(){
-    tee -a ${log_dir}/operation.log <<-eof  # debug purpose or notify mode
+    tee -a ${log_file}<<-eof  # debug purpose or notify mode
 {
     "date_human": "$(date +'%Y-%m-%d %H:%M:%S.%N')",
     "date": "$(date)",
@@ -152,12 +153,13 @@ function log_operation(){
     "ssh_client": "$SSH_CLIENT",
     "ssh_connection": "$SSH_CONNECTION",
     "ssh_tty": "$SSH_TTY",
-    "trash_dir": "$uniq_trash_dir"
+    "trash_dir": "${uniq_trash_dir}"
+    "log_file":"${log_file}",
     "pwd": "$PWD",
     "operation": "$0 $@",
     "parameter": "$@"
-
 }
+
 eof
 }
 
