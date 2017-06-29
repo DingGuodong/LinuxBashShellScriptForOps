@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # a command or alias to replace 'rm' with a safe and easy to use, safe remove files or directories
-# See also: safe-rm - wrapper around the rm command to prevent accidental deletions
+# See also:
+# safe-rm - wrapper around the rm command to prevent accidental deletions - https://github.com/kaelzhang/shell-safe-rm
+# trash-cli - Command line interface to FreeDesktop.org Trash - https://pypi.python.org/pypi/trash-cli/
 
 
 # debug option
@@ -82,7 +84,7 @@ WORKDIR="`readlink -f ${PRGDIR}`"
 real_rm='/bin/rm'
 trash_dir="$HOME/.trash"  # if do not use "$HOME" or "~" to resolve permission problem, should use "chmod o+t $trash_dir" .chmod --help: Each MODE is of the form `[ugoa]*([-+=]([rwxXst]*|[ugo]))+'.
 log_dir="$trash_dir"
-log_file="$log_dir/operation.log "
+log_file="$log_dir/operation.log"
 trash_save_days=3
 
 function real_rm() {
