@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
+################################################################
+# Created by PyCharm.
+# File:                 LinuxBashShellScriptForOps:alterscript_sendmailbycurl.sh
+# User:                 Guodong
+# Create Date:          2017/6/30
+# Create Time:          11:04
+# Function:             send email by curl
+# Note:                 
+# Prerequisite:         curl >= 7.20 or latest version, Internet access both way
+# Description:
+################################################################
+
 
 cat >mail.txt<<eof
 From: "Chris.Ding <chris.ding@gmail.com>
