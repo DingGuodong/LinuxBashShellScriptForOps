@@ -24,7 +24,7 @@ task_name = 'wsbh'  # task name will be used in log filename, connect words with
 # 'wsbh' is short for 'Windows Server Backup Helper'
 backup_source = r"F:\WindowsImageBackup"  # do NOT end with backslash '\'.
 backup_target = r'Z:\Server_Backup\VM-DC2'  # please using abs path here, and do NOT end with backslash '\'.
-validate = True  # using validate will require more long time
+validate = False  # using validate will require more long time, set validate to False to improve performance
 retry_times = 3
 
 
