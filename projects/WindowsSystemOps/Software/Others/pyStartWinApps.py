@@ -47,6 +47,7 @@ run_app_list = [
     "C:\Program Files (x86)\Skype\Phone\Skype.exe",
     r'C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE',
     # "C:\Users\Guodong\Desktop\XX-Net-3.2.8\start.vbs"
+    r"C:\Program Files\OpenVPN\bin\openvpn-gui.exe",
     r'D:\Users\Chris\Downloads\shadowsocks\client\Shadowsocks-4.0.4\Shadowsocks.exe'
 ]
 
