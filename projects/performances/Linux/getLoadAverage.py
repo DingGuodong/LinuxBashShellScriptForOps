@@ -46,17 +46,17 @@ try:
         loadavg_c = f.read().split(' ')
         loadavg = dict()
         if loadavg_c is not None:
-            loadavg['lavg_1'] = loadavg_c[0]
-            loadavg['lavg_5'] = loadavg_c[1]
-            loadavg['lavg_15'] = loadavg_c[2]
+            loadavg['loadavg_1'] = loadavg_c[0]
+            loadavg['loadavg_5'] = loadavg_c[1]
+            loadavg['loadavg_15'] = loadavg_c[2]
             loadavg['nr'] = loadavg_c[3]
             loadavg['last_pid'] = loadavg_c[4]
-    print "load average: %s, %s, %s" % (loadavg['lavg_1'], loadavg['lavg_5'], loadavg['lavg_15'])
-    if float(loadavg['lavg_15']) > cpu_count:
+    print "load average: %s, %s, %s" % (loadavg['loadavg_1'], loadavg['loadavg_5'], loadavg['loadavg_15'])
+    if float(loadavg['loadavg_15']) > cpu_count:
         print "Note: cpu 15 min load is high!"
-    if float(loadavg['lavg_5']) > cpu_count:
+    if float(loadavg['loadavg_5']) > cpu_count:
         print "Note: cpu 5 min load is high!"
-    if float(loadavg['lavg_1']) > cpu_count:
+    if float(loadavg['loadavg_1']) > cpu_count:
         print "Note: cpu 1 min load is high!"
 except IOError:
     pass
