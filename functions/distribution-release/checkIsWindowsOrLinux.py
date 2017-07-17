@@ -36,3 +36,12 @@ def is_linux():
         return True
     else:
         return False
+
+
+def is_windows_u2():
+    return True if 'nt' in sys.builtin_module_names else False
+
+
+def is_linux_u2():
+    # Note: not validate on Mac OS X
+    return True if 'posix' in sys.builtin_module_names else False
