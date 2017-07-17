@@ -29,6 +29,7 @@ finally:
 env.interactive_mode = True
 env.test_env = 'TestEnvironment'
 env.prod_env = 'ProductionEnvironment'
+env.all_env = 'all'
 env.roledefs = {
     env.test_env: ['10.45.51.99',
                    '10.46.68.233',
@@ -52,6 +53,8 @@ env.roledefs = {
                    ],
 }
 
+env.roledefs[env.all_env] = [host for role in env.roledefs.values() for host in role]
+
 env.port = 22
 env.user = 'root'
 env.key_filename = r'C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem'
@@ -59,13 +62,11 @@ env.skip_bad_hosts = True
 env.remote_interrupt = True
 
 
-@roles(env.test_env)
 def tail_remote_file():
     assert (env.remote_interrupt is True)
-    run("tail -f /var/log/syslog")
+    run("tail -f /var/log/messages || tail -f /var/log/syslog")
 
 
-@roles(env.test_env)
 def run_command(command):
     # http://docs.fabfile.org/en/1.13/usage/fab.html#per-task-arguments
     run('uname -n -r -m')  # show hostname, etc
@@ -73,32 +74,21 @@ def run_command(command):
 
 
 def terminal_debug(defName):
-    command = "fab -i {ssh_key_filename} -f {fab_file} {task}".format(ssh_key_filename=env.key_filename,
-                                                                      fab_file=__file__, task=defName)
+    command = "fab -i {ssh_key_filename} -f {fab_file} -R {roles} -D {task}".format(ssh_key_filename=env.key_filename,
+                                                                                    roles=env.test_env,
+                                                                                    fab_file=__file__,
+                                                                                    task=defName)
+    print command
     os.system(command)
 
 
-def win_or_linux():
-    # os.name ->(sames to) sys.builtin_module_names
-    if 'posix' in sys.builtin_module_names:
-        os_type = 'Linux'
-    elif 'nt' in sys.builtin_module_names:
-        os_type = 'Windows'
-    return os_type
-
-
 def is_windows():
-    if "windows" in win_or_linux().lower():
-        return True
-    else:
-        return False
+    return True if 'nt' in sys.builtin_module_names else False
 
 
 def is_linux():
-    if "linux" in win_or_linux().lower():
-        return True
-    else:
-        return False
+    # Note: not validate on Mac OS X
+    return True if 'posix' in sys.builtin_module_names else False
 
 
 if __name__ == '__main__':
