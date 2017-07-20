@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # filename: remove_old_app_files.sh
 # remove old app files, not restrict
+# 57 17 * * * /bin/bash --login /opt/ebt/apps/remove_old_app_files.sh >>/tmp/remove_old_app_files.log
 #set -o errexit
 #set -o xtrace
 apps_dir="/opt/ebt/apps/app-files"  # app files dir to clear
@@ -26,7 +27,7 @@ user
 zyj-touch
 "
 
-current_pwd=$(pwd)
+current_pwd=$(pwd)  # crontab maybe can not recognize $PWD or `pwd` if without 'bash --login', need a test
 if [[ ${current_pwd} != ${apps_dir} ]]; then
     cd ${apps_dir}
 fi
