@@ -15,12 +15,15 @@ ebtdatres
 erisk
 erp
 insiap
+insure-validation
 message
 policy
 proposal
 resource
+risk-market
 sms
 user
+zyj-touch
 "
 
 current_pwd=$(pwd)
