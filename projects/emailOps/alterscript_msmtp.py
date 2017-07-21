@@ -10,6 +10,9 @@ def usage():
     print("""
     Function: send email to somebody using smtp protocol
     Usage: python %s <mailto> <subject> <message body>
+    Zabbix setting: 'Administration' -> 'Media types' 
+                    https://hostname/zabbix.php?action=mediatype.edit&mediatypeid=4
+                    Script parameters: {ALERT.SENDTO} {ALERT.SUBJECT} {ALERT.MESSAGE}
     Example: python %s "dinggd@huntor.cn" "Test email from Python" "Python rules them all!"
 """) % (__file__, sys.argv[0])
     sys.exit(0)
