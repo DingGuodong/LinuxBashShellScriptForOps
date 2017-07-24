@@ -1,6 +1,15 @@
 #!/usr/bin/python
 # encoding: utf-8
 # -*- coding: utf8 -*-
+"""
+Created by PyCharm.
+File:               LinuxBashShellScriptForOps:alterscript_msmtp_v2.py
+User:               Guodong
+Create Date:        2017/7/24
+Create Time:        8:45
+Description:        send email using smtplib for zabbix alter script use
+References:         https://docs.python.org/2/library/smtplib.html
+ """
 import smtplib
 import string
 import sys
@@ -22,7 +31,7 @@ EMAIL_HOST = "smtp.exmail.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'noreply@huntor.cn'
 EMAIL_HOST_PASSWORD = 'huntor_nor_123'
-DEFAULT_FROM_EMAIL = 'noreply@huntor.cn'
+DEFAULT_FROM_EMAIL = r'"Zabbix" <noreply@huntor.cn>'  # https://tools.ietf.org/html/rfc822.html#appendix-A
 CRLF = "\r\n"  # for Windows user
 
 EMAIL_TO = "dinggd@huntor.cn"  # user defined variable, in Zabbix is {ALERT.SENDTO}
@@ -36,7 +45,7 @@ if not (argc == 1 or argc == 4):
 if argc == 1:
     pass
 else:
-    if sys.argv[1] is not None and sys.argv[2] is not None and sys.argv[3] is not None:
+    if sys.argv[1] != '' and sys.argv[2] != '' and sys.argv[3] != '':
         EMAIL_TO = sys.argv[1]
         SUBJECT = sys.argv[2]
         text = sys.argv[3]
