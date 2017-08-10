@@ -88,7 +88,7 @@ class TaobaoMMSpider:
         except Exception, e:
             print u'保存头像失败 %s' % e.message
 
-            # 开始跳转相册列表
+        # 开始跳转相册列表
         images_url = self.driver.find_element_by_xpath('//ul[@class="mm-p-menu"]//a')
         images_url = images_url.get_attribute('href')
         try:
@@ -176,10 +176,9 @@ class TaobaoMMSpider:
 
 
 def kill_process(name):
-    ProcessNameToKill = name
-
-    print
     import psutil
+
+    ProcessNameToKill = name
 
     # learn from getpass.getuser()
     def getuser():
@@ -189,7 +188,6 @@ def kill_process(name):
         database.  This works on Windows as long as USERNAME is set.
 
         """
-
         import os
 
         for username in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
@@ -207,7 +205,7 @@ def kill_process(name):
     for process in psutil.process_iter():
         if process.name() == ProcessNameToKill:
             try:
-                # root user can only kill its process, but can NOT kill other users process
+                # non-root user can only kill its process, but can NOT kill other users process
                 if process.username().endswith(currentUserName):
                     process.kill()
                     print "[I] Process \"%s(pid=%s)\" is killed successfully!" % (process.name(), process.pid)
