@@ -42,11 +42,12 @@ DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 
 def _runCommandOnWindows(executable):
-    if not executable or not isinstance(executable, (basestring, str)):
-        print "parameter error, str type is required, but got type \'%s\'." % type(executable)
+    if not executable or not isinstance(executable, (str, unicode)):
+        print "parameter error, str type is required, but got type \'parameter_type\'.".format(
+            parameter_type=type(executable))
         sys.exit(1)
     if mswindows:
-        print "Run local command \'%s\' on Windows..." % executable
+        print "Run local command \'command\' on Windows...".format(command=executable)
 
         proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
@@ -60,23 +61,25 @@ def _runCommandOnWindows(executable):
 
 
 def _runCommandOnLinux(executable):
-    if not executable or not isinstance(executable, (basestring, str)):
-        print "parameter error, str type is required, but got type \'%s\'." % type(executable)
+    if not executable or not isinstance(executable, (str, unicode)):
+        print "parameter error, str type is required, but got type \'parameter_type\'.".format(
+            parameter_type=type(executable))
         sys.exit(1)
     if linux:
-        print "Run local command \'%s\' on Linux..." % executable
+        print "Run local command \'command\' on Linux...".format(command=executable)
 
         proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
+        stdout, stderr = proc_obj.communicate()
         return_code = proc_obj.returncode
-        result = proc_obj.stdout.read().lower().decode(DEFAULT_LOCALE_ENCODING)
-        if result and return_code == 0:
-            print "Run local command \'%s\' successfully!"
-            print result
+        if return_code == 0:
+            print "Run local command \'{command}\' successfully!".format(command=executable)
+            print stdout
         else:
-            print "Run local command \'%s\' failed! return code is: %s" % (
-                executable, return_code if return_code is not None else 1)
-            print result
+            print "Run local command \'{command}\' failed! " \
+                  "return code is: {return_code}".format(command=executable,
+                                                         return_code=return_code if return_code is not None else 1)
+            print stdout, stderr
     else:
         print "Linux Supported Only. Aborted!"
         sys.exit(1)
