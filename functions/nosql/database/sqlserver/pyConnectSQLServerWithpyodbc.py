@@ -18,7 +18,8 @@ References:         Create Python apps using SQL Server on Windows
 import pyodbc
 from datetime import datetime
 
-driver = 'ODBC Driver 13 for SQL Server'
+# https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Windows
+driver = '{ODBC Driver 13 for SQL Server}'  # {ODBC Driver 13 for SQL Server} - supports SQL Server 2005 through 2016
 server = 'localhost'
 port = 1134
 database = 'SampleDB'
