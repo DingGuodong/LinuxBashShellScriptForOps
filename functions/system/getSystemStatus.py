@@ -114,7 +114,7 @@ def getHostname():
 
 
 def getCPU():
-    return [x / 100.0 for x in psutil.cpu_percent(interval=0, percpu=True)]
+    return [round(x / 100.0, 3) for x in psutil.cpu_percent(interval=0.1, percpu=True)]
 
 
 def getLoadAverage():
