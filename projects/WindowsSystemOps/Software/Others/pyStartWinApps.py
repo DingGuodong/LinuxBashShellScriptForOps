@@ -38,6 +38,7 @@ win32api.ShellExecute(0, 'runas', 'notepad.exe', '', '', 1)
 '''
 
 run_app_list = [
+    "C:\Program Files (x86)\Tencent\TIM\Bin\QQScLauncher.exe",
     "C:\Program Files (x86)\Tencent\QQ\Bin\QQScLauncher.exe",
     "C:\Program Files (x86)\Tencent\WeChat\WeChat.exe",
     "C:\Program Files\Sublime Text 2\sublime_text.exe",
@@ -48,7 +49,7 @@ run_app_list = [
     r'C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE',
     # "C:\Users\Guodong\Desktop\XX-Net-3.2.8\start.vbs"
     r"C:\Program Files\OpenVPN\bin\openvpn-gui.exe",
-    r'D:\Users\Chris\Downloads\shadowsocks\client\Shadowsocks-4.0.4\Shadowsocks.exe'
+    r'D:\Users\Chris\Downloads\shadowsocks\client\Shadowsocks-4.0.5\Shadowsocks.exe'
 ]
 
 win32api.ShellExecute(0, 'open', r'C:\Windows\system32\taskmgr.exe', '/7', '', 1)
