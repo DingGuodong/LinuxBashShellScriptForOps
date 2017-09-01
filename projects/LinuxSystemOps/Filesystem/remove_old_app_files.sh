@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 # filename: remove_old_app_files.sh
 # remove old app files, not restrict
+
 # 57 17 * * * /bin/bash --login /opt/ebt/apps/remove_old_app_files.sh >>/tmp/remove_old_app_files.log
+# 57 17 * * 1-5 /bin/bash --login /opt/ebt/apps/remove_old_app_files.sh >>/tmp/remove_old_app_files.log
+
 #set -o errexit
 #set -o xtrace
+echo "================================================================"
+echo "Info: Clean Started! $(date --rfc-2822)"
+echo
 apps_dir="/opt/ebt/apps/app-files"  # app files dir to clear
 app_list="
 agent-management
 agent-stats
 canal-to-kafka
+car
 cashier
 customer
 dataexchange
@@ -26,6 +33,8 @@ sms
 user
 zyj-touch
 "
+
+[ -d ${apps_dir} ] || exit 5
 
 current_pwd=$(pwd)  # crontab maybe can not recognize $PWD or `pwd` if without 'bash --login', need a test
 if [[ ${current_pwd} != ${apps_dir} ]]; then
@@ -57,4 +66,6 @@ done
 
 IFS="$old_IFS"
 
-echo "Info: Clean Finished! "
+echo "Info: Clean Finished! $(date --rfc-2822)"
+echo "================================================================"
+echo
