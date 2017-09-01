@@ -12,6 +12,9 @@ References:
  """
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+import unittest
+from selenium.webdriver.common.keys import Keys
 
 
 def bl_urlbl(domain):
@@ -42,11 +45,53 @@ def bl_urlbl(domain):
             return item['title']
 
 
-def bl_spamhaus():
+def bl_spamhaus(domain):
     # https://www.spamhaus.org/query/ip/124.129.14.90, need JavaScript support
+    # This lookup tool is for manual (non-automated) lookups only.
+    # Any perceived use of automated tools to access this web lookup system will
+    # result in firewalling or other countermeasures.
+
+    # http://selenium-python.readthedocs.io/
+    # http://selenium-python.readthedocs.io/installation.html#drivers
+
+    # Python pip egg: spam-blocklists
+    # from spam.spamhaus import SpamHausChecker
     pass
 
 
-if __name__ == '__main__':
-    domain_name = "example.com"
-    print bl_urlbl(domain_name)
+class PythonOrgSearch(unittest.TestCase):
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+
+    def test_search_in_python_org(self):
+        driver = self.driver
+        driver.get("http://www.python.org")
+        self.assertIn("Python", driver.title)
+        elem = driver.find_element_by_name("q")
+        elem.send_keys("pycon")
+        elem.send_keys(Keys.RETURN)
+        assert "No results found." not in driver.page_source
+
+    def tearDown(self):
+        self.driver.close()
+
+
+class SpamhausOrgSearch(unittest.TestCase):
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+
+    def test_search_in_python_org(self):
+        driver = self.driver
+        driver.get("https://www.spamhaus.org/lookup/")
+        self.assertIn("Blocklist Removal Center", driver.title)
+        elem = driver.find_element_by_name("ip")
+        elem.send_keys("124.129.14.90")
+        elem.send_keys(Keys.RETURN)
+        assert "Please turn JavaScript on and reload the page." not in driver.page_source
+
+    def tearDown(self):
+        self.driver.close()
+
+
+if __name__ == "__main__":
+    unittest.main()
