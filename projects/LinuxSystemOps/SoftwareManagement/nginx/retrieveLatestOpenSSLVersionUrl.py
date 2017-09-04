@@ -43,16 +43,16 @@ for link in available_version:
         file_url_list.append(downloads_page_url + match.group())
 
 latest_version_mass = Soup.find('div', class_="entry-content").find_all('p')
-pattern = re.compile(r'.*.The latest stable version is the (.*) series of.*')
+pattern = re.compile(r'The latest stable version is the (.*) series\.')
 match = pattern.search(str(latest_version_mass))
 if match:
     latest_version = match.groups()[0]
-
-for item in file_url_list:
-    if latest_version != "" and latest_version in file_url_list:
-        file_url = file_url_list[item]
+for number, item in enumerate(file_url_list):
+    if latest_version != "" and latest_version in file_url_list[number]:
+        file_url = file_url_list[number]
         break
 if file_url == "":
-    file_url = file_url_list[0]
-
-print file_url
+    file_url = file_url_list[number]
+    print file_url
+else:
+    print file_url
