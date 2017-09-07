@@ -42,7 +42,7 @@ DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 
 def _runCommandOnWindows(executable):
-    if not executable or not isinstance(executable, (basestring, str)):
+    if not executable or not isinstance(executable, (unicode, str)):
         print "parameter error, str type is required, but got type \'%s\'." % type(executable)
         sys.exit(1)
     if mswindows:
@@ -60,7 +60,7 @@ def _runCommandOnWindows(executable):
 
 
 def _runCommandOnLinux(executable):
-    if not executable or not isinstance(executable, (basestring, str)):
+    if not executable or not isinstance(executable, (unicode, str)):
         print "parameter error, str type is required, but got type \'%s\'." % type(executable)
         sys.exit(1)
     if linux:
