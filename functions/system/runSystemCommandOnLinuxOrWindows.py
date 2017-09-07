@@ -47,7 +47,7 @@ def _runCommandOnWindows(executable):
             parameter_type=type(executable))
         sys.exit(1)
     if mswindows:
-        print "Run local command \'command\' on Windows...".format(command=executable)
+        print "Run local command \'{command}\' on Windows...".format(command=executable)
 
         proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
@@ -66,7 +66,7 @@ def _runCommandOnLinux(executable):
             parameter_type=type(executable))
         sys.exit(1)
     if linux:
-        print "Run local command \'command\' on Linux...".format(command=executable)
+        print "Run local command \'{command}\' on Linux...".format(command=executable)
 
         proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
