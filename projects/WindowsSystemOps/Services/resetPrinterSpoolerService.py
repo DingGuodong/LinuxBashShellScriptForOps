@@ -15,6 +15,7 @@ import win32service
 import win32serviceutil
 import os
 import sys
+import time
 
 service_name = 'spooler'.capitalize()
 path = r"C:\Windows\System32\spool\PRINTERS"
@@ -55,6 +56,10 @@ if os.path.exists(path):
         if status_code == win32service.SERVICE_RUNNING or status_code == win32service.SERVICE_START_PENDING:
             print "stopping service {service}".format(service=service_name)
             win32serviceutil.StopService(serviceName=service_name)
+            # waiting for service stop, in case of exception
+            # 'WindowsError: [Error 32]' which means
+            # 'The process cannot access the file because it is being used by another process'.
+            time.sleep(2)
 
         for top, dirs, nondirs in os.walk(path, followlinks=True):
             for item in nondirs:
