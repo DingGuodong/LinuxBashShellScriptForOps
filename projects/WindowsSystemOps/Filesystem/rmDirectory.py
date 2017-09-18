@@ -88,13 +88,14 @@ def confirm(question, default=True):
 
 # TODO(Guodong Ding) save directory itself
 def remove_file(path, save_dirs=True):
-    path = unicode(path, 'utf8')  # Chinese Non-ASCII character
 
     def unicode_path(raw_path):
         if isinstance(raw_path, unicode):
             return raw_path
         else:
-            return unicode(raw_path, 'utf8')
+            return unicode(raw_path, 'utf8')  # Chinese Non-ASCII character
+
+    path = unicode_path(path)
 
     def grant_privilege():
         cmd = 'ICACLS ' + path + ' /grant Everyone:F'
@@ -119,7 +120,7 @@ def remove_file(path, save_dirs=True):
                         print e.args
                     if confirm("Try grant permission/privilege using 'ICACLS'? "):
                         grant_privilege()
-                        remove_file(path)
+                        remove_file(path)  # TODO(Guodong Ding) WARNING: recursion maybe result in some problems
 
             # Do deal with sub-dirs
             if not save_dirs:
@@ -128,6 +129,7 @@ def remove_file(path, save_dirs=True):
                         if os.path.exists(os.path.join(top, item)):
                             shutil.rmtree(os.path.join(top, item))
                     except WindowsError as e:
+                        print e
                         if e.message:
                             print e.message.decode(DEFAULT_LOCALE_ENCODING)
                         if e.args:
