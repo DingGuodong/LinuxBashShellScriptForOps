@@ -86,8 +86,48 @@ def confirm(question, default=True):
         print("I didn't understand you. Please specify '(y)es' or '(n)o'.")
 
 
-# TODO(Guodong Ding) save directory itself
 def remove_file(path, save_dirs=True):
+    def grant_privilege():
+        # in case of WindowsError: [Error 5]
+
+        takeown_success = False
+        cmd = 'TAKEOWN ' + "/F " + path + ' /R /A'
+        proc_obj = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
+        stdout, stderr = proc_obj.communicate()
+        return_code = proc_obj.returncode
+        if return_code == 0:
+            if stdout is not None:
+                print stdout.decode(DEFAULT_LOCALE_ENCODING)
+            takeown_success = True
+        else:
+            print "command execute failed, return code is {return_code}".format(return_code=return_code)
+            if stdout is not None:
+                print "[STDOUT]" + stdout.decode(DEFAULT_LOCALE_ENCODING)
+            if stderr is not None:
+                print "[STDERR]" + stderr.decode(DEFAULT_LOCALE_ENCODING)
+
+        cmd = 'ICACLS ' + path + ' /grant Everyone:F' + ' /inheritance:e'
+        proc_obj = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
+        stdout, stderr = proc_obj.communicate()
+        return_code = proc_obj.returncode
+        if return_code == 0:
+            if stdout is not None:
+                print stdout.decode(DEFAULT_LOCALE_ENCODING)
+            icacls_success = True
+        else:
+            icacls_success = True
+            print "command execute failed, return code is {return_code}".format(return_code=return_code)
+            if stdout is not None:
+                print "[STDOUT]" + stdout.decode(DEFAULT_LOCALE_ENCODING)
+            if stderr is not None:
+                print "[STDERR]" + stderr.decode(DEFAULT_LOCALE_ENCODING)
+
+        if takeown_success and icacls_success:
+            return True
+        else:
+            return False
 
     def unicode_path(raw_path):
         if isinstance(raw_path, unicode):
@@ -97,47 +137,64 @@ def remove_file(path, save_dirs=True):
 
     path = unicode_path(path)
 
-    def grant_privilege():
-        cmd = 'ICACLS ' + path + ' /grant Everyone:F'
-
-        if os.path.isdir(path):
-            proc_obj = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                                        stderr=subprocess.STDOUT)
-            result = proc_obj.stdout.read().lower().decode(DEFAULT_LOCALE_ENCODING)
-            print result
-
     if os.path.exists(path):
-        for top, dirs, nondirs in os.walk(path, followlinks=True):
-            # Do delete files
-            for item in nondirs:
-                try:
-                    if os.path.exists(os.path.join(top, item)):
-                        os.remove(os.path.join(top, item))
-                except WindowsError as e:
-                    if e.message:
-                        print e.message.decode(DEFAULT_LOCALE_ENCODING)
-                    if e.args:
-                        print e.args
-                    if confirm("Try grant permission/privilege using 'ICACLS'? "):
-                        grant_privilege()
-                        remove_file(path)  # TODO(Guodong Ding) WARNING: recursion maybe result in some problems
-
-            # Do deal with sub-dirs
-            if not save_dirs:
-                for item in dirs:
+        if not os.path.isdir(path):
+            try:
+                os.remove(path)
+            except WindowsError as e:
+                sys.stderr.write(str(e) + '\n')
+                if e.message:
+                    sys.stderr.write(e.message.decode(DEFAULT_LOCALE_ENCODING))
+                if e.args:
+                    sys.stderr.write(str(e.args) + '\n')
+                if confirm("Try grant permission/privilege using 'ICACLS' to continue?"):
+                    if grant_privilege():
+                        os.remove(path)
+                else:
+                    sys.exit(1)
+        else:
+            for top, dirs, nondirs in os.walk(path, followlinks=True):
+                # Do delete files
+                for item in nondirs:
                     try:
                         if os.path.exists(os.path.join(top, item)):
-                            shutil.rmtree(os.path.join(top, item))
+                            os.remove(os.path.join(top, item))
                     except WindowsError as e:
-                        print e
+                        sys.stderr.write(str(e) + '\n')
+                        sys.stderr.flush()
                         if e.message:
-                            print e.message.decode(DEFAULT_LOCALE_ENCODING)
+                            sys.stderr.write(e.message.decode(DEFAULT_LOCALE_ENCODING))
+                            sys.stderr.flush()
                         if e.args:
-                            print e.args
-                        if confirm("Try grant permission/privilege using 'ICACLS'? "):
-                            grant_privilege()
-                            remove_file(path, save_dirs=False)
-                            # Skip top dirs
+                            sys.stderr.write(str(e.args) + '\n')
+                            sys.stderr.flush()
+                        if confirm("Try grant permission/privilege using 'ICACLS' to continue?"):
+                            if grant_privilege():
+                                os.remove(path)
+                        else:
+                            sys.exit(1)
+
+                # Do deal with sub-dirs
+                if not save_dirs:
+                    for item in dirs:
+                        try:
+                            if os.path.exists(os.path.join(top, item)):
+                                shutil.rmtree(os.path.join(top, item))
+                        except WindowsError as e:
+                            sys.stderr.write(str(e) + '\n')
+                            sys.stderr.flush()
+                            if e.message:
+                                sys.stderr.write(e.message.decode(DEFAULT_LOCALE_ENCODING))
+                                sys.stderr.flush()
+                            if e.args:
+                                sys.stderr.write(str(e.args) + '\n')
+                                sys.stderr.flush()
+                            if confirm("Try grant permission/privilege using 'ICACLS'' to continue?"):
+                                if grant_privilege():
+                                    shutil.rmtree(os.path.join(top, item))
+                                    # Skip top dirs
+                            else:
+                                sys.exit(1)
 
 
 if __name__ == '__main__':
