@@ -2,8 +2,8 @@
 # filename: remove_old_app_files.sh
 # remove old app files, not restrict
 
-# 57 17 * * * /bin/bash --login /opt/ebt/apps/remove_old_app_files.sh >>/tmp/remove_old_app_files.log
-# 57 17 * * 1-5 /bin/bash --login /opt/ebt/apps/remove_old_app_files.sh >>/tmp/remove_old_app_files.log
+# 57 17 * * * /bin/bash --login /opt/ebt/apps/app-files/remove_old_app_files.sh >>/tmp/remove_old_app_files.log
+# 57 17 * * 1-5 /bin/bash --login /opt/ebt/apps/app-files/remove_old_app_files.sh >>/tmp/remove_old_app_files.log
 
 #set -o errexit
 #set -o xtrace
@@ -24,6 +24,7 @@ erisk
 erp
 insiap
 insure-validation
+jetty-docbase
 message
 policy
 proposal
