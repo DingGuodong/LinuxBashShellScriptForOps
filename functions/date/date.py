@@ -9,6 +9,8 @@ import pytz
 print time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
 print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
 
+print time.strftime('%Y-%m-%d %H:%M:%S', time.strptime("20170416145604.489009+480".split(".")[0], '%Y%m%d%H%M%S'))
+
 # week number of year, with Monday as first day of week (00..53), For Linux, command is 'date +%W'
 print time.strftime("%W")
 
