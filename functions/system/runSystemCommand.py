@@ -8,11 +8,6 @@ User:               Guodong
 Create Date:        2016/12/13
 Create Time:        15:28
  """
-import sys
-import subprocess
-
-import codecs
-import locale
 
 
 def get_system_encoding():
@@ -21,42 +16,60 @@ def get_system_encoding():
     fallback encoding if the encoding is unsupported by python or could
     not be determined.  See tickets #10335 and #5846
     """
+    import codecs
+    import locale
+    import sys
+    mswindows = (sys.platform == "win32")
     try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
+        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
         codecs.lookup(encoding)
-    except Exception:
-        encoding = 'ascii'
+    except Exception as e:
+        del e
+        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
     return encoding
 
 
 DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
-mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
-linux = (sys.platform == "linux2")
 
-hostname = ip = "192.168.1.1"
-ping_count = 4
+def decoding(text):
+    import sys
 
-if mswindows:
-    print "ping %s on Windows..." % ip
-    for i in xrange(ping_count):
-        proc_obj = subprocess.Popen(r'ping -n %d %s' % (1, hostname), shell=True, stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
-        result = proc_obj.stdout.read().lower().decode(DEFAULT_LOCALE_ENCODING)
-        if "ttl" in result:
-            print "ping %s successfully!" % hostname
-        else:
-            print "ping %s failed!" % hostname
+    mswindows = (sys.platform == "win32")
 
-if linux:
-    print "ping %s on Linux..." % ip
-    for i in xrange(ping_count):
-        # result = subprocess.check_output(["ping", hostname, "-c", "1"])
-        proc_obj = subprocess.Popen(r'ping -c %d %s' % (1, hostname), shell=True, stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
-        return_code = proc_obj.returncode
-        result = proc_obj.stdout.read().lower().decode(DEFAULT_LOCALE_ENCODING)
-        if result is not None and "ttl" in result:
-            print "ping %s successfully!" % hostname
-        else:
-            print "ping %s failed! return code is: %s" % (hostname, return_code if return_code is not None else 1)
+    msg = text
+    if mswindows:
+        try:
+            msg = text.decode(DEFAULT_LOCALE_ENCODING)
+            return msg
+        except (UnicodeDecodeError, UnicodeEncodeError):
+            pass
+    return msg
+
+
+def run(command):
+    import subprocess
+
+    p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT)
+    (stdout, stderr) = p.communicate()
+
+    if p.returncode != 0:
+        print "encountered an error (return code %s) while executing '%s'" % (p.returncode, command)
+        if stdout is not None:
+            print "Standard output:", decoding(stdout)
+        if stderr is not None:
+            print "Standard error:", decoding(stderr)
+
+        return False
+    else:
+        if stdout is not None:
+            print decoding(stdout)
+        return True
+
+
+if __name__ == '__main__':
+    import os
+
+    home = os.path.expanduser('~')  # both Windows and Linux is works. see also, os.devnull
+    run('ls {linux_home} || dir {windows_home}'.format(linux_home=home, windows_home=home))
