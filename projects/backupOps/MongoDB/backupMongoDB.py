@@ -14,6 +14,7 @@ Prerequisites:      []
 import logging
 import logging.handlers
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -142,6 +143,21 @@ if __name__ == '__main__':
             log.error(message)
         log.error("=" * 64)
         sys.exit(1)
+
+    # clean old backups, and save 3 copies
+    save_backups = 3  # save 3 copies
+    all_backups = list()
+    if len(os.listdir(backup_storage)) > save_backups:
+        log.info("old backups are found, ready to remove.")
+        for copy in os.listdir(backup_storage):
+            if "bak20" in copy:
+                all_backups.append(copy)
+        valid_backups_copies = all_backups[-save_backups:]
+        for copy in all_backups:
+            if copy not in valid_backups_copies:
+                old_backup = os.path.join(backup_storage, copy)
+                shutil.rmtree(old_backup)
+                log.info("  old backup %s is removed" % old_backup)
 
     end_time = time.time()
     log.info("=" * 16 + "backup finished." + "=" * 16)
