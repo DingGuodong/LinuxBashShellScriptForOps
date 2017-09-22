@@ -150,8 +150,24 @@ if __name__ == '__main__':
     if len(os.listdir(backup_storage)) > save_backups:
         log.info("old backups are found, ready to remove.")
         for copy in os.listdir(backup_storage):
-            if "bak20" in copy:
+            if copy.startswith('bak20'):  # bug fixed, but a regular expression maybe best choice
                 all_backups.append(copy)
+
+
+        def compare_by_time(x, y):
+            # compare two files by their time of last change
+            stat_x = os.stat(os.path.join(backup_storage, x))
+            stat_y = os.stat(os.path.join(backup_storage, y))
+            if stat_x.st_ctime < stat_y.st_ctime:  # time of last change
+                return -1
+            elif stat_x.st_ctime > stat_y.st_ctime:
+                return 1
+            else:
+                return 0
+
+
+        all_backups.sort(compare_by_time)  # sort files in dir by time
+
         valid_backups_copies = all_backups[-save_backups:]
         for copy in all_backups:
             if copy not in valid_backups_copies:
