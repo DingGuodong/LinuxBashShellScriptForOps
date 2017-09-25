@@ -35,6 +35,11 @@ DEFAULT_LOCALE_ENCODING = get_system_encoding()
 win32api.ShellExecute(0, 'open', 'notepad.exe', '', '', 1)
 # administrative user
 win32api.ShellExecute(0, 'runas', 'notepad.exe', '', '', 1)
+
+# Command Prompt: run scripts in background (equivalent of Linux's &/bg)
+# https://superuser.com/questions/467012/command-prompt-run-scripts-in-background-equivalent-of-linuxs-bg
+If you don't want to have a new console window come up when running the command, use the /B switch, 
+like this: C:\> start /B myprog.exe
 '''
 
 run_app_list = [
