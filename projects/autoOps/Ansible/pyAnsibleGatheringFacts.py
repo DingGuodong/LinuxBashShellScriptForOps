@@ -13,10 +13,12 @@ Prerequisite:       1.sudo with no password
                     2.ssh trust
                     3.python-pip installed
  """
-import sys
-import subprocess
+import json
 import os
+import re
 import stat
+import subprocess
+import sys
 
 
 def check_ansible_env():
@@ -36,7 +38,7 @@ def check_ansible_env():
 
 
 def is_linux():
-    if "linux" in os.name.lower() or "posix" in sys.platform.lower():
+    if "posix" in os.name.lower() or "linux" in sys.platform.lower():
         return True
     else:
         return False
@@ -57,8 +59,11 @@ def is_sudo():
 
 def is_ansible_installed():
     path = get_bin_path("ansible", opt_dirs=(os.path.join(os.path.expanduser('~'), '.local/bin'),))
-    if os.path.exists(path):
-        return True
+    if path is not None:
+        if os.path.exists(path):
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -123,7 +128,6 @@ def gather_facts():
 def facts_to_json():
     facts = gather_facts()
     if facts is not None:
-        import re
         facts_json_string = re.sub("^127.*=>\s+", "", facts)
         return facts_json_string
     else:
@@ -131,15 +135,37 @@ def facts_to_json():
 
 
 def facts_to_dict():
-    import json
     facts = gather_facts()
     if facts is not None:
-        import re
         facts_json_string = re.sub("^127.*=>\s+", "", facts)
         facts_dict = json.loads(facts_json_string)
         return facts_dict
     else:
         return {}
+
+
+def sample_data():
+    raw_data = facts_to_dict()
+    if raw_data is not None:
+        # for key in raw_data.keys():
+        #     print key
+        thin_data = raw_data
+        for key in thin_data['ansible_facts'].keys():
+            if '_veth' in key \
+                    or '_docker0' in key \
+                    or '_lo' in key \
+                    or '_all_ipv6_addresses' in key \
+                    or '_devices' in key \
+                    or '_mounts' in key \
+                    or '_device_links' in key:
+                thin_data['ansible_facts'].pop(key, None)
+
+        # for key in thin_data['ansible_facts'].keys():
+        #     print key
+
+        return json.dumps(thin_data['ansible_facts'], indent=4)
+    else:
+        return ""
 
 
 def run_command(executable, use_sudo=True):
@@ -151,7 +177,7 @@ def run_command(executable, use_sudo=True):
         executable = "sudo /bin/bash -c \"" + executable + "\""
 
     if sys.platform == "linux2":
-        print "Run local command \'command\' on Linux...".format(command=executable)
+        print "Run local command \'{command}\' on Linux...".format(command=executable)
 
         proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
@@ -223,4 +249,4 @@ def is_executable(path):
 
 if __name__ == '__main__':
     check_ansible_env()
-    print facts_to_json()
+    print sample_data()
