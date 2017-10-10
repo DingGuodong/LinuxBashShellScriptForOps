@@ -44,15 +44,18 @@ class LDAPAuthentication(object):
         self.conn = ldap.initialize(self.uri)
 
         try:
+            self.conn.set_option(ldap.OPT_REFERRALS, 0)  # this option is required in Windows Server 2012
             self.conn.simple_bind_s(who=self.ldap_user, cred=self.ldap_password)
-            # print conn.search_s(ldap_base_dn, ldap.SCOPE_SUBTREE)
-            self.is_active = True
-            self.user_data = self.conn.search_s(self.ldap_base_dn, ldap.SCOPE_SUBTREE,
-                                                'userPrincipalName=' + self.ldap_user)
         except ldap.INVALID_CREDENTIALS:
             raise Exception("Invalid credentials")
         except ldap.SERVER_DOWN:
             raise Exception("Can't contact LDAP server")
+
+        self.is_active = True
+        self.user_data = self.conn.search_s(self.ldap_base_dn, ldap.SCOPE_SUBTREE,
+                                            'userPrincipalName=' + self.ldap_user)
+        # self.user_data = self.conn.search_s(self.ldap_base_dn, ldap.SCOPE_SUBTREE)
+        self.conn.unbind()
 
     def is_authenticated(self):
         if self.is_active is True:
@@ -89,3 +92,4 @@ if __name__ == '__main__':
     print u.get_sAMAccountName()
     print u.get_displayName()
     print u.get_name()
+    # print u.user_data
