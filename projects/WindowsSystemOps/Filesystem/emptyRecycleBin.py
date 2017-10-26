@@ -8,9 +8,10 @@ User:               Guodong
 Create Date:        2017/4/25
 Create Time:        9:53
  """
-import winshell
 import codecs
 import locale
+
+import winshell
 
 
 def get_system_encoding():
@@ -22,7 +23,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

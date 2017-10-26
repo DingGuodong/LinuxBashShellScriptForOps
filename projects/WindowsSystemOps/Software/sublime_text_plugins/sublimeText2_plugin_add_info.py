@@ -13,9 +13,10 @@ https://code.tutsplus.com/tutorials/how-to-create-a-sublime-text-2-plugin--net-2
 Open the Sublime console by pressing ctrl+`. This is a Python console that has access to theAPI.
 
  """
-import sublime_plugin
-import time
 import os
+import time
+
+import sublime_plugin
 
 
 class add_info(sublime_plugin.TextCommand):
@@ -31,7 +32,8 @@ class add_info(sublime_plugin.TextCommand):
             try:
                 encoding = locale.getdefaultlocale()[1] or 'ascii'
                 codecs.lookup(encoding)
-            except Exception:
+            except Exception as _:
+                del _
                 encoding = 'ascii'
             return encoding
 

@@ -20,8 +20,8 @@ Example output:
 
  """
 import socket
-import time
 import threading
+import time
 
 timeout = 3
 truncate_line = False  # truncate line when line is too long
@@ -37,7 +37,8 @@ def try_connect(ip, port):
             with lock:  # use lock here is not essential
                 port_opened_list.append(port)
         s.close()
-    except Exception:
+    except Exception as _:
+        del _
         pass
 
 

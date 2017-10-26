@@ -10,10 +10,10 @@ Create Time:        14:01
 Description:        Block MSN web site forever by using firewall after using dns block failed
 References:         
  """
-import sys
-import subprocess
 import codecs
 import locale
+import subprocess
+import sys
 
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 linux = (sys.platform == "linux2")
@@ -28,7 +28,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

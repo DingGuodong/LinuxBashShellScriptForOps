@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # encoding: utf-8
 # -*- coding: utf8 -*-
-import dns.resolver
 import time
+
+import dns.resolver
 
 dnsDict = {"Australia - Melbourne": "168.1.79.238",
            "Australia - Sydney": "54.66.128.66",
@@ -41,7 +42,8 @@ for key, value in dnsDict.items():
         query.timeout = 1.0
         query.lifetime = 3.0
         query.query(domain, 'A')
-    except Exception:
+    except Exception as _:
+        del _
         pass
     endTime = time.time()
     elapsedTime = (endTime - startTime)

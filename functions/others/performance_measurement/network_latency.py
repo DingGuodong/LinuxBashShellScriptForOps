@@ -10,9 +10,9 @@ Create Time:        17:36
 Description:        show average network latency on Windows or Linux, return value(not int type in Linux)
 References:         
  """
-import sys
-import subprocess
 import re
+import subprocess
+import sys
 
 
 def get_rtt_avg_ms_win_zh(string):
@@ -47,7 +47,8 @@ def show_network_latency(hostname, ping_count=4, show_detail=False):
             try:
                 encoding = locale.getdefaultlocale()[1] or 'ascii'
                 codecs.lookup(encoding)
-            except Exception:
+            except Exception as _:
+                del _
                 encoding = 'ascii'
             return encoding
 

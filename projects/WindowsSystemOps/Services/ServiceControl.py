@@ -22,15 +22,15 @@ Options:
   -h --help            show this help message and exit
   -v --version         show version and exit
 """
-import sys
 import codecs
 import locale
-import psutil
-import win32service
-import win32serviceutil
+import sys
 import time
+import win32service
 from collections import OrderedDict
 
+import psutil
+import win32serviceutil
 from docopt import docopt
 
 UNKNOWN = 0
@@ -58,7 +58,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

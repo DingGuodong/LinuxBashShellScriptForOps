@@ -34,7 +34,8 @@ if __name__ == '__main__':
         print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), times
         try:
             try_ssh_to_server()
-        except Exception:
+        except Exception as _:
+            del _
             time.sleep(10)
             times += 1
             pass

@@ -8,16 +8,16 @@ User:               Guodong
 Create Date:        2016/7/30
 Create Time:        14:42
  """
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-import urlparse
-import json
-import sys
-import signal
-import datetime
-import socket
-import os
-import locale
 import codecs
+import datetime
+import json
+import locale
+import os
+import signal
+import socket
+import sys
+import urlparse
+from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
 
 def get_system_encoding():
@@ -29,7 +29,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

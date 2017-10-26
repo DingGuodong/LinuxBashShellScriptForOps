@@ -8,8 +8,8 @@ User:               Guodong
 Create Date:        2017/6/20
 Create Time:        9:28
  """
-import os
 import logging
+import os
 
 ZABBIX_SERVER_CONF_SERVER_IP = '127.0.0.1,10.46.69.219'
 ZABBIX_SERVER_CONF_SERVER_ACTIVE_IP = '10.46.69.219'
@@ -33,7 +33,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 
@@ -42,7 +43,6 @@ DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 
 def download_file(url_download_from, path_save_to):
-    import requests
     import requests.packages.urllib3
     import os
     import sys

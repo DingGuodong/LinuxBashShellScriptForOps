@@ -8,14 +8,15 @@ User:               Guodong
 Create Date:        2016/8/18
 Create Time:        15:32
  """
-import platform
-import psutil
-import subprocess
 import os
+import platform
+import re
+import subprocess
 import sys
 import time
-import re
+
 import prettytable
+import psutil
 
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 linux = (sys.platform == "linux2")
@@ -89,7 +90,8 @@ def printHeader():
             try:
                 encoding = locale.getdefaultlocale()[1] or 'ascii'
                 codecs.lookup(encoding)
-            except Exception:
+            except Exception as _:
+                del _
                 encoding = 'ascii'
             return encoding
 

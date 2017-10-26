@@ -8,15 +8,13 @@ User:               Guodong
 Create Date:        2016/8/24
 Create Time:        9:40
  """
+import getpass
+import re
+import sys
+
 from fabric.api import *
-from fabric.main import main
 from fabric.colors import *
 from fabric.context_managers import *
-from fabric.contrib.console import confirm
-import os
-import sys
-import re
-import getpass
 
 config = {
     "deploy_to": '/var/www/my_app_name',
@@ -197,7 +195,8 @@ class Capistrano(object):
                         shutil.rmtree(self.current_path())
                     try:
                         local("ln -sd %s %s" % (self.current, self.current_path()))
-                    except Exception:
+                    except Exception as _:
+                        del _
                         raise NotImplementedError
 
             def update_revision_log(self, branch=None, sid=None, release=None, by=None):
@@ -257,7 +256,8 @@ class Capistrano(object):
                         shutil.rmtree(self.current_path())
                     try:
                         local("ln -sd %s %s" % (last_release, self.current_path()))
-                    except Exception:
+                    except Exception as _:
+                        del _
                         raise NotImplementedError
 
     class Application(object):

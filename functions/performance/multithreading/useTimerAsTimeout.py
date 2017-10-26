@@ -10,11 +10,11 @@ Create Time:        16:31
 Description:        use Timer from threading module as timeout content manager
 References:         
  """
-import subprocess
-from threading import Timer
-import time
 import codecs
 import locale
+import subprocess
+import time
+from threading import Timer
 
 
 def get_system_encoding():
@@ -26,7 +26,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

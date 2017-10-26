@@ -12,9 +12,10 @@ Open the Sublime console by pressing ctrl+`. This is a Python console that has a
 http://www.cnblogs.com/geekard/archive/2012/10/04/python-string-endec.html
 
  """
-import sublime_plugin
-import time
 import os
+import time
+
+import sublime_plugin
 
 
 class add_info(sublime_plugin.TextCommand):
@@ -30,7 +31,8 @@ class add_info(sublime_plugin.TextCommand):
             try:
                 encoding = locale.getdefaultlocale()[1] or 'ascii'
                 codecs.lookup(encoding)
-            except Exception:
+            except Exception as _:
+                del _
                 encoding = 'ascii'
             return encoding
 

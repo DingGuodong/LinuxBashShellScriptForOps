@@ -14,10 +14,10 @@ Description:        Improve message printed to console on Windows
 References:         https://github.com/beaston02/ChaturbateRecorder/pull/9/commits/c66ecb918dabb98c3be32b5fd8064919cbb009b7
                     http://www.oschina.net/code/snippet_2008177_38590
  """
-import os
-import sys
 import codecs
 import locale
+import os
+import sys
 
 
 def get_system_encoding():
@@ -29,7 +29,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

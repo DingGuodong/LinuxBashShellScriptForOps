@@ -30,14 +30,15 @@ Options:
 
  """
 
-import sys
 import codecs
+import getpass
 import locale
+import sys
+
+import pymysql
 # https://github.com/docopt/docopt/tree/master/examples
 # https://github.com/docopt/docopt/blob/master/examples/options_example.py
 from docopt import docopt
-import getpass
-import pymysql
 
 
 def get_system_encoding():
@@ -49,7 +50,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

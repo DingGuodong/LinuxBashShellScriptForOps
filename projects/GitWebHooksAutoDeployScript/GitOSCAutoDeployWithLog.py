@@ -2,10 +2,10 @@
 
 import json
 import os
+import re
 import sys
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from subprocess import call
-import re
 
 
 # import logging
@@ -112,7 +112,8 @@ class GitOSCAutoDeploy(BaseHTTPRequestHandler):
             # TODO
             # There must a bug on way
             validatedurl = re.match(regex, self.url, 0)
-        except Exception:
+        except Exception as _:
+            del _
             sys.exit('Validate URL failed!')
         return validatedurl
 
@@ -123,13 +124,15 @@ class GitOSCAutoDeploy(BaseHTTPRequestHandler):
         body = self.rfile.read(length)
         try:
             json.loads(body)
-        except Exception:
+        except Exception as _:
+            del _
             # do http decode
             import urllib
             body = urllib.unquote(body)
         try:
             json.loads(body)
-        except Exception:
+        except Exception as _:
+            del _
             # do remove 5 character
             body = body[5:]
         payload = json.loads(body)

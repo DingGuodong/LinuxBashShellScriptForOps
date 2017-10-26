@@ -10,11 +10,11 @@ Create Time:        10:15
 Description:        Python Connect to Aliyun RDS SQL Server on Windows With pymssql with connection statistics
 References:
  """
+import collections
+import os
 import pymssql  # Python Connect to Aliyun RDS SQL Server on Windows
 import shelve  # Manage shelves of pickled objects
-import os
 import time
-import collections
 
 
 def get_system_encoding():
@@ -28,7 +28,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

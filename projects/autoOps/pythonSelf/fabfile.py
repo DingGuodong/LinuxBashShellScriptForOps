@@ -9,15 +9,16 @@
 # Refer: http://docs.fabfile.org/en/1.12/usage/env.html
 # fab -i c:\Users\Guodong\.ssh\exportedkey201310171355 -f .\projects\autoOps\pythonSelf\fabfile.py dotask
 
-import os
 import datetime
-import re
-import sys
 import logging
 import logging.handlers
-import time
-import requests
+import os
 import platform
+import re
+import sys
+import time
+
+import requests
 
 
 def win_or_linux():
@@ -274,7 +275,8 @@ def check_network_connectivity():
     result_code = None
     try:
         run(ping)
-    except Exception:
+    except Exception as _:
+        del _
         result_code = 1
     if result_code is not None:
         print red("Error   => connect to Internet failed!")
@@ -289,7 +291,8 @@ def check_name_resolve():
     result_code = None
     try:
         run(nslookup)
-    except Exception:
+    except Exception as _:
+        del _
         result_code = 1
     if result_code is not None:
         print red("Error   => name resolve to Internet failed!")
@@ -325,7 +328,8 @@ def set_hosts_file(hosts="/etc/hosts"):
     print hostname
     try:
         ip = socket.gethostbyname(socket.gethostname())  # TODO(Guodong Ding) Ubuntu not passed here, but CentOS passed!
-    except Exception:
+    except Exception as _:
+        del _
         ip = None
     with open(hosts, "a") as f:
         if ip is not None:

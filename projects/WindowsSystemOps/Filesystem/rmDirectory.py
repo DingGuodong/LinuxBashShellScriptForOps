@@ -8,11 +8,11 @@ User:               Guodong
 Create Date:        2016/12/15
 Create Time:        17:33
  """
-import shutil
-import os
-import subprocess
 import codecs
 import locale
+import os
+import shutil
+import subprocess
 import sys
 
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
@@ -30,7 +30,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 

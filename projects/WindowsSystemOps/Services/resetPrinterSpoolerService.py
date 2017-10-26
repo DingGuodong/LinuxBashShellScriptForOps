@@ -11,11 +11,12 @@ Description:        reset Windows printer spooler service to make printers work 
 References:
 Prerequisites:      pypiwin32: pip install pypiwin32
  """
-import win32service
-import win32serviceutil
 import os
 import sys
 import time
+import win32service
+
+import win32serviceutil
 
 service_name = 'spooler'.capitalize()
 path = r"C:\Windows\System32\spool\PRINTERS"
@@ -41,7 +42,8 @@ def get_system_encoding():
     try:
         encoding = locale.getdefaultlocale()[1] or 'ascii'
         codecs.lookup(encoding)
-    except Exception:
+    except Exception as _:
+        del _
         encoding = 'ascii'
     return encoding
 
