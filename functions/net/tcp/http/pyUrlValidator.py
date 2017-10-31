@@ -3,10 +3,11 @@
 # -*- coding: utf8 -*-
 """
 Created by PyCharm.
-File:               LinuxBashShellScriptForOps:pyUrlValidation.py
+File:               LinuxBashShellScriptForOps:pyUrlValidator.py
 User:               Guodong
 Create Date:        2017/5/10
 Create Time:        14:48
+Description:        Python URL Validator
  """
 
 
@@ -23,7 +24,7 @@ def is_url_valid(url):
         return True
 
 
-def is_url_valid_u2(url):
+def is_url_valid_am1(url):  # 'am' is short for 'alternative method'
     """
     http://validators.readthedocs.io/en/latest/
     Python has all kinds of validation tools, but every one of them requires defining a schema. I 
@@ -37,5 +38,19 @@ def is_url_valid_u2(url):
         return False
 
 
-print is_url_valid_u2('www.baidu.com')
-print is_url_valid('https://www.baidu.com')
+if __name__ == '__main__':
+    # valid url
+    print is_url_valid('https://www.baidu.com')
+    print is_url_valid_am1('https://www.baidu.com')
+    print is_url_valid('http://localhost')
+    print is_url_valid_am1('http://localhost')
+    print is_url_valid('http://localhost:8080/')
+    print is_url_valid_am1('http://localhost:8080/')
+
+    print '-' * 128
+
+    # invalid url
+    print is_url_valid('www.baidu.com')
+    print is_url_valid_am1('www.baidu.com')
+    print is_url_valid('localhost')
+    print is_url_valid_am1('localhost')
