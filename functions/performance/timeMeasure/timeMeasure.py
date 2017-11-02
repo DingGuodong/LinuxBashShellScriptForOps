@@ -17,18 +17,18 @@ Others:
  """
 
 
-def fn_timer(function):
+def fn_timer(func):
     from functools import wraps
 
-    @wraps(function)
+    @wraps(func)
     def function_timer(*args, **kwargs):
         import time
-        t0 = time.time()
-        result = function(*args, **kwargs)
-        t1 = time.time()
-        print ("Total time running %s: %s seconds" %
-               (function.func_name, str(t1 - t0))
-               )
+        time_begin = time.time()
+        result = func(*args, **kwargs)
+        time_end = time.time()
+        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
+                                                                                time_spent=(time_end - time_begin))
+
         return result
 
     return function_timer
@@ -37,7 +37,7 @@ def fn_timer(function):
 @fn_timer
 def _random_sort(n):
     import random
-    return sorted([random.random() for i in range(n)])
+    return sorted([random.random() for _ in range(n)])
 
 
 if __name__ == "__main__":
