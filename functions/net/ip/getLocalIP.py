@@ -38,8 +38,9 @@ class GetLocalIP(object):
             return None
 
 
-ips = GetLocalIP("all")
-print ips.get()
+if __name__ == '__main__':
+    ips = GetLocalIP("all")
+    print ips.get()
 
-ipa = GetLocalIP("local")
-print ipa.get()
+    ipa = GetLocalIP("local")
+    print ipa.get()
