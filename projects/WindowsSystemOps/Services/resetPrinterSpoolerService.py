@@ -50,18 +50,27 @@ def get_system_encoding():
 
 DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
-print "reset printer spooler service in progress ..."
+print "printer spool folder is: %s" % path
 
 if os.path.exists(path):
     if os.listdir(path):
+        print "reset printer spooler service in progress ..."
+
         status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
         if status_code == win32service.SERVICE_RUNNING or status_code == win32service.SERVICE_START_PENDING:
             print "stopping service {service}".format(service=service_name)
             win32serviceutil.StopService(serviceName=service_name)
-            # waiting for service stop, in case of exception
-            # 'WindowsError: [Error 32]' which means
-            # 'The process cannot access the file because it is being used by another process'.
+
+        # waiting for service stop, in case of WindowsError exception
+        # 'WindowsError: [Error 32]' which means
+        # 'The process cannot access the file because it is being used by another process'.
+        status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
+        running_flag = True
+        while running_flag:
+            print "waiting for service {service} stop.".format(service=service_name)
             time.sleep(2)
+            if status_code == win32service.SERVICE_STOPPED:
+                running_flag = False
 
         for top, dirs, nondirs in os.walk(path, followlinks=True):
             for item in nondirs:
@@ -90,7 +99,7 @@ else:
         win32serviceutil.StartService(serviceName=service_name)
         status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
         if status_code == win32service.SERVICE_RUNNING or status_code == win32service.SERVICE_START_PENDING:
-            print "service spooler started."
+            print "service {service} started.".format(service=service_name)
     except Exception as e:
         print e
         print [msg.decode(DEFAULT_LOCALE_ENCODING) for msg in e.args]
