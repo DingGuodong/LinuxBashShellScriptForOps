@@ -55,7 +55,7 @@ run_app_list = [
     r'C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE',
     # "C:\Users\Guodong\Desktop\XX-Net-3.2.8\start.vbs"
     # r"C:\Program Files\OpenVPN\bin\openvpn-gui.exe",
-    # r'D:\Users\Chris\Downloads\shadowsocks\client\Shadowsocks-4.0.6\Shadowsocks.exe'
+    r'D:\Users\Chris\Downloads\shadowsocks\client\Shadowsocks-4.0.6\Shadowsocks.exe'
 ]
 
 win32api.ShellExecute(0, 'open', r'C:\Windows\system32\taskmgr.exe', '/7', '', 1)
