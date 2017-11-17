@@ -69,7 +69,9 @@ if __name__ == '__main__':
 
     try:
         keep_running_flag = True
-        logger.info("Hello, process is in running state.")
+        logger.info(
+            "Hello, process \"{process}\" is in running state, and pid is {pid}.".format(process=sys.argv[0],
+                                                                                         pid=os.getpid()))
         time_start = time.time()
         while keep_running_flag:
             # time_now = time.time()
