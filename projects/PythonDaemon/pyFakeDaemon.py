@@ -13,7 +13,7 @@ Create Date:            2017/11/17
 Create Time:            10:12
 Description:            a fake daemon can run in Linux or Windows for Test purpose written by Python
 Long Description:       WTF: in fact I begin this task on 17:10 because of too many interrupt, :(
-References:             
+References:
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
@@ -67,17 +67,25 @@ def sigkill_handler(_signo, _stack_frame):
 if __name__ == '__main__':
     signal.signal(signal.SIGTERM, sigterm_handler)
 
+    pid = os.getpid()
+    pid_file = os.path.join("/var/run/", log_name + '.pid')
+    if os.path.exists(pid_file):
+        os.remove(pid_file)
+    with open(pid_file, 'w') as f:
+        f.write(str(pid))
+
+    time_start = time.time()
     try:
         keep_running_flag = True
         logger.info(
             "Hello, process \"{process}\" is in running state, and pid is {pid}.".format(process=sys.argv[0],
-                                                                                         pid=os.getpid()))
-        time_start = time.time()
+                                                                                         pid=pid))
         while keep_running_flag:
             # time_now = time.time()
             # logger.info("process has run {seconds} seconds".format(seconds=(time_now - time_start)))
             # logger.info("sleep 1 second again.")
             time.sleep(1)
+
         logger.warning("keep running flag changed into False, exit now")
         sys.exit(0)
     except SystemExit:
@@ -92,4 +100,6 @@ if __name__ == '__main__':
         time_now = time.time()
         logger.info("process has run {seconds} seconds".format(seconds=(time_now - time_start)))
         logger.warning("Oh, process enter into shutdown state, good bye")
+        if os.path.exists(pid_file):
+            os.remove(pid_file)
         sys.exit(0)
