@@ -31,11 +31,15 @@ import signal
 import sys
 import time
 
+work_dir = '/tmp'
+if work_dir == '':
+    work_dir = os.path.curdir
+
 log_name = os.path.splitext(os.path.basename(__file__))[0]
 log_filename = "%s.log" % log_name
 log_file_max_size = 104857600  # 100MB
 log_file_save_number = 10  # save 10 log file
-log_file_path = os.path.abspath(os.path.join(os.path.curdir, log_filename))
+log_file_path = os.path.abspath(os.path.join(work_dir, log_filename))
 log_file_encoding = 'utf-8'
 log_formatter = logging.Formatter(fmt="%(asctime)s %(filename)s:%(lineno)d %(name)s %(levelname)s: %(message)s",
                                   datefmt=None)  # datefmt=None means "%Y-%m-%d %H:%M:%S" with %03d msecs, \
