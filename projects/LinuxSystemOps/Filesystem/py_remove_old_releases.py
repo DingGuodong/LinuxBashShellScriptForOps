@@ -87,6 +87,7 @@ for service in services_list:
                 if file_type == 'f':
                     if len(nondirs) != 0:
                         for filename in nondirs:
+                            # TODO(GuodongDing) if there are many services will lead to low performance
                             if filename.startswith(service):
                                 full_path_to_file = os.path.join(top, filename)
                                 # print full_path_to_file
