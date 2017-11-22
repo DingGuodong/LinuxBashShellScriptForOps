@@ -34,7 +34,7 @@ import win32serviceutil
 from docopt import docopt
 
 UNKNOWN = 0
-STOPPED = win32service.SERVICE_STOP or 1
+STOPPED = win32service.SERVICE_STOPPED or 1
 START_PENDING = win32service.SERVICE_START_PENDING or 2
 STOP_PENDING = win32service.SERVICE_STOP_PENDING or 3
 RUNNING = win32service.SERVICE_RUNNING or 4
