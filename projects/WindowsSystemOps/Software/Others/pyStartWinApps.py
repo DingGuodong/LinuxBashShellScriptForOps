@@ -10,6 +10,7 @@ Create Time:        16:30
  """
 import time
 import win32api
+from collections import Iterable
 
 
 def get_system_encoding():
@@ -73,8 +74,9 @@ try:
         time.sleep(2)
 except Exception as e:
     print e
-    for item in list(e):
-        if isinstance(item, str):
-            print item.decode(DEFAULT_LOCALE_ENCODING),
-        else:
-            print item,
+    if isinstance(e, Iterable):
+        for item in list(e):
+            if isinstance(item, str):
+                print item.decode(DEFAULT_LOCALE_ENCODING),
+            else:
+                print item,
