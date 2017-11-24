@@ -3,15 +3,15 @@
 # -*- coding: utf8 -*-
 """
 Created by PyCharm.
-File Name:              LinuxBashShellScriptForOps:pyGetRemoteDesktopPortNumber.py
+File Name:              LinuxBashShellScriptForOps:pyGetFileSize.py
 Version:                0.0.1
 Author:                 Guodong
 Author Email:           dgdenterprise@gmail.com
 URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
 Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
-Create Date:            2017/11/10
-Create Time:            17:48
-Description:            get remote desktop port number from Windows registry(regedit) using built-in module _winreg
+Create Date:            2017/11/24
+Create Time:            10:09
+Description:            
 Long Description:       
 References:             
 Prerequisites:          []
@@ -25,17 +25,19 @@ Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
-import _winreg  # from (built-in), 'winreg' module used '_winreg' sometime by 'from _winreg import *'
+import os
 
+path = 'C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\LinuxSystemOps'
 
-def GetRemoteDesktopPortNumber():
-    PortNumber = 3389
-    reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
-                              "System\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp")
-    if reg_key:
-        PortNumber = _winreg.QueryValueEx(reg_key, "PortNumber")[0]
-    return PortNumber
+if os.path.isdir(path):
+    size = 0L
+    for top, dirs, nondirs in os.walk(path):
+        for filename in nondirs:
+            full_path = os.path.join(top, filename)
+            size += os.path.getsize(full_path)
+    print size
 
+print os.stat(__file__).st_size  # equal to: fd = os.open(__file__, os.O_RDONLY);print os.lseek(fd, 0, os.SEEK_END)
+print os.path.getsize(__file__)  # equal to: fd = os.open(__file__, os.O_RDONLY);print os.lseek(fd, 0, os.SEEK_END)
 
-if __name__ == '__main__':
-    print GetRemoteDesktopPortNumber()
+# get file on disk usage maybe require system call 'du' command
