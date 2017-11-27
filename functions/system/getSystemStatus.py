@@ -45,7 +45,11 @@ def getUser():
     user_object = psutil.users()
 
     for login in user_object:
-        username, login_tty, login_host, login_time = [suser for suser in login]
+        try:
+            username, login_tty, login_host, login_time = [suser for suser in login]
+        except ValueError:  # different version
+            # suser(name='Guodong', terminal=None, host='0.0.0.0', started=1511519014.0, pid=None)
+            username, login_tty, login_host, login_time, pid = [suser for suser in login]
         print username, login_tty, login_host, time.strftime('%b %d %H:%M:%S', time.localtime(login_time)),
         if login_tty in tty:
             print '**current user**'
