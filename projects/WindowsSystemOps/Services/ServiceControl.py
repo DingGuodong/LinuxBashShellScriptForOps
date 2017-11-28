@@ -84,6 +84,14 @@ def is_iterable(source):
         raise RuntimeError("argument cannot be None")
 
 
+def is_iterable_u1(o):
+    from collections import Iterable
+    if isinstance(o, Iterable):
+        return True
+    else:
+        return False
+
+
 def status_service(service_name):
     try:
         result = win32serviceutil.QueryServiceStatus(service_name)[1]
