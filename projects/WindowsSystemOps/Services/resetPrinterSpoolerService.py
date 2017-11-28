@@ -64,10 +64,10 @@ if os.path.exists(path):
         # waiting for service stop, in case of WindowsError exception
         # 'WindowsError: [Error 32]' which means
         # 'The process cannot access the file because it is being used by another process'.
-        status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
         running_flag = True
         while running_flag:
             print "waiting for service {service} stop.".format(service=service_name)
+            status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
             time.sleep(2)
             if status_code == win32service.SERVICE_STOPPED:
                 running_flag = False
