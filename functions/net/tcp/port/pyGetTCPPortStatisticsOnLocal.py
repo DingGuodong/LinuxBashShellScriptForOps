@@ -57,7 +57,11 @@ def get_tcp_port_conns_count(port=1080):
 
     for _sconn in filtered_data:
         cared_data.setdefault(_sconn.raddr[0], {"ESTABLISHED": 0, "TIME_WAIT": 0, "CLOSE_WAIT": 0})
-        cared_data[_sconn.raddr[0]][_sconn.status] += 1
+        try:
+            cared_data[_sconn.raddr[0]][_sconn.status] += 1
+        except KeyError:
+            # such as 'SYN_RECV' not involved
+            pass
 
     return {
         port: cared_data
