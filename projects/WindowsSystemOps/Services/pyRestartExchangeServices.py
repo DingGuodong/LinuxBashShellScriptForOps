@@ -3,16 +3,21 @@
 # -*- coding: utf8 -*-
 """
 Created by PyCharm.
-File Name:              LinuxBashShellScriptForOps:pyBringExchangeServicesUp.py
+File Name:              LinuxBashShellScriptForOps:pyRestartExchangeServices.py
 Version:                0.0.1
 Author:                 Guodong
 Author Email:           dgdenterprise@gmail.com
 URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
 Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
-Create Date:            2017/11/27
-Create Time:            19:16
-Description:            bring up Exchange 2010 service if detect the services down with Python
-Long Description:       
+Create Date:            2017/11/29
+Create Time:            15:16
+Description:            restart Exchange 2010 services with Python
+Long Description:       sc stop MSExchangeImap4
+                        ping -n 2 127.0.0.1>nul
+                        sc start MSExchangeImap4
+                        sc stop MSExchangeTransport
+                        ping -n 2 127.0.0.1>nul
+                        sc start MSExchangeTransport
 References:             
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
@@ -127,7 +132,7 @@ def start_service(service_name='TermService'):
             sleep_seconds = 2
             waiting_time = 300
             while running_flag:
-                print "waiting for service {service} start.".format(service=service_name),
+                print "waiting for service {service} restart.".format(service=service_name),
                 status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
                 print message_status_map[status_code]
                 if status_code == RUNNING:
@@ -135,7 +140,7 @@ def start_service(service_name='TermService'):
                 time.sleep(sleep_seconds)
                 try_times += 1
                 if try_times > waiting_time / sleep_seconds:
-                    send_message("FAILED: SERVICE CAN NOT START", "CAN NOT START SERVICE, TIMEOUT")
+                    send_message("FAILED: SERVICE CAN NOT RESTART", "CAN NOT RESTART SERVICE, TIMEOUT")
                     sys.exit(1)
             return True
 
@@ -241,22 +246,9 @@ if __name__ == '__main__':
             "version": "Version 14.3 ‎(Build 123.4)‎ ",
             "services": [
                 "MSExchangeTransport",  # Microsoft Exchange 传输
-                "MSExchangeIS",  # Microsoft Exchange 信息存储
+                "MSExchangeImap4",  # Microsoft Exchange IMAP4
             ],
         }
     }
-
-    keep_running_flag = True
-    while keep_running_flag:
-        for service in services['exchange2010']['services']:
-
-            if query_status(service):
-                pass
-            else:
-                send_message("PROBLEM: SERVICE {service} DOWN".format(service=service),
-                             "SERVICE IS NOT AVAILABLE.\n\n-------------------\n\n>ID: " + uuid.uuid4().get_hex())
-                start_service(service)
-                if query_status(service):
-                    send_message("OK: SERVICE {service} RECOVERED".format(service=service),
-                                 "SERVICE IS ONLINE.\n\n-------------------\n\n>ID: " + uuid.uuid4().get_hex())
-            time.sleep(2)
+    for service in services['exchange2010']['services']:
+        restart_service(service)
