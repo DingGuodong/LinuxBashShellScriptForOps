@@ -38,7 +38,8 @@ def decoding(text):
     elif isinstance(text, (basestring, str)):
         pass
     else:
-        raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
+        return text  # do not need decode, return original object if type is not instance of string type
+        # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
 
     mswindows = (sys.platform == "win32")
 

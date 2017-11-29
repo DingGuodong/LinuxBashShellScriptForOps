@@ -43,6 +43,15 @@ def decoding(text):
     import sys
     import codecs
     import locale
+
+    if isinstance(text, unicode):
+        return text
+    elif isinstance(text, (basestring, str)):
+        pass
+    else:
+        return text  # do not need decode, return original object if type is not instance of string type
+        # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
+
     mswindows = (sys.platform == "win32")
 
     try:

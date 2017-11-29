@@ -27,37 +27,32 @@ Topic:                  Utilities
  """
 
 
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    import codecs
-    import locale
-    import sys
-    mswindows = (sys.platform == "win32")
-    try:
-        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
-        codecs.lookup(encoding)
-    except Exception as e:
-        del e
-        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-
 def decoding(text):
     import sys
+    import codecs
+    import locale
+
+    if isinstance(text, unicode):
+        return text
+    elif isinstance(text, (basestring, str)):
+        pass
+    else:
+        return text  # do not need decode, return original object if type is not instance of string type
+        # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
 
     mswindows = (sys.platform == "win32")
+
+    try:
+        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
+        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
+    except Exception as _:
+        del _
+        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
 
     msg = text
     if mswindows:
         try:
-            msg = text.decode(DEFAULT_LOCALE_ENCODING)
+            msg = text.decode(encoding)
             return msg
         except (UnicodeDecodeError, UnicodeEncodeError):
             pass
