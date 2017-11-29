@@ -8,13 +8,13 @@ User:               Guodong
 Create Date:        2017/4/6
 Create Time:        22:33
  """
+import codecs
+import locale
+import sched
+import sys
 # https://docs.python.org/2/library/sched.html
 import threading
-import sched
 import time
-import sys
-import locale
-import codecs
 
 
 def get_system_encoding():
@@ -106,14 +106,15 @@ def display_scheduler(name):
     :return:
     """
     s = sched.scheduler(time.time, time.sleep)
-    s.enter(10, 1, shutdown_NetEaseCloudMusic, (name,))
+    # https://docs.python.org/2/library/sched.html#sched.scheduler.enter
+    s.enter(seconds_to_shutdown, 1, shutdown_NetEaseCloudMusic, (name,))
     s.run()
     now = time.strftime("%Y-%m-%d %H:%M:%S %Z").decode(DEFAULT_LOCALE_ENCODING).encode("utf-8")
     print "Time finished: %s\nGood bye!" % now
 
 
 if __name__ == '__main__':
-    seconds_to_shutdown = 10
+    seconds_to_shutdown = 10  # after 10s shutdown cloudmusic.exe
     process_name_to_shutdown = "cloudmusic.exe"
 
     threadingPool = list()
