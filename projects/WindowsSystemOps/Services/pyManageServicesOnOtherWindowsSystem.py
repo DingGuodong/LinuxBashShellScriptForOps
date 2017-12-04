@@ -84,9 +84,8 @@ class remoteWindowsWMI(object):
             pass
         elif isinstance(name, (basestring, str)):
             name = decoding(name)
-        for s in self.c.Win32_Service(StartMode="Auto", State="Stopped"):
-            if name.lower() == s.Name.lower() or name.lower() == s.Caption.lower():
-                return s.Name, s.Caption, s.DisplayName
+        for s in self.c.Win32_Service(Name=name):
+            return s.Name, s.Caption, s.DisplayName
 
     def getServiceState(self, name):
         if isinstance(name, unicode):
