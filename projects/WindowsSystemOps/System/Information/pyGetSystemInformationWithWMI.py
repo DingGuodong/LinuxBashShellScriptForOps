@@ -1,0 +1,108 @@
+#!/usr/bin/python
+# encoding: utf-8
+# -*- coding: utf8 -*-
+"""
+Created by PyCharm.
+File Name:              LinuxBashShellScriptForOps:pyGetSystemInformationWithWMI.py
+Version:                0.0.1
+Author:                 Guodong
+Author Email:           dgdenterprise@gmail.com
+URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
+Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
+Create Date:            2017/12/5
+Create Time:            20:08
+Description:            get some system information by WMI with Python
+Long Description:       Not recommend to use it if you not familiar WMI, can NOT trace
+References:             https://pypi.python.org/pypi/WMI/1.4.9
+                        http://timgolden.me.uk/python/wmi/index.html
+                        http://timgolden.me.uk/python/wmi/tutorial.html
+                        [wmi Cookbook](http://timgolden.me.uk/python/wmi/cookbook.html)
+                        [Windows Management Instrumentation](https://msdn.microsoft.com/en-us/library/aa394582(v=vs.85).aspx)
+                        [WMI Classes](https://msdn.microsoft.com/en-us/library/aa394554(v=vs.85).aspx)
+                        [Operating System Classes](https://msdn.microsoft.com/en-us/library/dn792258(v=vs.85).aspx)
+                        [Win32_OperatingSystem class](https://msdn.microsoft.com/en-us/library/aa394239%28v=vs.85%29.aspx)
+Prerequisites:          []
+Development Status:     3 - Alpha, 5 - Production/Stable
+Environment:            Console
+Intended Audience:      System Administrators, Developers, End Users/Desktop
+License:                Freeware, Freely Distributable
+Natural Language:       English, Chinese (Simplified)
+Operating System:       Microsoft :: Windows
+Programming Language:   Python :: 2.6
+Programming Language:   Python :: 2.7
+Topic:                  Utilities
+ """
+import wmi
+
+
+def decoding(text):
+    import sys
+    import codecs
+    import locale
+
+    if isinstance(text, unicode):
+        return text
+    elif isinstance(text, (basestring, str)):
+        pass
+    else:
+        return text  # do not need decode, return original object if type is not instance of string type
+        # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
+
+    mswindows = (sys.platform == "win32")
+
+    try:
+        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
+        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
+    except Exception as _:
+        del _
+        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
+
+    msg = text
+    if mswindows:
+        try:
+            msg = text.decode(encoding)
+            return msg
+        except (UnicodeDecodeError, UnicodeEncodeError):
+            pass
+    return msg
+
+
+c = wmi.WMI()
+print c.Win32_ComputerSystem()[0].Name
+
+for o in c.Win32_OperatingSystem():
+    print o.CSName, o.Caption, o.BuildNumber, o.OSArchitecture, o.SerialNumber, o.Version
+
+DRIVE_TYPES = {
+    0: "Unknown",
+    1: "No Root Directory",
+    2: "Removable Disk",
+    3: "Local Disk",
+    4: "Network Drive",
+    5: "Compact Disc",
+    6: "RAM Disk"
+}
+for disk in c.Win32_LogicalDisk():
+    print disk.Caption, DRIVE_TYPES[disk.DriveType], disk.Description, disk.ProviderName or ""
+
+for disk in c.Win32_LogicalDisk(DriveType=3):
+    print disk.Caption, "%0.2f%% free" % (100.0 * long(disk.FreeSpace) / long(disk.Size))
+
+for s in c.Win32_StartupCommand():
+    print "[%s] %s <%s>" % (s.Location, s.Caption, s.Command)
+
+for process in c.Win32_Process(Name='python.exe'):
+    print process.ProcessId, process.Name, process.CommandLine
+
+stopped_services = c.Win32_Service(StartMode="Auto", State="Stopped")
+if stopped_services:
+    for s in stopped_services:
+        print s.Caption, "service is not running"
+else:
+    print "No auto services stopped"
+
+for interface in c.Win32_NetworkAdapterConfiguration(IPEnabled=1):
+    print interface.Description, interface.MACAddress
+    for ip_address in interface.IPAddress:
+        print ip_address
+    print
