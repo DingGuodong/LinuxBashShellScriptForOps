@@ -1,8 +1,9 @@
 # encoding: utf-8
 # -*- coding: utf8 -*-
-import time
 import datetime
 import sys
+import time
+
 import delorean
 import pytz
 
@@ -13,6 +14,7 @@ print time.strftime('%Y-%m-%d %H:%M:%S', time.strptime("20170416145604.489009+48
 
 # week number of year, with Monday as first day of week (00..53), For Linux, command is 'date +%W'
 print time.strftime("%W")
+print time.strftime("%W", time.localtime(time.mktime(time.strptime('2017/11/30', '%Y/%m/%d'))))
 
 system_encoding = sys.getfilesystemencoding()
 print "Current system encoding is \"%s\"." % system_encoding
