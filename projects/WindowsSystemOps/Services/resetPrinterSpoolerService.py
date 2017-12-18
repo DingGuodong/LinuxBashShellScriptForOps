@@ -75,7 +75,15 @@ if os.path.exists(path):
         for top, dirs, nondirs in os.walk(path, followlinks=True):
             for item in nondirs:
                 path_to_remove = os.path.join(top, item)
-                os.remove(path_to_remove)
+                try:
+                    os.remove(path_to_remove)
+                except WindowsError:
+                    time.sleep(2)
+                    os.remove(path_to_remove)
+                except Exception as e:
+                    print e
+                    print e.args
+                    print e.message
                 print "file removed: {file}".format(file=path_to_remove)
 
         status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
