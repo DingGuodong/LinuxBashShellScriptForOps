@@ -68,11 +68,15 @@ def decoding(text):
 
 
 c = wmi.WMI()
+# https://msdn.microsoft.com/en-us/library/aa394102(v=vs.85).aspx
 print c.Win32_ComputerSystem()[0].Name
+print c.Win32_ComputerSystem()[0]
 
+# https://msdn.microsoft.com/en-us/library/aa394239(v=vs.85).aspx
 for o in c.Win32_OperatingSystem():
     print o.CSName, o.Caption, o.BuildNumber, o.OSArchitecture, o.SerialNumber, o.Version
 
+# https://msdn.microsoft.com/en-us/library/aa394173(v=vs.85).aspx
 DRIVE_TYPES = {
     0: "Unknown",
     1: "No Root Directory",
@@ -88,12 +92,15 @@ for disk in c.Win32_LogicalDisk():
 for disk in c.Win32_LogicalDisk(DriveType=3):
     print disk.Caption, "%0.2f%% free" % (100.0 * long(disk.FreeSpace) / long(disk.Size))
 
+# https://msdn.microsoft.com/en-us/library/aa394464(v=vs.85).aspx
 for s in c.Win32_StartupCommand():
     print "[%s] %s <%s>" % (s.Location, s.Caption, s.Command)
 
+# https://msdn.microsoft.com/en-us/library/aa394372(v=vs.85).aspx
 for process in c.Win32_Process(Name='python.exe'):
     print process.ProcessId, process.Name, process.CommandLine
 
+# https://msdn.microsoft.com/en-us/library/aa394418(v=vs.85).aspx
 stopped_services = c.Win32_Service(StartMode="Auto", State="Stopped")
 if stopped_services:
     for s in stopped_services:
@@ -101,8 +108,17 @@ if stopped_services:
 else:
     print "No auto services stopped"
 
+# https://msdn.microsoft.com/en-us/library/aa394217(v=vs.85).aspx
 for interface in c.Win32_NetworkAdapterConfiguration(IPEnabled=1):
     print interface.Description, interface.MACAddress
     for ip_address in interface.IPAddress:
         print ip_address
     print
+
+# https://msdn.microsoft.com/en-us/library/aa394077(v=vs.85).aspx
+for CIM_BIOSElement in c.Win32_BIOS():
+    print(CIM_BIOSElement)
+
+# get full serial number for LENOVO laptop computer, Dell products(Computers, Servers) maybe use this as well
+print(c.Win32_ComputerSystem()[0].Model)  # SMBIOS|Type 1|System Information|Product Name
+print(c.Win32_BIOS()[0].SerialNumber)  # Assigned serial number of the software element.
