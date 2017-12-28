@@ -47,11 +47,11 @@ else:
 while True:
     if host == "":
         print "host is empty, please sign new one."
-        host = raw_input()
+        host = raw_input("HOST: ")
     elif port == 0 or not isinstance(port, int):
         print "port is empty or illegal, please sign new one."
         try:
-            port = int(raw_input())
+            port = int(raw_input("PORT: "))
         except ValueError:
             pass
     else:
