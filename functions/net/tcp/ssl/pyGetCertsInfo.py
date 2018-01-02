@@ -8,17 +8,23 @@ User:               Guodong
 Create Date:        2016/12/1
 Create Time:        13:58
  """
-from socket import socket
-from OpenSSL.SSL import Connection, Context, SSLv3_METHOD
 import datetime
 import time
+from socket import socket
 
-sslcontext = Context(SSLv3_METHOD)
-sslcontext.set_timeout(30)
-ip = 'www.baidu.com'
+from OpenSSL.SSL import Connection, Context, SSLv3_METHOD, TLSv1_2_METHOD
+
+host = 'www.baidu.com'
+
+try:
+    ssl_connection_setting = Context(SSLv3_METHOD)
+except ValueError:
+    ssl_connection_setting = Context(TLSv1_2_METHOD)
+ssl_connection_setting.set_timeout(30)
+
 s = socket()
-s.connect((ip, 443))
-c = Connection(sslcontext, s)
+s.connect((host, 443))
+c = Connection(ssl_connection_setting, s)
 c.set_connect_state()
 c.do_handshake()
 cert = c.get_peer_certificate()
