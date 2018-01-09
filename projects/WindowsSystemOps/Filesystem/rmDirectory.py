@@ -17,7 +17,7 @@ import sys
 
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 if not mswindows:
-    print "Only Microsoft Windows Be Supported"
+    print "Only Microsoft Windows Operating System Is Supported."
     sys.exit(1)
 
 
@@ -44,6 +44,7 @@ files_to_remove = "" or [
     'C:\Users\Guodong\Documents\WeChat Files\chris-dj\Image\Image',
     'C:\Users\Guodong\Documents\WeChat Files\chris-dj\Image\HttpImage',
     'C:\Users\Guodong\Documents\WeChat Files\chris-dj\Attachment',
+    'C:\Users\Guodong\Documents\WeChat Files\chris-dj\Video',
 ]
 
 
