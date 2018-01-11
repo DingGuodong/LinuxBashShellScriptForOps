@@ -27,15 +27,14 @@ Topic:                  Utilities
  """
 
 import os
-import sys
 from multiprocessing import Pool
 
 try:
     # PIL is only 32-bit available on 64-bit Windows System
+    # We can INSTALL this packages by copy it from "Anaconda2"
     from PIL import Image
-except ImportError as e:
-    print e.args
-    sys.exit(1)
+except ImportError:
+    import Image
 
 SIZE = (75, 75)
 SAVE_DIRECTORY = 'thumbs'
