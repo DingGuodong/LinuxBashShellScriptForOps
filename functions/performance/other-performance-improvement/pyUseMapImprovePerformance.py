@@ -14,7 +14,7 @@ Create Time:            10:32
 Description:            use map as parallel executor to improve performance
 Long Description:       
 References:             https://yq.aliyun.com/articles/337746?spm=5176.100238.spm-cont-list.121.4b8421e547hM0C
-Prerequisites:          []
+Prerequisites:          Pillow
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -30,8 +30,11 @@ import os
 from multiprocessing import Pool
 
 try:
-    # PIL is only 32-bit available on 64-bit Windows System
-    # We can INSTALL this packages by copy it from "Anaconda2"
+    # PIL is only 32-bit available on 64-bit Windows System.
+    # We can INSTALL this packages by copy it from "Anaconda2" or use 'Pillow' to replace 'PIL'.
+    # Pillow is the friendly PIL fork by Alex Clark and Contributors.
+    # PIL is the Python Imaging Library by Fredrik Lundh and Contributors.
+    # Note: Pillow is used in Django as well.
     from PIL import Image
 except ImportError:
     import Image
