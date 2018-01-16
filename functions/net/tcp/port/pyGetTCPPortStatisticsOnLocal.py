@@ -71,6 +71,26 @@ def get_tcp_port_conns_count(port=1080):
 if __name__ == '__main__':
     import json
 
+    # print port statistics of port listened on local host, sort by connection number
+    # such as:
+    # (('192.168.88.32', 993), 206)
+    # (('192.168.88.32', 10050), 130)
+    # (('192.168.88.32', 21836), 75)
+
+    for item in get_tcp_all_conns_count_top():
+        print item
+
+    # print port statistics of each connected IP
+    # such as:
+    # {
+    #     "21658": {
+    #         "192.168.88.102": {
+    #             "ESTABLISHED": 2,
+    #             "TIME_WAIT": 0,
+    #             "CLOSE_WAIT": 0
+    #         },
+    # ... ...
+    # }
     s = get_tcp_all_conns_count_top(top=5)
     for conn in s:
         print json.dumps(get_tcp_port_conns_count(port=conn[0][1]), indent=4)
