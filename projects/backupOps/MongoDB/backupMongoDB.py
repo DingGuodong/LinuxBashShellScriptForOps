@@ -153,12 +153,13 @@ if __name__ == '__main__':
             # compare two files by their time of last change
             stat_x = os.stat(os.path.join(backup_storage, x))
             stat_y = os.stat(os.path.join(backup_storage, y))
-            if stat_x.st_ctime < stat_y.st_ctime:  # time of last change
-                return -1
-            elif stat_x.st_ctime > stat_y.st_ctime:
-                return 1
-            else:
-                return 0
+            # if stat_x.st_ctime < stat_y.st_ctime:  # time of last change
+            #     return -1
+            # elif stat_x.st_ctime > stat_y.st_ctime:
+            #     return 1
+            # else:
+            #     return 0
+            return cmp(stat_x.st_ctime, stat_y.st_ctime)
 
 
         all_backups.sort(compare_by_time)  # sort files in dir by time
