@@ -11,7 +11,7 @@ URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOp
 Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
 Create Date:            2017/10/30
 Create Time:            11:38
-Description:            
+Description:            python remove old logs with a given directory
 Long Description:       
 References:             
 Prerequisites:          []
@@ -27,11 +27,19 @@ Topic:                  Utilities
  """
 import os
 import re
+import sys
 
 
-def sort_files_by_ctime_with_extension(path=None, type_extension=None):
+def sort_files_by_ctime_with_extension(path=None, type_extension=None, excludes=None):
     if not os.path.exists(path):
         raise RuntimeError('No such file or directory.')
+
+    if isinstance(excludes, (list, tuple)):
+        excludes_iterable = excludes
+    elif isinstance(excludes, str):
+        excludes_iterable = (excludes,)
+    else:
+        raise RuntimeError('Bad parameter.')
 
     if isinstance(type_extension, (list, tuple)):
         file_extension_iterable = type_extension
@@ -45,7 +53,7 @@ def sort_files_by_ctime_with_extension(path=None, type_extension=None):
 
     all_files_with_date_dict = dict()
     for top, dirs, nondirs in os.walk(working_directory):
-        if len(nondirs) != 0:
+        if len(nondirs) != 0 and not top.endswith(excludes_iterable):
             for filename in nondirs:
                 full_path_to_filename = os.path.join(top, filename)
                 if full_path_to_filename.endswith(tuple(file_extension_iterable)):
@@ -57,9 +65,16 @@ def sort_files_by_ctime_with_extension(path=None, type_extension=None):
     return sorted_files
 
 
-def sort_files_by_ctime_with_regex_match(path=None, regex=None):
+def sort_files_by_ctime_with_regex_match(path=None, regex=None, excludes=None):
     if not os.path.exists(path):
         raise RuntimeError('No such file or directory.')
+
+    if isinstance(excludes, (list, tuple)):
+        excludes_iterable = excludes
+    elif isinstance(excludes, str):
+        excludes_iterable = (excludes,)
+    else:
+        raise RuntimeError('Bad parameter.')
 
     def is_match_regex(string, regex_expression):
         pattern = re.compile(regex_expression)
@@ -74,7 +89,7 @@ def sort_files_by_ctime_with_regex_match(path=None, regex=None):
 
     all_files_with_date_dict = dict()
     for top, dirs, nondirs in os.walk(working_directory):
-        if len(nondirs) != 0:
+        if len(nondirs) != 0 and not top.endswith(excludes_iterable):
             for filename in nondirs:
                 full_path_to_filename = os.path.join(top, filename)
                 if is_match_regex(full_path_to_filename, regex):
@@ -118,27 +133,60 @@ def find_filter(files=None, keywords=None, excludes=None):
     return filtered_dict
 
 
+def get_disk_usage(path):
+    import subprocess
+    command = "du -sh %s" % path
+    p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT)
+    (stdout, stderr) = p.communicate()
+    if p.returncode != 0:
+        print "encountered an error (return code %s) while executing '%s'" % (p.returncode, command)
+        if stdout is not None:
+            print "Standard output:", (stdout)
+        if stderr is not None:
+            print "Standard error:", (stderr)
+        return ""
+    else:
+        return stdout
+
+
 if __name__ == '__main__':
-    save_number = 10
-    log_path_to_clean = '/opt/ebt/logs/agent-stats/'
-    trash_dir = os.path.join(log_path_to_clean, 'to_delete')
-    regex_match_rule = '[0-9]{2,4}-[0-9]{1,2}-[0-9]{1,2}'  # such as 2017-10-30
+    save_number = 10  # each kind log file save 10.
+    regex_match_rule = '\d{2,4}-\d{1,2}-\d{1,2}'  # such as 2017-10-30, 18-01-02
     keywords_to_match = ('error', 'request')
-    files_to_ignore = ('agent-stats.gc.log', 'agent-stats.log', 'error.log ', 'request.log')
+    trash_dir_name = 'to_delete'
+    apps_log_root_path = os.path.abspath('/opt/ebt/logs/')
 
-    sort_files = sort_files_by_ctime_with_regex_match(path=log_path_to_clean, regex=regex_match_rule)
-    all_matched_files = find_filter(files=sort_files, keywords=keywords_to_match, excludes=files_to_ignore)
+    print "Cleaning old logs in path: {path}.".format(path=apps_log_root_path)
+    for app_log_path in [os.path.join(apps_log_root_path, x) for x in os.listdir(apps_log_root_path)]:
+        app_service_name = os.path.basename(app_log_path)
+        print "\---+ Processing {app}'s old logs, path: {path} ...".format(app=app_service_name, path=app_log_path)
+        trash_dir = os.path.join(app_log_path, trash_dir_name)
+        files_to_ignore = ('%s.gc.log' % app_service_name, '%s.log' % app_service_name, 'error.log ', 'request.log')
 
-    files_to_delete = list()
+        # skip scan trash dir
+        dirs_to_ignore = (trash_dir_name,)
 
-    for key, value in all_matched_files.iteritems():
-        if len(value) <= save_number:
-            pass
-        else:
-            files_to_delete += value[save_number:]
+        sort_files = sort_files_by_ctime_with_regex_match(path=app_log_path, regex=regex_match_rule,
+                                                          excludes=dirs_to_ignore)
+        all_matched_files = find_filter(files=sort_files, keywords=keywords_to_match, excludes=files_to_ignore)
 
-    if not os.path.exists(trash_dir):
-        os.makedirs(trash_dir)
+        files_to_delete = list()
 
-    for file_to_delete in files_to_delete:
-        os.rename(file_to_delete, os.path.join(trash_dir, os.path.basename(file_to_delete)))
+        for key, value in all_matched_files.iteritems():
+            if len(value) <= save_number:
+                pass
+            else:
+                files_to_delete += value[save_number:]
+
+                if not os.path.exists(trash_dir):
+                    os.makedirs(trash_dir)
+
+                for file_to_delete in files_to_delete:
+                    try:
+                        os.rename(file_to_delete, os.path.join(trash_dir, os.path.basename(file_to_delete)))
+                    except OSError:  # for debug purpose, in case of Permission issue
+                        print file_to_delete
+                        print os.path.join(trash_dir, os.path.basename(file_to_delete))
+                        sys.exit(1)
+    print "OK! Cleaning old logs in path: {path}, Finished!".format(path=apps_log_root_path)
