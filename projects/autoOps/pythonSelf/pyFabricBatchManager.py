@@ -10,8 +10,8 @@ Create Time:        11:13
 Description:        python batch manager with Fabric, run command you input on Linux Systems
  """
 import os
-import sys
 import re
+import sys
 
 try:
     from fabric.api import *
@@ -65,6 +65,11 @@ env.remote_interrupt = True
 def tail_remote_file():
     assert (env.remote_interrupt is True)
     run("tail -f /var/log/messages || tail -f /var/log/syslog")
+
+
+def get_pagetables_size():
+    # see how much pagetables used in Linux, if this is too much , thinking about use Hugepages
+    run('grep PageTables /proc/meminfo')
 
 
 def run_command(command):
