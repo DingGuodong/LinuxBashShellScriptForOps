@@ -14,7 +14,7 @@ Create Time:            14:30
 Description:            TCP connections statistics with Python
 Long Description:       python 统计词频,python 统计出现次数 using 'Counter' from collections or 'dict' with self increase
 References:             
-Prerequisites:          []
+Prerequisites:          psutil
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -26,13 +26,15 @@ Topic:                  Utilities
  """
 from collections import \
     Counter  # Counter is only supported python2.7 and higher and is not available in earlier versions.
+from collections import OrderedDict
 
 import psutil
 
+# different functions use the same netstat result in case of wrong data
+netstat = psutil.net_connections(kind="tcp")
+
 
 def get_tcp_all_conns_count_top(top=10):
-    netstat = psutil.net_connections(kind="tcp")
-
     cared_data = list()
 
     for sconn in netstat:
@@ -49,19 +51,21 @@ def get_tcp_all_conns_count_top(top=10):
 
 
 def get_tcp_port_conns_count(port=1080):
-    netstat = psutil.net_connections(kind="tcp")
-
     filtered_data = [sconn for sconn in netstat if sconn.laddr[1] == port and sconn.status != 'LISTEN']
 
-    cared_data = dict()
+    cared_data = OrderedDict()
 
     for _sconn in filtered_data:
-        cared_data.setdefault(_sconn.raddr[0], {"ESTABLISHED": 0, "TIME_WAIT": 0, "CLOSE_WAIT": 0})
+        cared_data.setdefault(_sconn.raddr[0], {"ESTABLISHED": 0, "TIME_WAIT": 0, "CLOSE_WAIT": 0, "TOTAL": 0})
         try:
-            cared_data[_sconn.raddr[0]][_sconn.status] += 1
+            cared_data[_sconn.raddr[0]][_sconn.status] += 1  # if ip's conn state is same, then its count plus 1
         except KeyError:
             # such as 'SYN_RECV' not involved
             pass
+
+        if cared_data[_sconn.raddr[0]]["TOTAL"] == 0:  # use this statement to improve performance
+            cared_data[_sconn.raddr[0]]["TOTAL"] = len(
+                [x for x in filtered_data if x.raddr[0] == _sconn.raddr[0]])
 
     return {
         port: cared_data
