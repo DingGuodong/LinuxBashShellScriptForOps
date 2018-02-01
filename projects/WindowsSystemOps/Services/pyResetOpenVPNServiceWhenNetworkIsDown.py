@@ -67,7 +67,8 @@ def renew_and_update_conn():
     renew ipconfig of connection name
     :return:
     """
-    os.system('ipconfig /renew "以太网 3"')  # "以太网 3" is OpenVPN connection name
+    # Execute Chinese text command in the subshell must encoding with system default coding, general is 'GBK'
+    os.system(u'ipconfig /renew "以太网 3"'.encode('gbk'))  # "以太网 3" is OpenVPN connection name
 
 
 def reset_network_interface_card():
@@ -75,29 +76,29 @@ def reset_network_interface_card():
     reset NIC(Network Interface Card) adapter
     :return:
     """
-    os.system('netsh interface show interface "以太网 3"')
-    os.system('netsh interface set interface name="以太网 3" admin=DISABLED')
+    os.system(u'netsh interface show interface "以太网 3"'.encode('gbk'))
+    os.system(u'netsh interface set interface name="以太网 3" admin=DISABLED'.encode('gbk'))
     time.sleep(1)
-    os.system('netsh interface set interface name="以太网 3" admin=ENABLED')
-    os.system('netsh interface show interface "以太网 3"')
+    os.system(u'netsh interface set interface name="以太网 3" admin=ENABLED'.encode('gbk'))
+    os.system(u'netsh interface show interface "以太网 3"'.encode('gbk'))
 
 
 if __name__ == '__main__':
     # frontend task, if there need a callable script, just remove endless loop
     while True:
+        print "Wait 30 seconds for next check cycle."
+        time.sleep(30)
+
         if not get_remote_host_status("192.168.88.29", 389) and not get_remote_host_status("192.168.88.30", 389):
             print "OpenVPN service is not worked, restart it."
             restart_openvpn_service()
             print "Wait 60 seconds for service up."
             time.sleep(60)
-        elif not get_remote_host_status("192.168.88.29", 389) and not get_remote_host_status("192.168.88.30", 389):
+        if not get_remote_host_status("192.168.88.29", 389) and not get_remote_host_status("192.168.88.30", 389):
             reset_network_interface_card()
-            print "Wait 60 seconds for service up."
+            print "Wait 60 seconds for reset network adapter."
             time.sleep(60)
-        elif not get_remote_host_status("192.168.88.29", 389) and not get_remote_host_status("192.168.88.30", 389):
+        if not get_remote_host_status("192.168.88.29", 389) and not get_remote_host_status("192.168.88.30", 389):
             renew_and_update_conn()
-            print "Wait 60 seconds for service up."
+            print "Wait 60 seconds for renew ipconfig."
             time.sleep(60)
-        else:
-            print "Wait 30 seconds for next cycle."
-            time.sleep(30)
