@@ -140,27 +140,27 @@ def get_disk_usage(path):
                          stderr=subprocess.STDOUT)
     (stdout, stderr) = p.communicate()
     if p.returncode != 0:
-        print "encountered an error (return code %s) while executing '%s'" % (p.returncode, command)
+        print("encountered an error (return code %s) while executing '%s'" % (p.returncode, command))
         if stdout is not None:
-            print "Standard output:", (stdout)
+            print("Standard output:", stdout)
         if stderr is not None:
-            print "Standard error:", (stderr)
+            print("Standard error:", stderr)
         return ""
     else:
         return stdout
 
 
 if __name__ == '__main__':
-    save_number = 10  # each kind log file save 10.
+    save_number = 10  # each type log file save 10.
     regex_match_rule = '\d{2,4}-\d{1,2}-\d{1,2}'  # such as 2017-10-30, 18-01-02
     keywords_to_match = ('error', 'request')
     trash_dir_name = 'to_delete'
     apps_log_root_path = os.path.abspath('/opt/ebt/logs/')
 
-    print "Cleaning old logs in path: {path}.".format(path=apps_log_root_path)
+    print("Cleaning old logs in path: {path}".format(path=apps_log_root_path))
     for app_log_path in [os.path.join(apps_log_root_path, x) for x in os.listdir(apps_log_root_path)]:
         app_service_name = os.path.basename(app_log_path)
-        print "\---+ Processing {app}'s old logs, path: {path} ...".format(app=app_service_name, path=app_log_path)
+        print("\---+ Processing {app}'s old logs, path: {path}".format(app=app_service_name, path=app_log_path))
         trash_dir = os.path.join(app_log_path, trash_dir_name)
         files_to_ignore = ('%s.gc.log' % app_service_name, '%s.log' % app_service_name, 'error.log ', 'request.log')
 
@@ -173,20 +173,36 @@ if __name__ == '__main__':
 
         files_to_delete = list()
 
+        if not os.path.exists(trash_dir):
+            os.makedirs(trash_dir)
+
         for key, value in all_matched_files.iteritems():
             if len(value) <= save_number:
+                print("log type \"{type}\" files are in good state, skip".format(type=key))
                 pass
             else:
-                files_to_delete += value[save_number:]
+                print("{number} log files with type \"{type}\" are going to be processed".format(
+                    number=len(value) - save_number, type=key))
+                files_to_delete += value[save_number:]  # or use list(set(list_obj)) to make sure each member is unique
 
-                if not os.path.exists(trash_dir):
-                    os.makedirs(trash_dir)
+        # do os.rename() after collection(get files to delete) finished
+        for file_to_delete in files_to_delete:
+            try:
+                if os.path.exists(file_to_delete):
+                    os.rename(file_to_delete, os.path.join(trash_dir, os.path.basename(file_to_delete)))
+                else:
+                    print('WARNING: file not exist, No such file or directory, {file}'.format(
+                        file=file_to_delete))
+            except OSError as e:  # for debug purpose, in case of Permission issue
+                print('ERROR: OSError is raised.')
+                print(e)
+                print(e.args)
+                # DeprecationWarning: BaseException.message has been deprecated as of Python 2.6
+                # print(e.message)
+                print(file_to_delete)
+                print(os.path.join(trash_dir, os.path.basename(file_to_delete)))
+                sys.exit(1)
 
-                for file_to_delete in files_to_delete:
-                    try:
-                        os.rename(file_to_delete, os.path.join(trash_dir, os.path.basename(file_to_delete)))
-                    except OSError:  # for debug purpose, in case of Permission issue
-                        print file_to_delete
-                        print os.path.join(trash_dir, os.path.basename(file_to_delete))
-                        sys.exit(1)
-    print "OK! Cleaning old logs in path: {path}, Finished!".format(path=apps_log_root_path)
+    print("OK! Cleaning old logs in path: {path}, Finished!".format(path=apps_log_root_path))
+    print("Next Todo: use the command as follows to clean old log files:\n")
+    print("find /opt/ebt/logs/ -type d  -name to_delete | xargs -i rm -r {}")
