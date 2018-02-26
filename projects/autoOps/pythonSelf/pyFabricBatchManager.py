@@ -78,6 +78,21 @@ def run_command(command):
     run(command)
 
 
+def interactive_shell():
+    """
+    http://docs.fabfile.org/en/1.14/api/core/operations.html#fabric.operations.open_shell
+    Invoke a fully interactive shell on the remote end.
+    If command is given, it will be sent down the pipe before handing control over to the invoking user.
+    :return:
+    """
+    # from fabric.api import *
+    # env.host_string='10.46.69.219'
+    # env.user='root'
+    # env.key_filename = r'C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem'
+    # open_shell()
+    open_shell()
+
+
 def terminal_debug(defName):
     command = "fab -i {ssh_key_filename} -f {fab_file} -R {roles} -D {task}".format(ssh_key_filename=env.key_filename,
                                                                                     roles=env.test_env,
