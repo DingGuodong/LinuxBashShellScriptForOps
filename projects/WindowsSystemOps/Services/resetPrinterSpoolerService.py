@@ -10,6 +10,7 @@ Create Time:        15:07
 Description:        reset Windows printer spooler service to make printers work again
 References:
 Prerequisites:      pypiwin32: pip install pypiwin32
+                    Optional: install 'pywin32'
  """
 import os
 import sys
@@ -79,6 +80,12 @@ if os.path.exists(path):
                     os.remove(path_to_remove)
                 except WindowsError:
                     time.sleep(2)
+                    """ KNOWN ISSUE:
+                    It will also can NOT remove some files in some Windows, such as 'Windows Server 2012'
+                    Because file maybe used by a program named "Print Filter Pipeline Host",
+                    "C:\Windows\System32\printfilterpipelinesvc.exe"
+                    It will throw out  'WindowsError: [Error 32]' exception again.
+                    """
                     os.remove(path_to_remove)
                 except Exception as e:
                     print e
