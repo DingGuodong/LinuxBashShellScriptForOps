@@ -10,7 +10,7 @@ Create Time:        10:59
 """
 
 #  execute some operations concurrently using python
-from gevent import monkey
+from gevent import monkey, pool
 
 monkey.patch_all()
 import gevent
@@ -26,4 +26,6 @@ def f(url):
 
 hosts = ['https://www.python.org/', 'https://github.com/', 'http://weixin.qq.com/']
 
-gevent.joinall([gevent.spawn(f, host) for host in hosts])
+p = pool.Pool(2)  # 2 CPU cores, limit max number of concurrence
+
+gevent.joinall([p.spawn(f, host) for host in hosts])
