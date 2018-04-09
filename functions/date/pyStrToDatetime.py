@@ -106,7 +106,7 @@ def str_to_date_py2_gen1us2k(s):
         tz = int(tmp[0][1])
     else:
         tz = 0
-    print(tmp)
+
     s = re.sub('\s\([+-]([0-9]{2})([0-9]{2})\)', '', s)
     s = re.sub('\s[+-]([0-9]{2})([0-9]{2})', '', s)
 
@@ -143,3 +143,10 @@ def str_to_date_py2_DannyCork(s):
 
 if __name__ == '__main__':
     print(str_to_date_py2_my('2026-10-11T00:00:00-0700'))  # this time format from 'whois' command, `whois baidu.com`
+    print(str_to_date_py2_my('2026-10-11T15:00:00+0800'))
+
+    print(str_to_date_py2_gen1us2k('2026-10-11T00:00:00 (-0700)'))
+    print(str_to_date_py2_gen1us2k('2026-10-11T15:00:00 (+0800)'))
+
+    print(str_to_date_py2_DannyCork('2026-10-11T00:00:00 (-0700)'))
+    print(str_to_date_py2_DannyCork('2026-10-11T00:00:00 (+0800)'))
