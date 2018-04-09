@@ -149,3 +149,32 @@ print("Year:2010 - Month:5")
 month_range = calendar.monthrange(2010, 5)
 print("Weekday of first day of the month:", month_range[0])
 print("Number of days in month:", month_range[1])
+
+# Conversion between different types
+timestamp = 1226527167.595983
+date_str = "2008-11-13 17:53:59.595983"
+time_tuple = (2008, 11, 13, 5, 59, 27, 3, 318, 0)
+dt_obj = datetime.datetime(2008, 11, 13, 5, 59, 27, 595983)
+# timestamp to time tuple(time obj)
+time.localtime(timestamp)
+time.gmtime(timestamp)
+# timestamp to datetime(datetime obj)
+datetime.datetime.fromtimestamp(timestamp)
+
+# string to time tuple(time obj), precision lost
+time.strptime(date_str, "%Y-%m-%d %H:%M:%S.%f")
+# string to datetime(datetime obj)
+datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S.%f")
+
+# time tuple(time obj) to string, precision lost
+time.strftime("%Y-%m-%d %H:%M:%S", time_tuple)  # <type 'str'>, '2008-11-13 05:59:27'
+# time tuple(time obj) to timestamp, precision lost
+time.mktime(time_tuple)  # <type 'float'>, 1226527167.0
+# time tuple(time obj) to datetime(datetime obj), precision lost
+datetime.datetime(*time_tuple[0:6])  # <type 'datetime.datetime'>, datetime.datetime(2008, 11, 13, 5, 59, 27)
+
+# datetime(datetime obj) to time tuple(time obj), precision lost
+dt_obj.timetuple()
+# datetime(datetime obj) to string
+dt_obj.strftime("%Y-%m-%d %H:%M:%S.%f")  # <type 'str'>, '2008-11-13 05:59:27.595983'
+# datetime(datetime obj) can not to timestamp
