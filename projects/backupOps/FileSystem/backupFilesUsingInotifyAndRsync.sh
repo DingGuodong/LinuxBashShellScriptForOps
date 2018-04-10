@@ -48,14 +48,13 @@ sysctl -w fs.inotify.max_user_watches=999999
 
 /usr/bin/inotifywait \
     -mrq \
-    --timefmt '%d/%m/%y %H:%M' \
-    --format '%T %w%f%e' \
+    --format '%w%f' \
     -e modify,delete,create,attrib \
     ${SRC} \
-| while read files; do
-    /usr/bin/rsync -azurR \
+| while read file; do
+    test -e ${file} && /usr/bin/rsync -azurR \
         -e "ssh ${SSH_OPTION}" \
         --delete --delete-excluded \
         --log-file=${RSYNC_LOG_FILE} \
-        ${SRC} ${USER}@${HOST}:${DEST}
+        ${file} ${USER}@${HOST}:${DEST}
 done
