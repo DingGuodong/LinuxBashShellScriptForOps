@@ -94,6 +94,28 @@ def str_to_date_py2_my(s):
     raise ValueError("Unknown date format: '%s'" % s)
 
 
+def str_to_date_py2_my_u1(s):
+    tmp = re.findall('[+-]([0-9]{2})00', s)
+    if tmp:
+        tz = int(tmp[0])
+    else:
+        tz = 0
+
+    if s.count("-") > 2:
+        tz = -tz
+
+    if tz != 0:
+        s = "-".join(re.split('[+-]', s)[:-1])
+
+    for date_format in DATE_FORMATS:
+        try:
+            return datetime.datetime.strptime(s, date_format) - datetime.timedelta(hours=tz)
+        except ValueError:
+            pass
+
+    raise ValueError("Unknown date format: '%s'" % s)
+
+
 def str_to_date_py2_gen1us2k(s):
     """
     https://github.com/gen1us2k/python-whois
@@ -144,6 +166,9 @@ def str_to_date_py2_DannyCork(s):
 if __name__ == '__main__':
     print(str_to_date_py2_my('2026-10-11T00:00:00-0700'))  # this time format from 'whois' command, `whois baidu.com`
     print(str_to_date_py2_my('2026-10-11T15:00:00+0800'))
+
+    print(str_to_date_py2_my_u1('2026-10-11T00:00:00-0700'))
+    print(str_to_date_py2_my_u1('2026-10-11T15:00:00+0800'))
 
     print(str_to_date_py2_gen1us2k('2026-10-11T00:00:00 (-0700)'))
     print(str_to_date_py2_gen1us2k('2026-10-11T15:00:00 (+0800)'))
