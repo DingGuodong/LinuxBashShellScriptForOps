@@ -33,6 +33,12 @@ SSH_OPTION="-p 22 -oStrictHostKeyChecking=no"
 RSYNC_LOG_FILE="/tmp/rsync.log"
 ################
 
+if test ${UID} -ne 0; then
+    echo "ROOT ACCESS IS REQUIRED"
+    echo "Only root can do that, but current user is '$USER', please use 'sudo $0' or run as root"
+    exit 1
+fi
+
 ssh ${SSH_OPTION} ${USER}@${HOST} "mkdir -p ${DEST}"
 
 # run once time via check if log file exist
