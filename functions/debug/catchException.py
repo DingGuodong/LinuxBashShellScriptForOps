@@ -12,13 +12,21 @@ import sys
 
 try:
     import os
+    # raise SystemExit("raise SystemExit on purpose")
+    # raise Exception("raise Exception on purpose")
 
 except SystemExit, e:
-    raise SystemExit
-
-except Exception, e:
-    import traceback
-
-    sys.stderr.write("Unhandled exception: %s" % str(e))
-    sys.stderr.write("traceback: %s" % traceback.format_exc())
+    print(e)
+    print(e.args)
+    print(e.message)
     sys.exit(1)
+except Exception, e:
+    sys.stderr.write(e.message + "\n")
+    sys.exit(1)
+else:
+    print("no exceptions here, continue")
+
+finally:
+    print("always appear here")
+
+print("exit now following 'else' statement")
