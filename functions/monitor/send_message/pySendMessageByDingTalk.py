@@ -96,18 +96,18 @@ def send_message(access_token, title, content, mobile, enable_at_all=False):
 if __name__ == '__main__':
     token = "35c6fc4a5bf7916ab3e74ac497c0fcc0df57877940a7a1f0ebec1a150d7635b2"
 
-    argc = len(sys.argv)
-    if not (argc == 1 or argc == 4):
+    argv_length = len(sys.argv)
+    if not (argv_length == 1 or argv_length == 4):
         print("bad call")
         usage()
-    if argc == 1:
+    if argv_length == 1:
         subject = "Test Message"
         message = "Test message sent by Python over DingTalk"
         phone_number = '183xxxx1212'  # if there are more than one phone number to at, use space spilt them
         at_all = False
     else:
-        if sys.argv[1] != '' and sys.argv[2] != '' and sys.argv[3] != '':
-            phone_number = sys.argv[1]
-            subject = sys.argv[2]
-            message = sys.argv[3]
+        phone_number = sys.argv[1]
+        subject = sys.argv[2]
+        message = sys.argv[3]
+
     send_message(access_token=token, mobile=phone_number, title=subject, content=message, enable_at_all=False)
