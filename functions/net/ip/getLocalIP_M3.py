@@ -25,15 +25,15 @@ def get_local_ip_address():
             sys.exit(1)
         import netifaces
 
-    routingIPAddr = '127.0.0.1'
+    routing_ip_address = '127.0.0.1'
 
     for interface in netifaces.interfaces():
         if interface == netifaces.gateways()['default'][netifaces.AF_INET][1]:
             try:
-                routingIPAddr = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr']
+                routing_ip_address = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr']
             except KeyError:
                 pass
-    return routingIPAddr
+    return routing_ip_address
 
 
 if __name__ == '__main__':

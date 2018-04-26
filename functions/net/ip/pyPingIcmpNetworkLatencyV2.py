@@ -22,6 +22,8 @@ def win_or_linux():
         os_type = 'Linux'
     elif 'nt' in sys.builtin_module_names:
         os_type = 'Windows'
+    else:
+        return 'Others'
     return os_type
 
 

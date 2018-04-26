@@ -12,7 +12,8 @@ class GetLocalIP(object):
 
     @staticmethod
     def get_all_ip():
-        ip_lists = socket.gethostbyname_ex(socket.gethostname())
+        ip_lists = socket.gethostbyname_ex(socket.gethostname())  # not works on POSIX system
+        local_ips = []
         for ip_list in ip_lists:
             if isinstance(ip_list, list):
                 if ip_lists[0] is not None:

@@ -26,15 +26,19 @@ except ImportError:
         command_to_execute = "pip install ping || easy_install ping"
         os.system(command_to_execute)
     except OSError:
-        print "Can NOT install 'ping', Aborted!"
+        print("Can NOT install 'ping', Aborted!")
         sys.exit(1)
     except Exception as e:
-        print "Uncaught exception, %s" % e.message
+        print("Uncaught exception, %s" % e.message)
         sys.exit(1)
     import ping
 
 try:
-    ping.verbose_ping("192.168.1.1")
+    ping.verbose_ping("192.168.88.1")
 except Exception as e:
-    if "10013" in e.message or "10013" in str(e):
-        print "socket.SOCK_RAW require super administrator privilege"
+    # Note that ICMP messages can only be sent from processes running as root.
+    if "10013" in e.message or "as root" in str(e):
+        print("socket.SOCK_RAW require super administrator privilege")
+    else:
+        print(e.args)
+    sys.exit(1)
