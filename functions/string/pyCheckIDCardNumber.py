@@ -62,6 +62,26 @@ def check_id_number(number):
         return 'x' == number[-1]
 
 
+def check_id_number1(number):
+    """
+    check if id card number is a valid
+    :param number: id card number
+    :type number: str
+    :return: bool
+    """
+    number = number.lower()
+    sums = 0
+    for index, value in enumerate(number[:-1:], start=1):
+        sums += int(value) * ((2 ** (18 - index)) % 11)
+        # sums += int(value) * ((1 << (18 - index)) % 11)
+        # print(index, value, (2 ** (18 - index)) % 11)
+    last_number = (12 - (sums % 11)) % 11
+    if last_number < 10:
+        return str(last_number) == number[-1]
+    else:
+        return 'x' == number[-1]
+
+
 def check_id_number2(number):
     """
     check if id card number is a valid
@@ -83,8 +103,34 @@ def check_id_number2(number):
         return 'x' == number[-1]
 
 
+def check_id_number3(number):
+    """
+    check if id card number is a valid
+    :param number: id card number
+    :type number: str
+    :return: bool
+    """
+    number = number.lower()
+    sums = 0
+    for index, value in enumerate(number[::-1][1::], start=1):
+        sums += int(value) * ((2 ** index) % 11)
+        # sums += int(value) * ((1 << index) % 11)
+        # print(index, value, (2 ** index) % 11)
+    last_number = (12 - (sums % 11)) % 11
+    if last_number < 10:
+        return str(last_number) == number[-1]
+
+    else:
+        return 'x' == number[-1]
+
+
 if __name__ == '__main__':
     print(check_id_number('370284199001123321'))
+    print(check_id_number1('370284199001123321'))
     print(check_id_number2('370284199001123321'))
+    print(check_id_number3('370284199001123321'))
+
     print(check_id_number('21130219970323340X'))
+    print(check_id_number1('21130219970323340X'))
     print(check_id_number2('21130219970323340X'))
+    print(check_id_number3('21130219970323340X'))
