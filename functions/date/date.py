@@ -178,3 +178,7 @@ dt_obj.timetuple()
 # datetime(datetime obj) to string
 dt_obj.strftime("%Y-%m-%d %H:%M:%S.%f")  # <type 'str'>, '2008-11-13 05:59:27.595983'
 # datetime(datetime obj) can not to timestamp
+
+# UTC time('Z' letter in string) convert to another timezone
+datetime.datetime.strptime('2018-06-07T10:57:14Z', "%Y-%m-%dT%H:%M:%SZ").replace(
+    tzinfo=pytz.timezone('UTC')).astimezone(pytz.timezone('Asia/Shanghai'))
