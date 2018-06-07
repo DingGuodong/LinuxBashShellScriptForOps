@@ -27,6 +27,7 @@ Topic:                  Utilities
  """
 from datetime import datetime
 
+import tzlocal
 from pytz import timezone
 from pytz import utc
 
@@ -48,3 +49,14 @@ print("format time with a format: %s" % china_now.strftime('%Y-%m-%d %H:%M:%S'))
 # UTC time('Z' letter in string) convert to another timezone
 print(datetime.strptime('2018-06-07T10:57:14Z', "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone('UTC')).astimezone(
     timezone('Asia/Shanghai'))).strftime('%Y-%m-%d %H:%M:%S')
+
+# figure out local timezone
+# https://stackoverflow.com/questions/2720319/python-figure-out-local-timezone
+current_timezone = tzlocal.get_localzone().zone
+print(current_timezone)
+
+# compare datetime object
+expiration = '2018-06-07T10:57:14Z'  # iso format(ISO 8601 format) in UTC
+utc_now = datetime.now().replace(tzinfo=timezone('UTC'))
+expiration_datetime = datetime.strptime(expiration, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone('UTC'))
+print(utc_now < expiration_datetime)
