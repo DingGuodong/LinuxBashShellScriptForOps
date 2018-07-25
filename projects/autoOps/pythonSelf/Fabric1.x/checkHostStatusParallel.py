@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # encoding: utf-8
 # -*- coding: utf8 -*-
+import os
+import re
+import sys
+
 from fabric.api import *
 from fabric.colors import *
 from fabric.context_managers import *
-import os
-import sys
-import re
 
 env.roledefs = {
     'test': ['root@10.6.28.28:22', ],

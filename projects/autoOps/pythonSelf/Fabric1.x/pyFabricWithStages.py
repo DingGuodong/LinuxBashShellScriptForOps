@@ -11,9 +11,8 @@ Description:        deploy service by Fabric with staging support.
 References:         http://yerb.net/blog/2014/03/03/multiple-environments-for-deployment-using-fabric/
 Prerequisites:      []
  """
-from fabric.api import run, local, env, settings, cd, task, put, execute
-from fabric.contrib.files import exists
-from fabric.operations import _prefix_commands, _prefix_env_vars, require
+from fabric.api import env, task
+from fabric.operations import require
 
 # from fabric.decorators import runs_once
 # from fabric.context_managers import cd, lcd, settings, hide
