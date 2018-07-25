@@ -12,3 +12,6 @@ mysqldump --host=${mysql_host} --port=${mysql_port} --user=${mysql_username} --p
 mysqldump --host=${mysql_host} --port=${mysql_port} --user=${mysql_username} --password=${mysql_password}\
     --routines --events --triggers --single-transaction --flush-logs\
     --ignore-table=mysql.event --databases ${mysql_database} > ${mysql_export_out_filename}
+
+>. use '-F' or '--flush-logs' with _mysqldump_ is recommended, it will be useful 
+when restore database data with full-backup and binlog
