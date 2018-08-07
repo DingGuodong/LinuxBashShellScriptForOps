@@ -13,6 +13,7 @@ Create Date:            2018/5/28
 Create Time:            15:33
 Description:            Detect the encoding of the given byte string.
 Long Description:       guess encoding
+                        Note: some wrong database data types maybe cause unreadable code, see also 'varchar vs nvarchar'
 References:             
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
