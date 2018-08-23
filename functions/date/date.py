@@ -66,6 +66,10 @@ print datetime.datetime.utcnow().strftime(GMT_FORMAT)
 
 # Get Unix timestamp
 print time.time()
+print(time.mktime(time.strptime("2018-05-23 23:59:59", "%Y-%m-%d %H:%M:%S")))
+print(time.mktime((datetime.datetime.now() - datetime.timedelta(days=3 * 30)).timetuple()))
+print(time.mktime((datetime.datetime.strptime("2018-05-23 23:59:59", "%Y-%m-%d %H:%M:%S") - datetime.timedelta(
+    days=3 * 30)).timetuple()))
 
 # Unix timestamp to Time
 print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(1471932539.15))
