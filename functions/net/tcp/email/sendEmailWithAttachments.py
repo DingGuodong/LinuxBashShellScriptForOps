@@ -24,50 +24,53 @@ Operating System:       POSIX :: Linux, Microsoft :: Windows
 Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
+Updates:                Add Chinese characters support, both of sender, subject, attachments' name
+                        can contain no-ascii characters
  """
 
 import os
 import smtplib
-import sys
 import time
+from email.header import Header
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.utils import COMMASPACE, formatdate
+from email.utils import formatdate, make_msgid
 
 
-def usage():
-    print("""
-    Function: send email to somebody using smtp protocol
-    Usage: python %s <mailto> <subject> <message body>
-    Zabbix setting: 'Administration' -> 'Media types' 
-                    https://hostname/zabbix.php?action=mediatype.edit&mediatypeid=4
-                    Script parameters: {ALERT.SENDTO} {ALERT.SUBJECT} {ALERT.MESSAGE}
-    Example: python %s "dinggd@example.cn" "Test email from Python" "Python rules them all!"
-""") % (__file__, sys.argv[0])
-    sys.exit(0)
+def to_unicode_or_bust(obj, encoding='utf-8'):
+    # the function convert non-unicode object to unicode object
+    if isinstance(obj, basestring):
+        if not isinstance(obj, unicode):
+            obj = unicode(obj, encoding)
+
+    return obj
 
 
-def sendmail(send_from, send_to, subject, text, files=None):
+def sendmail(send_from, send_to, subject, text, files=None, cc=None):
     assert isinstance(send_to, list)
 
     msg = MIMEMultipart()
-    msg['From'] = send_from
-    msg['To'] = COMMASPACE.join(send_to)  # To, Cc, Bcc; Bcc should be used carefully.
+    msg['From'] = Header(send_from, 'utf-8')
+    msg['To'] = ", ".join(send_to)
     msg['Date'] = formatdate(localtime=True)
-    msg['Subject'] = subject
-    msg.attach(MIMEText(text))
+    msg['Message-ID'] = make_msgid()  # Returns a string suitable for RFC 2822 compliant Message-ID.
+    msg['Subject'] = Header(subject, 'utf-8')
+    msg.attach(MIMEText(text, 'plain', 'utf-8'))  # MIMEText(html,'html','utf8')
+
+    if cc is not None:
+        msg['CC'] = cc
 
     for attachment in files or []:
-        if os.path.exists(attachment):
+        attachment = to_unicode_or_bust(attachment)  # convert str to unicode
+        if os.path.exists(attachment):  # Unicode is required
             filename = os.path.basename(attachment)
-            with open(attachment, "rb") as fil:
+            with open(attachment, "rb") as fd:  # Unicode is required
                 part = MIMEApplication(
-                    fil.read(),
-                    Name=filename
+                    fd.read(),
+                    Name=filename,
                 )
-            # After the file is closed
-            part['Content-Disposition'] = 'attachment; filename="%s"' % filename
+            part['Content-Disposition'] = 'attachment; filename="%s"' % filename.encode("utf-8")
             msg.attach(part)
 
     smtp = smtplib.SMTP()
