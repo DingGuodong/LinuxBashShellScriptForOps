@@ -1,6 +1,6 @@
 #!/bin/bash
 function cecho {
-        while [ "$1" ]; do
+        while [[ "$1" ]]; do
                 case "$1" in 
                         -normal)        color="\033[00m" ;;
 -black)         color="\033[30;01m" ;;
@@ -22,7 +22,7 @@ echo -en "\033[00m"
 shift
 
 done 
-if [ ! $one_line ]; then
+if [[ ! $one_line ]]; then
         echo
 fi
 }

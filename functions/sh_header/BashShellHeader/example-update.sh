@@ -4,12 +4,12 @@
 # =============================================================================================================================
 
 # Check that we are root ... so non-root users stop here
-[  `id -u` -eq  "0" ] ||  exit 4
+[[  `id -u` -eq  "0" ]] ||  exit 4
 
 # resolve links - $0 may be a symbolic link
 PRG="$0"
 
-while [ -h "$PRG" ]; do
+while [[ -h "$PRG" ]]; do
   ls=`ls -ld "$PRG"`
   link=`expr "$ls" : '.*-> \(.*\)$'`
   if expr "$link" : '/.*' > /dev/null; then
@@ -34,7 +34,7 @@ function cecho {
     # cecho -n                # new line
     # end
 
-    while [ "$1" ]; do
+    while [[ "$1" ]]; do
         case "$1" in
             -normal)        color="\033[00m" ;;
 # -black)         color="\033[30;01m" ;;
@@ -56,7 +56,7 @@ echo -en "\033[00m"
 shift
 
 done
-if [ ! $one_line ]; then
+if [[ ! $one_line ]]; then
         echo
 fi
 }
@@ -65,22 +65,22 @@ fi
 # echo color function, smarter
 function echo_r () {
     #Error, Failed
-    [ $# -ne 1 ] && return 0
+    [[ $# -ne 1 ]] && return 0
     echo -e "\033[31m$1\033[0m"
 }
 function echo_g () {
     # Success
-    [ $# -ne 1 ] && return 0
+    [[ $# -ne 1 ]] && return 0
     echo -e "\033[32m$1\033[0m"
 }
 function echo_y () {
     # Warning
-    [ $# -ne 1 ] && return 0
+    [[ $# -ne 1 ]] && return 0
     echo -e "\033[33m$1\033[0m"
 }
-function echo_b () {\
+function echo_b () {
     # Debug
-    [ $# -ne 1 ] && return 0
+    [[ $# -ne 1 ]] && return 0
     echo -e "\033[34m$1\033[0m"
 }
 # end echo color function, smarter
@@ -122,11 +122,11 @@ identity_file=~/.ssh/id_rsa.pub
 # check if user want to execute on remote clients
 function parse_config_remote_execution()
 {
-    if [ -z "`eval $config_remote_execution`" ]; then
+    if [[ -z "`eval ${config_remote_execution}`" ]]; then
         echo_r "Error: config_remote_execution is NOT set, if you want execute it local, set it no, else set it yes. "
         exit 1
-    elif [ x$config_remote_execution != x ];then
-        case $config_remote_execution in
+    elif [[ x${config_remote_execution} != x ]];then
+        case ${config_remote_execution} in
             yes|true|1)
                 config_remote_execution=1
                 ;;
@@ -152,12 +152,12 @@ function test_self(){
 
     # clean old test example
     echo_b "Clean old test example. "
-    [ -d $WORKDIR/example_projects ] && rm -rf $WORKDIR/example_projects
-    [ -d $WORKDIR/example_resources ] && rm -rf $WORKDIR/example_resources
-    [ -d $WORKDIR/example_backup_dir ] && rm -rf $WORKDIR/example_backup_dir
+    [[ -d $WORKDIR/example_projects ]] && rm -rf $WORKDIR/example_projects
+    [[ -d $WORKDIR/example_resources ]] && rm -rf $WORKDIR/example_resources
+    [[ -d $WORKDIR/example_backup_dir ]] && rm -rf $WORKDIR/example_backup_dir
 
     # make an example project directory
-    if [ -z $config_project_dir -o ! -d $config_project_dir ]; then
+    if [[ -z $config_project_dir -o ! -d $config_project_dir ]]; then
         echo_b "Making an example project directory. "
         mkdir $WORKDIR/example_projects
         config_project_dir=example_projects
@@ -167,14 +167,14 @@ function test_self(){
     fi
 
     # make an example resources directory
-    if [ -z $config_resources_dir -o ! -d $config_resources_dir ]; then
+    if [[ -z $config_resources_dir -o ! -d $config_resources_dir ]]; then
         echo_b "Making an example resources directory. "
         mkdir  $WORKDIR/example_resources
         config_resources_dir=$WORKDIR/example_resources
     fi
 
     # make an example config_update.conf
-    if [ -z $config_config_file -o ! -f $config_config_file ]; then
+    if [[ -z $config_config_file -o ! -f $config_config_file ]]; then
         echo_b "Making an example config_update.conf file. "
         touch $config_resources_dir/config_update.conf
         config_config_file=$config_resources_dir/config_update.conf
@@ -196,7 +196,7 @@ eof
     files=`awk -F '[ ]+' '/^file/ { print $2 }' $config_config_file`
     echo_b "Making an example files(patches) refer to $config_config_file. "
     for names in $files; do
-        [ ! -f $config_resources_dir/$names ] && touch $config_resources_dir/$names
+        [[ ! -f $config_resources_dir/$names ]] && touch $config_resources_dir/$names
     done
     fi
 
@@ -205,7 +205,7 @@ eof
     # test network and ssh for remote call
 
     # make an example backup directory
-    if [ -z $config_backup_dir -o ! -d $config_backup_dir ]; then
+    if [[ -z $config_backup_dir -o ! -d $config_backup_dir ]]; then
         echo_b "Making an example backup directory"
         mkdir $WORKDIR/example_backup_dir
         config_backup_dir=$WORKDIR/example_backup_dir
@@ -226,7 +226,7 @@ function ssh_keygen(){
     # Improvement
     # ssh-keygen parameters
     ssh-keygen -N "" -f /root/.ssh/id_rsa
-    if [ $? -ne 0 ]; then
+    if [[ $? -ne 0 ]]; then
         echo_r "Error: generate SSH key and related files for itself failed! "
         exit 1
     fi
@@ -240,7 +240,7 @@ function ssh_keygen(){
 function inject_ssh_key(){
 # ssh-copy-id Line:41
 which sshpass >/dev/null 2>&1 || yum -q -y install sshpass
-if [ $? -ne 0 -a ! -f /etc/yum.repos.d/epel.repo ]; then
+if [[ $? -ne 0 -a ! -f /etc/yum.repos.d/epel.repo ]]; then
     echo_y "sshpass can NOT install on system with yum repolist, install epel first. "
     yum -q -y install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
     yum -q -y install sshpass
@@ -264,7 +264,7 @@ for hostname in $hostname_list; do
     # Refer: http://stackoverflow.com/questions/305035/how-to-use-ssh-to-run-shell-script-on-a-remote-machine
     # comment this line
     #sshpass -p $password cat ~/.ssh/id_rsa.pub | ssh -T -p $port -oStrictHostKeyChecking=no $user@$hostname "exec sh -c 'cat >> ~/.ssh/authorized_keys && (test -x /sbin/restorecon && /sbin/restorecon ~/.ssh ~/.ssh/authorized_keys >/dev/null 2>&1 || true)'"
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]]; then
         echo_g "SSH key inject to $hostname successfully! "
     else
         echo_r "SSH key inject to $hostname failed! "
@@ -283,7 +283,7 @@ function check_ssh_connection(){
         if ! ssh -i ~/.ssh/id_rsa -p $port -oPasswordAuthentication=no $user@$hostname "exec sh -c 'true'" >/dev/null 2>&1; then
             echo_b "Can NOT login $hostname through SSH key ~/.ssh/id_rsa, retry to inject SSH keys. "
             sshpass -p $password ssh -p $port -oStrictHostKeyChecking=no $user@$hostname "exec sh -c 'echo $(cat ~/.ssh/id_rsa.pub) >> ~/.ssh/authorized_keys && (test -x /sbin/restorecon && /sbin/restorecon ~/.ssh ~/.ssh/authorized_keys >/dev/null 2>&1 || true)'"
-            if [ $? -ne 0 ]; then
+            if [[ $? -ne 0 ]]; then
                 echo_r "Error: SSH key inject to $hostname failed! "
                 exit 1
             else
@@ -291,7 +291,7 @@ function check_ssh_connection(){
                 if ssh -p $port -oStrictHostKeyChecking=no $user@$hostname "exec sh -c 'cat ~/.ssh/authorized_keys | sort | uniq --repeated | grep ssh'"; then
                     echo_y "Duplicate lines found in ~/.ssh/authorized_keys, remove them. "
                     ssh -p $port -oStrictHostKeyChecking=no $user@$hostname "exec sh -c 'cat ~/.ssh/authorized_keys | sort | uniq > ~/.ssh/authorized_keys~;\mv ~/.ssh/authorized_keys~ ~/.ssh/authorized_keys'"
-                    if [ $? -eq 0 ]; then
+                    if [[ $? -eq 0 ]]; then
                         echo_g "Duplicate lines found in ~/.ssh/authorized_keys removed successfully! "
                     else
                         echo_y "Duplicate lines found in ~/.ssh/authorized_keys removed failed! "
@@ -317,7 +317,7 @@ function do_cp(){
         \cp $SOURCE $DEST
     else
         echo_y "Self test purpose found! But we can do this action! "
-        [ ! -d $config_project_dir/$(dirname $SOURCE) ] && mkdir -p $config_project_dir/$(dirname $SOURCE)
+        [[ ! -d $config_project_dir/$(dirname $SOURCE) ]] && mkdir -p $config_project_dir/$(dirname $SOURCE)
         \cp $SOURCE $config_project_dir/$(dirname $SOURCE)
     fi
 }
@@ -403,7 +403,7 @@ function backup(){
     # tar directory
     cd $config_project_dir/..
     tar --create --gzip --absolute-names --file=$config_backup_dir/$backup_filename $config_project_dir
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]]; then
         echo_g "Backup files before update finished and successfully! "
         echo "restore_least_file=$config_backup_dir/$backup_filename" > $config_this_logfile
     else
@@ -415,13 +415,13 @@ function backup(){
 
 function restore(){
     echo_b "Restore files for rollback"
-    if [ -f $config_this_logfile ]; then
+    if [[ -f $config_this_logfile ]]; then
         . $config_this_logfile
     fi
     restore_least_file=${restore_least_file:-1}
-    if [ -s $restore_least_file ]; then
+    if [[ -s $restore_least_file ]]; then
         tar -C $config_project_dir/.. -zxf $restore_least_file
-        if [ $? -eq 0 ]; then
+        if [[ $? -eq 0 ]]; then
             echo_g "Restore files finished and successfully! "
         else
             echo_r "Restore files failed! Please alter to administrator. "
@@ -461,23 +461,23 @@ function update_status(){
 function check_dependencies(){
     echo_b "Checking dependencies for update procedure. "
 
-    if [ -z $config_project_dir ]; then
+    if [[ -z $config_project_dir ]]; then
         echo_r "Error: config_project_dir is undefined! "
         exit 1
     fi
 
-    if [ ! -d $config_resources_dir ]; then
+    if [[ ! -d $config_resources_dir ]]; then
         echo_r "Error: config_resources_dir is undefined! "
     fi
 
-    if [ -z $config_config_file ]; then
+    if [[ -z $config_config_file ]]; then
         echo_r "Error: config_config_file is undefined! "
         exit 1
     fi
 
     left_disk_space=`df $config_backup_dir | tail -n1 | awk '{print $(NF -2)}'`
     # set 2097152 to project directory size
-    if [ -z $config_project_dir -o ! -d $config_project_dir ]; then
+    if [[ -z $config_project_dir -o ! -d $config_project_dir ]]; then
         project_file_space_usage=$(du -s /root | awk '{print $1}')
         required_size=$(expr $project_file_space_usage \* 2)
     fi
@@ -486,7 +486,7 @@ function check_dependencies(){
         exit 1
     fi
 
-    if [ ! -f /root/.ssh/id_rsa ]; then
+    if [[ ! -f /root/.ssh/id_rsa ]]; then
         ssh_keygen
     fi
 
@@ -521,7 +521,7 @@ function destroy() {
             # find -L ./ -maxdepth 1 ! -name "deploy.sh" ! -wholename "./"
         # ls | grep -v "fielname" |xargs rm -rf
         find -L $WORKDIR -maxdepth 1 ! -name "$(basename $0)" ! -wholename "$WORKDIR"  -exec rm -rf {} \;
-        if [ $? -eq 0 ];then
+        if [[ $? -eq 0 ]];then
             echo_g "Destroy this project successfully! Now will exit with status 0. "
             exit 0
         else

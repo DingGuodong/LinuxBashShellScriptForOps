@@ -5,7 +5,7 @@
 # resolve links - $0 may be a symbolic link
 PRG="$0"
 
-while [ -h "$PRG" ]; do
+while [[ -h "$PRG" ]]; do
   ls=`ls -ld "$PRG"`
   link=`expr "$ls" : '.*-> \(.*\)$'`
   if expr "$link" : '/.*' > /dev/null; then
@@ -30,7 +30,7 @@ function cecho {
     # cecho -n                # new line
     # end
 
-    while [ "$1" ]; do
+    while [[ "$1" ]]; do
         case "$1" in
             -normal)        color="\033[00m" ;;
 # -black)         color="\033[30;01m" ;;
@@ -52,7 +52,7 @@ echo -en "\033[00m"
 shift
 
 done
-if [ ! ${one_line} ]; then
+if [[ ! ${one_line} ]]; then
         echo
 fi
 }
@@ -61,22 +61,22 @@ fi
 # echo color function, smarter
 function echo_r () {
     #Error, Failed
-    [ $# -ne 1 ] && return 0
+    [[ $# -ne 1 ]] && return 0
     echo -e "\033[31m$1\033[0m"
 }
 function echo_g () {
     # Success
-    [ $# -ne 1 ] && return 0
+    [[ $# -ne 1 ]] && return 0
     echo -e "\033[32m$1\033[0m"
 }
 function echo_y () {
     # Warning
-    [ $# -ne 1 ] && return 0
+    [[ $# -ne 1 ]] && return 0
     echo -e "\033[33m$1\033[0m"
 }
-function echo_b () {\
+function echo_b () {
     # Debug
-    [ $# -ne 1 ] && return 0
+    [[ $# -ne 1 ]] && return 0
     echo -e "\033[34m$1\033[0m"
 }
 # end echo color function, smarter
@@ -92,7 +92,7 @@ SOURCEURL=https://github.com/DingGuodong/GitOSCAutoDeploy.git
 save_old_releases_for_days=10
 
 function setDirectoryStructure() {
-    if [ -f ${WORKDIR}/.lock ];then
+    if [[ -f ${WORKDIR}/.lock ]];then
         echo_g "Set directory structure has been done, skipping. "
         return
     fi
@@ -123,9 +123,9 @@ function setDirectoryStructure() {
 
     # Check directories for deploy
     # [ ! -d ${WORKDIR}/current ] && mkdir ${WORKDIR}/current
-    [ ! -d ${WORKDIR}/release ] && mkdir ${WORKDIR}/release
-    [ ! -d ${WORKDIR}/repository ] && mkdir ${WORKDIR}/repository
-    [ ! -d ${WORKDIR}/share ] && mkdir ${WORKDIR}/share
+    [[ ! -d ${WORKDIR}/release ]] && mkdir ${WORKDIR}/release
+    [[ ! -d ${WORKDIR}/repository ]] && mkdir ${WORKDIR}/repository
+    [[ ! -d ${WORKDIR}/share ]] && mkdir ${WORKDIR}/share
     # end directories structure
     touch ${WORKDIR}/.lock
     echo_g "Set directory structure successfully! "
@@ -159,15 +159,15 @@ function checkDependencies() {
 
 function cleanOldReleases(){
     save_days=${save_old_releases_for_days:-10}
-    if [ ! -d ${WORKDIR}/release ]; then
+    if [[ ! -d ${WORKDIR}/release ]]; then
         echo_b "Can NOT find release directory, skipping . "
         return
     fi
     need_clean=$(find ${WORKDIR}/release -mtime +${save_days} -exec ls '{}' \;)
-    if [ ! -z ${need_clean} ]; then
+    if [[ ! -z ${need_clean} ]]; then
         echo_g "Expired releases found and will be removed from project! "
         find ${WORKDIR}/release -mtime +${save_days} -exec rm -rf '{}' \;
-        if [ $? -eq 0 ]; then
+        if [[ $? -eq 0 ]]; then
             echo_g "Expired releases have removed from project! "
         else
             echo_r "Can NOT remove expired releases, please alter to Admin users. "
@@ -187,7 +187,7 @@ function deploy() {
     checkDependencies
     # Make directory to release directory
     SOURCEDIR="${WORKDIR}/release/$(date +%Y%m%d%H%M%S)"
-    [ ! -d ${SOURCEDIR} ] && mkdir ${SOURCEDIR}
+    [[ ! -d ${SOURCEDIR} ]] && mkdir ${SOURCEDIR}
 
     # Get files from source code repository
     git clone ${SOURCEURL} ${SOURCEDIR}
@@ -198,23 +198,23 @@ function deploy() {
 
 
     # Remove .git or .svn
-    [ -d ${SOURCEDIR}/.git ] && rm -rf ${SOURCEDIR}/.git
-    [ -d ${SOURCEDIR}/.svn ] && rm -rf ${SOURCEDIR}/.svn
+    [[ -d ${SOURCEDIR}/.git ]] && rm -rf ${SOURCEDIR}/.git
+    [[ -d ${SOURCEDIR}/.svn ]] && rm -rf ${SOURCEDIR}/.svn
 
     # ifdef Complie
     # endif
 
     # Make source code symbolic link to current
-    ( [ -f ${WORKDIR}/current ] || [ -d ${WORKDIR}/current ] ) && rm -rf ${WORKDIR}/current
+    ( [[ -f ${WORKDIR}/current ]] || [[ -d ${WORKDIR}/current ]] ) && rm -rf ${WORKDIR}/current
     ln -s ${SOURCEDIR} ${WORKDIR}/current
 
     # Move conf and logs directories from release to share
-    [ -d ${WORKDIR}/release/conf ] && mv ${WORKDIR}/release/conf ${WORKDIR}/share/conf
-    [ -d ${WORKDIR}/release/logs ] && mv ${WORKDIR}/release/logs ${WORKDIR}/share/logs
+    [[ -d ${WORKDIR}/release/conf ]] && mv ${WORKDIR}/release/conf ${WORKDIR}/share/conf
+    [[ -d ${WORKDIR}/release/logs ]] && mv ${WORKDIR}/release/logs ${WORKDIR}/share/logs
 
     # Make conf and logs symbolic link to current
-    [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current/conf
-    [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current/logs
+    [[ -d ${WORKDIR}/share/conf ]] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current/conf
+    [[ -d ${WORKDIR}/share/logs ]] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current/logs
 
     # Start service or validate status
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
@@ -262,8 +262,8 @@ function rollback() {
     ln -s ${WORKABLE_PROGRAM} ${WORKDIR}/current
 
     # Remake conf and logs symbolic link to current
-    [ -d ${WORKDIR}/share/conf ] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current
-    [ -d ${WORKDIR}/share/logs ] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
+    [[ -d ${WORKDIR}/share/conf ]] && ln -s ${WORKDIR}/share/conf ${WORKDIR}/current
+    [[ -d ${WORKDIR}/share/logs ]] && ln -s ${WORKDIR}/share/logs ${WORKDIR}/current
 
     # Start service or validate status
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
@@ -301,7 +301,7 @@ function destroy() {
             # find -L ./ -maxdepth 1 ! -name "deploy.sh" ! -wholename "./"
         # ls | grep -v "fielname" |xargs rm -rf
         find -L ${WORKDIR} -maxdepth 1 ! -name "$(basename $0)" ! -wholename "${WORKDIR}"  -exec rm -rf '{}' \;
-        if [ $? -eq 0 ];then
+        if [[ $? -eq 0 ]];then
             echo_g "Destroy this project successfully! Now will exit with status 0. "
             exit 0
         else

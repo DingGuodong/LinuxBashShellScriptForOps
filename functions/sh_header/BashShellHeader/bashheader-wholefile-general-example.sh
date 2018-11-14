@@ -37,7 +37,7 @@ user_defined_=""
 # learn from apache-tomcat-6.x.xx/bin/catalina.sh
 PRG="$0"
 
-while [ -h "$PRG" ]; do
+while [[ -h "$PRG" ]]; do
   ls=`ls -ld "$PRG"`
   link=`expr "$ls" : '.*-> \(.*\)$'`
   if expr "$link" : '/.*' > /dev/null; then
@@ -53,37 +53,37 @@ PRGDIR=`dirname "$PRG"`
 # echo color function, smarter, learn from lnmp.org lnmp install.sh
 function echo_r (){
     # Color red: Error, Failed
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[31m$1\033[0m"
 }
 
 function echo_g (){
     # Color green: Success
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[32m$1\033[0m"
 }
 
 function echo_y (){
     # Color yellow: Warning
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[33m$1\033[0m"
 }
 
 function echo_b (){
     # Color blue: Debug Level 1
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[34m$1\033[0m"
 }
 
 function echo_p (){
     # Color purple: Debug Level 2
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[35m$1\033[0m"
 }
 
 function echo_c (){
     # Color cyan: friendly prompt, Level 1
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[36m$1\033[0m"
 }
 
@@ -97,7 +97,7 @@ WORKDIR="`readlink -f ${PRGDIR}`"
 
 USER="`id -un`"
 LOGNAME="$USER"
-if [ $UID -ne 0 ]; then
+if [[ $UID -ne 0 ]]; then
     echo_y "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options."
     echo_y "Retry to using \"sudo bash $0 $@\"."
 fi
@@ -108,7 +108,7 @@ command_exists() {
 }
 
 check_command_can_be_execute(){
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     command_exists $1
 }
 
@@ -119,7 +119,7 @@ check_network_connectivity(){
     ping_count=2
     ping -c ${ping_count} ${network_address_to_check} >/dev/null
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         if ping -c ${ping_count} ${stable_network_address_to_check} >/dev/null;then
             echo_g "Network to $stable_network_address_to_check succeed! "
             echo_y "Note: network to $network_address_to_check failed once! maybe just some packages loss."
@@ -133,7 +133,7 @@ check_network_connectivity(){
             echo_r "Network is blocked! "
             exit 1
         fi
-    elif [ ${retval} -eq 0 ]; then
+    elif [[ ${retval} -eq 0 ]]; then
         echo_g "Check network connectivity passed! "
     fi
 }
@@ -153,7 +153,7 @@ check_name_resolve(){
             echo_y "Nameserver config file is validated, but name lookup failed for $target_name_to_resolve with $ping_count times"
             return 0
         fi
-        [ -f /etc/resolv.conf ] && cp /etc/resolv.conf /etc/resolv.conf_$(date +%Y%m%d%H%M%S)~
+        [[ -f /etc/resolv.conf ]] && cp /etc/resolv.conf /etc/resolv.conf_$(date +%Y%m%d%H%M%S)~
         cat >/etc/resolv.conf<<eof
 nameserver 114.114.114.114
 nameserver 8.8.4.4
@@ -173,7 +173,7 @@ function main(){
         trap 'rm -f "$lock_filename_full_path"; exit $?' INT TERM EXIT
         # Just a test for call itself, comment it
          if [[ $# -ne 1 ]]; then
-            [ ! -x ${WORKDIR}/`basename $0` ] && chmod +x ${WORKDIR}/`basename $0`
+            [[ ! -x ${WORKDIR}/`basename $0` ]] && chmod +x ${WORKDIR}/`basename $0`
             test -z ${header} || echo_b "$header"
             ${WORKDIR}/`basename $0` deploy
             exit 0

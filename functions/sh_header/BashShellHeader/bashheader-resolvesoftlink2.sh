@@ -6,7 +6,7 @@
 # get a canonical path, macosx and slowlaris does not support readlink -f :-)
 pathCanonical() {
     local dst="${1}"
-    while [ -h "${dst}" ] ; do
+    while [[ -h "${dst}" ]] ; do
         ls=`ls -ld "${dst}"`
         link=`expr "$ls" : '.*-> \(.*\)$'`
         if expr "$link" : '/.*' > /dev/null; then
@@ -17,7 +17,7 @@ pathCanonical() {
     done
     local bas="`basename "${dst}"`"
     local dir="`dirname "${dst}"`"
-    if [ "$bas" != "$dir" ]; then
+    if [[ "$bas" != "$dir" ]]; then
       dst="`pathCanonical "$dir"`/$bas"
     fi
     echo "${dst}" | sed -e 's#//#/#g' -e 's#/\./#/#g' -e 's#/[^/]*/\.\./#/#g'
@@ -29,7 +29,7 @@ getActiveMQHome(){
   local REAL_BIN="`pathCanonical $0`"
   local REAL_DIR="`dirname $REAL_BIN`/../"
   REAL_DIR="`cd $REAL_DIR && pwd -P`"
-  if [ -z "$REAL_DIR" ];then
+  if [[ -z "$REAL_DIR" ]];then
       echo 'ERROR: unable to find real installation path fo activemq, you have to define ACTIVEMQ_HOME manually in the config' >&2
       exit 1
   fi
@@ -38,7 +38,7 @@ getActiveMQHome(){
 }
 
 # Active MQ installation dir
-if [ -z "$ACTIVEMQ_HOME" ] ; then
+if [[ -z "$ACTIVEMQ_HOME" ]] ; then
   ACTIVEMQ_HOME="`getActiveMQHome`"
 fi
 

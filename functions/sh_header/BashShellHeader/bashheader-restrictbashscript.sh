@@ -27,7 +27,7 @@ set -eu
 
 
 # Following Mode1 or Mode2: refer to next comment
-[ -n "$ENABLE_DEBUG_MODE" ] && set -x
+[[ -n "$ENABLE_DEBUG_MODE" ]] && set -x
 # set -x
     # After  expanding  each  simple command, for command, case command, select command, or arithmetic for command, display the expanded value of PS4, fol-
     # lowed by the command and its expanded arguments or associated word list.
