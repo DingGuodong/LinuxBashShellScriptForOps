@@ -160,22 +160,26 @@ def printer_watchdog():
     print win32print.GetPrinter(printer)
 
     jobs_list = list()
-    total_seconds = 60 * 5
+    total_seconds = 60 * 5  # reset after 60*5 seconds
     sleep_seconds = 10
     times = total_seconds / sleep_seconds
     current_times = 0
     while True:
-        jobs = win32print.EnumJobs(printer, 0, 3)
+        jobs = win32print.EnumJobs(printer, 0, 3, 1)
+        # 0 is location of first job,
+        # 3 is number of jobs to enumerate,
+        # 1 is job info level, can be 1(win32print.JOB_INFO_1), 2, 3. 3 is reserved, 1 and 2 can NOT get job status, :(
         if len(jobs) >= 1:
             for job in jobs:
                 print job.get('pUserName'), job.get('Submitted'), job.get('pMachineName'), \
                     job.get('pDocument').decode(DEFAULT_LOCALE_ENCODING)
                 jobs_list.append(job.get('JobId', -1))
-            if jobs[0].get('JobId') in jobs_list or jobs[-1].get('JobId') in jobs_list:
+            if any([jid in jobs_list for jid in (jobs[0].get('JobId'), jobs[-1].get('JobId'))]):
                 current_times += 1
             if current_times > times:
                 print "printer need to be reset, ... "
                 reset_printer()
+                jobs_list = []  # make sure there are not same job id in list
                 current_times = 0
         print 'looks good'
         time.sleep(sleep_seconds)
