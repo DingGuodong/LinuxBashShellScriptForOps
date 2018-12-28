@@ -8,18 +8,23 @@ User:               Guodong
 Create Date:        2016/9/14
 Create Time:        9:40
  """
-import requests
-import requests.packages.urllib3
+import hashlib
 import os
 import sys
-import hashlib
+
+import requests
+
+try:
+    from requests.packages import urllib3
+except ImportError:
+    import urllib3
 
 
-def get_hash_sum(filename, method="md5", block_size=65536):
-    if not os.path.exists(filename):
-        raise RuntimeError("cannot open '%s' (No such file or directory)" % filename)
-    if not os.path.isfile(filename):
-        raise RuntimeError("'%s' :not a regular file" % filename)
+def get_hash_sum(name, method="md5", block_size=65536):
+    if not os.path.exists(name):
+        raise RuntimeError("cannot open '%s' (No such file or directory)" % name)
+    if not os.path.isfile(name):
+        raise RuntimeError("'%s' :not a regular file" % name)
 
     if "md5" in method:
         checksum = hashlib.md5()
@@ -31,7 +36,7 @@ def get_hash_sum(filename, method="md5", block_size=65536):
         raise RuntimeError("unsupported method %s" % method)
 
     # if os.path.exists(filename) and os.path.isfile(filename):
-    with open(filename, 'rb') as f:
+    with open(name, 'rb') as f:
         buf = f.read(block_size)
         while len(buf) > 0:
             checksum.update(buf)
@@ -42,27 +47,37 @@ def get_hash_sum(filename, method="md5", block_size=65536):
             return checksum
 
 
-requests.packages.urllib3.disable_warnings()
+def download_file(url, destfile):
+    """
+    method for downloading a file from an URL
+    :param url: The URL of the file to be downloaded (assumed to be available via an HTTP GET request).
+    :param destfile: The pathname where the downloaded file is to be saved.
+    :return:
+    """
+    urllib3.disable_warnings()
 
-url = "https://raw.githubusercontent.com/racaljk/hosts/master/hosts"
-filename = url.split('/')[-1]
-save = os.path.join("/tmp", filename).replace("\\", "/")
+    with open(destfile, 'wb') as fp:
+        response = requests.request("GET", url, stream=False, headers=None)
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                fp.write(chunk)
+                fp.flush()
 
-print "Downloading '%s', save '%s' to '%s'" % (url, filename, save)
-response = requests.request("GET", url, stream=True, data=None, headers=None)
 
-total_length = int(response.headers.get("Content-Length"))
-with open(save, 'wb') as f:
-    for chunk in response.iter_content(chunk_size=1024):
-        if chunk:
-            f.write(chunk)
-            f.flush()
+if __name__ == '__main__':
+    wanted_url = "https://raw.githubusercontent.com/racaljk/hosts/master/hosts"
+    filename = wanted_url.split('/')[-1]
+    save = os.path.join("/tmp", filename).replace("\\", "/")
 
-if os.path.isfile(save):
-    print "Done: '%s'" % save
-    print "md5sum:", get_hash_sum(save, method="md5")
-    print "sha1sum:", get_hash_sum(save, method="sha1sum")
-    print "sha256sum:", get_hash_sum(save, method="sha256sum")
-else:
-    print "can not download", url
-    sys.exit(1)
+    print "Downloading '%s', save '%s' to '%s'" % (wanted_url, filename, save)
+
+    download_file(wanted_url, save)
+
+    if os.path.isfile(save):
+        print "Saved: '%s'" % save
+        print "md5sum:", get_hash_sum(save, method="md5")
+        print "sha1sum:", get_hash_sum(save, method="sha1sum")
+        print "sha256sum:", get_hash_sum(save, method="sha256sum")
+    else:
+        print "can not download", wanted_url
+        sys.exit(1)
