@@ -11,7 +11,11 @@ Create Time:        11:40
 import requests
 
 
-def example1():
+def requests_example1():
+    """
+    request a common URL
+    :return:
+    """
     # http://docs.python-requests.org/en/master/
     # http://docs.python-requests.org/en/master/user/quickstart/#make-a-request
     r = requests.get('https://api.github.com/user', auth=('user', 'pass'))
@@ -19,10 +23,15 @@ def example1():
     print r.headers['content-type']
     print r.encoding
     print r.text.encode(r.encoding)
+    print r.content.encode(r.encoding)
     print r.json()
 
 
-def example2():
+def requests_example2():
+    """
+    request a url with redirect
+    :return:
+    """
     url_with_302_307 = 'http://www.baidu.com/'
     response = requests.request('GET', url_with_302_307, allow_redirects=True)  # Defaults to ``True``.
     print(response.status_code)
@@ -31,5 +40,22 @@ def example2():
         print(response.text.encode(response.encoding))
 
 
+def requests_example3():
+    """
+    request a URL with a valid cert authority
+    :return:
+    """
+    try:
+        from requests.packages import urllib3
+    except ImportError:
+        import urllib3
+    urllib3.disable_warnings()  # equal to import logging; logging.captureWarnings(capture=True)
+
+    url_with_ssl_issue = 'https://dgd2010.blog.51cto.com/'
+    response = requests.request('GET', url_with_ssl_issue, verify=False, allow_redirects=False)
+    print(response.status_code)
+    print(response.encoding)
+
+
 if __name__ == '__main__':
-    example2()
+    requests_example3()
