@@ -29,7 +29,11 @@ import dns.resolver
 
 
 def query_dns_rr(qname, rdtype="A", nameserver="8.8.8.8", debug=False):
+    if 'http' in qname:
+        qname = get_domain_name_from_url(qname)
+
     resolver = dns.resolver.Resolver()
+    resolver.timeout = 3  # TODO(Guodong) does it really works?
     resolver.nameservers = [nameserver]  # default_nameserver = resolver.nameservers
     resolver.cache = False
     answer = None
@@ -61,10 +65,21 @@ def query_dns_rr(qname, rdtype="A", nameserver="8.8.8.8", debug=False):
         return records
 
 
+def get_domain_name_from_url(url):
+    # https://stackoverflow.com/questions/9626535/get-domain-name-from-url
+    # https://docs.python.org/2/library/urlparse.html
+    from urlparse import urlparse
+    parsed_uri = urlparse(url)
+    # domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+    domain_name = "{uri.netloc}".format(uri=parsed_uri)
+    return domain_name
+
+
 if __name__ == '__main__':
     query_list = [
         'www.baidu.com',
         'api.weixin.qq.com',
+        'any_else_site_not_exists',
     ]
 
     for name in query_list:
