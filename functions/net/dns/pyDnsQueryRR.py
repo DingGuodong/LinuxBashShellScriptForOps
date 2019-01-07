@@ -75,12 +75,31 @@ def get_domain_name_from_url(url):
     return domain_name
 
 
+def to_unicode_or_bust(obj, encoding='utf-8'):
+    # the function convert non-unicode object to unicode object
+    if isinstance(obj, basestring):
+        if not isinstance(obj, unicode):
+            obj = unicode(obj, encoding)
+
+    return obj
+
+
+def unicode2punycode(obj):
+    # support  to resolve domain name in Chinese
+    if isinstance(obj, unicode):
+        return obj.encode("idna")
+    else:
+        return obj
+
+
 if __name__ == '__main__':
     query_list = [
         'www.baidu.com',
         'api.weixin.qq.com',
+        "中国政府网.政务",  # 中国政府网中文域名
         'any_else_site_not_exists',
     ]
 
     for name in query_list:
+        name = unicode2punycode(to_unicode_or_bust(name))
         print(query_dns_rr(name, nameserver="114.114.114.114"))
