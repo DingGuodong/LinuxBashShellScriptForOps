@@ -26,12 +26,13 @@ Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
-
 import os
 import sys
 import time
 import win32print
 import win32service
+from collections import Counter
+from hashlib import md5
 
 import win32serviceutil
 
@@ -150,7 +151,7 @@ def reset_printer():
 
 
 def printer_watchdog():
-    DEFAULT_LOCALE_ENCODING = get_system_encoding()
+    # DEFAULT_LOCALE_ENCODING = get_system_encoding()
     print win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL)  # get local printers
     print win32print.EnumPrinters(win32print.PRINTER_ENUM_CONNECTIONS)  # get printers which other computer shared
 
@@ -160,7 +161,7 @@ def printer_watchdog():
     print win32print.GetPrinter(printer)
 
     jobs_list = list()
-    total_seconds = 60 * 5  # reset after 60*5 seconds
+    total_seconds = 60 * 5  # reset after 60*5 seconds, see 'known issue 2' in this file.
     sleep_seconds = 10
     times = total_seconds / sleep_seconds
     current_times = 0
@@ -171,17 +172,30 @@ def printer_watchdog():
         # 1 is job info level, can be 1(win32print.JOB_INFO_1), 2, 3. 3 is reserved, 1 and 2 can NOT get job status, :(
         if len(jobs) >= 1:
             for job in jobs:
-                print job.get('pUserName'), job.get('Submitted'), job.get('pMachineName'), \
-                    job.get('pDocument').decode(DEFAULT_LOCALE_ENCODING)
-                jobs_list.append(job.get('JobId', -1))
-            if any([jid in jobs_list for jid in (jobs[0].get('JobId'), jobs[-1].get('JobId'))]):
+                filename = job.get('pDocument')
+                job_id = job.get('JobId', md5(filename).hexdigest())
+                print "Current job: ", job_id, job.get('pUserName'), job.get('Submitted'), job.get(
+                    'pMachineName'), filename, "[ %d/%d ]" % (times, current_times + 1)
+                jobs_list.append(job_id)
+
+            # if any([jid in jobs_list for jid in (jobs[0].get('JobId'), jobs[-1].get('JobId'))]):
+            #     current_times += 1
+            if Counter(jobs_list).most_common(1)[0][1] > 1:
                 current_times += 1
+
             if current_times > times:
+                """ KNOWN ISSUE 2:
+                It will reset when a document sends lots of pages to printer. 
+                This script may reset printer before job finished which is not expected.  
+                """
                 print "printer need to be reset, ... "
                 reset_printer()
                 jobs_list = []  # make sure there are not same job id in list
                 current_times = 0
-        print 'looks good'
+        else:
+            jobs_list = []
+            current_times = 0
+            print 'looks good, keep watching ...'
         time.sleep(sleep_seconds)
 
 
