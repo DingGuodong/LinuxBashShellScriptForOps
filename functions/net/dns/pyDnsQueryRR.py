@@ -11,7 +11,7 @@ URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOp
 Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
 Create Date:            2018/3/21
 Create Time:            11:11
-Description:            python query dns RR(Resource Records)
+Description:            python query dns RR(Resource Records), such as A, NS, CNAME, MX, TXT, SRV, etc
 Long Description:       
 References:             
 Prerequisites:          pip install dnspython
@@ -28,9 +28,20 @@ Topic:                  Utilities
 import dns.resolver
 
 
-def query_dns_rr(qname, rdtype="A", nameserver="8.8.8.8", debug=False):
+def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="8.8.8.8", debug=False):
+    """
+    query ip address of given domain name
+    :param qname: domain name
+    :param rdtype: A, CNAME, MX, TXT, NS, SRV, ...
+    :param nameserver:
+    :param debug: enable debug,
+    :return: list
+    """
     if 'http' in qname:
         qname = get_domain_name_from_url(qname)
+
+    if isinstance(rdtype, basestring):
+        rdtype = dns.rdatatype.from_text(rdtype)
 
     resolver = dns.resolver.Resolver()
     resolver.timeout = 3  # TODO(Guodong) does it really works?
@@ -57,12 +68,17 @@ def query_dns_rr(qname, rdtype="A", nameserver="8.8.8.8", debug=False):
         pass
 
     records = []
+    answers = []
     if answer:
-        for record in answer[-1]:
-            records.append(str(record))
-        return records
-    else:
-        return records
+        for record in answer:
+            records.append(record)  # redefined __str__ in <class 'dns.rrset.RRset'>
+
+    for items in records:  # same as answer[-1].__str__()
+        if items.rdtype == rdtype:
+            for item in items:  # same as 'item.items', redefined __iter__ and __len__ in  <class 'dns.Set'>
+                answers.append(str(item))
+
+    return answers
 
 
 def get_domain_name_from_url(url):
@@ -103,3 +119,9 @@ if __name__ == '__main__':
     for name in query_list:
         name = unicode2punycode(to_unicode_or_bust(name))
         print(query_dns_rr(name, nameserver="114.114.114.114"))
+
+    print(query_dns_rr("github.com", rdtype="A", nameserver="114.114.114.114"))
+    print(query_dns_rr("www.jd.com", rdtype="CNAME", nameserver="114.114.114.114"))
+    print(query_dns_rr("github.com", rdtype="NS", nameserver="114.114.114.114"))
+    print(query_dns_rr("github.com", rdtype="MX", nameserver="114.114.114.114"))
+    print(query_dns_rr("aliyun.com", rdtype="TXT", nameserver="114.114.114.114"))
