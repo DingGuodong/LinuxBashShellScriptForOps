@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # encoding: utf-8
 # -*- coding: utf8 -*-
-import sys
 import os
+import sys
 
 POSIX = os.name == "posix"
 WINDOWS = os.name == "nt"
@@ -84,6 +84,6 @@ def yum_or_dpkg():
 
 
 if __name__ == '__main__':
-    print win_or_linux().lower()
-    print centos_or_ubuntu()
-    print yum_or_dpkg()
+    print(win_or_linux().lower())
+    print(centos_or_ubuntu())
+    print(yum_or_dpkg())

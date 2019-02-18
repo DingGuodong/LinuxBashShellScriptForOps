@@ -123,19 +123,19 @@ def str_to_date_py2_gen1us2k(s):
     :param s:
     :return:
     """
-    tmp = re.findall('\s([+-][0-9]{2})00', s)
+    tmp = re.findall(r'\s([+-][0-9]{2})00', s)
     if tmp:
         tz = int(tmp[0][1])
     else:
         tz = 0
 
-    s = re.sub('\s\([+-]([0-9]{2})([0-9]{2})\)', '', s)
-    s = re.sub('\s[+-]([0-9]{2})([0-9]{2})', '', s)
+    s = re.sub(r'\s\([+-]([0-9]{2})([0-9]{2})\)', '', s)
+    s = re.sub(r'\s[+-]([0-9]{2})([0-9]{2})', '', s)
 
-    for format in DATE_FORMATS:
+    for date_format in DATE_FORMATS:
         try:
-            return datetime.datetime.strptime(s, format) + datetime.timedelta(hours=tz)
-        except ValueError as e:
+            return datetime.datetime.strptime(s, date_format) + datetime.timedelta(hours=tz)
+        except ValueError:
             pass
 
     raise ValueError("Unknown date format: '{0}'".format(s))
@@ -148,16 +148,16 @@ def str_to_date_py2_DannyCork(s):
     :param s: 
     :return: 
     """
-    tmp = re.findall('\+([0-9]{2})00', s)
+    tmp = re.findall(r'\+([0-9]{2})00', s)
     if tmp:
         tz = int(tmp[0])
     else:
         tz = 0
 
-    for format in DATE_FORMATS:
+    for date_format in DATE_FORMATS:
         try:
-            return datetime.datetime.strptime(s, format) + datetime.timedelta(hours=tz)
-        except ValueError as e:
+            return datetime.datetime.strptime(s, date_format) + datetime.timedelta(hours=tz)
+        except ValueError:
             pass
 
     raise ValueError("Unknown date format: '%s'" % s)
