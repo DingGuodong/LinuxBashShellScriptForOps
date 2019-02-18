@@ -8,6 +8,7 @@ User:               Guodong
 Create Date:        2016/8/18
 Create Time:        17:35
  """
+import os
 import sys
 
 
@@ -34,30 +35,38 @@ def is_linux():
         return False
 
 
-def which(program):
-    import os
+def is_exe(path):
+    return os.path.isfile(path) and os.access(path, os.X_OK)
 
-    if isinstance(program, str):
+
+def which(path):
+    if isinstance(path, str):
         pass
     else:
         return None
 
-    def is_exe(fpath):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    fpath, fname = os.path.split(program)
+    fpath, fname = os.path.split(path)
     if fpath:
-        if is_exe(program):
-            return program
+        if is_exe(path):
+            return path
     else:
         if is_windows():
-            command = program + ".exe"
+            if not path.endswith(".exe"):
+                command = path + ".exe"
+            else:
+                command = path
         else:
-            command = program
-        for path in os.environ["PATH"].split(os.pathsep):
-            path = path.strip('"')
-            exe_file = os.path.join(path, command)
+            command = path
+
+        for part in os.environ["PATH"].split(os.pathsep):
+            part = part.strip('"')
+            exe_file = os.path.join(part, command)
             if is_exe(exe_file):
                 return exe_file
 
-    return None
+    return ""
+
+
+if __name__ == '__main__':
+    print(which("ping.exe"))
+    print(which("ping"))
