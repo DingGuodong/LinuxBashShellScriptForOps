@@ -7,7 +7,7 @@ import time
 
 import delorean
 import pytz
-from dateutil.relativedelta import relativedelta
+from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
 
 # Define the constants
 SECONDS_PER_MINUTE = 60
@@ -190,3 +190,8 @@ datetime.datetime.strptime('2018-06-07T10:57:14Z', "%Y-%m-%dT%H:%M:%SZ").replace
 # others
 # Time delta operation and convert to str object
 print((datetime.datetime.now() + datetime.timedelta(days=158)).strftime("%Y-%m-%d %H:%M:%S.%f"))
+
+# get timestamp before n days
+save_says = 30
+timestamp_before_save_days = time.mktime((datetime.datetime.today() + relativedelta(days=-save_says)).timetuple())
+print(timestamp_before_save_days)
