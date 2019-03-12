@@ -29,10 +29,29 @@ Topic:                  Utilities
 
 
 def to_unicode_or_bust(obj, encoding='utf-8'):
-    # the function convert non-unicode object to unicode object
+    """
+    convert non-unicode object to unicode object
+    :param obj: str object or unicode
+    :param encoding:
+    :return:
+    """
     if isinstance(obj, basestring):
         if not isinstance(obj, unicode):
             obj = unicode(obj, encoding)
+
+    return obj
+
+
+def to_str_or_bust(obj, encoding='utf-8'):
+    """
+    convert unicode object to str object
+    :param obj: unicode object or str
+    :param encoding:
+    :return:
+    """
+    if isinstance(obj, basestring):
+        if isinstance(obj, unicode):
+            obj = obj.encode(encoding)
 
     return obj
 
