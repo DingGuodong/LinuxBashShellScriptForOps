@@ -35,9 +35,9 @@
 # execute on 23:59 per day
 # 59 23 * * * /path/to/BackupMysqlByDate.sh >/tmp/log_backup_mysql_$(date +"\%Y\%m\%d\%H\%M\%S").log
 
-USER="`id -un`"
+USER="`id -un`"  # $USER is also available
 LOGNAME="$USER"
-if [ ${UID} -ne 0 ]; then
+if [[ ${UID} -ne 0 ]]; then
     echo "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options"
 fi
 
@@ -67,35 +67,35 @@ echo "=> do backup scheduler start at $(date +%Y%m%d%H%M%S)"
 # GRANT ALTER,ALTER ROUTINE,CREATE,CREATE ROUTINE,CREATE TEMPORARY TABLES,CREATE VIEW,DELETE,DROP,EXECUTE,INDEX,INSERT,LOCK TABLES,SELECT,UPDATE,SHOW VIEW,RELOAD,EVENT ON *.* TO 'dev'@"%";
 # FLUSH PRIVILEGES;
 
-[ -d ${mysql_basedir} ] && mysql_datadir=${mysql_basedir}/data || mysql_datadir=/var/lib/mysql
-[ -x ${mysql_bin_mysql} ] || mysql_bin_mysql=mysql
-[ -x ${mysql_bin_mysqldump} ] || mysql_bin_mysqldump=mysqldump
+[[ -d ${mysql_basedir} ]] && mysql_datadir=${mysql_basedir}/data || mysql_datadir=/var/lib/mysql
+[[ -x ${mysql_bin_mysql} ]] || mysql_bin_mysql=mysql
+[[ -x ${mysql_bin_mysqldump} ]] || mysql_bin_mysqldump=mysqldump
 
-if [ ! -d ${mysql_datadir} ] ; then
-    echo "mysql datadir is not standard(this maybe a mistake) or mysql server is not installed on local filesystem."
+if [[ ! -d ${mysql_datadir} ]] ; then
+    echo "WARNING: mysql datadir is not standard(this maybe a mistake) or mysql server is not installed on local filesystem."
 fi
 
-if [ ! -x ${mysql_bin_mysql} ] ;then
+if [[ ! -x ${mysql_bin_mysql} ]] ;then
     echo "mysql: command not found "
     exit 1
 fi
 
-if [ ! -x ${mysql_bin_mysqldump} ]; then
+if [[ ! -x ${mysql_bin_mysqldump} ]]; then
     echo "mysqldump: command not found "
     exit 1
 fi
 
-[ -d ${mysql_backup_dir}/${date_format_type_dir} ] || mkdir -p ${mysql_backup_dir}/${date_format_type_dir}
+[[ -d ${mysql_backup_dir}/${date_format_type_dir} ]] || mkdir -p ${mysql_backup_dir}/${date_format_type_dir}
 
 mysql_databases_list=""
-if [ -d ${mysql_datadir} ] && [ "x${mysql_backup_remote}" != "xtrue" ]; then
+if [[ -d ${mysql_datadir} ]] && [[ "x${mysql_backup_remote}" != "xtrue" ]]; then
     mysql_databases_list=`ls -p ${mysql_datadir} | grep / |tr -d /`
 else
     mysql_databases_list=$(${mysql_bin_mysql} -h${mysql_host} -P${mysql_port} -u${mysql_username} -p${mysql_password} \
     --show-warnings=FALSE -e "show databases;" 2>/dev/null | grep -Eiv '(^database$|information_schema|performance_schema|^mysql$)')
 fi
 
-if [ "x${mysql_databases_list}" == "x" ]; then
+if [[ "x${mysql_databases_list}" == "x" ]]; then
     echo "no database is found to backup, aborted! "
     exit 1
 fi
@@ -108,7 +108,7 @@ for mysql_database in ${mysql_databases_list};do
         --ignore-table=mysql.event --databases ${mysql_database} 2>/dev/null | \
         gzip > ${mysql_backup_dir}/${date_format_type_dir}/${mysql_database}-backup-${date_format_type_file}.sql.gz
 
-    [ $? -eq 0 ] && echo "${mysql_database} backup successfully! " || \
+    [[ $? -eq 0 ]] && echo "${mysql_database} backup successfully! " || \
         echo "${mysql_database} backup failed! "
     /bin/sleep 1
 
@@ -117,7 +117,7 @@ for mysql_database in ${mysql_databases_list};do
          --ignore-table=mysql.event --databases ${mysql_database} --no-data 2>/dev/null | \
          gzip > ${mysql_backup_dir}/${date_format_type_dir}/${mysql_database}-backup-${date_format_type_file}_schema.sql.gz
 
-    [ $? -eq 0 ] && echo "${mysql_database} schema backup successfully! " || \
+    [[ $? -eq 0 ]] && echo "${mysql_database} schema backup successfully! " || \
         echo "${mysql_database} schema backup failed! "
     /bin/sleep 1
 done
@@ -125,8 +125,8 @@ IFS=${saved_IFS}
 
 save_days=${save_old_backups_for_days:-10}
 need_clean=$(find ${mysql_backup_dir} -maxdepth 1 -ctime +${save_days} -exec ls '{}' \;)
-# if [ ! -z ${need_clean} ]; then
-if [ "x${need_clean}" != "x" ]; then
+# if [[ ! -z ${need_clean} ]]; then
+if [[ "x${need_clean}" != "x" ]]; then
     find ${mysql_backup_dir} -maxdepth 1 -ctime +${save_days} -exec rm -rf '{}' \;
     echo "old backups have been cleaned! "
 else

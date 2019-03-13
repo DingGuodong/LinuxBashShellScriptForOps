@@ -21,7 +21,7 @@ import time
 from subprocess import call
 
 mysql_host = '127.0.0.1'
-mysql_port = 0
+mysql_port = 3306
 mysql_user = 'root'
 mysql_password = 'Y0dPCxyLPFpbw'
 mysql_db_list = ['cmdb', 'kissops', 'devdb', 'itoms_schema']  # dbs to backup
@@ -79,7 +79,7 @@ def mysql_auth():
         password: {password}
     '''.format(host=mysql_host, port=mysql_port, user=mysql_user, password=mysql_password)
     if confirm('Is this right?'):
-        pass
+        print("default setting is accepted!")
     else:
         import getpass
         mysql_host = raw_input('Enter MySQL host:')
@@ -114,9 +114,17 @@ def backup():
     if os.path.exists(backups_save_path):
         backup_base_dir = backups_save_path
     else:
-        HOME = os.path.expanduser('~')  # both Windows and Linux is works
-        backup_base_dir = os.path.join(HOME, 'Desktop')
-
+        print("The backups will be stored into %s" % backups_save_path)
+        if confirm("The directory where the backup is stored does not exist, are you wish to create it?"):
+            os.makedirs(backups_save_path)
+            backup_base_dir = backups_save_path
+        else:
+            HOME = os.path.expanduser('~')  # both Windows and Linux is works
+            backup_base_dir = os.path.join(HOME, 'Desktop')
+            print("The backups will be stored into %s" % backup_base_dir)
+            if not confirm("Accept it?"):
+                print("Aborted!")
+                sys.exit(2)
     for db in mysql_db_list:
         backup_file = os.path.join(backup_base_dir, '{db}_{time}.sql'.format(db=db, time=time.strftime("%Y%m%d%H%M%S")))
         if print_cli:
@@ -129,7 +137,10 @@ def backup():
                                                                                      options=mysqldump_parameters,
                                                                                      database=db, path=backup_file),
                            shell=True)
-        print '%s database backup finished with exit code %d' % (db, return_code)
+        if return_code != 0:
+            print('%s database backup finished with exit code %d' % (db, return_code))
+        else:
+            print('%s database backup successfully!' % db)
 
 
 if __name__ == '__main__':
