@@ -116,7 +116,7 @@ def backup_mysql():
     """
     cli = """mysqldump -u {user} -p"{password}" -h {host} -P {port} \
         -f -R -E --triggers --single-transaction -B \
-        {database} > {backup_dir}/backup_{database}_{now}.sql 2>&1""".format(**backup_config)
+        {database} > {backup_dir}/backup_{database}_{now}.sql 2>/dev/null""".format(**backup_config)
     call(cli, shell=True)
 
     sql_name = "{backup_dir}/backup_{database}_{now}.sql".format(**backup_config)
