@@ -12,9 +12,10 @@ retrieve, fetch, find latest version of Nginx's URL
 
  """
 
+import re
+
 import requests
 from bs4 import BeautifulSoup
-import re
 
 headers = {
     'Cache-Control': 'max-age=0',
@@ -59,7 +60,7 @@ content = requests.get(downloads_page_url, headers=headers)
 Soup = BeautifulSoup(content.text, 'lxml')
 available_version = Soup.find('div', id="content").find_all("a")
 for link in available_version:
-    pattern = re.compile('.*\.tar\.gz$')
+    pattern = re.compile(r'.*\.tar\.gz$')
     match = pattern.search(link.get("href"))
     if match:
         file_url_list.append(base_url + match.group())

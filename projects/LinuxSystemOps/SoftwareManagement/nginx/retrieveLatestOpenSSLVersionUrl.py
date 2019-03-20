@@ -12,9 +12,10 @@ retrieve, fetch, find latest version of OpenSSL URL
 
  """
 
+import re
+
 import requests
 from bs4 import BeautifulSoup
-import re
 
 headers = {
     'Cache-Control': 'max-age=0',
@@ -37,7 +38,7 @@ Soup = BeautifulSoup(content.text, 'lxml')
 available_version = Soup.find('div', class_="entry-content").find_all('a')
 
 for link in available_version:
-    pattern = re.compile('.*\.tar\.gz$')
+    pattern = re.compile(r'.*\.tar\.gz$')
     match = pattern.search(link.get("href"))
     if match:
         file_url_list.append(downloads_page_url + match.group())

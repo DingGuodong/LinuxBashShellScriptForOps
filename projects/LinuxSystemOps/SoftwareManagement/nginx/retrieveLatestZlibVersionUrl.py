@@ -38,7 +38,7 @@ Soup = BeautifulSoup(content.text, 'lxml')
 available_version = Soup.find_all('a')
 
 for link in available_version:
-    pattern = re.compile('zlib-.*\.tar\.gz$')
+    pattern = re.compile(r'zlib-.*\.tar\.gz$')
     match = pattern.search(link.get("href"))
     if match:
         file_url_list.append(downloads_page_url + match.group())
