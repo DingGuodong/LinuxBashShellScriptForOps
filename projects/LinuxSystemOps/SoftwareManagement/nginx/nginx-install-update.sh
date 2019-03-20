@@ -25,10 +25,10 @@
 
 set -e
 
-NGINX_SOURCE_LATEST_VERSION="nginx-1.14.1"
+NGINX_SOURCE_LATEST_VERSION="nginx-1.14.2"
 PCRE_SOURCE_LATEST_VERSION="pcre-8.42"
 ZLIB_SOURCE_LATEST_VERSION="zlib-1.2.11"
-OPENSSL_SOURCE_LATEST_VERSION="openssl-1.1.1"
+OPENSSL_SOURCE_LATEST_VERSION="openssl-1.1.1b"
 
 
 function echo_r (){
@@ -65,9 +65,35 @@ function echo_c (){
 }
 
 
+function confirm_continue(){
+    echo "Is this ok? "
+    read -n 1 -r -p "Enter the y or Y to continue:" user_answer  # read -n1 -r -p "Press any key to continue..." key
+    if [[ "${user_answer}" != "y" ]] && [[ "${user_answer}" != "Y" ]]; then
+        echo -e "\n\nExiting on user cancel."  # exiting because "Download Only" specified
+        exit 1
+    else
+        echo
+    fi
+}
+
+
 WORKDIR="/tmp/.install_nginx_from_source"
 [[ ! -d ${WORKDIR} ]] && mkdir ${WORKDIR}
 [[ -d ${WORKDIR} ]] && cd ${WORKDIR}
+
+
+function check_ports(){
+    if netstat -ntl | awk '{if($4 ~ /:80$/ ) print}' | grep ':80'; then
+        echo_y "`date '+%Y-%m-%d %H:%M:%S.%N'` WARNING: port 80 in use"
+        confirm_continue
+    elif netstat -ntl | awk '{if($4 ~ /:443/ ) print}' | grep ':443'; then
+        echo_y "`date '+%Y-%m-%d %H:%M:%S.%N'` WARNING: port 443 in use"
+        confirm_continue
+    else
+        echo_g "`date '+%Y-%m-%d %H:%M:%S.%N'` Passed: port 80/443 not in use"
+    fi
+}
+
 
 function compare_version(){
     # Compare the version number with `sort -V` or directly remove the dot before comparison
@@ -83,18 +109,23 @@ function can_install_update(){
         current_version=`/usr/sbin/nginx -V |& grep "nginx\ version" | awk -F"/" '{print$NF}'`
         latest_version=`echo ${NGINX_SOURCE_LATEST_VERSION}| awk -F"-" '{print$NF}'`
         if compare_version ${current_version} ${latest_version}; then
-            echo_g "passed and skipped!"
+            echo_g "`date '+%Y-%m-%d %H:%M:%S.%N'` check passed and skipped!"
             exit 0
         else
-            echo_p "nginx can be upgrade!"
+            echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` nginx can be upgrade!"
+            check_ports
+            return 1
         fi
     else
-        echo_p "nginx can be install!"
+        echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` nginx can be install!"
+        check_ports
+        return 0
     fi
 }
 
 function add_users(){
     if ! grep ^www: /etc/passwd >/dev/null 2>&1; then
+        echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` adding group and user ..."
         groupadd -r www
         useradd -r -g www www -c "Web user" -d /dev/null -s /sbin/nologin
     fi
@@ -111,20 +142,23 @@ function is_nginx_installed(){
 }
 
 function download_source_packages(){
+    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` downloading packages ..."
     # http://nchc.dl.sourceforge.net/project/pcre/pcre/8.39/pcre-8.39.tar.gz
-    [[ ! -f ${WORKDIR}/${NGINX_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c http://nginx.org/download/${NGINX_SOURCE_LATEST_VERSION}.tar.gz  # http://nginx.org/en/download.html
-    [[ ! -f ${WORKDIR}/${PCRE_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c https://ftp.pcre.org/pub/pcre/${PCRE_SOURCE_LATEST_VERSION}.tar.gz  # ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
-    [[ ! -f ${WORKDIR}/${ZLIB_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c http://zlib.net/${ZLIB_SOURCE_LATEST_VERSION}.tar.gz  # http://zlib.net/
-    [[ ! -f ${WORKDIR}/${OPENSSL_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c https://www.openssl.org/source/${OPENSSL_SOURCE_LATEST_VERSION}.tar.gz  # https://www.openssl.org/source/
+    [[ ! -f ${WORKDIR}/${NGINX_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c http://nginx.org/download/${NGINX_SOURCE_LATEST_VERSION}.tar.gz  >/dev/null 2>&1 # http://nginx.org/en/download.html
+    [[ ! -f ${WORKDIR}/${PCRE_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c https://ftp.pcre.org/pub/pcre/${PCRE_SOURCE_LATEST_VERSION}.tar.gz  >/dev/null 2>&1 # ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
+    [[ ! -f ${WORKDIR}/${ZLIB_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c http://zlib.net/${ZLIB_SOURCE_LATEST_VERSION}.tar.gz  >/dev/null 2>&1 # http://zlib.net/
+    [[ ! -f ${WORKDIR}/${OPENSSL_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c https://www.openssl.org/source/${OPENSSL_SOURCE_LATEST_VERSION}.tar.gz  >/dev/null 2>&1 # https://www.openssl.org/source/
 }
 
 function install_base(){
     # Completing Preinstallation Tasks
-    apt-get -y update || yum makecache
-    apt-get -y install gcc g++ make || yum install -y gcc gcc-c++ make
+    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` install base packages ..."
+    apt-get -y update >/dev/null 2>&1 || yum makecache >/dev/null 2>&1
+    apt-get -y install gcc g++ make >/dev/null 2>&1 || yum install -y gcc gcc-c++ make >/dev/null 2>&1
 }
 
 function compile_nginx_source(){
+    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` compile nginx and install nginx ..."
     tar zxf ${NGINX_SOURCE_LATEST_VERSION}.tar.gz
     tar zxf ${PCRE_SOURCE_LATEST_VERSION}.tar.gz
     tar zxf ${ZLIB_SOURCE_LATEST_VERSION}.tar.gz
@@ -138,24 +172,25 @@ function compile_nginx_source(){
         --with-pcre-jit \
         --with-pcre=${WORKDIR}/${PCRE_SOURCE_LATEST_VERSION} \
         --with-zlib=${WORKDIR}/${ZLIB_SOURCE_LATEST_VERSION} \
-        --with-openssl=${WORKDIR}/${OPENSSL_SOURCE_LATEST_VERSION}
-    make && make install
+        --with-openssl=${WORKDIR}/${OPENSSL_SOURCE_LATEST_VERSION} >/dev/null 2>&1
+    make >/dev/null 2>&1 && make install >/dev/null 2>&1
     cd
 }
 
 function post_install(){
+    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` pos-install nginx ..."
     [[ -h /usr/sbin/nginx ]] || ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
 
     nginx -V
     nginx -t >/dev/null 2>&1
 
-    if [[ -f /usr/local/nginx/logs/nginx.pid ]] && kill -0 `cat /usr/local/nginx/logs/nginx.pid` ; then
+    if [[ -f /usr/local/nginx/logs/nginx.pid ]] && kill -0 `cat /usr/local/nginx/logs/nginx.pid` >/dev/null 2>&1 ; then
         nginx -s stop && nginx
     else
         nginx
     fi
 
-    netstat -lnpt | grep :80
+    netstat -lnpt | grep nginx
 }
 
 function optimize_security_rules(){
@@ -237,6 +272,7 @@ eof
 }
 
 function generate_config_file(){
+    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` generating nginx config file ..."
     # /var/lib/python/python3.5_installed
     if ! -f ${HOME}/.nginx_installed ; then
         tee /usr/local/nginx/conf/nginx.conf<<-'eof'
@@ -308,24 +344,31 @@ eof
 }
 
 function clean(){
+    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` clean installation ..."
     test ! -f ${HOME}/.nginx_installed && touch ${HOME}/.nginx_installed
-    cd && rm -rf ${WORKDIR}
-    echo_g "nginx installation or update finished successfully!"
+    # cd && rm -rf ${WORKDIR}
+    echo_g "`date '+%Y-%m-%d %H:%M:%S.%N'` nginx installation or update finished successfully!"
 }
 
 function install_nginx(){
-    can_install_update
-    install_base
-    add_users
-    download_source_packages
-    compile_nginx_source
-    post_install
-    if ! is_nginx_installed; then
-        generate_config_file
+    if ! can_install_update; then # install
+        echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` begin install nginx ..."
+        install_base
+        add_users
+        download_source_packages
+        compile_nginx_source
+        post_install
+        if ! is_nginx_installed; then
+            generate_config_file
+        fi
+        clean
+    else # update
+        echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` begin update nginx ..."
+        download_source_packages
+        compile_nginx_source
+        post_install
+        clean
     fi
-    clean
-
-
 }
 
 function main(){
