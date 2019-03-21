@@ -23,10 +23,10 @@
 # Programming Language:   GNU bash :: 4+
 # Topic:                  Utilities
 
-set -e
+#set -e
 
 NGINX_SOURCE_LATEST_VERSION="nginx-1.14.2"
-PCRE_SOURCE_LATEST_VERSION="pcre-8.42"
+PCRE_SOURCE_LATEST_VERSION="pcre-8.43"
 ZLIB_SOURCE_LATEST_VERSION="zlib-1.2.11"
 OPENSSL_SOURCE_LATEST_VERSION="openssl-1.1.1b"
 
@@ -351,7 +351,7 @@ function clean(){
 }
 
 function install_nginx(){
-    if ! can_install_update; then # install
+    if can_install_update; then # install
         echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` begin install nginx ..."
         install_base
         add_users
@@ -377,4 +377,4 @@ function main(){
 
 main
 
-set +e
+#set +e
