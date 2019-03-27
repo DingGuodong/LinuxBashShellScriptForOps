@@ -167,6 +167,7 @@ def printer_watchdog():
     current_times = 0
     while True:
         jobs = win32print.EnumJobs(printer, 0, 3, 1)
+        # except: pywintypes.error: (1722, 'EnumJobs', 'RPC 服务器不可用。'), ignored this except
         # 0 is location of first job,
         # 3 is number of jobs to enumerate,
         # 1 is job info level, can be 1(win32print.JOB_INFO_1), 2, 3. 3 is reserved, 1 and 2 can NOT get job status, :(
@@ -174,6 +175,19 @@ def printer_watchdog():
             for job in jobs:
                 filename = job.get('pDocument')
                 job_id = job.get('JobId', md5(filename).hexdigest())
+
+                job_status = job.get('Status', 0)
+                if job_status in [0x00000002, 0x00000004, 0x00000800]:  # JOB_STATUS_ERROR
+                    """
+                    Refers:
+                        https://docs.microsoft.com/en-us/windows/desktop/printdocs/job-info-2
+                        ~\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\9.0\WinSDK\Include\WinSpool.h
+                    """
+                    print "printer need to be reset, ... "
+                    reset_printer()
+                    jobs_list = []  # make sure there are not same job id in list
+                    current_times = 0
+
                 print "Current job: ", job_id, job.get('pUserName'), job.get('Submitted'), job.get(
                     'pMachineName'), filename, "[ %d/%d ]" % (times, current_times + 1)
                 jobs_list.append(job_id)
