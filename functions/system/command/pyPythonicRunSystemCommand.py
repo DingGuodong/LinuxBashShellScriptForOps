@@ -26,8 +26,49 @@ Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
 import subprocess
+import sys
 
 import gevent
+
+
+def run_command(executable):
+    """
+    run system command by subprocess.Popen in silent
+    :param executable: executable command
+    :return: return_code, stdout, stderr
+    """
+    proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = proc_obj.communicate()
+    return_code = proc_obj.returncode
+    return return_code, stdout, stderr
+
+
+def run(command):
+    """
+    run system command as if it were executed directly from the command line
+    :param command:
+    :return: return_code
+    """
+    return subprocess.call(command, shell=True)  # same as "os.system()"
+
+
+def run_check_output(command):
+    """
+    not very well, see to 'KNOWN ISSUE'
+    :param command:
+    :return:
+    """
+    p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
+    while True:
+        out = p.stdout.read(1)
+        if out == '' and p.poll() is not None:
+            break
+        if out != '':
+            """
+            KNOWN ISSUE: UnicodeDecodeError in Microsoft Windows
+            """
+            sys.stdout.write(out)
+            sys.stdout.flush()
 
 
 def subprocess_call_background(*args, **kwargs):
