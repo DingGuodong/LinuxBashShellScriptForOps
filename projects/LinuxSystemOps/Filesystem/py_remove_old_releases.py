@@ -29,7 +29,7 @@ import os
 import shutil
 import time
 
-releases_save_size = 5
+releases_save_size = 10
 
 services_releases_to_clean_dict = {
     "releases": [
@@ -70,6 +70,7 @@ services_list = [  # put your service name here, filename starts with this servi
     r'sms',
     r'user',
     r'zyj-touch',
+    r'zy-cloud',
 ]
 
 print "WARNING: files as follows will be deleted, this is unrecoverable."

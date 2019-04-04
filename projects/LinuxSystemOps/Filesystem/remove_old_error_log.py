@@ -151,16 +151,18 @@ def get_disk_usage(path):
 
 
 if __name__ == '__main__':
-    save_number = 10  # each type log file save 10.
-    regex_match_rule = '\d{2,4}-\d{1,2}-\d{1,2}'  # such as 2017-10-30, 18-01-02
+    save_number = 30  # each type log file save 30.
+    regex_match_rule = r'\d{2,4}-\d{1,2}-\d{1,2}'  # such as 2017-10-30, 18-01-02
     keywords_to_match = ('error', 'request')
     trash_dir_name = 'to_delete'
     apps_log_root_path = os.path.abspath('/opt/ebt/logs/')
 
     print("Cleaning old logs in path: {path}".format(path=apps_log_root_path))
-    for app_log_path in [os.path.join(apps_log_root_path, x) for x in os.listdir(apps_log_root_path)]:
+    for app_log_path in [os.path.join(apps_log_root_path, log_path) for log_path in os.listdir(apps_log_root_path)]:
+        if os.path.isfile(app_log_path):
+            continue
         app_service_name = os.path.basename(app_log_path)
-        print("\---+ Processing {app}'s old logs, path: {path}".format(app=app_service_name, path=app_log_path))
+        print(r"\---+ Processing {app}'s old logs, path: {path}".format(app=app_service_name, path=app_log_path))
         trash_dir = os.path.join(app_log_path, trash_dir_name)
         files_to_ignore = ('%s.gc.log' % app_service_name, '%s.log' % app_service_name, 'error.log ', 'request.log')
 
