@@ -1,5 +1,5 @@
 LinuxBashShellScriptForOps
-===========
+================
 Linux Bash Shell Scripts For Ops, some python scripts here also.
 
 ## 这是一个怎样的项目
@@ -37,7 +37,7 @@ git clone https://github.com/DingGuodong/LinuxBashShellScriptForOps.git
 如果是要使用projects，则可以根据项目的名字查看自己感兴趣或者需要的部分，
 或者使用“Find in Path”或者“search in this repository”功能按照关键字搜索。
 
-Python: "2.7"
+当前主要使用Python 2.7版本，日后会增加Python 3.x版本。
 
 推荐使用JetBrains的PyCharm作为Bash Shell（需要安装插件“BashSupport”）和Python的开发工具。
 
@@ -55,8 +55,24 @@ Python: "2.7"
 ## 提交bugs和feature requests以及联系信息
 可以使用 https://github.com/DingGuodong/LinuxBashShellScriptForOps/issues 页面进行issue提交。
 
-我的51CTO博客中写了大量的关于运维类的原创文章和总结。
+也可以通过issue列出你想通过脚本实现的功能（help wanted，question，feature）、改进建议（enhancement，idea）等。（**推荐）
+
+我在51CTO博客中写了大量的关于运维类的原创文章和总结。
 
 blog: http://dgd2010.blog.51cto.com
 
 Email: uberurey_ups#163.com
+
+也可加入QQ群与其他人一起交流：
+
+1. QQ群名称：[运维架构技术交流](https://jq.qq.com/?_wv=1027&k=52fjL0z) / 群号码：991904631
+
+*欢迎提供其他QQ群，供交流参考，经营性或商业目的除外*
+
+## TODO List
+
+1. 应该把文档的编写和完善作为一项长期任务，维护好，并保持可用
+
+2. 整理和归纳代码体现的思想和方法，甚至可以让它们脱离代码，独立存在
+
+3. ...
