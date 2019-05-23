@@ -12,7 +12,12 @@ Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOp
 Create Date:            2017/11/28
 Create Time:            15:13
 Description:            try decoding some string(type: str) with right encoding
-Long Description:       
+Long Description:       Deep understanding of Python2 encoding:
+                            py2.str("xxx")  = py2.str("xxx") + py2.bytes(b"") + py2.bytes("\xxx")
+                            py2.unicode(u"") = py2.unicode(u"")
+
+                            py3.str("xxx")  = py2.str("xxx") + py2.unicode(u"")
+                            py3.bytes(b"") = py2.bytes(b"") + py2.bytes("\xxx")
 References:             
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
@@ -29,6 +34,21 @@ import sys
 
 
 def decoding(text):
+    import locale
+    encoding = locale.getpreferredencoding()
+
+    if isinstance(text, unicode):
+        return text
+    elif isinstance(text, str):
+        try:
+            return text.decode(encoding)
+        except UnicodeDecodeError:
+            return text.decode("utf-8")
+    else:
+        return text
+
+
+def decoding_deprecated(text):
     import sys
     import codecs
     import locale
@@ -72,8 +92,23 @@ if __name__ == '__main__':
     # This function(sys._getframe()) should be used for internal and specialized purposes only.
     print sys._getframe().f_lineno, decoding(u"中国汉字")  # print line no. to make read result easy
 
-    print decoding("中国汉字".decode('utf8').encode('gbk'))
-    print decoding('\xd6\xd0\xb9\xfa\xba\xba\xd7\xd6')
+    print sys._getframe().f_lineno, decoding("中国汉字".decode('utf8').encode('gbk'))
+    print sys._getframe().f_lineno, decoding("中国汉字")
+    print sys._getframe().f_lineno, decoding(u"中国汉字")
+    print sys._getframe().f_lineno, decoding('\xd6\xd0\xb9\xfa\xba\xba\xd7\xd6')
+    print sys._getframe().f_lineno, decoding('\xe4\xb8\xad\xe5\x9b\xbd\xe6\xb1\x89\xe5\xad\x97')
 
     print sys._getframe().f_lineno, len('\xd6\xd0\xb9\xfa\xba\xba\xd7\xd6') % 2 == 0  # gbk
     print len('\xe4\xb8\xad\xe5\x9b\xbd\xe6\xb1\x89\xe5\xad\x97') % 3 == 0  # utf-8
+
+    with open("gbk.txt", 'w+') as fp:  # encoding with default locale
+        fp.write(u'中国汉字'.encode('gbk'))
+        fp.write('中国汉字'.decode("utf-8").encode("gbk"))
+
+    with open("utf8.txt", 'w+') as fp:  # encoding with utf-8
+        fp.write(u'中国汉字'.encode("utf-8"))
+        fp.write('中国汉字')
+
+    with open("bytes.txt", 'w+') as fp:  # encoding with utf-8
+        fp.write(b'\xe4\xb8\xad\xe5\x9b\xbd\xe6\xb1\x89\xe5\xad\x97')
+        fp.write('\xe4\xb8\xad\xe5\x9b\xbd\xe6\xb1\x89\xe5\xad\x97')
