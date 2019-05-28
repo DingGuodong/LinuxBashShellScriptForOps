@@ -1,6 +1,8 @@
 LinuxBashShellScriptForOps
 ================
-Linux Bash Shell Scripts For Ops, some python scripts here also.
+Linux Bash Shell Scripts For Ops, some python **3** scripts here also.
+
+> 注： 目前正在将原有的Python2代码转成Python3，后续会持续增加对Python3的支持，但Python2的代码将继续维护和支持。
 
 ## 这是一个怎样的项目
 此项目是对在Linux运维工作所能用到的Shell脚本和Python脚本的归纳和总结。
@@ -29,15 +31,15 @@ projects目录存放比较完整的脚本文件，用于做成某件完整的事
 git clone https://github.com/DingGuodong/LinuxBashShellScriptForOps.git
 ```
 
-此项目只有master一个分支，也没有版本的概念，有bug则修复bug，在日后的使用过程中不断更新完善和优化。
+此项目通过branch分为master分支和python3分支，没有release版本的概念，有bug则修复bug，在日后的使用过程中不断更新完善和优化。
+
+> 注：master分支为Python2.7代码，python3分支为Python3.7代码。
 
 如果是要使用functions，则需要自己翻阅functions下的所有目录以及各个文件，
 或者使用“Find in Path”或者“search in this repository”功能按照关键字搜索。
 
 如果是要使用projects，则可以根据项目的名字查看自己感兴趣或者需要的部分，
 或者使用“Find in Path”或者“search in this repository”功能按照关键字搜索。
-
-当前主要使用Python 2.7版本，日后会增加Python 3.x版本。
 
 推荐使用JetBrains的PyCharm作为Bash Shell（需要安装插件“BashSupport”）和Python的开发工具。
 
