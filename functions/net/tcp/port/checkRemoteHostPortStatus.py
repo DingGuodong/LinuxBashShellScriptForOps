@@ -46,18 +46,18 @@ else:
 
 while True:
     if host == "":
-        print "host is empty, please sign new one."
-        host = raw_input("HOST: ")
+        print("host is empty, please sign new one.")
+        host = input("HOST: ")
     elif port == 0 or not isinstance(port, int):
-        print "port is empty or illegal, please sign new one."
+        print("port is empty or illegal, please sign new one.")
         try:
-            port = int(raw_input("PORT: "))
+            port = int(input("PORT: "))
         except ValueError:
             pass
     else:
         break
 
-print "checking server %s port %s status." % (host, port)
+print("checking server %s port %s status." % (host, port))
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.settimeout(timeout)
@@ -65,10 +65,10 @@ s.settimeout(timeout)
 for attempt in range(0, retry):
     try:
         s.connect((str(host), int(port)))
-        print "connect to server %s port %s successfully!" % (host, port)
+        print("connect to server %s port %s successfully!" % (host, port))
         break
     except Exception as e:
-        print "connect to server %s port %s failed in %s times! " % (host, port, attempt + 1)
+        print("connect to server %s port %s failed in %s times! " % (host, port, attempt + 1))
         # os.system("sleep 1")
         time.sleep(1)
 

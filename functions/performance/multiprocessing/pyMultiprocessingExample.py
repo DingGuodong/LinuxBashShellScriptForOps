@@ -24,8 +24,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 from multiprocessing import Pool
@@ -40,8 +40,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 

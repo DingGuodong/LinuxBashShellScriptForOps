@@ -25,8 +25,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 # Method1: using Linux sed command: `sed -i 's/\xe3\x80\x80/ /g' gitdiff.log`

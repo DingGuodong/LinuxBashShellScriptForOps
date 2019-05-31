@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import psutil
@@ -37,8 +37,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 
@@ -48,7 +48,7 @@ def fn_timer(func):
 def get_pids(name):
     pid = set()
     if name:
-        process_list = filter(lambda p: p.name().lower() == name.lower(), psutil.process_iter())
+        process_list = [p for p in psutil.process_iter() if p.name().lower() == name.lower()]
         # process_list2 = [process for process in psutil.process_iter() if process.name() == "Skype.exe"]
 
         for process in process_list:
@@ -58,7 +58,7 @@ def get_pids(name):
 
 
 if __name__ == '__main__':
-    print get_pids("chrome.exe")
+    print(get_pids("chrome.exe"))
 
     proc = psutil.Process(pid=13544)
     print(proc.name())

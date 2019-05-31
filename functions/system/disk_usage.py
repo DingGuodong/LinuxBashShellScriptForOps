@@ -61,7 +61,7 @@ def main():
                        part.mountpoint])
     for field in table.field_names:
         table.align[field] = "l"
-    print table
+    print(table)
 
 
 if __name__ == '__main__':

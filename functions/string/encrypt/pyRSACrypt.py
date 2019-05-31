@@ -21,12 +21,12 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import os
-from itertools import imap
+
 
 import rsa
 
@@ -42,7 +42,7 @@ def gen_rsa_key():
 
 
 def check_keys():
-    if not all(imap(os.path.exists, [private_key_file, public_key_file])):
+    if not all(map(os.path.exists, [private_key_file, public_key_file])):
         gen_rsa_key()
 
 
@@ -71,15 +71,15 @@ if __name__ == '__main__':
 
     crypto = rsa.encrypt(message, pub_key)
     message_decrypted = rsa.decrypt(crypto, priv_key)
-    print message == message_decrypted
+    print(message == message_decrypted)
 
     hash_method = 'SHA-512'
     signature = rsa.sign(message, priv_key, hash_method)
-    print signature.encode('hex')
+    print(signature.encode('hex'))
 
     try:
         rsa.verify(message, signature, pub_key)
     except rsa.pkcs1.VerificationError:
-        print 'Verification failed'
+        print('Verification failed')
     else:
-        print 'Verification succeed'
+        print('Verification succeed')

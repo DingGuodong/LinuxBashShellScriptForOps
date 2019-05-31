@@ -9,7 +9,7 @@ Create Date:        2016/7/27
 Create Time:        16:30
  """
 
-import pycurl
+import pycurl # pip3 install pycurl
 import certifi
 
 # http://icanhazip.com/

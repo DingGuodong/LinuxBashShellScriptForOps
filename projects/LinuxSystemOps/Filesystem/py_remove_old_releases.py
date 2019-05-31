@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import os
@@ -73,8 +73,8 @@ services_list = [  # put your service name here, filename starts with this servi
     r'zy-cloud',
 ]
 
-print "WARNING: files as follows will be deleted, this is unrecoverable."
-print "=" * 64
+print("WARNING: files as follows will be deleted, this is unrecoverable.")
+print("=" * 64)
 
 for service in services_list:
     for release in services_releases_to_clean_dict["releases"]:
@@ -104,20 +104,20 @@ for service in services_list:
                 break  # max depth = 1
 
             # delete files if releases count large then 5
-            if len(all_files_with_date_dict.items()) > releases_save_size:
-                for item in sorted(all_files_with_date_dict.items(), cmp=lambda x, y: cmp(x[1], y[1]),
+            if len(list(all_files_with_date_dict.items())) > releases_save_size:
+                for item in sorted(list(all_files_with_date_dict.items()), key=lambda x: x[1],
                                    reverse=True)[releases_save_size::]:  # ls -t, sort by modification time
                     filename = item[0]
                     if os.path.exists(filename):
 
                         if os.path.isdir(filename):
-                            print "[D]: ", filename, "; Last modify time: ", time.strftime('%Y-%m-%d %H:%M:%S',
-                                                                                           time.localtime(item[1]))
+                            print("[D]: ", filename, "; Last modify time: ", time.strftime('%Y-%m-%d %H:%M:%S',
+                                                                                           time.localtime(item[1])))
                             shutil.rmtree(filename)
                         elif os.path.isfile(filename):
-                            print "[F]: ", filename, "; Last modify time: ", time.strftime('%Y-%m-%d %H:%M:%S',
-                                                                                           time.localtime(item[1]))
+                            print("[F]: ", filename, "; Last modify time: ", time.strftime('%Y-%m-%d %H:%M:%S',
+                                                                                           time.localtime(item[1])))
                             os.remove(filename)
 
-print "=" * 64
-print "SUCCESS: clean finished"
+print("=" * 64)
+print("SUCCESS: clean finished")

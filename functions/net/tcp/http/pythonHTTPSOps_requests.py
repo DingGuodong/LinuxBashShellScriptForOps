@@ -19,12 +19,12 @@ def requests_example1():
     # http://docs.python-requests.org/en/master/
     # http://docs.python-requests.org/en/master/user/quickstart/#make-a-request
     r = requests.get('https://api.github.com/user', auth=('user', 'pass'))
-    print r.status_code
-    print r.headers['content-type']
-    print r.encoding
-    print r.text.encode(r.encoding)
-    print r.content.encode(r.encoding)
-    print r.json()
+    print(r.status_code)
+    print(r.headers['content-type'])
+    print(r.encoding)
+    print(r.text.encode(r.encoding))
+    print(r.content.encode(r.encoding))
+    print(r.json())
 
 
 def requests_example2():

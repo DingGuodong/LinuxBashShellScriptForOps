@@ -23,9 +23,9 @@ def getDmesg():
     dmesg = subprocess.check_output(['dmesg']).split('\n')
     for message in dmesg:
         try:
-            print time.strftime('%Y-%m-%d %H:%M:%S',
+            print(time.strftime('%Y-%m-%d %H:%M:%S',
                                 time.localtime(
-                                    (float(psutil.boot_time()) + float(message.split('] ')[0][2:].strip())))), message
+                                    (float(psutil.boot_time()) + float(message.split('] ')[0][2:].strip())))), message)
             sys.stdout.flush()
         except ValueError:
             pass
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # POSIX = os.name == "posix"
     WINDOWS = os.name == "nt"
     if WINDOWS:
-        print "WindowsError, Windows is NOT supported!"
+        print("WindowsError, Windows is NOT supported!")
         sys.exit(1)
     else:
         try:

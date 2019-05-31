@@ -14,8 +14,8 @@ import sys
 import logging
 import logging.handlers
 import time
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-import urlparse
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import urllib.parse
 import signal
 
 
@@ -72,8 +72,8 @@ class GitAutoDeploy(BaseHTTPRequestHandler):
             path = self.path
             if "?" in path:
                 path, tmp = path.split('?', 1)
-                qs = urlparse.parse_qs(tmp)
-                print path, qs
+                qs = urllib.parse.parse_qs(tmp)
+                print(path, qs)
             try:
                 with open("index.html", "r") as f:
                     self.wfile.write(f.read())
@@ -122,7 +122,7 @@ class GitAutoDeploy(BaseHTTPRequestHandler):
                 myLogger.info(
                     self.headers.getheader('Host') + " " + self.headers.getheader(
                         'User-Agent') + " " + self.command + " " + self.path)
-                myLogger.info(urlparse.parse_qs(body))
+                myLogger.info(urllib.parse.parse_qs(body))
             else:
                 self.send_response(200)
                 myLogger.info(
@@ -140,7 +140,7 @@ class GitAutoDeploy(BaseHTTPRequestHandler):
 
 
 def sigterm_handler(_signo, _stack_frame):
-    print "catch process signal %s, goodbye." % _signo
+    print("catch process signal %s, goodbye." % _signo)
     sys.exit(0)
 
 
@@ -149,17 +149,17 @@ def run(server_class=HTTPServer, handler_class=GitAutoDeploy.WebServer, port=80)
     try:
         server_address = ('', port)
         httpd = server_class(server_address, handler_class)
-        print 'Starting httpd...'
+        print('Starting httpd...')
         httpd.serve_forever()
     except (KeyboardInterrupt, SystemExit) as e:
         if e:  # wtf, why is this creating a new line?
-            print >> sys.stderr, e
+            print(e, file=sys.stderr)
         if httpd is not None:
             httpd.socket.close()
-            print "Stopping httpd..."
+            print("Stopping httpd...")
             sys.exit(0)
     finally:
-        print "httpd stopped."
+        print("httpd stopped.")
 
 
 if __name__ == "__main__":

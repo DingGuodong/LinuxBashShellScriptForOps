@@ -35,6 +35,6 @@ for partition in psutil.disk_partitions():
     if partition.fstype in FSTypeList:
         diskUsage = psutil.disk_usage(partition.mountpoint)
         if diskUsage.percent > 95:
-            print "Partition %s disk usage is overloaded!" % partition
+            print("Partition %s disk usage is overloaded!" % partition)
         else:
-            print partition.device, partition.mountpoint, diskUsage
+            print(partition.device, partition.mountpoint, diskUsage)

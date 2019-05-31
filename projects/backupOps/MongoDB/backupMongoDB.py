@@ -14,11 +14,26 @@ Prerequisites:      []
 import logging
 import logging.handlers
 import os
-import shutil
 import subprocess
 import sys
+
+import shutil
 import time
-from collections import Iterable
+
+
+def always_to_utf8(text):
+    import locale
+
+    encoding = locale.getpreferredencoding()
+    if isinstance(text, bytes):
+        try:
+            return text.decode(encoding)
+        except UnicodeDecodeError:
+            return text.decode("utf-8")
+
+    else:
+        return text  # do not need decode, return original object if type is not instance of string type
+        # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
 
 
 def initLoggerWithRotate(logPath="/var/log", logName=None, singleLogFile=True):
@@ -49,38 +64,6 @@ def initLoggerWithRotate(logPath="/var/log", logName=None, singleLogFile=True):
     logger.addHandler(stream_handler)
     logger.setLevel(logging.DEBUG)
     return logger
-
-
-def decoding(text):
-    import sys
-    import codecs
-    import locale
-
-    if isinstance(text, unicode):
-        return text
-    elif isinstance(text, (basestring, str)):
-        pass
-    else:
-        return text  # do not need decode, return original object if type is not instance of string type
-        # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
-
-    mswindows = (sys.platform == "win32")
-
-    try:
-        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
-        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
-    except Exception as _:
-        del _
-        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
-
-    msg = text
-    if mswindows:
-        try:
-            msg = text.decode(encoding)
-            return msg
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            pass
-    return msg
 
 
 if __name__ == '__main__':
@@ -116,27 +99,18 @@ if __name__ == '__main__':
         if p.returncode != 0:
             log.error("encountered an error (return code %s) while executing '%s'" % (p.returncode, backup_cmd))
             if stdout is not None:
-                log.error(decoding("Standard output: " + stdout))
+                log.error(always_to_utf8("Standard output: " + stdout))
             if stderr is not None:
-                log.error(decoding("Standard error: " + stderr))
+                log.error(always_to_utf8("Standard error: " + stderr))
         else:
             is_success = True
             if stdout is not None:
-                log.info(decoding(stdout))
-    except Exception as exc:
+                log.info(always_to_utf8(stdout))
+    except Exception as e:
         now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         log.error("We encountered an exception at %s, Errors message as follow:" % now)
         # send mail to sysadmin etc.
-        log.error(exc)
-        if isinstance(exc, Iterable):
-            for message in exc:
-                log.error(message)
-        for message in exc.args:
-            log.error(message)
-
-        for message in exc.message:
-            log.error(message)
-        log.error("=" * 64)
+        log.error(e)
         sys.exit(1)
 
     # clean old backups, and save 3 copies
@@ -148,21 +122,7 @@ if __name__ == '__main__':
             if copy.startswith('bak20'):  # bug fixed, but a regular expression maybe best choice
                 all_backups.append(copy)
 
-
-        def compare_by_time(x, y):
-            # compare two files by their time of last change
-            stat_x = os.stat(os.path.join(backup_storage, x))
-            stat_y = os.stat(os.path.join(backup_storage, y))
-            # if stat_x.st_ctime < stat_y.st_ctime:  # time of last change
-            #     return -1
-            # elif stat_x.st_ctime > stat_y.st_ctime:
-            #     return 1
-            # else:
-            #     return 0
-            return cmp(stat_x.st_ctime, stat_y.st_ctime)
-
-
-        all_backups.sort(compare_by_time)  # sort files in dir by time
+        all_backups = sorted(all_backups, key=lambda x: os.stat(x).st_ctime)  # sort files in dir by time
 
         valid_backups_copies = all_backups[-save_backups:]
         for copy in all_backups:

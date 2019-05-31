@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # encoding: utf-8
 # -*- coding: utf8 -*-
+import dns.resolver  # pip install dnspython
 import time
-
-import dns.resolver
 
 dnsDict = {"Australia - Melbourne": "168.1.79.238",
            "Australia - Sydney": "54.66.128.66",
@@ -36,7 +35,7 @@ for key, value in dnsDict.items():
     dnsServer = value
     startTime = time.time()
     try:
-        print "Start a query using %s ..." % key
+        print("Start a query using %s ..." % key)
         query = dns.resolver.Resolver()
         query.nameservers = [str(value)]
         query.timeout = 1.0
@@ -49,9 +48,9 @@ for key, value in dnsDict.items():
     elapsedTime = (endTime - startTime)
     responseDict.setdefault(key, elapsedTime)
 
-responseSortDict = sorted(responseDict.iteritems(), key=lambda t: t[1], reverse=False)
+responseSortDict = sorted(responseDict.items(), key=lambda t: t[1], reverse=False)
 
 title = ["SmartDNS Position", "IP Address", "Response Time"]
-print "%-40s %-30s %s" % (title[0], title[1], title[2])
+print("%-40s %-30s %s" % (title[0], title[1], title[2]))
 for key, value in responseSortDict:
-    print "%-40s %-30s %s" % (key, dnsDict.get(key), value)
+    print("%-40s %-30s %s" % (key, dnsDict.get(key), value))

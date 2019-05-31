@@ -31,7 +31,7 @@ import winrm  # https://pypi.python.org/pypi/pywinrm/0.2.2
 # Run a process on a remote host
 s = winrm.Session('windows-host.example.com', auth=('john.smith', 'secret'))
 r = s.run_cmd('ipconfig', ['/all'])
-print r.status_code, r.std_out,
+print(r.status_code, r.std_out, end=' ')
 
 # Run Powershell script on remote host
 ps_script = """$strComputer = $Host
@@ -41,7 +41,7 @@ $MB = 1048576
 
 "Installed Memory: " + [int]($RAM.TotalPhysicalMemory /$MB) + " MB" """
 r = s.run_ps(ps_script)
-print r.status_code, r.std_out,
+print(r.status_code, r.std_out, end=' ')
 
 # Run process with low-level API with domain user, disabling HTTPS cert validation
 from winrm.protocol import Protocol

@@ -10,13 +10,16 @@ Create Time:        18:51
 Description:        
 References:         
  """
-import urllib2
-import re
 import datetime
-from selenium import webdriver
-import time
 import random
+import re
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
 
 class DoubanGroupMMSpider:
@@ -48,8 +51,8 @@ class DoubanGroupMMSpider:
                      "Chrome/60.0.3112.90 Safari/537.36"
         headers = {'User-Agent': user_agent}
 
-        request = urllib2.Request(url, headers=headers)
-        response = urllib2.urlopen(request)
+        request = urllib.request.Request(url, headers=headers)
+        response = urllib.request.urlopen(request)
 
         # 正则获取
         pattern_link = re.compile(
@@ -64,14 +67,14 @@ class DoubanGroupMMSpider:
             post_name = item[1]
             response_count = item[3]
             commit_time = item[4]
-            print u'发现一名叫"{author_name}"的小组成员, ' \
-                  u'发了帖子<{post_name}>，' \
-                  u'回应数: {response_count}, ' \
-                  u'最后回应时间为: {commit_time}'.format(author_name=author_name, post_name=post_name,
-                                                   response_count=response_count,
-                                                   commit_time=commit_time)
-            print u'<{post_name}>的详情页是: {post_url}'.format(post_name=post_name, post_url=post_url)
-            print u'继续获取详情页面数据...'
+            print('发现一名叫"{author_name}"的小组成员, '
+                  '发了帖子<{post_name}>，'
+                  '回应数: {response_count}, '
+                  '最后回应时间为: {commit_time}'.format(author_name=author_name, post_name=post_name,
+                                                  response_count=response_count,
+                                                  commit_time=commit_time))
+            print('<{post_name}>的详情页是: {post_url}'.format(post_name=post_name, post_url=post_url))
+            print('继续获取详情页面数据...')
             time.sleep(round(0.2 + random.random(), 3))
             self.getDetailPage(post_url, author_name, begin_time)
             # break  # fetch each MM per page, for debug purpose
@@ -87,25 +90,25 @@ class DoubanGroupMMSpider:
         response = requests.request("GET", url, headers=headers)
 
         if author_name in response.text:
-            print u"好似获取页面正常"
+            print("好似获取页面正常")
             try:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 post = soup.find('div', attrs={"class": "topic-content"}).find("p")
                 images = soup.find('div', attrs={"class": "topic-figure"}).find_all("img")
                 if post is not None:
-                    print u'"{name}"写一段这样描述的话: {post_text}'.format(name=author_name, post_text=post.get_text())
+                    print('"{name}"写一段这样描述的话: {post_text}'.format(name=author_name, post_text=post.get_text()))
                 else:
-                    print u"该成员没有写任何描述"
+                    print("该成员没有写任何描述")
                 for image in images:
                     if image is not None:
-                        print u'还意外的发现了一张没有被封的照片: ', image.get("src")
-                        print u'不管它长得咋样，让我们先保存它...'
+                        print('还意外的发现了一张没有被封的照片: ', image.get("src"))
+                        print('不管它长得咋样，让我们先保存它...')
                     else:
-                        print u"图片可能被封掉了"
+                        print("图片可能被封掉了")
             except AttributeError:
                 pass
         else:
-            print u"好似获取页面失败了, 或者豆瓣管理员更改了页面逻辑"
+            print("好似获取页面失败了, 或者豆瓣管理员更改了页面逻辑")
 
 
 def kill_process(name):
@@ -131,9 +134,9 @@ def kill_process(name):
     currentUserName = getuser()
 
     if ProcessNameToKill in [x.name() for x in psutil.process_iter()]:
-        print "[I] Process \"%s\" is found!" % ProcessNameToKill
+        print(("[I] Process \"%s\" is found!" % ProcessNameToKill))
     else:
-        print "[E] Process \"%s\" is NOT running!" % ProcessNameToKill
+        print(("[E] Process \"%s\" is NOT running!" % ProcessNameToKill))
 
     for process in psutil.process_iter():
         if process.name() == ProcessNameToKill:
@@ -141,9 +144,9 @@ def kill_process(name):
                 # non-root user can only kill its process, but can NOT kill other users process
                 if process.username().endswith(currentUserName):
                     process.kill()
-                    print "[I] Process \"%s(pid=%s)\" is killed successfully!" % (process.name(), process.pid)
+                    print(("[I] Process \"%s(pid=%s)\" is killed successfully!" % (process.name(), process.pid)))
             except Exception as e:
-                print e
+                print(e)
 
 
 if __name__ == '__main__':

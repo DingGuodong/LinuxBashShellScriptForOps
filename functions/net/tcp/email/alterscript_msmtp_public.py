@@ -8,10 +8,9 @@ User:               Guodong
 Create Date:        2017/7/24
 Create Time:        8:45
 Description:        send email using smtplib for zabbix alter script use
-References:         https://docs.python.org/2/library/smtplib.html
+References:         https://docs.python.org/3/library/smtplib.html
  """
 import smtplib
-import string
 import sys
 
 
@@ -53,16 +52,17 @@ else:
         EMAIL_SUBJECT = sys.argv[2]
         EMAIL_BODY = sys.argv[3]
 
-BODY = string.join((
+BODY = CRLF.join((
     "From: %s" % DEFAULT_FROM_EMAIL,
     "To: %s" % EMAIL_TO,
     "Subject: %s" % EMAIL_SUBJECT,
     "",
     EMAIL_BODY
-), CRLF)
+))
 
-server = smtplib.SMTP()
-server.connect(EMAIL_HOST, EMAIL_PORT)
+
+server = smtplib.SMTP(host=EMAIL_HOST)
+server.connect(host=EMAIL_HOST, port=EMAIL_PORT)
 server.starttls()
 server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
 server.sendmail(DEFAULT_FROM_EMAIL, [EMAIL_TO], BODY)

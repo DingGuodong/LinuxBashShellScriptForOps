@@ -26,8 +26,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 

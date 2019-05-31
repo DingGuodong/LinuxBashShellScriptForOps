@@ -31,4 +31,4 @@ with open('somefile', 'wb') as f:
     pickle.dump(xml_text, f)
 
 with open('somefile', 'rb') as f:
-    print pickle.load(f)
+    print(pickle.load(f))

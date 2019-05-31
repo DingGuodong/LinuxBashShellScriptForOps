@@ -1,15 +1,15 @@
-import ConfigParser
-import StringIO
+import configparser
+import io
 import os
 
 # Read configurations
-conf = StringIO.StringIO()
+conf = io.StringIO()
 conf.write("[configuration]\n")
 conf.write(open("key-value-config-example.conf").read())
 conf.seek(0, os.SEEK_SET)
-cp = ConfigParser.RawConfigParser()
+cp = configparser.RawConfigParser()
 cp.readfp(conf)
 
 name = cp.get("configuration", "name")
 myLove = cp.get("configuration", "mylove")
-print name, "'s love is", myLove
+print(name, "'s love is", myLove)

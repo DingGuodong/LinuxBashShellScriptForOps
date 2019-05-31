@@ -34,18 +34,18 @@ backup_saveDays = 10  # high priority
 
 
 def usage():
-    print '''backup files or directories to somewhere using python.
+    print('''backup files or directories to somewhere using python.
 usage:
     python backupFileToLocal.py
 or
     chmod +x backupFileToLocal.py && ./backupFileToLocal.py
-    '''
+    ''')
 
 
 if os.path.exists(backup_source):
     _backup_source = os.path.abspath(backup_source)
 else:
-    print "backup_source define error."
+    print("backup_source define error.")
     usage()
     time.sleep(0.01)
     raise RuntimeError
@@ -58,7 +58,7 @@ if backup_target != '':
         # clean old backups if exist
         filesListToRemove = os.listdir(backup_target)[:-backup_saveCounts + 1]
         if len(filesListToRemove) != 0:
-            print "Old backups found! Cleaning old backups..."
+            print("Old backups found! Cleaning old backups...")
             for filename in filesListToRemove:
                 fileToRemove = os.path.join(backup_target, filename)
                 if time.time() - os.stat(fileToRemove).st_ctime > backup_saveDays * 24 * 3600:
@@ -67,7 +67,7 @@ if backup_target != '':
     filename = "backup_" + timeString + ".tar.gz"
     _backup_target = os.path.join(backup_target, filename)
 else:
-    print "backup_target define error."
+    print("backup_target define error.")
     usage()
     time.sleep(0.01)
     raise RuntimeError
@@ -75,16 +75,16 @@ else:
 tar = tarfile.TarFile.gzopen(name=_backup_target, mode='w')
 
 for top, dirs, nondirs in os.walk(_backup_source, followlinks=True):
-    print 'dirs in backup source are: %s' % dirs
-    print 'files in backup source are: %s' % nondirs
+    print('dirs in backup source are: %s' % dirs)
+    print('files in backup source are: %s' % nondirs)
     for directory in dirs:
         abs_dir = os.path.join(top, directory)
         tar.add(abs_dir, arcname=directory)
-        print "Directory added: %s" % abs_dir
+        print("Directory added: %s" % abs_dir)
     for filename in nondirs:
         abs_file = os.path.join(top, filename)
         tar.add(abs_file, arcname=filename)
-        print "File added: %s" % abs_file
+        print("File added: %s" % abs_file)
 
     # just need first layer, NOT recursive
     break

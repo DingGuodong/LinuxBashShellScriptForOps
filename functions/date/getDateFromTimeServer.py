@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import locale
 import os
 # import datetime
 import sys
@@ -8,7 +9,7 @@ try:
     import ntplib
 except ImportError:
     try:
-        command_to_execute = "pip install ntplib"
+        command_to_execute = "pip3 install ntplib"
         os.system(command_to_execute)
     except OSError:
         exit(1)
@@ -18,7 +19,8 @@ except ImportError:
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 linux = (sys.platform == "linux2")
 
-tz = time.strftime("%Z", time.localtime(time.time())).decode(encoding=sys.getfilesystemencoding()).encode('utf-8')
+encoding = locale.getpreferredencoding()
+tz = time.tzname[0].encode("iso-8859-1").decode(encoding)
 print("当前时区 ==> %s" % tz)
 
 server = 'pool.ntp.org'  # time.nist.gov  time-nw.nist.gov
@@ -27,8 +29,10 @@ c = ntplib.NTPClient()
 r = c.request(server)
 t = r.tx_time  # Transmit timestamp in system time.
 
-time_in_server = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t))
-time_in_local = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
+time_in_server = time.strftime("%Y-%m-%d %H:%M:%S %z", time.localtime(t))
+time_in_local = time.strftime("%Y-%m-%d %H:%M:%S %z", time.localtime(time.time()))
+print(time_in_local, time_in_server, sep="\n")
+
 if r.offset > 15:
     print("当前系统时间与服务器时间相差15s以上")
     print("当前系统时间 => %s" % time_in_local)

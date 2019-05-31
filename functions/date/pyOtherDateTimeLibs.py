@@ -16,15 +16,14 @@ Long Description:
 References:             https://github.com/crsmithdev/arrow
                         http://arrow.readthedocs.io/en/latest/
                         http://arrow.readthedocs.io/en/latest/#arrow-better-dates-and-times-for-python
-Prerequisites:          pip install arrow
+Prerequisites:          pip3 install arrow
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 import arrow

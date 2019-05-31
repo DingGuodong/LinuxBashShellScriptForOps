@@ -10,7 +10,7 @@ Create Time:        11:59
 
 8 bit pure and serial number generator same as GUID, UUID Generator
  """
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 import sys
 import time
 import os
@@ -119,20 +119,20 @@ def run(server_class=HTTPServer, handler_class=simpleHTTPServer, port=80):
         server_address = (hostname, port)
         httpd = server_class(server_address, handler_class)
         quit_command = 'CTRL-BREAK' if sys.platform == 'win32' else 'CONTROL-C'
-        print 'Starting httpd server at http://%s:%s' % (hostname, port)
-        print 'Server %s (bind-address): \'*\'; port: %s' % (hostname, port)
-        print 'Quit the server with %s.' % quit_command
-        print sys.version
+        print('Starting httpd server at http://%s:%s' % (hostname, port))
+        print('Server %s (bind-address): \'*\'; port: %s' % (hostname, port))
+        print('Quit the server with %s.' % quit_command)
+        print(sys.version)
         httpd.serve_forever()
     except (KeyboardInterrupt, SystemExit) as e:
         if e:
-            print >> sys.stderr, e
+            print(e, file=sys.stderr)
         if httpd is not None:
             httpd.socket.close()
-            print "Stopping httpd..."
+            print("Stopping httpd...")
             exit(0)
     finally:
-        print "httpd stopped."
+        print("httpd stopped.")
         sys.exit(0)
 
 

@@ -36,8 +36,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import json
@@ -154,17 +154,17 @@ endpoint = os.getenv('OSS_TEST_ENDPOINT', bucket_info.get('endpoint'))
 
 def to_unicode_or_bust(obj, encoding='utf-8'):
     # the function convert non-unicode object to unicode object
-    if isinstance(obj, basestring):
-        if not isinstance(obj, unicode):
-            obj = unicode(obj, encoding)
+    if isinstance(obj, str):
+        if not isinstance(obj, str):
+            obj = str(obj, encoding)
 
     return obj
 
 
 def to_str_or_bust(obj, encoding='utf-8'):
     # the function convert unicode object to str object
-    if isinstance(obj, basestring):
-        if isinstance(obj, unicode):
+    if isinstance(obj, str):
+        if isinstance(obj, str):
             obj = obj.encode(encoding)
 
     return obj
@@ -187,7 +187,7 @@ def fn_timer_py2py3(func):
         try:
             result = func(*args, **kwargs)
         except Exception as e:
-            print(e.message)
+            print(e)
         time_end = time.time()
         message = "Total time running {func_name}: {time_spent:16.8f} seconds".format(func_name=func.__name__,
                                                                                       time_spent=time_end - time_begin)
@@ -404,7 +404,7 @@ def __getmtime(path):
         # KNOWN ISSUE: os.path.exists may return False when "®"(copyright sign) in filename
         # PEP 277 -- Unicode file name support for Windows NT
         # https://www.python.org/dev/peps/pep-0277/
-        return 0L
+        return 0
 
 
 def sort_files_by_mtime(path):
@@ -413,7 +413,7 @@ def sort_files_by_mtime(path):
     :param path:
     :return:
     """
-    if isinstance(path, basestring):
+    if isinstance(path, str):
         if os.path.isdir(path):
             os.chdir(path)  # essential for os.path.abspath
             files = os.listdir(path)

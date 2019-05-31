@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import random
@@ -41,7 +41,7 @@ class MyShuffle(random.Random):
             if random_method is None:
                 random_method = self.random
             _int = int
-            for i in reversed(xrange(1, len(x))):
+            for i in reversed(range(1, len(x))):
                 # pick an element in x[:i+1] with which to exchange x[i]
                 j = _int(random_method() * (i + 1))
                 x[i], x[j] = x[j], x[i]
@@ -53,7 +53,7 @@ class MyShuffle(random.Random):
 
 # method 2
 def shuffle(obj_list):
-    for i in reversed(xrange(1, len(obj_list))):
+    for i in reversed(range(1, len(obj_list))):
         # pick an element in obj_list[:i+1] with which to exchange obj_list[i]
         j = int(random.random() * (i + 1))
         obj_list[i], obj_list[j] = obj_list[j], obj_list[i]
@@ -62,7 +62,7 @@ def shuffle(obj_list):
 
 # call method 1
 p = MyShuffle()
-print(p.shuffle(range(10)))
+print((p.shuffle(list(range(10)))))
 
 # call method 2
-print(shuffle(range(10)))
+print((shuffle(list(range(10)))))

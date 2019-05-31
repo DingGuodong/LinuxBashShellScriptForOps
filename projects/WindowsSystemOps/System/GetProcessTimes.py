@@ -45,5 +45,5 @@ else:
     boot_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(processCreateTime))
     now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     up_time = uptime(time.time() - processCreateTime)
-    print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(psutil.boot_time()))
-    print processObject.pid, "%s up %d days, %d:%d" % (now_time, up_time[0], up_time[1], up_time[2])
+    print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(psutil.boot_time())))
+    print(processObject.pid, "%s up %d days, %d:%d" % (now_time, up_time[0], up_time[1], up_time[2]))

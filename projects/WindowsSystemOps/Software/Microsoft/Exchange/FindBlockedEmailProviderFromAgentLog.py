@@ -31,7 +31,7 @@ def get_block_info_all():
                 for line in f.readlines():
                     info = search_block_info(line)
                     if info is not None:
-                        print info
+                        print(info)
 
 
 def get_block_info_unique():
@@ -43,7 +43,7 @@ def get_block_info_unique():
                     info = search_block_info(line)
                     if info is not None and info[1] not in blocked_list:
                         blocked_list.append(info[1])
-                        print info
+                        print(info)
     del blocked_list
 
 
@@ -56,7 +56,7 @@ def get_ip_from_block_info_unique():
                     info = search_block_info(line)
                     if info is not None and info[1] not in blocked_list:
                         blocked_list.append(info[1])
-    print blocked_list
+    print(blocked_list)
 
 
 def search_block_info(log):

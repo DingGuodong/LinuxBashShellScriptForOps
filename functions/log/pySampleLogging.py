@@ -21,8 +21,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 import logging.handlers
@@ -55,4 +54,4 @@ logger.info("test info")
 time.sleep(0.1)  # in float, min unit: subsecond precision(<1.0s)
 logger.error("test error")
 logger.error(u"中国汉字")  # chinese language must in unicode
-logger.error("中国汉字".decode("utf-8"))  # chinese language must in unicode
+logger.error("中国汉字")

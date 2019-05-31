@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import base64
@@ -41,11 +41,11 @@ def gen_keys():
     # generate master private and public keys
     rsa = RSA.generate(4096, random_generator)
     private_pem = rsa.exportKey()
-    print("master private keys: %s" % master_private_key_file)
+    print(("master private keys: %s" % master_private_key_file))
     with open(master_private_key_file, 'w') as f:
         f.write(private_pem)
 
-    print("master public keys: %s" % master_public_key_file)
+    print(("master public keys: %s" % master_public_key_file))
     public_pem = rsa.publickey().exportKey()
     with open(master_public_key_file, 'w') as f:
         f.write(public_pem)
@@ -53,11 +53,11 @@ def gen_keys():
     # generate ghost private and public keys
     rsa = RSA.generate(4096, random_generator)
     private_pem = rsa.exportKey()
-    print("ghost private keys: %s" % ghost_private_key_file)
+    print(("ghost private keys: %s" % ghost_private_key_file))
     with open(ghost_private_key_file, 'w') as f:
         f.write(private_pem)
 
-    print("ghost public keys: %s" % ghost_public_key_file)
+    print(("ghost public keys: %s" % ghost_public_key_file))
     public_pem = rsa.publickey().exportKey()
     with open(ghost_public_key_file, 'w') as f:
         f.write(public_pem)
@@ -162,13 +162,13 @@ if __name__ == '__main__':
     secure_message_signature_file = "data_from_master_signature.txt"
 
     text_send = "hello, ghost. from master"  # plaintext master peer sent
-    print("Send: %s" % text_send)
+    print(("Send: %s" % text_send))
     master_encrypt_data(text_send)  # master send encrypted data
     signature_message(secure_message_file)  # master send signature
     time.sleep(2)
     result = ghost_decrypt_data_from_file_master_sent(secure_message_file)  # ghost peer decrypt the encrypted data
     assert text_send == result, 'decrypt failed'
-    print("Get: %s" % result)
+    print(("Get: %s" % result))
     print("Status: encrypt and decrypt is ok")
 
     if validate_signature(secure_message_file, secure_message_signature_file):  # ghost peer validate signature

@@ -101,8 +101,8 @@ start_time = time.time()
 try:
     BackupLogger.info('backup files to remote filesystem')
     BackupLogger.info('>>>>>>>>>>>>>>>> Start >>>>>>>>>>>>>>>>')
-    print 'Current time: {current_time}'.format(
-        current_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    print('Current time: {current_time}'.format(
+        current_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))))
 
     date_now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
     if os.path.exists(backup_target):

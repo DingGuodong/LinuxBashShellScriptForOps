@@ -86,10 +86,10 @@ class LDAPAuthentication(object):
 
 if __name__ == '__main__':
     u = LDAPAuthentication("chris.ding@another-example.cn", "your password here")
-    print u.is_authenticated()
-    print u.get_distinguishedName()
-    print u.get_userPrincipalName()
-    print u.get_sAMAccountName()
-    print u.get_displayName()
-    print u.get_name()
+    print(u.is_authenticated())
+    print(u.get_distinguishedName())
+    print(u.get_userPrincipalName())
+    print(u.get_sAMAccountName())
+    print(u.get_displayName())
+    print(u.get_name())
     # print u.user_data

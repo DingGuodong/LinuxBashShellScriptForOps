@@ -36,7 +36,7 @@ table = prettytable.PrettyTable(border=True, header=True, left_padding_width=2, 
 table.field_names = ["Name", "Filename", "Version", "Download URL"]
 
 for item in download_list:
-    title = item.get_text().replace(u' ', ' ')  # Note: prettytable only support ASCII code
+    title = item.get_text().replace(' ', ' ')  # Note: prettytable only support ASCII code
     href = item['href']
     filename = os.path.basename(href)
     version = filename.split('-')[-1].split('.')[0]
@@ -50,4 +50,4 @@ for item in download_list:
 
 for field in table.field_names:
     table.align[field] = "l"
-print table
+print(table)

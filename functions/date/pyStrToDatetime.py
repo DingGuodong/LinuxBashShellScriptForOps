@@ -23,8 +23,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 import datetime
@@ -141,28 +140,6 @@ def str_to_date_py2_gen1us2k(s):
     raise ValueError("Unknown date format: '{0}'".format(s))
 
 
-def str_to_date_py2_DannyCork(s):
-    """
-    https://github.com/DannyCork/python-whois
-    https://github.com/DannyCork/python-whois/blob/master/whois/_3_adjust.py
-    :param s: 
-    :return: 
-    """
-    tmp = re.findall(r'\+([0-9]{2})00', s)
-    if tmp:
-        tz = int(tmp[0])
-    else:
-        tz = 0
-
-    for date_format in DATE_FORMATS:
-        try:
-            return datetime.datetime.strptime(s, date_format) + datetime.timedelta(hours=tz)
-        except ValueError:
-            pass
-
-    raise ValueError("Unknown date format: '%s'" % s)
-
-
 if __name__ == '__main__':
     print(str_to_date_py2_my('2026-10-11T00:00:00-0700'))  # this time format from 'whois' command, `whois baidu.com`
     print(str_to_date_py2_my('2026-10-11T15:00:00+0800'))
@@ -172,6 +149,3 @@ if __name__ == '__main__':
 
     print(str_to_date_py2_gen1us2k('2026-10-11T00:00:00 (-0700)'))
     print(str_to_date_py2_gen1us2k('2026-10-11T15:00:00 (+0800)'))
-
-    print(str_to_date_py2_DannyCork('2026-10-11T00:00:00 (-0700)'))
-    print(str_to_date_py2_DannyCork('2026-10-11T00:00:00 (+0800)'))

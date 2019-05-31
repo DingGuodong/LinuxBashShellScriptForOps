@@ -14,19 +14,19 @@ References:         RDS MySQL备份文件下载工具
 import json
 import sys
 import datetime
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 from aliyunsdkcore import client
 from aliyunsdkrds.request.v20140815.DescribeBackupsRequest import DescribeBackupsRequest
 
 if len(sys.argv) != 5:
-    print 'use help:'
-    print '''
+    print('use help:')
+    print('''
         get_rds_backup.py rm-xxxxxxx  xxxxxxx xxxxxxxxx  /mnt/
         get_rds_backup.py  RDS实例ID   key  secret  备份保存位置
         key: Access Key ID
         secret:Access Key Secret 
         默认下载昨天的备份，时间可以修改，对应脚本中的变量 starttime 和 endtime
-        '''
+        ''')
     sys.exit(0)
 
 key = sys.argv[2]
@@ -37,7 +37,7 @@ back_path = sys.argv[4]
 yesterday = str(datetime.date.today() + datetime.timedelta(days=-1))
 today = str(datetime.date.today())
 starttime = yesterday + "T00:00Z"
-print yesterday, today
+print(yesterday, today)
 endtime = today + "T00:00Z"
 # key = ''
 # key_secret = ''
@@ -58,19 +58,19 @@ def download_rds_backfile(instanceid):
     #  print (backup)
     jsload = json.loads(backup)
     num = jsload["PageRecordCount"]
-    print "backfiles:" + str(num)
+    print("backfiles:" + str(num))
     i = 0
     while i < num:
 
         bak_url = jsload["Items"]["Backup"][i]["BackupDownloadURL"]
         bak_host = jsload["Items"]["Backup"][i]["HostInstanceID"]
         bak_id = jsload["Items"]["Backup"][i]["BackupId"]
-        print "BackupId:" + str(bak_id), "HostInstanceID:" + str(bak_host), "downloadurl:" + bak_url
+        print("BackupId:" + str(bak_id), "HostInstanceID:" + str(bak_host), "downloadurl:" + bak_url)
         save_name = back_path + bak_url.split('?')[0].split('/')[-1]
-        u = urllib2.urlopen(bak_url)
+        u = urllib.request.urlopen(bak_url)
         f_header = u.info()
         bak_size = int(f_header.getheaders("Content-Length")[0])
-        print "backup file size: %s M ,fime nema: %s" % (bak_size / 1024 / 1024, save_name)
+        print("backup file size: %s M ,fime nema: %s" % (bak_size / 1024 / 1024, save_name))
 
         with open(save_name, "wb") as f:
 
@@ -85,9 +85,9 @@ def download_rds_backfile(instanceid):
                 f.write(data_buffer)
                 status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / bak_size)
                 # status = status + chr(8) * (len(status) + 1)
-                print status
+                print(status)
         i = i + 1
-        print "download complet!"
+        print("download complet!")
 
 
 download_rds_backfile(rds_id)

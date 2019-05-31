@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import base64
@@ -35,6 +35,6 @@ def hmac_md5(key, msg):
 
 
 if __name__ == '__main__':
-    print(hmac_md5(u'Hello, world!'.encode('utf-8'), 'secret'))
-    print(hmac_md5('Hello, world!', 'secret'))
-    print(base64.b64encode('37a169bbacb03ca1c4b855bb69ac3836'))
+    print((hmac_md5('Hello, world!'.encode('utf-8'), 'secret')))
+    print((hmac_md5('Hello, world!', 'secret')))
+    print((base64.b64encode('37a169bbacb03ca1c4b855bb69ac3836')))

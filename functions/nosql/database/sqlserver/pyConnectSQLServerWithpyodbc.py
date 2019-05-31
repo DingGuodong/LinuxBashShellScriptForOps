@@ -56,7 +56,7 @@ tsql = "SELECT Name, Location FROM Employees;"
 with cursor.execute(tsql):
     row = cursor.fetchone()
     while row:
-        print (str(row[0]) + " " + str(row[1]))
+        print(str(row[0]) + " " + str(row[1]))
         row = cursor.fetchone()
 
 # Measure how long it takes to run the query
@@ -66,5 +66,5 @@ with cursor.execute(tsql):
     b = datetime.now()
     c = b - a
     for row in cursor:
-        print ('Sum:', str(row[0]))
-    print ('QueryTime:', c.microseconds, 'ms')
+        print('Sum:', str(row[0]))
+    print('QueryTime:', c.microseconds, 'ms')

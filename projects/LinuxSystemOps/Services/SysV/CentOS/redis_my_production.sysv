@@ -1,0 +1,127 @@
+#!/bin/sh
+#
+# Simple Redis init.d script conceived to work on Linux systems
+# as it does use of the /proc filesystem.
+
+### BEGIN INIT INFO
+# Provides:     redis_6379
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Redis data structure server
+# Description:          Redis data structure server. See https://redis.io
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+name="redis-server"
+REDIS_PORT=6379
+EXEC="/usr/local/bin/redis-server"
+CLIEXEC="/usr/local/bin/redis-cli"
+PIDFILE="/var/run/redis/redis.pid"
+REDIS_CONFIG="/etc/redis/${REDIS_PORT}.conf"
+REDIS_USER="redis"
+
+[[ -e /etc/sysconfig/redis ]] && . /etc/sysconfig/redis
+
+[[ -x ${EXEC} ]] || EXEC=/usr/bin/redis-server
+[[ -x ${CLIEXEC} ]] || CLIEXEC=/usr/bin/redis-cli
+[[ -f ${REDIS_CONFIG} ]] || REDIS_CONFIG="/etc/redis.conf"
+
+lockfile=/var/lock/subsys/redis
+
+start() {
+    [[ -f ${REDIS_CONFIG} ]] || exit 6
+    [[ -x ${EXEC} ]] || exit 5
+
+
+    if [[ -f ${PIDFILE} ]]
+    then
+        echo "$PIDFILE exists, process is already running or crashed"
+    else
+        echo "Starting Redis server..."
+#        daemon --user ${REDIS_USER-redis} --pidfile ${PIDFILE} "$EXEC $REDIS_CONFIG"
+        daemon --user ${REDIS_USER-redis} "$EXEC $REDIS_CONFIG --daemonize yes --pidfile $PIDFILE"
+        retval=$?
+        echo
+        [[ ${retval} -eq 0 ]] && touch ${lockfile}
+        return ${retval}
+    fi
+
+}
+
+stop() {
+    echo -n $"Stopping $name: "
+    killproc -p ${PIDFILE} ${name}
+    retval=$?
+    echo
+    [[ ${retval} -eq 0 ]] && rm -f ${lockfile}
+    return ${retval}
+}
+
+stop_graceful() {
+    if [[ ! -f ${PIDFILE} ]]
+    then
+            echo "$PIDFILE does not exist, process is not running"
+    else
+            PID=$(cat ${PIDFILE})
+            echo "Stopping ..."
+            ${CLIEXEC} -p ${REDIS_PORT} shutdown || stop
+            while [[ -x /proc/${PID} ]]
+            do
+                echo "Waiting for Redis to shutdown ..."
+                sleep 1
+            done
+            echo "Redis stopped"
+    fi
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    false
+}
+
+rh_status() {
+    status -p ${PIDFILE} ${name}
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+
+case "$1" in
+    start)
+        rh_status_q && exit 0
+        $1
+        ;;
+    stop)
+        rh_status_q || exit 0
+        stop_graceful
+        ;;
+    restart)
+        $1
+        ;;
+    reload)
+        rh_status_q || exit 7
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart}"
+        exit 2
+esac
+exit $?

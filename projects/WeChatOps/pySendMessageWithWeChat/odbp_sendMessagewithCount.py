@@ -55,7 +55,7 @@ class WeiXinSendMsgClass(object):
                 date = limit[0][1]
 
             if used > default_limit:
-                print "reached to limit, please try again tomorrow!"
+                print("reached to limit, please try again tomorrow!")
                 sys.exit(1)
 
             return used, date
@@ -76,7 +76,7 @@ class WeiXinSendMsgClass(object):
             self.data['touser'] = to_user
             self.data['text']['content'] = content
         else:
-            print "parameters wrong!"
+            print("parameters wrong!")
             raise RuntimeError
 
         import requests
@@ -96,8 +96,8 @@ class WeiXinSendMsgClass(object):
 
         return_content = json.loads(response.content)
         if return_content["errcode"] == 0 and return_content["errmsg"] == "ok":
-            print "Send successfully! %s " % return_content
-            print "The limit used times is %s." % (used + 1)
+            print("Send successfully! %s " % return_content)
+            print("The limit used times is %s." % (used + 1))
             self.increase_used(used, date)
         else:
-            print "Send failed! %s " % return_content
+            print("Send failed! %s " % return_content)

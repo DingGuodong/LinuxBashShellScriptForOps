@@ -18,4 +18,4 @@ parser.add_option('-q', '--query',
 
 options, args = parser.parse_args()
 
-print 'Query string:', options.query
+print('Query string:', options.query)

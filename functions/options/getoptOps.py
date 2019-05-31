@@ -14,9 +14,9 @@ import os
 
 
 def usage():
-    print "%s -h    show this help message." % os.path.basename(sys.argv[0])
-    print "%s -i    do something." % os.path.basename(sys.argv[0])
-    print "%s -o    do something else." % os.path.basename(__file__)
+    print("%s -h    show this help message." % os.path.basename(sys.argv[0]))
+    print("%s -i    do something." % os.path.basename(sys.argv[0]))
+    print("%s -o    do something else." % os.path.basename(__file__))
 
 
 para_i = ""
@@ -32,7 +32,7 @@ for opt, value in opts:
         sys.exit(0)
 
 if para_i != "":
-    print "%s reverse is %s" % ("para_i", para_i[::-1])
+    print("%s reverse is %s" % ("para_i", para_i[::-1]))
 
 if para_o != "":
-    print "%s reverse is %s" % ("para_o", para_o[::-1])
+    print("%s reverse is %s" % ("para_o", para_o[::-1]))

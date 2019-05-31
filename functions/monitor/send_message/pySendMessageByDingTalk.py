@@ -21,8 +21,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 import json
@@ -86,11 +85,11 @@ def send_message(access_token, title, content, mobile, enable_at_all=False):
     result_string = response.text
     result_dict = json.loads(result_string)
     if result_dict["errcode"] == 0:
-        print "send ok"
-        print json.dumps(result_string, indent=4)
+        print("send ok")
+        print(json.dumps(result_string, indent=4))
     else:
-        print "send failed"
-        print json.dumps(result_string, indent=4)
+        print("send failed")
+        print(json.dumps(result_string, indent=4))
 
 
 if __name__ == '__main__':

@@ -48,7 +48,7 @@ class PasswordGenerator:
         # # which is usually understood as "intentionally unused" (even PyLint etc. knows and respect this).
         # print ''.join(random.choice(chars) for _ in range(length))
         self.password = ''.join(sample(chars, length))
-        print self.password
+        print(self.password)
 
     def password_strength(self):
         # show password strength, weak or good

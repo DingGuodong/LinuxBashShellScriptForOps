@@ -28,53 +28,21 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import wmi
 
 
-def decoding(text):
-    import sys
-    import codecs
-    import locale
-
-    if isinstance(text, unicode):
-        return text
-    elif isinstance(text, (basestring, str)):
-        pass
-    else:
-        return text  # do not need decode, return original object if type is not instance of string type
-        # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
-
-    mswindows = (sys.platform == "win32")
-
-    try:
-        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
-        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
-    except Exception as _:
-        del _
-        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
-
-    msg = text
-    if mswindows:
-        try:
-            msg = text.decode(encoding)
-            return msg
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            pass
-    return msg
-
-
 c = wmi.WMI()
 # https://msdn.microsoft.com/en-us/library/aa394102(v=vs.85).aspx
-print c.Win32_ComputerSystem()[0].Name
-print c.Win32_ComputerSystem()[0]
+print(c.Win32_ComputerSystem()[0].Name)
+print(c.Win32_ComputerSystem()[0])
 
 # https://msdn.microsoft.com/en-us/library/aa394239(v=vs.85).aspx
 for o in c.Win32_OperatingSystem():
-    print o.CSName, o.Caption, o.BuildNumber, o.OSArchitecture, o.SerialNumber, o.Version
+    print(o.CSName, o.Caption, o.BuildNumber, o.OSArchitecture, o.SerialNumber, o.Version)
 
 # https://msdn.microsoft.com/en-us/library/aa394173(v=vs.85).aspx
 DRIVE_TYPES = {
@@ -87,33 +55,33 @@ DRIVE_TYPES = {
     6: "RAM Disk"
 }
 for disk in c.Win32_LogicalDisk():
-    print disk.Caption, DRIVE_TYPES[disk.DriveType], disk.Description, disk.ProviderName or ""
+    print(disk.Caption, DRIVE_TYPES[disk.DriveType], disk.Description, disk.ProviderName or "")
 
 for disk in c.Win32_LogicalDisk(DriveType=3):
-    print disk.Caption, "%0.2f%% free" % (100.0 * long(disk.FreeSpace) / long(disk.Size))
+    print(disk.Caption, "%0.2f%% free" % (100.0 * int(disk.FreeSpace) / int(disk.Size)))
 
 # https://msdn.microsoft.com/en-us/library/aa394464(v=vs.85).aspx
 for s in c.Win32_StartupCommand():
-    print "[%s] %s <%s>" % (s.Location, s.Caption, s.Command)
+    print("[%s] %s <%s>" % (s.Location, s.Caption, s.Command))
 
 # https://msdn.microsoft.com/en-us/library/aa394372(v=vs.85).aspx
 for process in c.Win32_Process(Name='python.exe'):
-    print process.ProcessId, process.Name, process.CommandLine
+    print(process.ProcessId, process.Name, process.CommandLine)
 
 # https://msdn.microsoft.com/en-us/library/aa394418(v=vs.85).aspx
 stopped_services = c.Win32_Service(StartMode="Auto", State="Stopped")
 if stopped_services:
     for s in stopped_services:
-        print s.Caption, "service is not running"
+        print(s.Caption, "service is not running")
 else:
-    print "No auto services stopped"
+    print("No auto services stopped")
 
 # https://msdn.microsoft.com/en-us/library/aa394217(v=vs.85).aspx
 for interface in c.Win32_NetworkAdapterConfiguration(IPEnabled=1):
-    print interface.Description, interface.MACAddress
+    print(interface.Description, interface.MACAddress)
     for ip_address in interface.IPAddress:
-        print ip_address
-    print
+        print(ip_address)
+    print()
 
 # https://msdn.microsoft.com/en-us/library/aa394077(v=vs.85).aspx
 for CIM_BIOSElement in c.Win32_BIOS():

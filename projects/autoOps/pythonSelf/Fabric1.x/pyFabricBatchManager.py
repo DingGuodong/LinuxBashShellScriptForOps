@@ -53,7 +53,7 @@ env.roledefs = {
                    ],
 }
 
-env.roledefs[env.all_env] = [host for role in env.roledefs.values() for host in role]
+env.roledefs[env.all_env] = [host for role in list(env.roledefs.values()) for host in role]
 
 env.port = 22
 env.user = 'root'
@@ -98,7 +98,7 @@ def terminal_debug(defName):
                                                                                     roles=env.test_env,
                                                                                     fab_file=__file__,
                                                                                     task=defName)
-    print command
+    print(command)
     os.system(command)
 
 
@@ -114,24 +114,24 @@ def is_linux():
 if __name__ == '__main__':
     if len(sys.argv) == 1 and is_windows():
         if env.interactive_mode:
-            print """
+            print("""
 We trust you have received the usual lecture from the local System
 Administrator. It usually boils down to these three things:
 
     #1) Respect the privacy of others.
     #2) Think before you type.
     #3) With great power comes great responsibility.
-"""
-            command_to_run = raw_input("Input the command to run:")
+""")
+            command_to_run = input("Input the command to run:")
             if command_to_run != "":
                 terminal_debug('run_command:command="{command}"'.format(command=command_to_run))
             else:
-                print "Bad Input, now exit, bye."
+                print("Bad Input, now exit, bye.")
                 exit(1)
         else:
             terminal_debug('run_command:command="uname -a"')
         sys.exit(0)
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    print(red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:])))
     sys.exit(1)

@@ -20,8 +20,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 
@@ -39,9 +39,9 @@ def to_unicode_or_bust(obj, encoding='utf-8'):
     :param encoding:
     :return:
     """
-    if isinstance(obj, basestring):
-        if not isinstance(obj, unicode):
-            obj = unicode(obj, encoding)
+    if isinstance(obj, str):
+        if not isinstance(obj, str):
+            obj = str(obj, encoding)
 
     return obj
 
@@ -53,14 +53,14 @@ def to_str_or_bust(obj, encoding='utf-8'):
     :param encoding:
     :return:
     """
-    if isinstance(obj, basestring):
-        if isinstance(obj, unicode):
+    if isinstance(obj, str):
+        if isinstance(obj, str):
             obj = obj.encode(encoding)
 
     return obj
 
 
-def clean_old_backups(path, ext=u"bak", days=30):
+def clean_old_backups(path, ext="bak", days=30):
     """
     clean old backups with given directory, return counts of files deleted
     :param path: backup directory
@@ -88,7 +88,7 @@ def clean_old_backups(path, ext=u"bak", days=30):
 
 if __name__ == '__main__':
     backup_source = r'D:\Microsoft SQL Server Backup'
-    backup_extension = u"bak"
+    backup_extension = "bak"
     save_days = 30
 
     print(clean_old_backups(backup_source, backup_extension, save_days))

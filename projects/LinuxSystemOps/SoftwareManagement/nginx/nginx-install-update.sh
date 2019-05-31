@@ -12,7 +12,7 @@
 # Long Description:       The reason for writing this script in bash shell language instead of writing it in Python is
 #                         because it is not pythonic at all
 # Usage:                  sudo bash $0
-# References:
+# References:             https://www.nginx.com/resources/wiki/start/topics/examples/full/
 # Prerequisites:          []
 # Development Status:     3 - Alpha, 5 - Production/Stable
 # Environment:            Console
@@ -25,7 +25,7 @@
 
 #set -e
 
-NGINX_SOURCE_LATEST_VERSION="nginx-1.14.2"
+NGINX_SOURCE_LATEST_VERSION="nginx-1.16.0"
 PCRE_SOURCE_LATEST_VERSION="pcre-8.43"
 ZLIB_SOURCE_LATEST_VERSION="zlib-1.2.11"
 OPENSSL_SOURCE_LATEST_VERSION="openssl-1.1.1b"
@@ -167,7 +167,11 @@ function compile_nginx_source(){
     cd ${WORKDIR}/${NGINX_SOURCE_LATEST_VERSION}
     ./configure --prefix=/usr/local/nginx \
         --with-http_ssl_module \
+        --with-http_v2_module \
+        --with-http_realip_module \
         --with-stream \
+        --with-stream_ssl_module \
+        --with-stream_realip_module \
         --user=www --group=www \
         --with-pcre-jit \
         --with-pcre=${WORKDIR}/${PCRE_SOURCE_LATEST_VERSION} \

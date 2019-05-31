@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 try:
@@ -47,4 +47,4 @@ for elem in tree.findall('{http://xmlns.oracle.com/weblogic/domain}server'):
     machine = elem.find('{http://xmlns.oracle.com/weblogic/domain}machine')
     name = elem.find('{http://xmlns.oracle.com/weblogic/domain}name')
     if listen_port is not None:
-        print(" ".join((listen_port.text, machine.text, name.text)))
+        print((" ".join((listen_port.text, machine.text, name.text))))

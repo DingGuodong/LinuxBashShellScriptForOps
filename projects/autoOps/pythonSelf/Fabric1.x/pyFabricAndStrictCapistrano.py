@@ -23,8 +23,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import functools
@@ -65,7 +65,7 @@ env.roledefs = {
              ],
 }
 
-env.roledefs["all"] = [host for role in env.roledefs.values() for host in role]
+env.roledefs["all"] = [host for role in list(env.roledefs.values()) for host in role]
 
 STAGES = {
     'develop': {
@@ -100,7 +100,7 @@ env.timeout = 6000
 
 def stage_set(stage_name='develop'):
     env.stage = stage_name
-    for option, value in STAGES[env.stage].items():
+    for option, value in list(STAGES[env.stage].items()):
         setattr(env, option, value)
 
 
@@ -152,7 +152,7 @@ def with_defaults(func):
         env.setdefault('revisions_log_path', "%(domain_path)s/revisions.log" %
                        {'domain_path': env.domain_path})  # TODO(Guodong Ding) complete this in 'after_deploy()'
         env.setdefault('current_time', time.strftime('%Y%m%d%H%M%S', time.localtime(time.time())))
-        if 'releases' not in env.keys():
+        if 'releases' not in list(env.keys()):
             if dir_exists(env.releases_path):
                 env.releases = sorted(run('ls -x %(releases_path)s' % {'releases_path': env.releases_path}).split())
 
@@ -361,7 +361,7 @@ def terminal_debug(fabric_task):
                                                                                  roles="develop",
                                                                                  fab_file=__file__,
                                                                                  task=fabric_task)
-    print command
+    print(command)
     sys.exit(os.system(command))
 
 
@@ -381,5 +381,5 @@ if __name__ == '__main__':
         # terminal_debug("develop rollback")  # execute "rollback" task on "develop" stage hosts
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    print(red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:])))
     sys.exit(1)

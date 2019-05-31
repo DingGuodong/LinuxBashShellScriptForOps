@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 from sqlalchemy import String, Column, Integer
@@ -83,14 +83,14 @@ class Emoji(Base):
 # initialize object, use this instance to CRUD
 session = Session()
 
-print session.query(Emoji.Id, Emoji.Key).all()
+print(session.query(Emoji.Id, Emoji.Key).all())
 
 # select
-print session.query(Emoji.Id, Emoji.Key).filter_by(Id=1).all()
-print session.query(Emoji.Id, Emoji.Key).filter(Emoji.Id == 1).all()
+print(session.query(Emoji.Id, Emoji.Key).filter_by(Id=1).all())
+print(session.query(Emoji.Id, Emoji.Key).filter(Emoji.Id == 1).all())
 
 # insert
-new_record = Emoji(6, u'\U0001f604')  # insert a new record '😄'
+new_record = Emoji(6, '\U0001f604')  # insert a new record '😄'
 if session.query(Emoji.Id).filter_by(Id=6).first() is None:
     session.add(new_record)
     session.commit()
@@ -98,11 +98,11 @@ if session.query(Emoji.Id).filter_by(Id=6).first() is None:
 # delete
 record = session.query(Emoji).get(6)
 if record is not None:
-    print record.Id, record.Key
+    print(record.Id, record.Key)
     session.delete(new_record)
     session.commit()
 
 # update
-session.query(Emoji).get(1).Key = u'\U0001f44c'  # set a new value '👌'
-print session.query(Emoji.Id, Emoji.Key).all()
-session.query(Emoji).get(1).Key = u'test1'  # roll back
+session.query(Emoji).get(1).Key = '\U0001f44c'  # set a new value '👌'
+print(session.query(Emoji.Id, Emoji.Key).all())
+session.query(Emoji).get(1).Key = 'test1'  # roll back

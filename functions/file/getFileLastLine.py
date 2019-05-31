@@ -70,7 +70,9 @@ def get_file_last_line(inputfile):
                 lineno += 1
         return last_line
 
-# Test purpose
-# print get_last_line(os.path.abspath(__file__))
-# print print_first_last_line(os.path.abspath(__file__))
-# print get_file_last_line(os.path.abspath(__file__))
+
+if __name__ == '__main__':
+    # Test purpose
+    print(get_last_line(os.path.abspath(__file__)))
+    print(print_first_last_line(os.path.abspath(__file__)))
+    print(get_file_last_line(os.path.abspath(__file__)))

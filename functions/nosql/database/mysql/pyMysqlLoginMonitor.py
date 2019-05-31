@@ -99,7 +99,7 @@ def show_login_users_count(user=None):
     :param user:
     :return:
     """
-    if isinstance(user, basestring) and user != "":
+    if isinstance(user, str) and user != "":
         sql = r"SELECT count(ID) AS count FROM information_schema.PROCESSLIST WHERE USER='%s';" % user
     else:
         sql = r"SELECT count(ID) AS count FROM information_schema.PROCESSLIST WHERE ID IS NOT NULL;"
@@ -119,7 +119,7 @@ def show_login_hosts(user=None):
     :return
     :type: list
     """
-    if isinstance(user, basestring) and user != "":
+    if isinstance(user, str) and user != "":
         sql = r"SELECT `HOST` AS hosts FROM information_schema.PROCESSLIST WHERE USER='%s';" % user
     else:
         sql = r"SELECT `HOST` AS hosts FROM information_schema.PROCESSLIST WHERE ID IS NOT NULL;"
@@ -162,6 +162,6 @@ if __name__ == '__main__':
             error_flag = False
 
     if error_flag:
-        print 1
+        print(1)
     else:
-        print 0
+        print(0)

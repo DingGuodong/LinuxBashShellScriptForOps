@@ -28,7 +28,7 @@ class App(object):
 
 
 if len(sys.argv) < 2:
-    print "usage: %s start|stop|restart" % __file__
+    print("usage: %s start|stop|restart" % __file__)
 elif sys.argv[1] == "status":
     raise NotImplementedError
 else:

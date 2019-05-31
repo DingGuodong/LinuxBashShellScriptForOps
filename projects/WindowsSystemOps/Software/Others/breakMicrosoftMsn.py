@@ -19,24 +19,6 @@ mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 linux = (sys.platform == "linux2")
 
 
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-
 def get_status_code():
     import requests
 
@@ -67,9 +49,9 @@ def get_ip_from_domain(domain):
 
 
 def get_domain_from_url(url):
-    import urllib
-    proto, rest = urllib.splittype(url)
-    domain, rest = urllib.splithost(rest)
+    import urllib.request, urllib.parse, urllib.error
+    proto, rest = urllib.parse.splittype(url)
+    domain, rest = urllib.parse.splithost(rest)
     return domain
 
 
@@ -77,16 +59,16 @@ def block_ip(ip):
     command = r"netsh advfirewall firewall add rule name=\"block_ip_{n_ip}\"" \
               r" dir=out protocol=tcp remoteip={r_ip} action=block profile=any ".format(n_ip=ip, r_ip=ip)
     if mswindows:
-        print "Run local command \'{command}\' on Windows...".format(command=command)
+        print("Run local command \'{command}\' on Windows...".format(command=command))
 
         proc_obj = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
-        result = proc_obj.stdout.read().lower().decode(DEFAULT_LOCALE_ENCODING)
+        result = proc_obj.stdout.read().lower()
         if result:
-            print result
+            print(result)
 
     else:
-        print "Windows Supported Only. Aborted!"
+        print("Windows Supported Only. Aborted!")
         sys.exit(1)
 
 

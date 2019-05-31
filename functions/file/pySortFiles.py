@@ -22,5 +22,5 @@ if __name__ == '__main__':
                 full_path_to_filename = os.path.join(top, filename)
                 if full_path_to_filename.endswith(tuple(file_extension_list)):
                     all_files_with_date_dict[full_path_to_filename] = os.path.getctime(full_path_to_filename)
-    for item in sorted(all_files_with_date_dict.items(), cmp=lambda x, y: cmp(x[1], y[1]), reverse=True):
-        print item[0]
+    for item in sorted(all_files_with_date_dict.items(), key=lambda x: x[1], reverse=True):
+        print(item[0])

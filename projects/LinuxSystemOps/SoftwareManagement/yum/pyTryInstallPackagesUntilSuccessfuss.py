@@ -21,43 +21,26 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import time
 
 
-def decoding(text):
-    import sys
-    import codecs
+def always_to_utf8(text):
     import locale
 
-    if isinstance(text, unicode):
-        return text
-    elif isinstance(text, (basestring, str)):
-        pass
+    encoding = locale.getpreferredencoding()
+    if isinstance(text, bytes):
+        try:
+            return text.decode(encoding)
+        except UnicodeDecodeError:
+            return text.decode("utf-8")
+
     else:
         return text  # do not need decode, return original object if type is not instance of string type
         # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
-
-    mswindows = (sys.platform == "win32")
-
-    try:
-        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
-        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
-    except Exception as _:
-        del _
-        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
-
-    msg = text
-    if mswindows:
-        try:
-            msg = text.decode(encoding)
-            return msg
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            pass
-    return msg
 
 
 def fn_timer(func):
@@ -69,8 +52,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 
@@ -86,11 +69,11 @@ def run(command, capture_stdout=False, suppress_stdout=False):
     (stdout, stderr) = p.communicate()
 
     if p.returncode != 0:  # run command failed
-        print "encountered an error (return code %s) while executing '%s'" % (p.returncode, command)
+        print("encountered an error (return code %s) while executing '%s'" % (p.returncode, command))
         if stdout is not None:
-            print "Standard output:\n", decoding(stdout)
+            print("Standard output:\n", always_to_utf8(stdout))
         if stderr is not None:
-            print "Standard error:\n", decoding(stderr)
+            print("Standard error:\n", always_to_utf8(stderr))
         if not capture_stdout:
             return False
         else:
@@ -102,7 +85,7 @@ def run(command, capture_stdout=False, suppress_stdout=False):
                 return stdout
             else:
                 if not suppress_stdout:
-                    print decoding(stdout)
+                    print(always_to_utf8(stdout))
                 return True
 
 
@@ -111,11 +94,11 @@ if __name__ == '__main__':
     keep_running_flay = True
 
     while keep_running_flay:
-        print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
 
         if run("yum install -y mongodb-org"):
-            print "Successfully"
+            print("Successfully")
             keep_running_flay = False
         else:
-            print "Failed"
+            print("Failed")
             time.sleep(2)

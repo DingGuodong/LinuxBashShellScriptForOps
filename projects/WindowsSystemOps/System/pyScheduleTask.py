@@ -17,28 +17,11 @@ import threading
 import time
 
 
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except LookupError:
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-
 def shutdown_NetEaseCloudMusic(name):
     # define NetEaseCloudMusic process name
     ProcessNameToKill = name
 
-    print
+    print()
     import psutil
     import sys
 
@@ -61,9 +44,9 @@ def shutdown_NetEaseCloudMusic(name):
     currentUserName = getuser()
 
     if ProcessNameToKill in [x.name() for x in psutil.process_iter()]:
-        print "[I] Process \"%s\" is found!" % ProcessNameToKill
+        print("[I] Process \"%s\" is found!" % ProcessNameToKill)
     else:
-        print "[E] Process \"%s\" is NOT running!" % ProcessNameToKill
+        print("[E] Process \"%s\" is NOT running!" % ProcessNameToKill)
         sys.exit(1)
 
     for process in psutil.process_iter():
@@ -72,9 +55,9 @@ def shutdown_NetEaseCloudMusic(name):
                 # root user can only kill its process, but can NOT kill other users process
                 if process.username().endswith(currentUserName):
                     process.kill()
-                    print "[I] Process \"%s(pid=%s)\" is killed successfully!" % (process.name(), process.pid)
+                    print("[I] Process \"%s(pid=%s)\" is killed successfully!" % (process.name(), process.pid))
             except Exception as e:
-                print e
+                print(e)
 
 
 def display_countdown(sec):
@@ -84,10 +67,10 @@ def display_countdown(sec):
         :param secs: seconds, int
         :return:
         """
-        current_time = time.strftime("%Y-%m-%d %H:%M:%S %Z").decode(DEFAULT_LOCALE_ENCODING).encode("utf-8")
-        print "Time current: %s" % current_time
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S %Z")
+        print("Time current: %s" % current_time)
         while secs:
-            now = time.strftime("%Y-%m-%d %H:%M:%S %Z").decode(DEFAULT_LOCALE_ENCODING).encode("utf-8")
+            now = time.strftime("%Y-%m-%d %H:%M:%S %Z")
             hours, seconds = divmod(secs, 3600)
             minutes, seconds = divmod(seconds, 60)
             clock_format = '{:02d}:{:02d}:{:02d}'.format(hours, minutes, seconds)
@@ -109,8 +92,8 @@ def display_scheduler(name):
     # https://docs.python.org/2/library/sched.html#sched.scheduler.enter
     s.enter(seconds_to_shutdown, 1, shutdown_NetEaseCloudMusic, (name,))
     s.run()
-    now = time.strftime("%Y-%m-%d %H:%M:%S %Z").decode(DEFAULT_LOCALE_ENCODING).encode("utf-8")
-    print "Time finished: %s\nGood bye!" % now
+    now = time.strftime("%Y-%m-%d %H:%M:%S %Z")
+    print("Time finished: %s\nGood bye!" % now)
 
 
 if __name__ == '__main__':

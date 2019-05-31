@@ -4,7 +4,7 @@ import json
 import os
 import re
 import sys
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from subprocess import call
 
 
@@ -50,7 +50,7 @@ class GitOSCAutoDeploy(BaseHTTPRequestHandler):
         event = self.headers.getheader('Password')
         if event == '123.56.234.219':
             if not self.quiet:
-                print 'Ping event received'
+                print('Ping event received')
             self.respond(204)
             return
 
@@ -90,8 +90,8 @@ class GitOSCAutoDeploy(BaseHTTPRequestHandler):
         except Exception as _:
             del _
             # do http decode
-            import urllib
-            body = urllib.unquote(body)
+            import urllib.request, urllib.parse, urllib.error
+            body = urllib.parse.unquote(body)
         try:
             json.loads(body)
         except Exception as _:
@@ -120,8 +120,8 @@ class GitOSCAutoDeploy(BaseHTTPRequestHandler):
 
     def fetch(self, path):
         if not self.quiet:
-            print "\nPost push request received"
-            print 'Updating ' + path
+            print("\nPost push request received")
+            print('Updating ' + path)
         call(['cd "' + path + '" && git fetch'], shell=True)
 
     def deploy(self, path):
@@ -135,11 +135,11 @@ class GitOSCAutoDeploy(BaseHTTPRequestHandler):
 
                     if branch is None or branch == self.branch:
                         if not self.quiet:
-                            print 'Executing deploy command'
+                            print('Executing deploy command')
                         call(['cd "' + path + '" && ' + repository['deploy']], shell=True)
 
                     elif not self.quiet:
-                        print 'Push to different branch (%s != %s), not deploying' % (branch, self.branch)
+                        print('Push to different branch (%s != %s), not deploying' % (branch, self.branch))
                 break
 
 
@@ -160,21 +160,21 @@ def main():
             os.setsid()
 
         if not GitOSCAutoDeploy.quiet:
-            print 'Github AutoDeploy Service v0.2 started'
+            print('Github AutoDeploy Service v0.2 started')
         else:
-            print 'Github AutoDeploy Service v 0.2 started in daemon mode'
+            print('Github AutoDeploy Service v 0.2 started in daemon mode')
 
         server = HTTPServer(('', GitOSCAutoDeploy.getConfig()['port']), GitOSCAutoDeploy)
         server.serve_forever()
     except (KeyboardInterrupt, SystemExit) as e:
         if e:  # wtf, why is this creating a new line?
-            print >> sys.stderr, e
+            print(e, file=sys.stderr)
 
         if server is not None:
             server.socket.close()
 
         if not GitOSCAutoDeploy.quiet:
-            print 'Goodbye'
+            print('Goodbye')
 
 
 if __name__ == '__main__':

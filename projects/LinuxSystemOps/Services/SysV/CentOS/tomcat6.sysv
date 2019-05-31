@@ -62,7 +62,7 @@ TOMCAT_SCRIPT="/usr/sbin/tomcat6"
 
 # Tomcat program name
 TOMCAT_PROG="${NAME}"
-        
+
 # Define the tomcat username
 TOMCAT_USER="${TOMCAT_USER:-tomcat}"
 
@@ -86,7 +86,7 @@ function parseOptions() {
              )"
     if [ -r "/etc/sysconfig/${NAME}" ]; then
         options="$options $(
-                     awk '!/^#/ && !/^$/ { ORS=" "; 
+                     awk '!/^#/ && !/^$/ { ORS=" ";
                                            print "export ", $0, ";" }' \
                      /etc/sysconfig/${NAME}
                  )"
@@ -102,9 +102,9 @@ function version() {
 
 # See how we were called.
 function start() {
-  
+
    echo -n "Starting ${TOMCAT_PROG}: "
-   if [ "$RETVAL" != "0" ]; then 
+   if [ "$RETVAL" != "0" ]; then
      log_failure_msg
      return
    fi
@@ -124,7 +124,7 @@ function start() {
     fi
     # fix permissions on the log and pid files
     touch $CATALINA_PID 2>&1 || RETVAL="4"
-    if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then 
+    if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
       chown ${TOMCAT_USER}:${TOMCAT_GROUP} $CATALINA_PID
     fi
     if [ "$?" != "0" ]; then
@@ -135,10 +135,10 @@ function start() {
         $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start-security" \
             >> ${TOMCAT_LOG} 2>&1 || RETVAL="4"
     else
-       
+
        [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start" >> ${TOMCAT_LOG} 2>&1 || RETVAL="4"
     fi
-    if [ "$RETVAL" -eq "0" ]; then 
+    if [ "$RETVAL" -eq "0" ]; then
         log_success_msg
         touch /var/lock/subsys/${NAME}
     else
@@ -184,12 +184,12 @@ function stop() {
 
 function status()
 {
-   checkpidfile 
+   checkpidfile
    if [ "$RETVAL" -eq "0" ]; then
       log_success_msg "${NAME} (pid ${kpid}) is running..."
    elif [ "$RETVAL" -eq "1" ]; then
       log_failure_msg "PID file exists, but process is not running"
-   else 
+   else
       checklockfile
       if [ "$RETVAL" -eq "2" ]; then
          log_failure_msg "${NAME} lockfile exists but process is not running"

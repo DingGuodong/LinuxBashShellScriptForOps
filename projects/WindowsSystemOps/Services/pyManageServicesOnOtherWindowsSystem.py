@@ -21,44 +21,28 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 
 import wmi
 
 
-def decoding(text):
-    import sys
-    import codecs
+def always_to_utf8(text):
     import locale
 
-    if isinstance(text, unicode):
-        return text
-    elif isinstance(text, (basestring, str)):
-        pass
+    encoding = locale.getpreferredencoding()
+    if isinstance(text, bytes):
+        try:
+            return text.decode(encoding)
+        except UnicodeDecodeError:
+            return text.decode("utf-8")
+
     else:
         return text  # do not need decode, return original object if type is not instance of string type
         # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
 
-    mswindows = (sys.platform == "win32")
-
-    try:
-        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
-        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
-    except Exception as _:
-        del _
-        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
-
-    msg = text
-    if mswindows:
-        try:
-            msg = text.decode(encoding)
-            return msg
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            pass
-    return msg
 
 
 class remoteWindowsWMI(object):
@@ -80,18 +64,18 @@ class remoteWindowsWMI(object):
         return service_stopped
 
     def getServiceName(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(Name=name):
             return s.Name, s.Caption, s.DisplayName
 
     def getServiceState(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(Name=name):
             return s.State, s.Status
 
@@ -104,28 +88,28 @@ class remoteWindowsWMI(object):
 
     # more quick way
     def getServiceStatus(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(Name=name):
             return s.State, s.Status
 
     def startServiceName(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(StartMode="Auto", State="Stopped"):
             if name.lower() == s.Name.lower() or name.lower() == s.Caption.lower():
                 s.StartService()
         self.getServiceState(name)
 
     def stopServiceName(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(StartMode="Auto", State="Started"):
             if name.lower() == s.Name.lower() or name.lower() == s.Caption.lower():
                 s.StopService()
@@ -139,6 +123,6 @@ class remoteWindowsWMI(object):
 
 if __name__ == '__main__':
     o = remoteWindowsWMI("192.168.88.32", "Administrator@example.domian", "your password here")
-    print o.getServiceStopped()
-    print o.getServiceName(u'IsmServ')
-    print o.getServiceState(u'IsmServ')
+    print(o.getServiceStopped())
+    print(o.getServiceName('IsmServ'))
+    print(o.getServiceState('IsmServ'))

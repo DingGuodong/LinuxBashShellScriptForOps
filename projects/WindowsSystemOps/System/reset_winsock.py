@@ -15,8 +15,6 @@ Task:
     all Winsock LSPs that were previously installed must be reinstalled.
     This command does not affect Winsock Name Space Provider entries.
  """
-import codecs
-import locale
 import subprocess
 import sys
 
@@ -24,62 +22,44 @@ mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 linux = (sys.platform == "linux2")
 
 
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-
 def _runCommandOnWindows(executable):
-    if not executable or not isinstance(executable, (unicode, str)):
-        print "parameter error, str type is required, but got type \'%s\'." % type(executable)
+    if not executable or not isinstance(executable, str):
+        print("parameter error, str type is required, but got type \'%s\'." % type(executable))
         sys.exit(1)
     if mswindows:
-        print "Run local command \'%s\' on Windows..." % executable
+        print("Run local command \'%s\' on Windows..." % executable)
 
         proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
-        result = proc_obj.stdout.read().lower().decode(DEFAULT_LOCALE_ENCODING)
+        result = proc_obj.stdout.read().lower()
         if result:
-            print result
+            print(result)
 
     else:
-        print "Windows Supported Only. Aborted!"
+        print("Windows Supported Only. Aborted!")
         sys.exit(1)
 
 
 def _runCommandOnLinux(executable):
-    if not executable or not isinstance(executable, (unicode, str)):
-        print "parameter error, str type is required, but got type \'%s\'." % type(executable)
+    if not executable or not isinstance(executable, str):
+        print("parameter error, str type is required, but got type \'%s\'." % type(executable))
         sys.exit(1)
     if linux:
-        print "Run local command \'%s\' on Linux..." % executable
+        print("Run local command \'%s\' on Linux..." % executable)
 
         proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
         return_code = proc_obj.returncode
-        result = proc_obj.stdout.read().lower().decode(DEFAULT_LOCALE_ENCODING)
+        result = proc_obj.stdout.read().lower()
         if result and return_code == 0:
-            print "Run local command \'%s\' successfully!"
-            print result
+            print("Run local command \'%s\' successfully!")
+            print(result)
         else:
-            print "Run local command \'%s\' failed! return code is: %s" % (
-                executable, return_code if return_code is not None else 1)
-            print result
+            print("Run local command \'%s\' failed! return code is: %s" % (
+                executable, return_code if return_code is not None else 1))
+            print(result)
     else:
-        print "Linux Supported Only. Aborted!"
+        print("Linux Supported Only. Aborted!")
         sys.exit(1)
 
 

@@ -34,7 +34,7 @@ def confirm(question, default=True):
         suffix = "y/N"
     # Loop till we get something we like
     while True:
-        response = raw_input("%s [%s] " % (question, suffix)).lower()
+        response = input("%s [%s] " % (question, suffix)).lower()
         # Default
         if not response:
             return default

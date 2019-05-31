@@ -22,23 +22,29 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 import chardet
 import requests
+import locale
+
+
+print(locale.getpreferredencoding())
+print(locale.getpreferredencoding(False))
+print(locale.getdefaultlocale())
 
 test_url = 'https://cookpad.com/'
 
-raw_data = requests.get(test_url).content
+response = requests.get(test_url)
+content = response.content
+text = response.text
+print(type(content))
+print(type(text))
 
-encoding_detected = chardet.detect(raw_data)
+encoding_detected = chardet.detect(content)
 
 encoding = encoding_detected.get('encoding')
 
-# encode(): unicode --> str, so it can raise UnicodeDecodeError
-# decode(): str --> unicode, so it can raise UnicodeEncodeError
-decoded_data = raw_data.decode(encoding).encode('utf-8')
-
 print(encoding_detected)
+

@@ -20,23 +20,6 @@ import os
 import sys
 
 
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
 if os.name == 'nt':  # sys.platform == 'win32':
     import ctypes
 
@@ -259,23 +242,22 @@ if os.name == 'nt':  # sys.platform == 'win32':
 ##############################################################
 
 if __name__ == '__main__':
-    print
-    printDarkBlue(u'printDarkBlue:暗蓝色文字\n')
-    printDarkGreen(u'printDarkGreen:暗绿色文字\n')
-    printDarkSkyBlue(u'printDarkSkyBlue:暗天蓝色文字\n')
-    printDarkRed(u'printDarkRed:暗红色文字\n')
-    printDarkPink(u'printDarkPink:暗粉红色文字\n')
-    printDarkYellow(u'printDarkYellow:暗黄色文字\n')
-    printDarkWhite(u'printDarkWhite:暗白色文字\n')
-    printDarkGray(u'printDarkGray:暗灰色文字\n')
-    printBlue(u'printBlue:蓝色文字\n')
-    printGreen(u'printGreen:绿色文字\n')
-    printSkyBlue(u'printSkyBlue:天蓝色文字\n')
-    printRed(u'printRed:红色文字\n')
-    printPink(u'printPink:粉红色文字\n')
-    printYellow(u'printYellow:黄色文字\n')
-    printWhite(u'printWhite:白色文字\n')
+    printDarkBlue('printDarkBlue:暗蓝色文字\n')
+    printDarkGreen('printDarkGreen:暗绿色文字\n')
+    printDarkSkyBlue('printDarkSkyBlue:暗天蓝色文字\n')
+    printDarkRed('printDarkRed:暗红色文字\n')
+    printDarkPink('printDarkPink:暗粉红色文字\n')
+    printDarkYellow('printDarkYellow:暗黄色文字\n')
+    printDarkWhite('printDarkWhite:暗白色文字\n')
+    printDarkGray('printDarkGray:暗灰色文字\n')
+    printBlue('printBlue:蓝色文字\n')
+    printGreen('printGreen:绿色文字\n')
+    printSkyBlue('printSkyBlue:天蓝色文字\n')
+    printRed('printRed:红色文字\n')
+    printPink('printPink:粉红色文字\n')
+    printYellow('printYellow:黄色文字\n')
+    printWhite('printWhite:白色文字\n')
 
-    printWhiteBlack(u'printWhiteBlack:白底黑字输出\n')
-    printWhiteBlack_2(u'printWhiteBlack_2:白底黑字输出（直接传入16进制参数）\n')
-    printYellowRed(u'printYellowRed:黄底红字输出\n')
+    printWhiteBlack('printWhiteBlack:白底黑字输出\n')
+    printWhiteBlack_2('printWhiteBlack_2:白底黑字输出（直接传入16进制参数）\n')
+    printYellowRed('printYellowRed:黄底红字输出\n')

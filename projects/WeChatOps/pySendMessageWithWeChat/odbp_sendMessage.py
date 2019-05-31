@@ -40,7 +40,7 @@ class WeiXinSendMsgClass(object):
             self.data['touser'] = to_user
             self.data['text']['content'] = content
         else:
-            print
+            print()
             raise RuntimeError
         import requests
         import json
@@ -60,6 +60,6 @@ class WeiXinSendMsgClass(object):
 
         return_content = json.loads(response.content)
         if return_content["errcode"] == 0 and return_content["errmsg"] == "ok":
-            print "Send successfully! %s " % return_content
+            print("Send successfully! %s " % return_content)
         else:
-            print "Send failed! %s " % return_content
+            print("Send failed! %s " % return_content)

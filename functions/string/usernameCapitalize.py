@@ -8,6 +8,7 @@ User:               Guodong
 Create Date:        2016/10/14
 Create Time:        11:07
  """
+from functools import reduce
 
 
 # using map/reduce to capitalize a username
@@ -20,4 +21,4 @@ def usernameComb(usernamePart1, usernamePartN):
     return (str(usernamePart1) + " " + str(usernamePartN)).strip()
 
 
-print reduce(usernameComb, map(usernameFormat, ['linus', 'benedict', 'TORVALDS']))
+print(reduce(usernameComb, list(map(usernameFormat, ['linus', 'benedict', 'TORVALDS']))))

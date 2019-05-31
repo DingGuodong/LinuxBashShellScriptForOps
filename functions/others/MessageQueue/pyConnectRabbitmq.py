@@ -16,11 +16,10 @@ connection = None
 try:
     connection = pika.BlockingConnection(parameters)
 except Exception as e:
-    if e.message:
-        print e.message
+    print(e)
 finally:
     if connection:
-        print "connect to rabbitmq successfully"
+        print("connect to rabbitmq successfully")
     else:
-        print "cannot connect to rabbitmq"
+        print("cannot connect to rabbitmq")
         sys.exit(1)

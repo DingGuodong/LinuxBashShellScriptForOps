@@ -19,4 +19,4 @@ answer = query.query(domain, 'A').response.answer
 #             print "CNAME records: %s" % cname
 
 for record in answer[-1]:
-    print "A records: %s" % record
+    print("A records: %s" % record)

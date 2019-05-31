@@ -21,23 +21,22 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 import os
 
-path = 'C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\LinuxSystemOps'
+path = r'C:\Users\Guodong\PycharmProjects\LinuxBashShellScriptForOps\projects\LinuxSystemOps'
 
 if os.path.isdir(path):
-    size = 0L
+    size = 0
     for top, dirs, nondirs in os.walk(path):
         for filename in nondirs:
             full_path = os.path.join(top, filename)
             size += os.path.getsize(full_path)
-    print size
+    print(size)
 
-print os.stat(__file__).st_size  # equal to: fd = os.open(__file__, os.O_RDONLY);print os.lseek(fd, 0, os.SEEK_END)
-print os.path.getsize(__file__)  # equal to: fd = os.open(__file__, os.O_RDONLY);print os.lseek(fd, 0, os.SEEK_END)
+print(os.stat(__file__).st_size)  # equal to: fd = os.open(__file__, os.O_RDONLY);print os.lseek(fd, 0, os.SEEK_END)
+print(os.path.getsize(__file__))  # equal to: fd = os.open(__file__, os.O_RDONLY);print os.lseek(fd, 0, os.SEEK_END)
 
 # get file on disk usage maybe require system call 'du' command

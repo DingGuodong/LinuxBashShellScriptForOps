@@ -35,6 +35,6 @@ if __name__ == '__main__':
         arguments['SERVICE_ACTION'] = arguments['SERVICE_NAME']
         arguments['SERVICE_NAME'] = tmp
     else:
-        print arguments
+        print(arguments)
         sys.exit(1)
-    print "service", arguments['SERVICE_NAME'], arguments['SERVICE_ACTION']
+    print("service", arguments['SERVICE_NAME'], arguments['SERVICE_ACTION'])

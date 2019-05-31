@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import sys
@@ -48,36 +48,19 @@ message_status_map = {
 }
 
 
-def decoding(text):
-    import sys
-    import codecs
+def always_to_utf8(text):
     import locale
 
-    if isinstance(text, unicode):
-        return text
-    elif isinstance(text, (basestring, str)):
-        pass
+    encoding = locale.getpreferredencoding()
+    if isinstance(text, bytes):
+        try:
+            return text.decode(encoding)
+        except UnicodeDecodeError:
+            return text.decode("utf-8")
+
     else:
         return text  # do not need decode, return original object if type is not instance of string type
         # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
-
-    mswindows = (sys.platform == "win32")
-
-    try:
-        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
-        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
-    except Exception as _:
-        del _
-        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
-
-    msg = text
-    if mswindows:
-        try:
-            msg = text.decode(encoding)
-            return msg
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            pass
-    return msg
 
 
 def fn_timer(func):
@@ -89,8 +72,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 
@@ -113,7 +96,7 @@ def start_service(service_name='TermService'):
             win32serviceutil.StartService(service_name)
         except Exception as _:
             del _
-            print 'Access denied.'
+            print('Access denied.')
             sys.exit(1)
 
         time.sleep(2)
@@ -127,9 +110,9 @@ def start_service(service_name='TermService'):
             sleep_seconds = 2
             waiting_time = 300
             while running_flag:
-                print "waiting for service {service} start.".format(service=service_name),
+                print("waiting for service {service} start.".format(service=service_name), end=' ')
                 status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
-                print message_status_map[status_code]
+                print(message_status_map[status_code])
                 if status_code == RUNNING:
                     running_flag = False
                 time.sleep(sleep_seconds)
@@ -143,7 +126,7 @@ def start_service(service_name='TermService'):
 @fn_timer
 def restart_service(service_name='TermService'):
     current_uuid = uuid.uuid4().get_hex()
-    print("INFO: RESTARTING SERVICE\'{service}\'".format(service=service_name) + current_uuid)
+    print(("INFO: RESTARTING SERVICE\'{service}\'".format(service=service_name) + current_uuid))
     send_message("INFO: RESTARTING SERVICE\'{service}\'".format(service=service_name),
                  "RESTARTING SERVICE.\n\n-------------------\n\n>ID: " + current_uuid)
     status = win32serviceutil.QueryServiceStatus(service_name)[1]
@@ -151,10 +134,10 @@ def restart_service(service_name='TermService'):
         try:
             win32serviceutil.RestartService(service_name)
         except Exception as e:
-            print 'Access denied or service not exist.'
+            print('Access denied or service not exist.')
             if isinstance(e.args, Iterable):
                 for arg in e.args:
-                    print decoding(arg),
+                    print(always_to_utf8(arg), end=' ')
             sys.exit(1)
 
         time.sleep(2)
@@ -171,36 +154,36 @@ def restart_service(service_name='TermService'):
             sleep_seconds = 2
             waiting_time = 300
             while running_flag:
-                print "waiting for service {service} restart.".format(service=service_name)
+                print("waiting for service {service} restart.".format(service=service_name))
                 status_code = win32serviceutil.QueryServiceStatus(service_name)[1]
                 if status_code == RUNNING:
                     running_flag = False
                 time.sleep(sleep_seconds)
                 try_times += 1
                 if try_times > waiting_time / sleep_seconds:
-                    print("FAILED: SERVICE  \'{service}\' CAN NOT START".format(service=service_name) + current_uuid)
+                    print(("FAILED: SERVICE  \'{service}\' CAN NOT START".format(service=service_name) + current_uuid))
                     send_message("FAILED: SERVICE  \'{service}\' CAN NOT START".format(service=service_name),
                                  "CAN NOT START SERVICE, TIMEOUT\n\n-------------------\n\n>ID: " + current_uuid)
                     sys.exit(1)
 
-            print("SUCCESS: SERVICE \'{service}\' RESTARTED".format(service=service_name) + current_uuid)
+            print(("SUCCESS: SERVICE \'{service}\' RESTARTED".format(service=service_name) + current_uuid))
             send_message("SUCCESS: SERVICE \'{service}\' RESTARTED".format(service=service_name),
                          "SERVICE RESTARTED.\n\n-------------------\n\n>ID: " + current_uuid)
             return True
     else:
-        print message_status_map[status], " And this is unusual."
+        print(message_status_map[status], " And this is unusual.")
         print("WARNING: UNUSUAL SERVICE \'{service}\' STATE".format(service=service_name) + current_uuid)
         send_message("WARNING: UNUSUAL SERVICE \'{service}\' STATE".format(service=service_name),
                      "SERVICE STATE IS UNUSUAL.\n\n-------------------\n\n>ID: " + current_uuid)
 
 
-def send_message(title=u'', message=u''):
+def send_message(title='', message=''):
     import json
     import requests
     access_token = "35c6fc4a5bf7916ab3e74ac497c0fcc0df57877940a7a1f0ebec1a150d7635b2"
-    title = title or u"Test Message"
-    content = message or u"Test message sent by Python over DingTalk"
-    mobile = u'183xxxx1212'  # if there are more than one phone number to at, use space spilt them
+    title = title or "Test Message"
+    content = message or "Test message sent by Python over DingTalk"
+    mobile = '183xxxx1212'  # if there are more than one phone number to at, use space spilt them
     enable_at_all = False
 
     url = "https://oapi.dingtalk.com/robot/send"
@@ -230,9 +213,9 @@ def send_message(title=u'', message=u''):
     result_string = response.text
     result_dict = json.loads(result_string)
     if result_dict["errcode"] == 0:
-        print json.dumps(result_dict, indent=4)
+        print(json.dumps(result_dict, indent=4))
     else:
-        print json.dumps(result_dict, indent=4)
+        print(json.dumps(result_dict, indent=4))
 
 
 if __name__ == '__main__':

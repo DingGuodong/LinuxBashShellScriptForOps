@@ -47,5 +47,5 @@ json_dict = {'X-XSS-Protection': '1; mode=block', 'Content-Security-Policy': "de
 json_string2dict = json.loads(json_string)
 dict2json = json.dumps(json_dict, indent=4)
 
-print type(json_string2dict)
-print type(dict2json)
+print(type(json_string2dict))
+print(type(dict2json))

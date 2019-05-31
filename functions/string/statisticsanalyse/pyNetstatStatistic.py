@@ -16,7 +16,7 @@ import psutil
 def print_all_conns():
     system_conns = psutil.net_connections()
     for conn in system_conns:
-        print conn
+        print(conn)
 
 
 def print_conns_by_proc_name(name):
@@ -28,14 +28,14 @@ def print_conns_by_proc_pid(pid):
     system_conns = psutil.net_connections()
     for conn in system_conns:
         if conn.pid == pid:
-            print conn
+            print(conn)
 
 
 def print_conns_by_remote_addr(addr):
     system_conns = psutil.net_connections()
     for conn in system_conns:
         if addr in conn.raddr:
-            print conn
+            print(conn)
 
 
 def get_process_name_by_pid(pid):

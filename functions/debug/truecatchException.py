@@ -13,14 +13,14 @@ import sys
 try:
     import os
 
-except SystemExit, e:
+except SystemExit:
     raise SystemExit
 
-except Exception, e:
+except Exception as e:
     import traceback
 
     sys.stderr.write("Unhandled exception: %s \n" % str(e))
     sys.stderr.write("traceback: %s" % traceback.format_exc())
     sys.stderr.flush()
-    print "Help Link: http://stackoverflow.com/search?q=[python]+" + e.message
+    print("Help Link: http://stackoverflow.com/search?q=[python]+" + str(e))
     sys.exit(1)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import urlparse
-import urllib
-import urllib2
+import urllib.parse
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import sys
 import re
 
@@ -18,12 +18,12 @@ def is_valid_url(p_url):
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
     # return url is not None and regex.search(url)
     if p_url is None:
-        print "url parameter is missing."
+        print("url parameter is missing.")
         sys.exit(1)
     elif p_url is not None and regex.search(p_url):
         return p_url
     else:
-        print "url is invalid."
+        print("url is invalid.")
         sys.exit(1)
 
 
@@ -47,18 +47,18 @@ req_header = {
     'Referer': None
 }
 req_timeout = 5
-req = urllib2.Request(url, None, req_header)
-resp = urllib2.urlopen(req, None, req_timeout)
+req = urllib.request.Request(url, None, req_header)
+resp = urllib.request.urlopen(req, None, req_timeout)
 html = resp.read()
 
 # urlAddress = "http://dgd2010.blog.51cto.com/"
 # urlAddress = "http://blog.csdn.net/zhoudaxia/article/details/23176731"
 urlAddress = "http://daily.zhihu.com/"
 validUrlAddress = is_valid_url(urlAddress)
-urlparse.urlparse(validUrlAddress)
+urllib.parse.urlparse(validUrlAddress)
 
-url_file_object = urllib.urlopen(validUrlAddress)
-print "Open URL is ", url_file_object.geturl()
+url_file_object = urllib.request.urlopen(validUrlAddress)
+print("Open URL is ", url_file_object.geturl())
 url_file_object_list = url_file_object.readlines()
 for html in url_file_object_list:
-    print html
+    print(html)

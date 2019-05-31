@@ -14,15 +14,14 @@ Create Time:            12:51
 Description:            Python error tracking with Sentry, use Sentry to caught exception and trace errors
 Long Description:       
 References:             https://sentry.io/for/python/
-Prerequisites:          []
+Prerequisites:          pip3 install wmi raven pywin32
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 
@@ -38,7 +37,7 @@ try:
 
     for service in c.Win32_Service(State="Running"):
         if service.Name.lower() == u"ImControllerService".lower():
-            print service
+            print(service)
             break
     raise RuntimeError("throw a exception on purpose")
 except Exception as _:

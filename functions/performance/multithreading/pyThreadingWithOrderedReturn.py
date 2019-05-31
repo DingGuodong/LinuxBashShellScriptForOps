@@ -24,8 +24,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import random
@@ -47,8 +47,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 
@@ -89,7 +89,7 @@ def fn_save_return(func):
     @wraps(func)
     def function_timer(*args, **kwargs):
         result = func(*args, **kwargs)
-        results[func.func_name] = result
+        results[func.__name__] = result
         return result
 
     return function_timer
@@ -154,4 +154,4 @@ if __name__ == '__main__':
         if thread.isAlive():
             thread.join()
 
-    print [data[1] for data in sorted(results.iteritems(), key=lambda x: x[0].split('x')[1])]
+    print([data[1] for data in sorted(iter(results.items()), key=lambda x: x[0].split('x')[1])])

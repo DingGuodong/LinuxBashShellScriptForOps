@@ -200,7 +200,7 @@ class Capistrano(object):
                         raise NotImplementedError
 
             def update_revision_log(self, branch=None, sid=None, release=None, by=None):
-                print blue("Log details of the deploy")
+                print(blue("Log details of the deploy"))
                 with open(self.revision_log(), 'a') as f:
                     f.write("Branch %s (at %s) deployed as release %s by %s\n" % (branch, sid, release, by))
 
@@ -232,7 +232,7 @@ class Capistrano(object):
                     return last_line
 
             def rollback(self):
-                print blue("Revert to previous release timestamp")
+                print(blue("Revert to previous release timestamp"))
                 revision_log_message = self.__get_file_last_line(self.revision_log())
                 last_release = None
                 import re
@@ -243,7 +243,7 @@ class Capistrano(object):
                 else:
                     abort("Can NOT found rollback release in revision log files, %s." % self.revision_log())
                 if os.path.exists(last_release):
-                    print yellow("Symlink previous release to current")
+                    print(yellow("Symlink previous release to current"))
                 else:
                     abort("Can NOT found rollback release on filesystem.")
                 if is_linux():
@@ -278,16 +278,16 @@ class Capistrano(object):
                         with open(local_path, "w") as f:
                             f.write(content)
                         if os.path.getsize(local_path):
-                            print red("upload files to remote hosts")
+                            print(red("upload files to remote hosts"))
                             put(local_path, remote_path)
                             run("chmod +x %s" % remote_path)
                             run("ls -al %s" % remote_path)
-                            print red("deploy test demo successfully!")
+                            print(red("deploy test demo successfully!"))
                     except IOError:
                         raise NotImplementedError
 
             def run(self):
-                print blue("Do deploy procedure.")
+                print(blue("Do deploy procedure."))
                 self.P.makepaths()
                 self.G.set(config["repo_url"], repo_path=self.P.repo_path())
                 self.G.pull()
@@ -297,7 +297,7 @@ class Capistrano(object):
                 self.deploy()
                 self.P.update_revision_log(self.G.branch, self.G.short_id(), self.P.current, getpass.getuser())
                 self.P.cleanup()
-                print green("Deploy successfully!")
+                print(green("Deploy successfully!"))
 
 
 @roles("test")
@@ -307,7 +307,7 @@ def test_deploy():
 
 
 def terminal_debug(defName):
-    command = "fab -i c:\Users\Guodong\.ssh\exportedkey201310171355\
+    command = r"fab -i c:\Users\Guodong\.ssh\exportedkey201310171355\
                 -f %s \
                 %s" % (__file__, defName)
     os.system(command)
@@ -319,5 +319,5 @@ if __name__ == '__main__':
         terminal_debug("test_deploy")
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    print(red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:])))
     sys.exit(1)

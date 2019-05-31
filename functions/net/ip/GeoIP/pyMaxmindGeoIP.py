@@ -28,7 +28,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 
@@ -57,7 +57,7 @@ def ungzip(src, dst):
                 with open(dst, 'wb') as f_out:
                     shutil.copyfileobj(f_in, f_out)
         except IOError as e:
-            print e
+            print(e)
             raise IOError("and maybe file is opened in another process")
 
     else:
@@ -69,7 +69,7 @@ mmdb_filename = info.filename
 
 # update mmdb
 if info.date < datetime.datetime and info.date.strftime("%Y/%m/%d") == '2015/03/03':
-    print info
+    print(info)
     if not os.path.exists(info.filename + ".gz"):
         url = 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz'
         with open(mmdb_filename + ".gz", 'wb') as fp:
@@ -85,15 +85,15 @@ if info.date < datetime.datetime and info.date.strftime("%Y/%m/%d") == '2015/03/
         from geoip import geolite2
 
         info = geolite2.get_info()
-        print info
+        print(info)
 else:
-    print info
+    print(info)
 
 # read data from db
 reader = geoip2.database.Reader(mmdb_filename)
 response = reader.city("114.114.114.114")
 
 # response
-print response.country.iso_code
-print response.country.names.get("zh-CN")
-print response.city.names.get("zh-CN")
+print(response.country.iso_code)
+print(response.country.names.get("zh-CN"))
+print(response.city.names.get("zh-CN"))

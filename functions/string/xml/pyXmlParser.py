@@ -39,6 +39,6 @@ tree = ET.ElementTree(file=tmp_xml_file)
 # Ref: http://codingpy.com/article/parsing-xml-using-python/
 # 查找需要的元素, 通过XPath查找元素
 for elem in tree.iterfind('channel/title'):
-    print elem.tag, elem.attrib, elem.text,
+    print(elem.tag, elem.attrib, elem.text, end=' ')
 
 os.remove(tmp_xml_file)

@@ -15,11 +15,11 @@ import sys
 os_type = platform.uname()[0]
 
 if os_type == "Linux":
-    print "Linux"
+    print("Linux")
 elif os_type == "Windows":
-    print "Windows"
+    print("Windows")
 else:
     exit("Unknown Operating System!")
 
-print sys.version_info
-print sys.platform
+print(sys.version_info)
+print(sys.platform)

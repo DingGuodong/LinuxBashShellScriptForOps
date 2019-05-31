@@ -15,23 +15,23 @@ import timeout
 @timeout.timeout(timeout=5)
 def test_timeout(seconds):
     import time
-    print "start"
+    print("start")
     time.sleep(seconds)
-    print "end"
+    print("end")
 
 
 def test_timeout_with_content_manager(seconds):
     import time
     with timeout.timeout(timeout=5):
-        print "start"
+        print("start")
         time.sleep(seconds)
-        print "end"
+        print("end")
 
 
 if __name__ == '__main__':
     import sys
 
     if sys.platform == "win32":
-        print "skipped"
+        print("skipped")
     else:
         test_timeout(6)

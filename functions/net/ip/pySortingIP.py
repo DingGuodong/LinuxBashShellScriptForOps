@@ -16,22 +16,19 @@ Long Description:
 References:             https://stackoverflow.com/questions/13853493/sort-list-of-ip-addresses-with-subnet-mask
 Prerequisites:          []
                         yum install python-devel
-                        pip install --upgrade pip
-                        pip install netifaces
-                        pip install ipcalc
-                        pip install IPy
+                        pip3 install --upgrade pip
+                        pip3 install netifaces
+                        pip3 install ipcalc
+                        pip3 install IPy
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
-# import json
-# import netifaces
 import ipcalc
 from IPy import IP
 
@@ -77,19 +74,6 @@ for line in set(route.strip().split('\n')):
         net_connected.append(ipcalc.Network(line).__str__())
 
 
-# net_connected_sorted = sorted(net_connected, key=lambda x: x.split('.')[0])  # TODO(Guodong Ding) too bad
-# net_connected_sorted = sorted(net_connected,
-#                               key=lambda x: x.replace(".", "").split("/")[0])  # TODO(Guodong Ding) too bad
-
-def cmp_ipaddress(ip1, ip2):
-    # http://grokbase.com/t/python/python-list/012543x05n/sorting-on-ip-addresses
-    import string
-    parts1 = map(lambda x: int(x), string.split(ip1, '.'))
-    parts2 = map(lambda x: int(x), string.split(ip2, '.'))
-    comparisons = map(lambda x, y: cmp(x, y), parts1, parts2)
-    return reduce(lambda x, y: x or y, comparisons)
-
-
 def key_sort_ip(addr):
     # https://stackoverflow.com/questions/13853493/sort-list-of-ip-addresses-with-subnet-mask
     add, pref = addr.split("/")
@@ -100,4 +84,4 @@ def key_sort_ip(addr):
 net_connected_sorted = sorted(net_connected, key=key_sort_ip)  # sorting IP address
 
 for item in net_connected_sorted:
-    print item
+    print(item)

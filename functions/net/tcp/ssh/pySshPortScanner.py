@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 
@@ -58,12 +58,12 @@ def scan_port_alive(ip):
     # 2. using multiprocessing.Pool. Pain Point:
     # 3. Others?
     try:
-        for thread in [threading.Thread(target=try_connect, args=(ip, port), ) for port in xrange(1, 65535)]:
+        for thread in [threading.Thread(target=try_connect, args=(ip, port), ) for port in range(1, 65535)]:
             thread.setDaemon(True)
             thread.start()
         thread.join()
     except Exception as e:
-        print e, e.args, e.message,
+        print(e, e.args, e.message, end=' ')
 
 
 def ssh_connect(port):
@@ -82,7 +82,7 @@ def ssh_connect(port):
     except AuthenticationException or BadAuthenticationType:
         # paramiko.ssh_exception.AuthenticationException, Authentication failed.
         # BadAuthenticationType: ('Bad authentication type', [u'publickey'])(allowed_types=[u'publickey'])
-        print "port %s can be connected." % port
+        print("port %s can be connected." % port)
     except NoValidConnectionsError:
         pass
     except timeoutException:
@@ -90,7 +90,7 @@ def ssh_connect(port):
         pass
     except SSHException as e:
         if e.args[0] == 'Negotiation failed.':  # https://github.com/paramiko/paramiko/issues/1222
-            print "port %s can be connected." % port
+            print("port %s can be connected." % port)
         pass
     ssh_client.close()
 
@@ -103,7 +103,7 @@ def scan_ssh_port_alive():
                 thread.start()
             thread.join()
         except Exception as e:
-            print e, e.args, e.message,
+            print(e, e.args, e.message, end=' ')
 
     else:
         pool = Pool(4)

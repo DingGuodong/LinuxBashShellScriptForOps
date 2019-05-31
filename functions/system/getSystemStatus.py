@@ -50,11 +50,9 @@ def getUser():
         except ValueError:  # different version
             # suser(name='Guodong', terminal=None, host='0.0.0.0', started=1511519014.0, pid=None)
             username, login_tty, login_host, login_time, pid = [suser for suser in login]
-        print username, login_tty, login_host, time.strftime('%b %d %H:%M:%S', time.localtime(login_time)),
+        print(username, login_tty, login_host, time.strftime('%b %d %H:%M:%S', time.localtime(login_time)), end=' ')
         if login_tty in tty:
-            print '**current user**'
-        else:
-            print
+            print('**current user**')
 
 
 def getTimeZone():
@@ -83,36 +81,18 @@ def printHeader():
             else:
                 return
     if mswindows:
-        def get_system_encoding():
-            import codecs
-            import locale
-            """
-            The encoding of the default system locale but falls back to the given
-            fallback encoding if the encoding is unsupported by python or could
-            not be determined.  See tickets #10335 and #5846
-            """
-            try:
-                encoding = locale.getdefaultlocale()[1] or 'ascii'
-                codecs.lookup(encoding)
-            except Exception as _:
-                del _
-                encoding = 'ascii'
-            return encoding
-
-        DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-        import _winreg
+        import winreg
         try:
-            reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion")
+            reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion")
             if reg_key:
-                ProductName = _winreg.QueryValueEx(reg_key, "ProductName")[0] or None
-                EditionId = _winreg.QueryValueEx(reg_key, "EditionId")[0] or None
-                ReleaseId = _winreg.QueryValueEx(reg_key, "ReleaseId")[0] or None
-                BuildLabEx = _winreg.QueryValueEx(reg_key, "BuildLabEx")[0][:9] or None
+                ProductName = winreg.QueryValueEx(reg_key, "ProductName")[0] or None
+                EditionId = winreg.QueryValueEx(reg_key, "EditionId")[0] or None
+                ReleaseId = winreg.QueryValueEx(reg_key, "ReleaseId")[0] or None
+                BuildLabEx = winreg.QueryValueEx(reg_key, "BuildLabEx")[0][:9] or None
                 return "%s, %s [%s]\r\nVersion %s (OS Internal Version %s)" % (
                     ProductName, EditionId, platform.version(), ReleaseId, BuildLabEx)
         except Exception as e:
-            print e.message.decode(DEFAULT_LOCALE_ENCODING)
+            print(e)
 
 
 def getHostname():
@@ -173,24 +153,24 @@ def getUptime():
 
 def getUptime2():
     boot_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(psutil.boot_time()))
-    print "system start at: %s" % boot_time,
+    print("system start at: %s" % boot_time, end=' ')
     uptime_total_seconds = time.time() - psutil.boot_time()
     uptime_days = int(uptime_total_seconds / 24 / 60 / 60)
     uptime_hours = int(uptime_total_seconds / 60 / 60 % 24)
     uptime_minutes = int(uptime_total_seconds / 60 % 60)
     uptime_seconds = int(uptime_total_seconds % 60)
-    print "uptime: %d days %d hours %d minutes %d seconds" % (uptime_days, uptime_hours, uptime_minutes, uptime_seconds)
+    print("uptime: %d days %d hours %d minutes %d seconds" % (uptime_days, uptime_hours, uptime_minutes, uptime_seconds))
 
     user_number = len(psutil.users())
-    print "%d user:" % user_number
-    print "  \\"
+    print("%d user:" % user_number)
+    print("  \\")
     for user_tuple in psutil.users():
         user_name = user_tuple[0]
         user_terminal = user_tuple[1]
         user_host = user_tuple[2]
         user_login_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(user_tuple[3]))
-        print "  |- user online: %s, login from %s with terminal %s at %s" % (
-            user_name, user_host, user_terminal, user_login_time)
+        print("  |- user online: %s, login from %s with terminal %s at %s" % (
+            user_name, user_host, user_terminal, user_login_time))
 
     cpu_count = psutil.cpu_count()
     try:
@@ -203,21 +183,20 @@ def getUptime2():
                 loadavg['lavg_15'] = loadavg_c[2]
                 loadavg['nr'] = loadavg_c[3]
                 loadavg['last_pid'] = loadavg_c[4]
-        print "load average: %s, %s, %s" % (loadavg['lavg_1'], loadavg['lavg_5'], loadavg['lavg_15'])
+        print("load average: %s, %s, %s" % (loadavg['lavg_1'], loadavg['lavg_5'], loadavg['lavg_15']))
         if float(loadavg['lavg_15']) > cpu_count:
-            print "Note: cpu 15 min load is high!"
+            print("Note: cpu 15 min load is high!")
         if float(loadavg['lavg_5']) > cpu_count:
-            print "Note: cpu 5 min load is high!"
+            print("Note: cpu 5 min load is high!")
         if float(loadavg['lavg_1']) > cpu_count:
-            print "Note: cpu 1 min load is high!"
+            print("Note: cpu 1 min load is high!")
     except IOError:
         pass
 
 
 if __name__ == '__main__':
     header = printHeader()
-    print header
-    print
+    print(header)
 
     system_load = str(getLoadAverage()).strip("[]")
     user_logged_in = len(psutil.users())
@@ -241,8 +220,6 @@ if __name__ == '__main__':
     for field in table.field_names:
         table.align[field] = "l"
 
-    print table.get_string()
-    print
+    print(table.get_string())
     getUser()
-    print
     getUptime2()

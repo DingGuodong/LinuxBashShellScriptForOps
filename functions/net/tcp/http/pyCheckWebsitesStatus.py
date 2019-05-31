@@ -34,8 +34,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import socket
@@ -47,7 +47,7 @@ import requests
 
 def main(url):
     if not check_website_status(url):
-        print "%s down" % url
+        print("%s down" % url)
 
 
 def check_website_status(url):
@@ -114,7 +114,7 @@ def query_dns_rr(qname, rdtype="A", nameserver="8.8.8.8", debug=False):
 def get_domain_name_from_url(url):
     # https://stackoverflow.com/questions/9626535/get-domain-name-from-url
     # https://docs.python.org/2/library/urlparse.html
-    from urlparse import urlparse
+    from urllib.parse import urlparse
     parsed_uri = urlparse(url)
     # domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
     domain_name = "{uri.netloc}".format(uri=parsed_uri)
@@ -135,14 +135,14 @@ any_else_site_not_exists
     for site in sites_string.split('\n'):
         if site.strip() != '':
             sites_list.append(site.strip())
-    print sites_list
+    print(sites_list)
 
     for site in sites_list:
         res = query_dns_rr(site)
         if len(res) != 0:
-            print "%s %s" % (site, res[0])
+            print("%s %s" % (site, res[0]))
         else:
-            print "%s %s" % (site, "not available")
+            print("%s %s" % (site, "not available"))
 
     threading_pool = list()
     for site in sites_list:

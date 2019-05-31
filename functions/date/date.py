@@ -2,12 +2,12 @@
 # -*- coding: utf8 -*-
 import calendar
 import datetime
-import sys
+import locale
 import time
 
 import delorean
 import pytz
-from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
+from dateutil.relativedelta import relativedelta  # pip3 install -U python-dateutil
 
 # Define the constants
 SECONDS_PER_MINUTE = 60
@@ -51,10 +51,17 @@ print(time.strftime('%Y-%m-%d %H:%M:%S', time.strptime("20170416145604.489009+48
 print(time.strftime("%W"))
 print(time.strftime("%W", time.localtime(time.mktime(time.strptime('2017/11/30', '%Y/%m/%d')))))
 
-system_encoding = sys.getfilesystemencoding()
-print("Current system encoding is \"%s\"." % system_encoding)
+encoding = locale.getpreferredencoding()
+print(time.tzname[0].encode("iso-8859-1").decode(encoding))  # cp1252, latin_1
+print(time.tzname)  # TODO(Guodong) unexpected Time zone name on Microsoft Windows
 
-print(time.strftime("%Y-%m-%d %H:%M:%S %Z").decode(system_encoding).encode("utf-8"))
+print(time.strftime("%Y-%m-%d %H:%M:%S %Z"))
+# TODO(Guodong) %Z not supported any more in cPython 3.7.3 on Win10,
+# see to comment for time.strftime()
+# Commonly used format codes: %Y, %m, %d, %H, %M, %S, %z, %a, %A, %b, %B, %c, %I, %p
+# "Other codes may be available on your platform.  See documentation for the C library strftime function."
+print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S %Z"))
+
 
 i = datetime.datetime.now()
 print(str(i))
@@ -192,6 +199,6 @@ datetime.datetime.strptime('2018-06-07T10:57:14Z', "%Y-%m-%dT%H:%M:%SZ").replace
 print((datetime.datetime.now() + datetime.timedelta(days=158)).strftime("%Y-%m-%d %H:%M:%S.%f"))
 
 # get timestamp before n days
-save_says = 30
-timestamp_before_save_days = time.mktime((datetime.datetime.today() + relativedelta(days=-save_says)).timetuple())
+save_days = 30
+timestamp_before_save_days = time.mktime((datetime.datetime.today() + relativedelta(days=-save_days)).timetuple())
 print(timestamp_before_save_days)

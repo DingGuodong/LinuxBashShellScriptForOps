@@ -16,9 +16,9 @@ path = os.path.join(HOME, name)
 if not os.path.isdir(path):
     os.makedirs(path)
     if os.path.isdir(path):
-        print "Done"
+        print("Done")
 else:
-    print "%s: cannot create directory '%s' : File exists" % (os.path.basename(__file__), path)
+    print("%s: cannot create directory '%s' : File exists" % (os.path.basename(__file__), path))
 
 data = r"""[global]
 index-url = https://mirrors.ustc.edu.cn/pypi/web/simple
@@ -31,4 +31,4 @@ with open(pip_conf, 'w') as f:
 
 if os.access(pip_conf, os.F_OK) and os.access(pip_conf, os.R_OK):
     # print "%s: '%s' is writen successfully." % (os.path.basename(__file__), pip_conf)
-    print "'%s' is writen successfully." % pip_conf
+    print("'%s' is writen successfully." % pip_conf)

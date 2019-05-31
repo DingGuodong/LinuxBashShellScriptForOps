@@ -156,18 +156,18 @@ def reset_ssh_public_host_key():
     """
     with settings(warn_only=False):
         out = sudo("test -f /etc/ssh/unique.lck && cat /etc/ssh/unique.lck", combine_stderr=False, warn_only=True)
-        print yellow(
-            "Repeat do this will disable ssh connect between different hosts which ssh key has been registered!")
+        print(yellow(
+            "Repeat do this will disable ssh connect between different hosts which ssh key has been registered!"))
 
         if "1" not in out:
             if confirm("Are you really want to reset ssh public key on this host? "):
                 blue("Reconfigure openssh-server with dpkg")
                 sudo("rm /etc/ssh/ssh_host_* && dpkg-reconfigure openssh-server && echo 1 >/etc/ssh/unique.lck")
             else:
-                print green("Brilliant, user canceled this dangerous operation.")
+                print(green("Brilliant, user canceled this dangerous operation."))
         else:
-            print blue("If you see a 'Warning' in red color here, do not panic, this is normal when first time to run.")
-            print green("ssh public host key is ok.")
+            print(blue("If you see a 'Warning' in red color here, do not panic, this is normal when first time to run."))
+            print(green("ssh public host key is ok."))
 
 
 @roles('all')
@@ -208,7 +208,7 @@ def config_ssh_connection():
 
 
 def terminal_debug_win32(func):
-    command = "fab -i c:\Users\Guodong\.ssh\exportedkey201310171355\
+    command = r"fab -i c:\Users\Guodong\.ssh\exportedkey201310171355\
                 -f %s \
                 %s" % (__file__, func)
     os.system(command)
@@ -233,5 +233,5 @@ if __name__ == '__main__':
             sys.exit(0)
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    print(red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:])))
     sys.exit(1)

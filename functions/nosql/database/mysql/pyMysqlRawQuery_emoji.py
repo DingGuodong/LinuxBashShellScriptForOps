@@ -116,15 +116,16 @@ def get_current_char_setting_using_utf8mb4():
             if cursor is not None:
                 results = cursor.fetchall()  # <type 'list'>
                 for result in results:
-                    print result.get("Variable_name"), result.get("Value")
+                    print(result.get("Variable_name"), result.get("Value"))
         connection.commit()
     finally:
         connection.close()
 
 
 def emoji_utf8bm4_crud():
-    emoji_item = u'\U0001f604'.encode('utf-8')  # '😄'
-    sql = "INSERT INTO `test`.`emoji`(`id`, `key`) VALUES (4, '%s')" % emoji_item
+    # emoji_item = u'\U0001f604'.encode('utf-8')  # '😄', b'\xf0\x9f\x98\x84' in 'utf-8'
+    emoji_item = u'\U0001f604' or '😄'  # '😄', u'\U0001f604' ==  '😄' in python3
+    sql = "INSERT INTO `test`.`emoji`( `key`) VALUES ('%s')" % emoji_item
 
     connection = pymysql.connect(host='127.0.0.1', user='dev', passwd='dEvp@ssw0rd', db='test', port=3306,
                                  charset='utf8mb4',
@@ -139,8 +140,9 @@ def emoji_utf8bm4_crud():
 
 
 def emoji_utf8_crud_test():
-    emoji_item = u'\U0001f604'.encode('utf-8')  # '😄'
-    sql = "INSERT INTO `test`.`emoji_utf8`(`id`, `key`) VALUES (4, '%s')" % emoji_item
+    # emoji_item = u'\U0001f604'.encode('utf-8')  # '😄'
+    emoji_item = '😄'  # '😄'
+    sql = "INSERT INTO `test`.`emoji_utf8`(`key`) VALUES ('%s')" % emoji_item
 
     connection = pymysql.connect(host='127.0.0.1', user='dev', passwd='dEvp@ssw0rd', db='test', port=3306,
                                  charset='utf8mb4',
@@ -154,8 +156,9 @@ def emoji_utf8_crud_test():
 
 
 def emoji_utf8_all_crud_test():
-    emoji_item = u'\U0001f604'.encode('utf-8')  # '😄'
-    sql = "INSERT INTO `test`.`emoji_utf8_all`(`id`, `key`) VALUES (4, '%s')" % emoji_item
+    # emoji_item = u'\U0001f604'.encode('utf-8')  # '😄'
+    emoji_item = '😄'  # '😄'
+    sql = "INSERT INTO `test`.`emoji_utf8_all`(`key`) VALUES ('%s')" % emoji_item
 
     connection = pymysql.connect(host='127.0.0.1', user='dev', passwd='dEvp@ssw0rd', db='test', port=3306,
                                  charset='utf8',

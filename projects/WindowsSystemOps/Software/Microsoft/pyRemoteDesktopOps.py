@@ -21,12 +21,12 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
-import _winreg  # from (built-in), 'winreg' module used '_winreg' sometime by 'from _winreg import *'
 import sys
+import winreg  # from (built-in), 'winreg' module used '_winreg' sometime by 'from _winreg import *'
 
 
 def try_run(func):
@@ -38,13 +38,13 @@ def try_run(func):
         try:
             result = func(*args, **kwargs)
         except WindowsError as e:
-            print "Try running {func} failed.".format(func=func.func_name),
+            print("Try running {func} failed.".format(func=func.__name__), end=' ')
             if e.args:
                 if e.args[0] == 5:
-                    print "Access denied. Please try run as root/Administrator."
+                    print("Access denied. Please try run as root/Administrator.")
                 else:
-                    print e
-                    print e.args
+                    print(e)
+                    print(e.args)
                 sys.exit(1)
         return result
 
@@ -53,10 +53,10 @@ def try_run(func):
 
 def getRemoteDesktopPortNumber():
     PortNumber = 3389
-    reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
-                              "System\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp")
+    reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                             "System\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp")
     if reg_key:
-        PortNumber = _winreg.QueryValueEx(reg_key, "PortNumber")[0]  # [0] is value, [1] is type(such as REG_DWORD == 4)
+        PortNumber = winreg.QueryValueEx(reg_key, "PortNumber")[0]  # [0] is value, [1] is type(such as REG_DWORD == 4)
     return PortNumber
 
 
@@ -65,55 +65,55 @@ def setRemoteDesktopPortNumber(port):
     port_wanted = '9833'
     if isinstance(port, int):
         if port != 3389:
-            port_wanted = unicode(port)
+            port_wanted = str(port)
     if isinstance(port, str):
         if port != '3389':
-            port_wanted = port.decode('utf-8')
-    if isinstance(port, unicode):
-        if port != u'3389':
+            port_wanted = str(port)
+    if isinstance(port, str):
+        if port != '3389':
             port_wanted = port
 
-    reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
-                              "System\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp")
+    reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                             "System\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp")
     if reg_key:
-        _winreg.SetValue(reg_key, "PortNumber", _winreg.REG_SZ, port_wanted)
-        print "current remote desktop port number is {port}".format(port=port_wanted)
+        winreg.SetValue(reg_key, "PortNumber", winreg.REG_SZ, port_wanted)
+        print("current remote desktop port number is {port}".format(port=port_wanted))
 
 
 def getRemoteDesktopStatus():
-    reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
-                              "System\\CurrentControlSet\\Control\\Terminal Server")
+    reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                             "System\\CurrentControlSet\\Control\\Terminal Server")
     if reg_key:
-        value = _winreg.QueryValueEx(reg_key, "fDenyTSConnections")[0]
+        value = winreg.QueryValueEx(reg_key, "fDenyTSConnections")[0]
         if value == 1:
             return False
         elif value == 0:
             return True
         else:
-            print "if go to this line means 'RDP rules' changed"
-            print value
+            print("if go to this line means 'RDP rules' changed")
+            print(value)
             return False
 
 
 @try_run
 def changeRemoteDesktopSetting(enableRDP=True):
-    reg_key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,
-                              "System\\CurrentControlSet\\Control\\Terminal Server")
+    reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
+                             "System\\CurrentControlSet\\Control\\Terminal Server")
     if reg_key:
         if enableRDP:
-            _winreg.SetValue(reg_key, "fDenyTSConnections", _winreg.REG_SZ, u'0')
+            winreg.SetValue(reg_key, "fDenyTSConnections", winreg.REG_SZ, '0')
         else:
-            _winreg.SetValue(reg_key, "fDenyTSConnections", _winreg.REG_SZ, u'1')
+            winreg.SetValue(reg_key, "fDenyTSConnections", winreg.REG_SZ, '1')
 
 
 def enableRemoteDesktop():
     changeRemoteDesktopSetting(enableRDP=True)
-    print "remote desktop service is now enabled with port {port}".format(port=getRemoteDesktopPortNumber())
+    print("remote desktop service is now enabled with port {port}".format(port=getRemoteDesktopPortNumber()))
 
 
 def disableRemoteDesktop():
     changeRemoteDesktopSetting(enableRDP=False)
-    print "remote desktop service is now disabled."
+    print("remote desktop service is now disabled.")
 
 
 if __name__ == '__main__':

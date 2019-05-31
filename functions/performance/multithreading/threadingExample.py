@@ -21,8 +21,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 
@@ -31,27 +31,27 @@ def fn_timer(func):
 
 @fn_timer
 def jobsA(para):
-    print "Do jobs A"
+    print("Do jobs A")
     jobsACount = 5
     for job in range(jobsACount):
-        print "Do sub job in jobs A %d" % job
+        print("Do sub job in jobs A %d" % job)
         if para is True:
-            print "para(%s) is True" % para
+            print("para(%s) is True" % para)
         else:
-            print "para(%s) is False" % para
+            print("para(%s) is False" % para)
         time.sleep(2)
 
 
 @fn_timer
 def jobsB(para):
-    print "Do jobs B"
+    print("Do jobs B")
     jobsBCount = 10
     for job in range(jobsBCount):
-        print "Do sub job in jobs B %d" % job
+        print("Do sub job in jobs B %d" % job)
         if para is True:
-            print "para(%s) is True" % para
+            print("para(%s) is True" % para)
         else:
-            print "para(%s) is False" % para
+            print("para(%s) is False" % para)
         time.sleep(1)
 
 
@@ -62,11 +62,11 @@ threadingPool.append(threading_1)
 threadingPool.append(threading_2)
 
 if __name__ == '__main__':
-    print "All jobs is start! at %s" % time.ctime()
+    print("All jobs is start! at %s" % time.ctime())
     for thread in threadingPool:
         thread.setDaemon(True)
         thread.start()
 
     thread.join()
 
-    print "All jobs is done! at %s" % time.ctime()
+    print("All jobs is done! at %s" % time.ctime())

@@ -24,8 +24,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 import sys
@@ -70,11 +69,8 @@ def get_ip_information_from_site_ifconfig():
         response = requests.request("GET", query_ip_api_url, headers=headers, timeout=(10, 5))
         if response.ok:
             data = response.text.strip()
-    except Exception as _:
-        # print _
-        # print _.args
-        # print _.message
-        del _
+    except Exception as e:
+        print(e)
 
     return data
 
@@ -98,17 +94,14 @@ def get_ip_information_from_site_taobao(ip):
         response = requests.request("GET", query_ip_api_url, headers=headers, params=querystring, timeout=(5, 5))
         if response.ok:
             data = response.text.strip()
-    except Exception as _:
-        # print _
-        # print _.args
-        # print _.message
-        del _
+    except Exception as e:
+        print(e)
 
     return data
 
 
 if __name__ == '__main__':
     public_ip_address = get_public_address_from_site_ifconfig()
-    print public_ip_address
-    print get_ip_information_from_site_ifconfig()
-    print get_ip_information_from_site_taobao(public_ip_address)
+    print(public_ip_address)
+    print(get_ip_information_from_site_ifconfig())
+    print(get_ip_information_from_site_taobao(public_ip_address))

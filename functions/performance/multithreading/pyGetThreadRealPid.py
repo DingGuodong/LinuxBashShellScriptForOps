@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import os
@@ -33,8 +33,8 @@ import psutil
 
 
 def long_time_task(sleep_seconds=30):
-    print threading.current_thread().name,
-    print threading.current_thread().ident  # works on Windows, real pid in Windows kernel layer
+    print(threading.current_thread().name, end=' ')
+    print(threading.current_thread().ident)  # works on Windows, real pid in Windows kernel layer
     keep_running_flag = True
     count = 0
     while keep_running_flag:
@@ -56,7 +56,7 @@ threadingPool.append(threading_1)
 threadingPool.append(threading_2)
 
 if __name__ == '__main__':
-    print os.getpid()
+    print(os.getpid())
 
     for thread in threadingPool:
         thread.setDaemon(True)
@@ -66,6 +66,6 @@ if __name__ == '__main__':
         if process.pid == os.getpid():
             if process.num_threads() != 0:
                 for pthread in process.threads():
-                    print pthread
+                    print(pthread)
 
     thread.join()

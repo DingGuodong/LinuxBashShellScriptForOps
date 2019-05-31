@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pycurl
 import sys
-from StringIO import StringIO
+from io import StringIO
 
 import certifi
 
@@ -10,7 +10,7 @@ URL = "https://github.com"
 c = pycurl.Curl()
 c.setopt(pycurl.URL, URL)
 c.setopt(pycurl.WRITEDATA, data_buffer)
-c.setopt(pycurl.FOLLOWLOCATION, 1L)
+c.setopt(pycurl.FOLLOWLOCATION, 1)
 
 # comment those lines because of some websites response too slow
 # # 连接超时时间,5秒
@@ -26,8 +26,8 @@ c.setopt(pycurl.CAINFO, certifi.where())  # c.setopt(pycurl.SSL_VERIFYPEER, Fals
 
 try:
     c.perform()
-except Exception, e:
-    print "connection error:" + str(e)
+except Exception as e:
+    print("connection error:" + str(e))
     c.close()
     sys.exit()
 
@@ -43,15 +43,15 @@ SPEED_DOWNLOAD = c.getinfo(pycurl.SPEED_DOWNLOAD)
 
 c.close()
 
-print u"HTTP状态码：%s" % HTTP_CODE
-print u"DNS解析时间：%.2f ms" % (NAMELOOKUP_TIME * 1000)
-print u"建立连接时间：%.2f ms" % (CONNECT_TIME * 1000)
-print u"准备传输时间：%.2f ms" % (PRETRANSFER_TIME * 1000)
-print u"传输开始时间：%.2f ms" % (STARTTRANSFER_TIME * 1000)
-print u"传输结束总时间：%.2f ms" % (TOTAL_TIME * 1000)
+print("HTTP状态码：%s" % HTTP_CODE)
+print("DNS解析时间：%.2f ms" % (NAMELOOKUP_TIME * 1000))
+print("建立连接时间：%.2f ms" % (CONNECT_TIME * 1000))
+print("准备传输时间：%.2f ms" % (PRETRANSFER_TIME * 1000))
+print("传输开始时间：%.2f ms" % (STARTTRANSFER_TIME * 1000))
+print("传输结束总时间：%.2f ms" % (TOTAL_TIME * 1000))
 
-print u"下载数据包大小：%d bytes/s" % SIZE_DOWNLOAD
-print u"HTTP头部大小：%d byte" % HEADER_SIZE
-print u"平均下载速度：%d bytes/s" % SPEED_DOWNLOAD
+print("下载数据包大小：%d bytes/s" % SIZE_DOWNLOAD)
+print("HTTP头部大小：%d byte" % HEADER_SIZE)
+print("平均下载速度：%d bytes/s" % SPEED_DOWNLOAD)
 
 # print data_buffer.getvalue()

@@ -22,8 +22,8 @@ except ImportError:
 
 def check_container_stats(container_name, collect_item):
     stats = client.stats(container=container_name)
-    old_result = json.loads(stats.next())
-    new_result = json.loads(stats.next())
+    old_result = json.loads(next(stats))
+    new_result = json.loads(next(stats))
     client.close()
     result = None
     if collect_item == 'cpu_total_usage':
@@ -81,4 +81,4 @@ if __name__ == "__main__":
         item = sys.argv[2]
     else:
         exit(1)
-    print check_container_stats(container, item)
+    print(check_container_stats(container, item))

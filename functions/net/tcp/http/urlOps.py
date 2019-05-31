@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
-url = u"http://www.baidu.com/?wd=测试"
-print urllib2.urlopen(url.encode('utf-8')).read()
+url = "http://www.baidu.com/?wd=测试"
+print(urllib.request.urlopen(url.encode('utf-8')).read())

@@ -24,7 +24,7 @@ def ask(message, options):
                 'No input was expected ($PIP_NO_INPUT set); question: %s' %
                 message
             )
-        response = raw_input(message)
+        response = input(message)
         response = response.strip().lower()
         if response not in options:
             print(
@@ -37,6 +37,6 @@ def ask(message, options):
 
 answer = ask('Proceed (y/n)? ', ('y', 'n'))
 if answer == 'y':
-    print 'y'
+    print('y')
 else:
-    print 'n'
+    print('n')

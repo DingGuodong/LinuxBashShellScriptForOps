@@ -19,4 +19,4 @@ text2_lines = text2.splitlines()
 
 d = difflib.Differ()
 diff = d.compare(text1_lines, text2_lines)
-print '\n'.join(list(diff))
+print('\n'.join(list(diff)))

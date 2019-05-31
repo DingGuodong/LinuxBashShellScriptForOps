@@ -12,4 +12,4 @@ import psutil
 
 for c in psutil.net_connections(kind='inet'):
     if c.laddr[1] == 80:
-        print c
+        print(c)

@@ -17,26 +17,6 @@ import shelve  # Manage shelves of pickled objects
 import time
 
 
-def get_system_encoding():
-    import codecs
-    import locale
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-
 def get_connection_detail():
     server = 'rdsid.sqlserver.rds.aliyuncs.com'
     port = "3433"
@@ -103,7 +83,7 @@ if __name__ == '__main__':
     run_times = 0
     run_times_max = 24 * 3600 / 600
     sleep_seconds = 600
-    print "lookup clients connected to sql server, please keeping wait... "
+    print("lookup clients connected to sql server, please keeping wait... ")
     while keep_running_flag:
         persistent_object["connection_detail"] += get_connection_detail()
         time.sleep(sleep_seconds)
@@ -113,8 +93,8 @@ if __name__ == '__main__':
 
     # read data from persistent db
     persistent_object = shelve.open(tmp_db)
-    print "There are {count} connections was recorded during {seconds} seconds.".format(
-        count=len(persistent_object["connection_detail"]), seconds=run_times_max * sleep_seconds)
+    print("There are {count} connections was recorded during {seconds} seconds.".format(
+        count=len(persistent_object["connection_detail"]), seconds=run_times_max * sleep_seconds))
 
     # counting the counts of ip logged in sql server
     clients = collections.Counter()
@@ -125,13 +105,13 @@ if __name__ == '__main__':
     unique_clients_list = set()
     for record in persistent_object["connection_detail"]:
         unique_clients_list.add(record[6])
-    print "There are {count} SQL Server Clients using Aliyun RDS:".format(count=len(unique_clients_list))
+    print("There are {count} SQL Server Clients using Aliyun RDS:".format(count=len(unique_clients_list)))
     for ip in unique_clients_list:
-        print "IP Address: {ip}, connection times: {times}".format(ip=ip, times=clients[ip])
+        print("IP Address: {ip}, connection times: {times}".format(ip=ip, times=clients[ip]))
     persistent_object.close()
 
     # print current connections
-    print "Current connections:"
+    print("Current connections:")
     for connection in get_connection_detail():
-        print connection
-    print "--end--"
+        print(connection)
+    print("--end--")

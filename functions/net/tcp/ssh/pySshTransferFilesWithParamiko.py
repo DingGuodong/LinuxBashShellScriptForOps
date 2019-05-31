@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import paramiko
@@ -31,7 +31,7 @@ hostname = "120.27.194.133"
 port = paramiko.config.SSH_PORT
 username = 'root'
 password = None
-key_filename = "C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem"
+key_filename = r"C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem"
 timeout = 5
 
 # making a connection with accept host key
@@ -46,7 +46,7 @@ sftp_client.put(__file__, 'this.py')  # Uploading file from local to remote mach
 
 # running commands on the remote machine
 stdin, stdout, stderr = ssh_client.exec_command("ls this.py && pwd")
-print stdout.read()
+print(stdout.read())
 stdin.close()
 stdout.close()
 stderr.close()
@@ -54,7 +54,7 @@ stderr.close()
 # commands requiring input
 stdin, stdout, stderr = ssh_client.exec_command("rm this.py")
 stdin.write("y")
-print stderr.read()
+print(stderr.read())
 stdin.close()
 stdout.close()
 stderr.close()

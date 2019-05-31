@@ -43,7 +43,7 @@ def is_debian_family():
     # http://stackoverflow.com/questions/1504717/why-does-comparing-strings-in-python-using-either-or-is-sometimes-produce
     if platform.system() == "Linux":
         distname = platform.linux_distribution()
-        if "Ubuntu" in distname or "Debian" in distname:
+        if set(("Ubuntu", "Debian")) & set(distname):
             return True
         else:
             return False
@@ -55,9 +55,16 @@ def is_rhel_family():
     import platform
     if platform.system() == "Linux":
         distname = platform.linux_distribution()
-        if "CentOS" in distname or "Debian" in distname:
+        if any(x in distname for x in ("CentOS", "Red Hat Enterprise Linux")):
             return True
         else:
             return False
     else:
         return False
+
+
+if __name__ == '__main__':
+    left_set = set(('Ubuntu', 'Debian'))
+    right_set = set(('Ubuntu', '16.04', 'xenial'))
+    print((left_set & right_set))
+

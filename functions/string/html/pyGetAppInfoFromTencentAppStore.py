@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 
@@ -58,5 +58,5 @@ if match:
         appDetailData_json = re_item.sub("\"\g<0>\"", appDetailData)
 
 if appDetailData_json:
-    print appDetailData_json.replace('\t', "    ")
+    print(appDetailData_json.replace('\t', "    "))
     # print json.dumps(json.loads(appDetailData_json), indent=4)

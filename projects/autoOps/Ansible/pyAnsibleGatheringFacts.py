@@ -23,11 +23,11 @@ import sys
 
 def check_ansible_env():
     if not is_linux():
-        print "Linux Supported Only. Aborted!"
+        print("Linux Supported Only. Aborted!")
         sys.exit(1)
 
     if not is_privilege:
-        print "Please run this script as a admin user with sudo privilege or run as root."
+        print("Please run this script as a admin user with sudo privilege or run as root.")
         sys.exit(1)
 
     if not is_ansible_installed():
@@ -84,8 +84,8 @@ def set_inventory(inventory_file="/etc/ansible/hosts"):
             with open(inventory_file, 'w') as f:
                 f.write(content)
         except IOError as e:
-            print e
-            print "Permission denied, is sudo or root?"
+            print(e)
+            print("Permission denied, is sudo or root?")
             sys.exit(1)
     else:
         with open(inventory_file, 'r') as original:
@@ -95,8 +95,8 @@ def set_inventory(inventory_file="/etc/ansible/hosts"):
                 with open(inventory_file, 'w') as f:
                     f.write(content)
             except IOError as e:
-                print e
-                print "Permission denied, is sudo or root?"
+                print(e)
+                print("Permission denied, is sudo or root?")
                 sys.exit(1)
 
 
@@ -128,7 +128,7 @@ def gather_facts():
 def facts_to_json():
     facts = gather_facts()
     if facts is not None:
-        facts_json_string = re.sub("^127.*=>\s+", "", facts)
+        facts_json_string = re.sub(r"^127.*=>\s+", "", facts)
         return facts_json_string
     else:
         return ""
@@ -137,7 +137,7 @@ def facts_to_json():
 def facts_to_dict():
     facts = gather_facts()
     if facts is not None:
-        facts_json_string = re.sub("^127.*=>\s+", "", facts)
+        facts_json_string = re.sub(r"^127.*=>\s+", "", facts)
         facts_dict = json.loads(facts_json_string)
         return facts_dict
     else:
@@ -150,7 +150,7 @@ def sample_data():
         # for key in raw_data.keys():
         #     print key
         thin_data = raw_data
-        for key in thin_data['ansible_facts'].keys():
+        for key in list(thin_data['ansible_facts'].keys()):
             if '_veth' in key \
                     or '_docker0' in key \
                     or '_lo' in key \
@@ -169,30 +169,30 @@ def sample_data():
 
 
 def run_command(executable, use_sudo=True):
-    if not executable or not isinstance(executable, (str, unicode)):
-        print "parameter error, str type is required, but got type \'parameter_type\'.".format(
-            parameter_type=type(executable))
+    if not executable or not isinstance(executable, str):
+        print("parameter error, str type is required, but got type \'parameter_type\'.".format(
+            parameter_type=type(executable)))
         sys.exit(1)
     if use_sudo:
         executable = "sudo /bin/bash -c \"" + executable + "\""
 
     if sys.platform == "linux2":
-        print "Run local command \'{command}\' on Linux...".format(command=executable)
+        print("Run local command \'{command}\' on Linux...".format(command=executable))
 
         proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
         stdout, stderr = proc_obj.communicate()
         return_code = proc_obj.returncode
         if return_code == 0:
-            print "Run local command \'{command}\' successfully!".format(command=executable)
-            print stdout
+            print("Run local command \'{command}\' successfully!".format(command=executable))
+            print(stdout)
         else:
-            print "Run local command \'{command}\' failed! " \
+            print("Run local command \'{command}\' failed! " \
                   "return code is: {return_code}".format(command=executable,
-                                                         return_code=return_code if return_code is not None else 1)
-            print stdout, stderr
+                                                         return_code=return_code if return_code is not None else 1))
+            print(stdout, stderr)
     else:
-        print "Linux Supported Only. Aborted!"
+        print("Linux Supported Only. Aborted!")
         sys.exit(1)
 
 
@@ -229,7 +229,7 @@ def get_bin_path(arg, required=False, opt_dirs=None):
             bin_path = path
             break
     if required and bin_path is None:
-        print 'Failed to find required executable %s in paths: %s' % (arg, os.pathsep.join(paths))
+        print('Failed to find required executable %s in paths: %s' % (arg, os.pathsep.join(paths)))
     return bin_path
 
 
@@ -249,4 +249,4 @@ def is_executable(path):
 
 if __name__ == '__main__':
     check_ansible_env()
-    print sample_data()
+    print(sample_data())

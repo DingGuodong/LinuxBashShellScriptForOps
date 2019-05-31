@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import subprocess
@@ -88,12 +88,12 @@ if __name__ == '__main__':
     subprocess_call_background(["/etc/init.d/nginx", "start"])
 
     for line in subprocess_check_output_background(['chkconfig', '--list']).splitlines():
-        print line
+        print(line)
 
     for line in subprocess_check_output_background(['service', '--status-all']).splitlines():
-        print line
+        print(line)
 
     subprocess_call_background(["ls", "-al"])
 
     for line in subprocess_check_output_background(['ls', '-al']).splitlines():
-        print line
+        print(line)

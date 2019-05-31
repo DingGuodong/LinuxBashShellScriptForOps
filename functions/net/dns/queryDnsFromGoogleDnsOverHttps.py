@@ -38,10 +38,9 @@ def google_public_dns_query(name):
         response = requests.request("GET", url, headers=headers, params=querystring, proxies=proxies, timeout=(10, 5))
         if response.ok:
             data = response.text.strip()
-    except Exception as _:
-        print _
-        print _.args
-        print _.message
+    except Exception as e:
+        print(e)
+        print(e.args)
         sys.exit(1)
 
     # example response data:
@@ -63,4 +62,4 @@ def google_public_dns_query(name):
 
 
 if __name__ == '__main__':
-    print google_public_dns_query("www.taobao.com")
+    print(google_public_dns_query("www.taobao.com"))

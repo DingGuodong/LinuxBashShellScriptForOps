@@ -70,8 +70,8 @@ def get_hash_sum(filename, method="md5", block_size=65536):
 def alter(filename):
     with open(INSIGHT_LOG_FILE, 'r') as f:
         alter_log = json.loads(f.read())
-    if filename not in alter_log.keys():
-        print filename
+    if filename not in list(alter_log.keys()):
+        print(filename)
         alter_log[filename] = True
         with open(INSIGHT_LOG_FILE, 'w') as f:
             f.write(json.dumps(alter_log, indent=4))

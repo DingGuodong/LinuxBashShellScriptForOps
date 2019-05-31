@@ -18,4 +18,4 @@ if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), filen
             if each_line[:-1].strip() == "":
                 pass
             else:
-                print each_line[:-1]
+                print(each_line[:-1])

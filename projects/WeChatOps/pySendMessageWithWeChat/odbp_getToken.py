@@ -12,8 +12,8 @@ Create Time:        17:04
 import os
 import sqlite3
 import sys
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import json
 import datetime
 
@@ -23,9 +23,9 @@ enable_debug = True
 def debug(msg, code=None):
     if enable_debug:
         if code is None:
-            print "message: %s" % msg
+            print("message: %s" % msg)
         else:
-            print "message: %s, code: %s " % (msg, code)
+            print("message: %s, code: %s " % (msg, code))
 
 
 AUTHOR_MAIL = "uberurey_ups@163.com"
@@ -53,7 +53,7 @@ def sqlite3_conn(database):
     try:
         conn = sqlite3.connect(database)
     except sqlite3.Error:
-        print >> sys.stderr, """\
+        print("""\
     There was a problem connecting to Database:
 
         %s
@@ -68,7 +68,7 @@ def sqlite3_conn(database):
 
         %s
 
-    """ % (database, sys.exc_value, AUTHOR_MAIL)
+    """ % (database, sys.exc_info()[1], AUTHOR_MAIL), file=sys.stderr)
         sys.exit(1)
     else:
         return conn
@@ -90,7 +90,7 @@ def sqlite3_execute(database, sql):
         sql_conn.commit()
         sql_conn.close()
     except sqlite3.Error as e:
-        print e
+        print(e)
         sys.exit(1)
 
 
@@ -127,7 +127,7 @@ def sqlite3_create_table_account():
 
 
 def sqlite3_create_tables():
-    print "sqlite3_create_tables"
+    print("sqlite3_create_tables")
     sql_conn = sqlite3_conn(sqlite3_db_file)
     sql_cursor = sql_conn.cursor()
     sql_cursor.execute('''CREATE TABLE "main"."weixin_token" (
@@ -205,7 +205,7 @@ def sqlite3_get_credential():
         if result is not None:
             return result
         else:
-            print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
+            print("unrecoverable problem, please alter to %s" % AUTHOR_MAIL)
             sys.exit(1)
 
 
@@ -284,16 +284,16 @@ class WeiXinTokenClass(object):
             "corpid": self.__corpid,
             "corpsecret": self.__corpsecret
         }
-        url_parameters = urllib.urlencode(parameters)
+        url_parameters = urllib.parse.urlencode(parameters)
         token_url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?"
         url = token_url + url_parameters
-        response = urllib2.urlopen(url)
+        response = urllib.request.urlopen(url)
         result = response.read()
         token_json = json.loads(result)
         if 'access_token' in token_json:
             pass
         else:
-            print "WeiXin_Qy Api Error, result is %s" % token_json
+            print("WeiXin_Qy Api Error, result is %s" % token_json)
             sys.exit(1)
         if token_json['access_token'] is not None:
             get_time_now = datetime.datetime.now()
@@ -319,10 +319,10 @@ class WeiXinTokenClass(object):
                     return
         else:
             if token_json['errcode'] is not None:
-                print "errcode is: %s" % token_json['errcode']
-                print "errmsg is: %s" % token_json['errmsg']
+                print("errcode is: %s" % token_json['errcode'])
+                print("errmsg is: %s" % token_json['errmsg'])
             else:
-                print result
+                print(result)
 
     def __get_token_from_persistence_storage(self):
         token_result_set = None
@@ -354,7 +354,7 @@ class WeiXinTokenClass(object):
         try:
             token_result_set = sqlite3_get_token()
         except sqlite3.Error as e:
-            print e
+            print(e)
             sys.exit(1)
         expire_time = token_result_set[0][1]
         expire_time = datetime.datetime.strptime(expire_time, '%Y-%m-%d %H:%M:%S.%f')

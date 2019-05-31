@@ -10,7 +10,7 @@ Create Time:        19:51
 Description:
 References:         https://matplotlib.org/examples/pylab_examples/load_converter.html
  """
-from __future__ import print_function
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook

@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 
@@ -56,7 +56,7 @@ def create_thumbnail(filename):
 
 
 def example_another():
-    import urllib2
+    import urllib.request, urllib.error, urllib.parse
     from multiprocessing.dummy import Pool as ThreadPool
 
     urls = [
@@ -79,21 +79,21 @@ def example_another():
     thread_pool = ThreadPool(4)
     # Open the urls in their own threads
     # and return the results
-    results = thread_pool.map(urllib2.urlopen, urls)
+    results = thread_pool.map(urllib.request.urlopen, urls)
     # close the pool and wait for the work to finish
     thread_pool.close()
     thread_pool.join()
 
-    print results
+    print(results)
 
 
 if __name__ == '__main__':
-    original_images_folder = os.path.abspath(unicode(r"D:\Users\Chris\Pictures\iPhone\DCIM\100APPLE"))
+    original_images_folder = os.path.abspath(str(r"D:\Users\Chris\Pictures\iPhone\DCIM\100APPLE"))
     save_dirs = os.path.join(original_images_folder, SAVE_DIRECTORY)
     if not os.path.exists(save_dirs):
         os.mkdir(save_dirs)
     images = get_image_paths(original_images_folder)
-    print "{count} images files are going to be processed ...".format(count=len(images))
+    print("{count} images files are going to be processed ...".format(count=len(images)))
     pool = Pool()
     pool.map(create_thumbnail, images)
     pool.close()

@@ -14,7 +14,7 @@ import os
 
 def int2hex(number):
     if number > 65535:
-        print "accepted number should little than 65535."
+        print("accepted number should little than 65535.")
         raise RuntimeError
     result = hex(number)
     tmp = str(result).split('0x')[1]
@@ -41,7 +41,7 @@ if os.path.exists("/proc/net/tcp"):
         if match:
             line = match.group()
             if line is not None and line != "":
-                line = ' '.join(filter(lambda x: x, line.split(' ')))
+                line = ' '.join([x for x in line.split(' ') if x])
                 socket_fd = line.split(' ')[9]
                 port_hex = line.split(' ')[1].split(':')[1]
                 port = int(port_hex, 16)
@@ -51,6 +51,6 @@ files = os.listdir(fd_dir)
 fd_real_name = list()
 for f in files:
     if socket_fd in str(os.readlink(os.path.join(fd_dir, f))):
-        print "pid %s is using port %s, and socket id is %s" % (pid, port, socket_fd)
+        print("pid %s is using port %s, and socket id is %s" % (pid, port, socket_fd))
     else:
-        print "pid %s not is using port %s" % (pid, port)
+        print("pid %s not is using port %s" % (pid, port))

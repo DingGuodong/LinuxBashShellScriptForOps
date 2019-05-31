@@ -25,7 +25,7 @@ class GetLocalIP(object):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
             s.connect(("www.aliyun.com", 80))
-        except StandardError:
+        except Exception:
             return None
         else:
             return s.getsockname()[0]
@@ -41,7 +41,7 @@ class GetLocalIP(object):
 
 if __name__ == '__main__':
     ips = GetLocalIP("all")
-    print ips.get()
+    print(ips.get())
 
     ipa = GetLocalIP("local")
-    print ipa.get()
+    print(ipa.get())

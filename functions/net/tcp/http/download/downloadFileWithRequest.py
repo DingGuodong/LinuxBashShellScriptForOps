@@ -69,15 +69,15 @@ if __name__ == '__main__':
     filename = wanted_url.split('/')[-1]
     save = os.path.join("/tmp", filename).replace("\\", "/")
 
-    print "Downloading '%s', save '%s' to '%s'" % (wanted_url, filename, save)
+    print("Downloading '%s', save '%s' to '%s'" % (wanted_url, filename, save))
 
     download_file(wanted_url, save)
 
     if os.path.isfile(save):
-        print "Saved: '%s'" % save
-        print "md5sum:", get_hash_sum(save, method="md5")
-        print "sha1sum:", get_hash_sum(save, method="sha1sum")
-        print "sha256sum:", get_hash_sum(save, method="sha256sum")
+        print("Saved: '%s'" % save)
+        print("md5sum:", get_hash_sum(save, method="md5"))
+        print("sha1sum:", get_hash_sum(save, method="sha1sum"))
+        print("sha256sum:", get_hash_sum(save, method="sha256sum"))
     else:
-        print "can not download", wanted_url
+        print("can not download", wanted_url)
         sys.exit(1)

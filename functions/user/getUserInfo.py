@@ -22,6 +22,6 @@ elif linux2:
 else:
     user = None
 user_home = os.path.expanduser('~')  # both Windows and Linux is works
-print "current platform: %s" % platform
-print "current user: %s" % user
-print "current user home: %s" % user_home
+print("current platform: %s" % platform)
+print("current user: %s" % user)
+print("current user home: %s" % user_home)

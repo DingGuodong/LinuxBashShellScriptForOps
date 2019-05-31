@@ -65,4 +65,4 @@ for link in available_version:
     if match:
         file_url_list.append(base_url + match.group())
 
-print file_url_list[1]
+print(file_url_list[1])

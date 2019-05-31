@@ -40,17 +40,17 @@ def is_url_valid_am1(url):  # 'am' is short for 'alternative method'
 
 if __name__ == '__main__':
     # valid url
-    print is_url_valid('https://www.baidu.com')
-    print is_url_valid_am1('https://www.baidu.com')
-    print is_url_valid('http://localhost')
-    print is_url_valid_am1('http://localhost')
-    print is_url_valid('http://localhost:8080/')
-    print is_url_valid_am1('http://localhost:8080/')
+    print(is_url_valid('https://www.baidu.com'))
+    print(is_url_valid_am1('https://www.baidu.com'))
+    print(is_url_valid('http://localhost'))
+    print(is_url_valid_am1('http://localhost'))
+    print(is_url_valid('http://localhost:8080/'))
+    print(is_url_valid_am1('http://localhost:8080/'))
 
-    print '-' * 128
+    print('-' * 128)
 
     # invalid url
-    print is_url_valid('www.baidu.com')
-    print is_url_valid_am1('www.baidu.com')
-    print is_url_valid('localhost')
-    print is_url_valid_am1('localhost')
+    print(is_url_valid('www.baidu.com'))
+    print(is_url_valid_am1('www.baidu.com'))
+    print(is_url_valid('localhost'))
+    print(is_url_valid_am1('localhost'))

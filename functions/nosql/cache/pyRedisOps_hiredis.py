@@ -13,8 +13,8 @@ import hiredis
 
 reader = hiredis.Reader()
 reader.feed("$5\r\nhello\r\n")
-print reader.gets()
+print(reader.gets())
 reader.feed("*2\r\n$5\r\nhello\r\n")
-print reader.gets()
+print(reader.gets())
 reader.feed("$5\r\nworld\r\n")
-print reader.gets()
+print(reader.gets())

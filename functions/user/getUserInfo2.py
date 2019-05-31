@@ -24,7 +24,7 @@ linux = (sys.platform == "linux2")
 for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
     user = os.environ.get(name)
     if user:
-        print user
+        print(user)
         break
 
 if linux:
@@ -36,10 +36,8 @@ else:
 
 for login in psutil.users():
     username, login_tty, login_host, login_time = [suser for suser in login]
-    print username, login_tty, login_host, login_time,
-    print datetime.datetime.fromtimestamp(login_time, pytz.timezone('Asia/Shanghai')).strftime(
-        '%Y-%m-%d %H:%M:%S %Z%z'),
+    print(username, login_tty, login_host, login_time, end=' ')
+    print(datetime.datetime.fromtimestamp(login_time, pytz.timezone('Asia/Shanghai')).strftime(
+        '%Y-%m-%d %H:%M:%S %Z%z'), end=' ')
     if login_tty in tty:
-        print '**current user**'
-    else:
-        print
+        print('**current user**')

@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 from Crypto import Random
@@ -93,13 +93,13 @@ if __name__ == '__main__':
 
     aes_key, aes_iv = generate_aes_256_key_iv(msg)
 
-    print aes_key.encode('hex')
-    print aes_iv.encode('hex')
-    print len(aes_key + aes_iv)
+    print(aes_key.encode('hex'))
+    print(aes_iv.encode('hex'))
+    print(len(aes_key + aes_iv))
 
     secured_msg = encrypt_aes_256_cfb(aes_key, aes_iv, msg)
     plain_msg = decrypt_aes_256_cfb(aes_key, aes_iv, secured_msg)
 
-    print msg
-    print plain_msg
+    print(msg)
+    print(plain_msg)
     assert msg == plain_msg

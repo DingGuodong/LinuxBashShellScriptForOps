@@ -27,5 +27,5 @@ def query_httpdns():
     pass
 
 
-print dns_query("qyapi.weixin.qq.com")
-print dns_query("qy.weixin.qq.com")
+print(dns_query("qyapi.weixin.qq.com"))
+print(dns_query("qy.weixin.qq.com"))

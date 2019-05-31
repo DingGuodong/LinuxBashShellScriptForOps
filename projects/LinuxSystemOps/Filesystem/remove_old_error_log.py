@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import os
@@ -59,7 +59,7 @@ def sort_files_by_ctime_with_extension(path=None, type_extension=None, excludes=
                 if full_path_to_filename.endswith(tuple(file_extension_iterable)):
                     all_files_with_date_dict[full_path_to_filename] = os.path.getctime(full_path_to_filename)
 
-    for item in sorted(all_files_with_date_dict.items(), cmp=lambda x, y: cmp(x[1], y[1]), reverse=True):
+    for item in sorted(list(all_files_with_date_dict.items()), key=lambda x: x[1], reverse=True):
         sorted_files.append(item[0])
 
     return sorted_files
@@ -95,7 +95,7 @@ def sort_files_by_ctime_with_regex_match(path=None, regex=None, excludes=None):
                 if is_match_regex(full_path_to_filename, regex):
                     all_files_with_date_dict[full_path_to_filename] = os.path.getctime(full_path_to_filename)
 
-    for item in sorted(all_files_with_date_dict.items(), cmp=lambda x, y: cmp(x[1], y[1]), reverse=True):
+    for item in sorted(list(all_files_with_date_dict.items()), key=lambda x: x[1], reverse=True):
         sorted_files.append(item[0])
 
     return sorted_files
@@ -178,7 +178,7 @@ if __name__ == '__main__':
         if not os.path.exists(trash_dir):
             os.makedirs(trash_dir)
 
-        for key, value in all_matched_files.iteritems():
+        for key, value in all_matched_files.items():
             if len(value) <= save_number:
                 print("log type \"{type}\" files are in good state, skip".format(type=key))
                 pass

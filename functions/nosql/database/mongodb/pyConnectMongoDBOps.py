@@ -23,8 +23,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 from pymongo import MongoClient
@@ -35,10 +35,10 @@ client = MongoClient("mongodb://10.45.51.99:27017")
 db = client.usertrack
 
 # list tables
-print db.collection_names()
+print(db.collection_names())
 
 # show column counts of table 'usertrack' in db 'usertrack'
-print db.usertrack.count()
+print(db.usertrack.count())
 
 # show records of table 'usertrack' in db 'usertrack'
 cursor = db.usertrack.find()

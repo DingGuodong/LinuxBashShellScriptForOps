@@ -26,11 +26,11 @@ port = 22
 username = "ubnt"
 password = ""
 if password == "":
-    password = raw_input("Please input password for %s@%s: " % (username, hostname))
+    password = input("Please input password for %s@%s: " % (username, hostname))
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 ssh.connect(hostname=hostname, port=port, username=username, password=password)
 keys = ssh.get_host_keys()
 key = keys['192.168.1.1']['ssh-rsa']
-print binascii.hexlify(key.get_fingerprint())
+print(binascii.hexlify(key.get_fingerprint()))
 ssh.close()

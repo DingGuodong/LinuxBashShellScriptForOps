@@ -25,4 +25,4 @@ try:
         c.set('redis_role_status', role)
     print(c.get('redis_role_status'))
 except (redis.exceptions.ConnectionError, redis.exceptions.TimeoutError, redis.exceptions.ResponseError) as e:
-    print(e.message)
+    print(e)

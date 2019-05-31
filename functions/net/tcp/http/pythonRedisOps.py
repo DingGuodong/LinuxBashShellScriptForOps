@@ -14,5 +14,5 @@ value_test = random.randint(0, 99)
 # value_test = random.choice('abcdefg&#%^*f')
 r.set('foo', value_test)
 content = r.get('foo')
-print content
+print(content)
 r.delete('foo')

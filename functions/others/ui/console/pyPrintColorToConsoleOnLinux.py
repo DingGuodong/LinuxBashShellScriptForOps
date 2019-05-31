@@ -42,62 +42,62 @@ References:
 
 def printRed(text):
     # Color red
-    print "\033[31m{text}\033[0m".format(text=text)
+    print("\033[31m{text}\033[0m".format(text=text))
 
 
 def printBrightRed(text):
     # Color bright red
-    print "\033[01;31m{text}\033[0m".format(text=text)
+    print("\033[01;31m{text}\033[0m".format(text=text))
 
 
 def printGreen(text):
     # Color green
-    print "\033[32m{text}\033[0m".format(text=text)
+    print("\033[32m{text}\033[0m".format(text=text))
 
 
 def printBrightGreen(text):
     # Color bright green
-    print "\033[01;32m{text}\033[0m".format(text=text)
+    print("\033[01;32m{text}\033[0m".format(text=text))
 
 
 def printYellow(text):
     # Color yellow
-    print "\033[33m{text}\033[0m".format(text=text)
+    print("\033[33m{text}\033[0m".format(text=text))
 
 
 def printBrightYellow(text):
     # Color bright yellow
-    print "\033[01;33m{text}\033[0m".format(text=text)
+    print("\033[01;33m{text}\033[0m".format(text=text))
 
 
 def printBlue(text):
     # Color blue
-    print "\033[34m{text}\033[0m".format(text=text)
+    print("\033[34m{text}\033[0m".format(text=text))
 
 
 def printBrightBlue(text):
     # Color bright blue
-    print "\033[01;34m{text}\033[0m".format(text=text)
+    print("\033[01;34m{text}\033[0m".format(text=text))
 
 
 def printPurple(text):
     # Color purple, magenta
-    print "\033[35m{text}\033[0m".format(text=text)
+    print("\033[35m{text}\033[0m".format(text=text))
 
 
 def printBrightPurple(text):
     # Color bright purple, magenta
-    print "\033[01;35m{text}\033[0m".format(text=text)
+    print("\033[01;35m{text}\033[0m".format(text=text))
 
 
 def printCyan(text):
     # Color cyan
-    print "\033[36m{text}\033[0m".format(text=text)
+    print("\033[36m{text}\033[0m".format(text=text))
 
 
 def printBrightCyan(text):
     # Color bright cyan
-    print "\033[01;36m{text}\033[0m".format(text=text)
+    print("\033[01;36m{text}\033[0m".format(text=text))
 
 
 if __name__ == '__main__':

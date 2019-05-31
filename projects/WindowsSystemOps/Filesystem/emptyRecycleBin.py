@@ -8,29 +8,16 @@ User:               Guodong
 Create Date:        2017/4/25
 Create Time:        9:53
  """
-import codecs
-import locale
 
 import winshell
 
+recycle_bin = winshell.recycle_bin()
 
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
+if len(list(recycle_bin.items())) != 0:
+    print("回收站里的内容有：\n", list(recycle_bin.items()))
     try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-try:
-    winshell.recycle_bin().empty(confirm=False, show_progress=False, sound=False)
-except Exception as e:
-    print e, e.args[1].decode(DEFAULT_LOCALE_ENCODING)
+        recycle_bin.empty(confirm=False, show_progress=False, sound=False)
+    except Exception as e:
+        print(e)
+else:
+    print("回收站已经是空的了。")

@@ -37,7 +37,8 @@ def compare_version(version_left="", version_right=""):
     """
     from distutils.version import LooseVersion as version
 
-    res = cmp(version(version_left), version(version_right))
+    # https://codegolf.stackexchange.com/questions/49778/how-can-i-use-cmpa-b-with-python3
+    res = (version(version_left) > version(version_right)) - (version(version_left) < version(version_right))
     if res > 0:
         return version_left
     elif res < 0:
@@ -64,4 +65,4 @@ def validate_version(version):
 
 
 if __name__ == '__main__':
-    print compare_version("3.4.1", "2.3.2")
+    print(compare_version("3.4.1", "2.3.2"))

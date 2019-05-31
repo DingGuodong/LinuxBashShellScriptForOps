@@ -33,9 +33,9 @@ def request_http(url):
 
     response = requests.request("GET", url, headers=headers)
 
-    print len(response.text), "retrieved from %s " % url
+    print(len(response.text), "retrieved from %s " % url)
     gevent.sleep(0.5)
-    print response.headers, "from %s " % url
+    print(response.headers, "from %s " % url)
 
 
 if __name__ == '__main__':

@@ -30,30 +30,13 @@ Options:
 
  """
 
-import codecs
 import getpass
-import locale
 import sys
 
 import pymysql
 # https://github.com/docopt/docopt/tree/master/examples
 # https://github.com/docopt/docopt/blob/master/examples/options_example.py
 from docopt import docopt
-
-
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
 
 
 def mysql_connect(host, user, password, port, charset, database):
@@ -65,7 +48,7 @@ def mysql_connect(host, user, password, port, charset, database):
             return connection
     except pymysql.Error as e:
         # raise RuntimeError("Can't connect to MySQL server")
-        print e.message or e.args
+        print(e)
         return None
 
 
@@ -76,7 +59,7 @@ def mysql_query(host, user, password, port, charset, database, sql):
                                      cursorclass=pymysql.cursors.DictCursor, connect_timeout=5)
     except pymysql.Error as e:
         # raise RuntimeError("Can't connect to MySQL server")
-        print e.message or e.args
+        print(e)
         sys.exit(1)
 
     try:
@@ -92,8 +75,6 @@ def mysql_query(host, user, password, port, charset, database, sql):
 
 
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 host = ''
 username = user = ''
@@ -121,7 +102,7 @@ if __name__ == '__main__':
             if password != "" and password is not None:
                 break
             else:
-                print "MySQL password is empty will not be safe"
+                print("MySQL password is empty will not be safe")
     else:
         password = arguments['--password']
     if arguments['DATABASE'] is not None and arguments['DATABASE'] != "":
@@ -144,7 +125,7 @@ if __name__ == '__main__':
         with timeout(timeout=10.0):
             result = mysql_connect(host, username, password, port, charset, database)
     if result:
-        print "connect to MySQL server successfully!"
+        print("connect to MySQL server successfully!")
     else:
-        print "Can't connect to MySQL server"
+        print("Can't connect to MySQL server")
         sys.exit(1)

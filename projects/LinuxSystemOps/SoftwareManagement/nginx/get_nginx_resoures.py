@@ -23,14 +23,14 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 
 import re
 from multiprocessing import Pool
-from urlparse import urlparse, urlunsplit
+from urllib.parse import urlparse, urlunsplit
 
 import requests
 from bs4 import BeautifulSoup
@@ -50,8 +50,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 
@@ -82,7 +82,7 @@ def confirm(question, default=True):
         suffix = "y/N"
     # Loop till we get something we like
     while True:
-        response = raw_input("%s [%s] " % (question, suffix)).lower()
+        response = input("%s [%s] " % (question, suffix)).lower()
         # Default
         if not response:
             return default
@@ -113,7 +113,7 @@ def get_nginx_url():
         if match:
             file_url_list.append(base_url + match.group())
 
-    print file_url_list[1]  # 0 is Mainline version, 1 is Stable version
+    print(file_url_list[1])  # 0 is Mainline version, 1 is Stable version
     return file_url_list[1]
 
 
@@ -144,9 +144,9 @@ def get_openssl_url():
             break
     if file_url == "":
         file_url = file_url_list[number]
-        print file_url
+        print(file_url)
     else:
-        print file_url
+        print(file_url)
 
     return file_url
 
@@ -165,7 +165,7 @@ def get_pcre_url():
         if match:
             file_url_list.append(downloads_page_url + match.group())
 
-    print file_url_list[-1]  # latest version
+    print(file_url_list[-1])  # latest version
     return file_url_list[-1]
 
 
@@ -183,7 +183,7 @@ def get_zlib_url():
         if match:
             file_url_list.append(downloads_page_url + match.group())
 
-    print file_url_list[0]
+    print(file_url_list[0])
     return file_url_list[0]
 
 
@@ -216,13 +216,13 @@ def render_file(versions):
 
     with open("nginx-install-update.sh", 'r') as fp_origin:
         content = fp_origin.read()
-        print content.split("\n")[27:31]
+        print(content.split("\n")[27:31])
         # print pattern_nginx_ver.search(content).group(2)
         content = re.sub(pattern_nginx_ver, r'\1%s\3' % nginx_ver, content)
         content = pattern_openssl_ver.sub(r"\1%s\3" % openssl_ver, content)
         content = pattern_pcre_ver.sub(r"\1%s\3" % pcre_ver, content)
         content = pattern_zlib_ver.sub(r"\1%s\3" % zlib_ver, content)
-        print content.split("\n")[27:31]
+        print(content.split("\n")[27:31])
 
     with open("nginx-install-update.sh", 'w') as fp_modified:
         fp_modified.write(content)
@@ -231,9 +231,9 @@ def render_file(versions):
 if __name__ == '__main__':
     p = Pool(4)
     res_list = p.map(instantiate, [get_nginx_url, get_openssl_url, get_pcre_url, get_zlib_url])
-    print res_list
+    print(res_list)
     for res in res_list:
-        print get_version_from_url(res)
+        print(get_version_from_url(res))
 
     if confirm("It is ok?"):
         res_list = [get_version_from_url(res) for res in res_list]

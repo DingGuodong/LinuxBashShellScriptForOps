@@ -29,8 +29,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English
 Operating System:       POSIX :: Linux
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import logging
@@ -71,36 +71,20 @@ def initLoggerWithRotate(logPath="/var/log", logName=None, singleLogFile=True):
     return logger
 
 
-def decoding(text):
-    import sys
-    import codecs
+def always_to_utf8(text):
     import locale
 
-    if isinstance(text, unicode):
-        return text
-    elif isinstance(text, (basestring, str)):
-        pass
+    encoding = locale.getpreferredencoding()
+    if isinstance(text, bytes):
+        try:
+            return text.decode(encoding)
+        except UnicodeDecodeError:
+            return text.decode("utf-8")
+
     else:
         return text  # do not need decode, return original object if type is not instance of string type
         # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
 
-    mswindows = (sys.platform == "win32")
-
-    try:
-        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
-        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
-    except Exception as _:
-        del _
-        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
-
-    msg = text
-    if mswindows:
-        try:
-            msg = text.decode(encoding)
-            return msg
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            pass
-    return msg
 
 
 def run(command, capture_stdout=False, suppress_stdout=False):
@@ -111,11 +95,11 @@ def run(command, capture_stdout=False, suppress_stdout=False):
     (stdout, stderr) = p.communicate()
 
     if p.returncode != 0:
-        print "encountered an error (return code %s) while executing '%s'" % (p.returncode, command)
+        print("encountered an error (return code %s) while executing '%s'" % (p.returncode, command))
         if stdout is not None:
-            print "Standard output:", decoding(stdout)
+            print("Standard output:", always_to_utf8(stdout))
         if stderr is not None:
-            print "Standard error:", decoding(stderr)
+            print("Standard error:", always_to_utf8(stderr))
         if not capture_stdout:
             return False
         else:
@@ -127,7 +111,7 @@ def run(command, capture_stdout=False, suppress_stdout=False):
                 return stdout
             else:
                 if not suppress_stdout:
-                    print decoding(stdout)
+                    print(always_to_utf8(stdout))
                 return True
 
 
@@ -194,7 +178,7 @@ class TrustSSH:
         # Lists out the hosts include the servers and the clients that will receive the SSH key pairs.
         self.get_registered_hosts()
         for host in self.hosts_registered:
-            print host.strip()
+            print(host.strip())
 
     def is_key_registered(self, key):
         fingerprint = self.get_fingerprint(key)
@@ -227,7 +211,7 @@ class TrustSSH:
 
     def get_fingerprint_short(self, key):
         fingerprint = self.get_fingerprint(key)
-        if fingerprint != '' and isinstance(fingerprint, (unicode, str)):
+        if fingerprint != '' and isinstance(fingerprint, str):
             shortened_fingerprint = re.split('[ :]', fingerprint)[2]
             if shortened_fingerprint != '':
                 return shortened_fingerprint[0:8]
@@ -238,8 +222,8 @@ class TrustSSH:
 
     def add_key(self, key="", key_file=""):
         if key != '' and not self.is_key_registered(key):
-            print "add key \'{key}\'(the 1st 8 chars) to {file} ...".format(key=self.get_fingerprint_short(key),
-                                                                            file=self.authorized_keys_file)
+            print("add key \'{key}\'(the 1st 8 chars) to {file} ...".format(key=self.get_fingerprint_short(key),
+                                                                            file=self.authorized_keys_file))
             with open(self.authorized_keys_file, 'a') as modified:
                 modified.write(key.strip() + '\n')
 

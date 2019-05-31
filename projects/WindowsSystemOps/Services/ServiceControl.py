@@ -48,31 +48,6 @@ status_code = {
     4: "RUNNING"
 }
 
-
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-
-# try:
-#     result = result.decode(DEFAULT_LOCALE_ENCODING)
-# except UnicodeDecodeError:
-#     # UnicodeDecodeError - preventive treatment for non-latin Windows.
-#     return ''
-
 def is_iterable(source):
     if source is not None:
         try:
@@ -96,27 +71,25 @@ def status_service(service_name):
     try:
         result = win32serviceutil.QueryServiceStatus(service_name)[1]
         if result == START_PENDING:
-            print "service %s is %s, please wait" % (service_name, status_code[result])
+            print("service %s is %s, please wait" % (service_name, status_code[result]))
             time.sleep(2)
             return RUNNING
         elif result == STOP_PENDING:
-            print "service %s is %s, please wait" % (service_name, status_code[result])
+            print("service %s is %s, please wait" % (service_name, status_code[result]))
             time.sleep(2)
             return STOPPED
         else:
             return result if result is not None else 0
     except Exception as e:
-        if e.message:
-            raise RuntimeError(e.message)
-        elif e.args:
+        if e.args:
             # print e.args
             args = list()
             for arg in e.args:
                 if is_iterable(arg):
-                    args.append(unicode(eval(repr(arg)), 'gbk'))
+                    args.append(str(eval(repr(arg)), 'gbk'))
                 else:
                     args.append(arg)
-            print "Error:", args[-1], tuple(args)
+            print("Error:", args[-1], tuple(args))
             raise RuntimeError
         else:
             raise RuntimeError("Uncaught exception, maybe it is a 'Access Denied'")  # will not reach here
@@ -127,24 +100,22 @@ def start_service(service_name):
     if status == STOPPED:
         pass
     elif status == RUNNING:
-        print "service %s already started" % service_name
+        print("service %s already started" % service_name)
         return status
 
     try:
-        print "starting %s" % service_name
+        print("starting %s" % service_name)
         win32serviceutil.StartService(service_name)
     except Exception as e:
-        if e.message:
-            raise RuntimeError(e.message)
-        elif e.args:
+        if e.args:
             # print e.args
             args = list()
             for arg in e.args:
                 if is_iterable(arg):
-                    args.append(unicode(eval(repr(arg)), 'gbk'))
+                    args.append(str(eval(repr(arg)), 'gbk'))
                 else:
                     args.append(arg)
-            print "Error:", args[-1], tuple(args)
+            print("Error:", args[-1], tuple(args))
             raise RuntimeError
         else:
             raise RuntimeError("Uncaught exception, maybe it is a 'Access Denied'")  # will not reach here
@@ -154,27 +125,25 @@ def start_service(service_name):
 def stop_service(service_name):
     status = status_service(service_name)
     if status == STOPPED:
-        print "service %s already stopped" % service_name
+        print("service %s already stopped" % service_name)
         return status
     elif status == RUNNING:
         pass
     else:
         return status
     try:
-        print "stopping %s" % service_name
+        print("stopping %s" % service_name)
         win32serviceutil.StopService(service_name)
     except Exception as e:
-        if e.message:
-            print e.message
-        elif e.args:
+        if e.args:
             # print e.args
             args = list()
             for arg in e.args:
                 if is_iterable(arg):
-                    args.append(unicode(eval(repr(arg)), 'gbk'))
+                    args.append(str(eval(repr(arg)), 'gbk'))
                 else:
                     args.append(arg)
-            print "Error:", args[-1], tuple(args)
+            print("Error:", args[-1], tuple(args))
             raise RuntimeError
         else:
             raise RuntimeError("Uncaught exception, maybe it is a 'Access Denied'")  # will not reach here
@@ -193,7 +162,7 @@ def restart_service(service_name):
                 time.sleep(2)
             return start_service(service_name)
     elif status == STOPPED or status == STOP_PENDING:
-        print "service %s not running." % service_name
+        print("service %s not running." % service_name)
         return start_service(service_name)
     else:
         return status_service(service_name)
@@ -225,7 +194,7 @@ def list_service():
 
 
 def is_valid_service_name(service_name):
-    if service_name.lower() in [name.lower() for name, display_name in list_service().items()]:
+    if service_name.lower() in [name.lower() for name, display_name in list(list_service().items())]:
         return True
     else:
         return False
@@ -243,7 +212,7 @@ if __name__ == '__main__':
             arguments['SERVICE_ACTION'] = arguments['SERVICE_NAME']
             arguments['SERVICE_NAME'] = tmp
         else:
-            print __doc__
+            print(__doc__)
             sys.exit(1)
 
         if is_valid_service_name(arguments['SERVICE_NAME']):
@@ -254,14 +223,14 @@ if __name__ == '__main__':
         return_code = do_service(arguments['SERVICE_NAME'], arguments['SERVICE_ACTION'])
 
         try:
-            print status_code[return_code]
+            print(status_code[return_code])
         except KeyError:
-            print "return_code is %s." % return_code
+            print("return_code is %s." % return_code)
     else:
-        print __doc__
+        print(__doc__)
         sys.exit(1)
 
 # TODO(Guodong Ding) run a command as administrator with administrative privilege, use 'runas' command?
-state_command = "C:\WINDOWS\System32\sc.exe query MySQL56"
-start_command = "C:\WINDOWS\System32\sc.exe start MySQL56"
-stop_command = "C:\WINDOWS\System32\sc.exe stop MySQL56"
+state_command = r"C:\WINDOWS\System32\sc.exe query MySQL56"
+start_command = r"C:\WINDOWS\System32\sc.exe start MySQL56"
+stop_command = r"C:\WINDOWS\System32\sc.exe stop MySQL56"

@@ -22,12 +22,11 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 from getmac import get_mac_address
 
 ip_mac = get_mac_address(ip="192.168.88.127")
 
-print ip_mac
+print(ip_mac)

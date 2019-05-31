@@ -27,7 +27,7 @@ except ImportError:
         command_to_execute = "pip install netifaces || easy_install netifaces"
         os.system(command_to_execute)
     except OSError:
-        print "Can NOT install netifaces, Aborted!"
+        print("Can NOT install netifaces, Aborted!")
         sys.exit(1)
     import netifaces
 
@@ -46,8 +46,8 @@ for interface in netifaces.interfaces():
             pass
 
 display_format = '%-30s %-20s'
-print display_format % ("Routing Gateway:", routingGateway)
-print display_format % ("Routing NIC Name:", routingNicName)
-print display_format % ("Routing NIC MAC Address:", routingNicMacAddr)
-print display_format % ("Routing IP Address:", routingIPAddr)
-print display_format % ("Routing IP Netmask:", routingIPNetmask)
+print(display_format % ("Routing Gateway:", routingGateway))
+print(display_format % ("Routing NIC Name:", routingNicName))
+print(display_format % ("Routing NIC MAC Address:", routingNicMacAddr))
+print(display_format % ("Routing IP Address:", routingIPAddr))
+print(display_format % ("Routing IP Netmask:", routingIPNetmask))

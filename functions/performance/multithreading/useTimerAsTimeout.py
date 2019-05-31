@@ -17,22 +17,20 @@ import time
 from threading import Timer
 
 
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
+def always_to_utf8(text):
+    import locale
 
+    encoding = locale.getpreferredencoding()
+    if isinstance(text, bytes):
+        try:
+            return text.decode(encoding)
+        except UnicodeDecodeError:
+            return text.decode("utf-8")
 
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
+    else:
+        return text  # do not need decode, return original object if type is not instance of string type
+        # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
+
 
 cmd = ["ping", "-t", "www.google.com"]
 ping = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -40,9 +38,9 @@ ping = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 my_timer = Timer(5, lambda process: process.kill(), [ping])
 try:
     my_timer.start()
-    print time.ctime()
+    print(time.ctime())
     stdout, stderr = ping.communicate()
-    print stdout.decode(DEFAULT_LOCALE_ENCODING), stderr.decode(DEFAULT_LOCALE_ENCODING)
+    print(always_to_utf8(stdout), always_to_utf8(stderr))
 finally:
-    print time.ctime()
+    print(time.ctime())
     my_timer.cancel()

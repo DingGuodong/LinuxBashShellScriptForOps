@@ -47,6 +47,6 @@ if result is not None:
     for item in result:
         if item is not None:
             for value in item:
-                print value
+                print(value)
         else:
-            print "result:", None
+            print("result:", None)

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import json
 import datetime
 
@@ -31,8 +31,8 @@ if content_length != 0:
     expire_time = datetime.datetime.strptime(expire_time, '%Y-%m-%d %H:%M:%S.%f')
     now_time = datetime.datetime.now()
     if now_time < expire_time:
-        print "The token is not empty, and token is %s" % content_dict['access_token']
-        print "The token will expire on %s" % content_dict['expires_on']
+        print("The token is not empty, and token is %s" % content_dict['access_token'])
+        print("The token will expire on %s" % content_dict['expires_on'])
         exit(1)
 
 argc = len(sys.argv)
@@ -54,16 +54,16 @@ parameters = {
     "secret": secret
 }
 
-url_parameters = urllib.urlencode(parameters)
+url_parameters = urllib.parse.urlencode(parameters)
 
 token_url = "https://api.weixin.qq.com/cgi-bin/token?"
 url = token_url + url_parameters
-response = urllib2.urlopen(url)
+response = urllib.request.urlopen(url)
 returns = response.read()
 c = json.loads(returns)
 if c['access_token'] is not None:
-    print "access_token is: %s" % c['access_token']
-    print "expires_in is: %s" % c['expires_in']
+    print("access_token is: %s" % c['access_token'])
+    print("expires_in is: %s" % c['expires_in'])
     if os.path.exists(lock):
         get_time = datetime.datetime.now()
         expire_time = get_time + datetime.timedelta(seconds=c['expires_in'])
@@ -74,9 +74,9 @@ if c['access_token'] is not None:
         o.close()
 else:
     if c['errcode'] is not None:
-        print "errcode is: %s" % c['errcode']
-        print "errmsg is: %s" % c['errmsg']
+        print("errcode is: %s" % c['errcode'])
+        print("errmsg is: %s" % c['errmsg'])
         if os.path.exists(lock):
             os.remove(lock)
     else:
-        print returns
+        print(returns)

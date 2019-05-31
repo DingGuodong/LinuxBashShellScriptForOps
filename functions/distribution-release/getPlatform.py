@@ -15,7 +15,7 @@ except ImportError:
         print("Can NOT install 'platform', Aborted!")
         sys.exit(1)
     except Exception as e:
-        print("Uncaught exception, %s" % e.message)
+        print("Uncaught exception, %s" % str(e))
         sys.exit(1)
     import platform
 

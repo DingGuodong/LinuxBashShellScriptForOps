@@ -87,16 +87,16 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 
 import os
 import select
-import socket
 import struct
 import sys
+
+import socket
 import time
 
 if sys.platform == "win32":
@@ -114,18 +114,20 @@ def checksum(source_string):
     """
     I'm not too confident that this is right but testing seems
     to suggest that it gives the same answers as in_cksum in ping.c
+    :param source_string: bytes
+    :return:
     """
     sum_ = 0
     countTo = (len(source_string) / 2) * 2
     count = 0
     while count < countTo:
-        thisVal = ord(source_string[count + 1]) * 256 + ord(source_string[count])
+        thisVal = source_string[count + 1] * 256 + source_string[count]
         sum_ = sum_ + thisVal
         sum_ = sum_ & 0xffffffff  # Necessary?
         count = count + 2
 
     if countTo < len(source_string):
-        sum_ = sum_ + ord(source_string[len(source_string) - 1])
+        sum_ = sum_ + source_string[len(source_string) - 1]
         sum_ = sum_ & 0xffffffff  # Necessary?
 
     sum_ = (sum_ >> 16) + (sum_ & 0xffff)
@@ -186,7 +188,7 @@ def send_one_ping(my_socket, dest_addr, ID):
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, my_checksum, ID, 1)
     bytesInDouble = struct.calcsize("d")
     data = (192 - bytesInDouble) * "Q"
-    data = struct.pack("d", default_timer()) + data
+    data = struct.pack("d", default_timer()) + data.encode("utf-8")
 
     # Calculate the checksum on the data and the dummy header.
     my_checksum = checksum(header + data)
@@ -210,15 +212,11 @@ def do_one(dest_addr, timeout):
         my_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
     except socket.timeout:
         return
-    except socket.error, (errno, msg):
-        if errno == 1:
-            # Operation not permitted
-            msg = msg + (
-                " - Note that ICMP messages can only be sent from processes"
-                " running as root."
-            )
-            raise socket.error(msg)
-        raise  # raise the original error
+    except socket.error as e:
+        # Operation not permitted
+        msg = str(e) + " - Note that ICMP messages can only be sent from processes running as root."
+        raise socket.error(msg)
+
     my_ID = os.getpid() & 0xFFFF
 
     send_one_ping(my_socket, dest_addr, my_ID)
@@ -233,20 +231,19 @@ def verbose_ping(dest_addr, timeout=2, count=4):
     Send >count< ping to >dest_addr< with the given >timeout< and display
     the result.
     """
-    for i in xrange(count):
-        print "ping %s..." % dest_addr,
+    for i in range(count):
+        print("ping %s..." % dest_addr, )
         try:
             delay = do_one(dest_addr, timeout)
-        except socket.gaierror, e:
-            print "failed. (socket error: '%s')" % e[1]
+        except socket.gaierror as e:
+            print("failed. (socket error: '%s')" % str(e))
             break
 
         if delay is None:
-            print "failed. (timeout within %ssec.)" % timeout
+            print("failed. (timeout within %ssec.)" % timeout)
         else:
             delay = delay * 1000
-            print "get ping in %0.4fms" % delay
-    print
+            print("get ping in %0.4fms" % delay)
 
 
 if __name__ == '__main__':

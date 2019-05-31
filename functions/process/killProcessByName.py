@@ -32,9 +32,9 @@ currentUserName = getuser()
 ProcessNameToKill = 'chrome.exe'
 
 if ProcessNameToKill in [x.name() for x in psutil.process_iter()]:
-    print "Process \"%s\" is found!" % ProcessNameToKill
+    print("Process \"%s\" is found!" % ProcessNameToKill)
 else:
-    print "Process \"%s\" is NOT running!" % ProcessNameToKill
+    print("Process \"%s\" is NOT running!" % ProcessNameToKill)
 
 for process in psutil.process_iter():
     if process.name() == ProcessNameToKill:
@@ -42,6 +42,6 @@ for process in psutil.process_iter():
             # root user can only kill its process, but can NOT kill other users process
             if process.username().endswith(currentUserName):
                 process.kill()
-                print "Process \"%s(pid=%s)\" is killed!" % (process.name(), process.pid)
+                print("Process \"%s(pid=%s)\" is killed!" % (process.name(), process.pid))
         except Exception as e:
-            print e
+            print(e)

@@ -66,7 +66,7 @@ deployment_mode=""
 # learn from apache-tomcat-6.x.xx/bin/catalina.sh
 PRG="$0"
 
-while [ -h "$PRG" ]; do
+while [[ -h "$PRG" ]]; do
   ls=`ls -ld "$PRG"`
   link=`expr "$ls" : '.*-> \(.*\)$'`
   if expr "$link" : '/.*' > /dev/null; then
@@ -83,41 +83,41 @@ PRGDIR=`dirname "$PRG"`
 # echo color function, smarter, learn from lnmp.org lnmp install.sh
 function echo_r (){
     # Color red: Error, Failed
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[31m$1\033[0m"
 }
 
 
 function echo_g (){
     # Color green: Success
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[32m$1\033[0m"
 }
 
 
 function echo_y (){
     # Color yellow: Warning
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[33m$1\033[0m"
 }
 
 
 function echo_b (){
     # Color blue: Debug Level 1
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[34m$1\033[0m"
 }
 
 function echo_p (){
     # Color purple,magenta: Debug Level 2
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[35m$1\033[0m"
 }
 
 
 function echo_c (){
     # Color cyan: friendly prompt, Level 1
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo -e "\033[36m$1\033[0m"
 }
 # end echo color function, smarter
@@ -130,7 +130,7 @@ WORKDIR="`readlink -f ${PRGDIR}`"
 
 USER="`id -un`"
 LOGNAME="$USER"
-if [ $UID -ne 0 ]; then
+if [[ $UID -ne 0 ]]; then
     echo "WARNING: Running as a non-root user, \"$LOGNAME\". Functionality may be unavailable. Only root can use some commands or options"
 fi
 
@@ -142,7 +142,7 @@ function command_exists() {
 
 
 function check_command_can_be_execute(){
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     command_exists $1
 }
 
@@ -154,7 +154,7 @@ function check_network_connectivity(){
     ping_count=2
     ping -c ${ping_count} ${network_address_to_check} >/dev/null
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         if ping -c ${ping_count} ${stable_network_address_to_check} >/dev/null;then
             echo_g "Network to $stable_network_address_to_check succeed! "
             echo_y "Note: network to $network_address_to_check failed once! maybe just some packages loss."
@@ -168,7 +168,7 @@ function check_network_connectivity(){
             echo_r "Network is blocked! "
             exit 1
         fi
-    elif [ ${retval} -eq 0 ]; then
+    elif [[ ${retval} -eq 0 ]]; then
         echo_g "Check network connectivity passed! "
         echo
     fi
@@ -190,7 +190,7 @@ function check_name_resolve(){
             echo_y "Nameserver config file is validated, but name lookup failed for $target_name_to_resolve with $ping_count times"
             return 0
         fi
-        [ -f /etc/resolv.conf ] && cp /etc/resolv.conf /etc/resolv.conf_$(date +%Y%m%d%H%M%S)~
+        [[ -f /etc/resolv.conf ]] && cp /etc/resolv.conf /etc/resolv.conf_$(date +%Y%m%d%H%M%S)~
         cat >/etc/resolv.conf<<eof
 nameserver 114.114.114.114
 nameserver 8.8.4.4
@@ -205,13 +205,13 @@ eof
 
 
 function check_ssh_can_be_connect(){
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     echo_b "Check if can ssh to remote host $1 ... "
     check_command_can_be_execute ssh || return 1
     # TODO(Guodong Ding) ssh can connect to remote host by using /etc/ssh/ssh_host_rsa_key or ~/.ssh/id_rsa
     ssh -i /etc/ssh/ssh_host_rsa_key -p 22 -oStrictHostKeyChecking=no root@$1 "uname -a >/dev/null 2>&1"
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         echo_r "Check ssh to remote host $1 failed! "
         exit 1
     else
@@ -299,7 +299,7 @@ function check_other_dependencies() {
 
 function setDirectoryStructureOnLocalHost() {
     set -o errexit
-    if [ -f ${WORKDIR}/.capistrano_ds_lock ];then
+    if [[ -f ${WORKDIR}/.capistrano_ds_lock ]];then
         echo_g "Set capistrano directory structure has been done, skipping. "
         return
     fi
@@ -329,15 +329,15 @@ function setDirectoryStructureOnLocalHost() {
     # The application is completely contained within the path of :deploy_to. If you plan on deploying multiple applications to the same server, simply choose a different :deploy_to path.
 
     # Check directories for deploy
-    [ ! -d ${WORKDIR}/release ] && mkdir ${WORKDIR}/release
-    [ ! -d ${WORKDIR}/repository ] && mkdir ${WORKDIR}/repository
-    [ ! -d ${WORKDIR}/shared ] && mkdir ${WORKDIR}/shared
+    [[ ! -d ${WORKDIR}/release ]] && mkdir ${WORKDIR}/release
+    [[ ! -d ${WORKDIR}/repository ]] && mkdir ${WORKDIR}/repository
+    [[ ! -d ${WORKDIR}/shared ]] && mkdir ${WORKDIR}/shared
     # end directories structure
 
     # Additional directories structure for full deploy operation
     # for backup remote host config file
-    [ ! -d ${WORKDIR}/${user_defined_project_conf_directory} ] && mkdir ${WORKDIR}/${user_defined_project_conf_directory}
-    [ ! -d ${WORKDIR}/${user_defined_remote_host_target_backup_directory} ] && mkdir ${WORKDIR}/${user_defined_remote_host_target_backup_directory}
+    [[ ! -d ${WORKDIR}/${user_defined_project_conf_directory} ]] && mkdir ${WORKDIR}/${user_defined_project_conf_directory}
+    [[ ! -d ${WORKDIR}/${user_defined_remote_host_target_backup_directory} ]] && mkdir ${WORKDIR}/${user_defined_remote_host_target_backup_directory}
 
     # set a directories structure lock
     touch ${WORKDIR}/.capistrano_ds_lock
@@ -350,15 +350,15 @@ function setDirectoryStructureOnLocalHost() {
 function clean_old_releases(){
     echo_b "Clean old releases... "
     save_days=${save_old_releases_for_days:-10}
-    if [ ! -d ${WORKDIR}/release ]; then
+    if [[ ! -d ${WORKDIR}/release ]]; then
         echo_b "Can NOT find release directory, skipping . "
         return
     fi
     need_clean=$(find ${WORKDIR}/release -mtime +${save_days} -exec ls '{}' \;)
-    if [ ! -z ${need_clean} ]; then
+    if [[ ! -z ${need_clean} ]]; then
         echo_c "Expired releases found and will be removed from project! "
         find ${WORKDIR}/release -mtime +${save_days} -exec rm -rf '{}' \;
-        if [ $? -eq 0 ]; then
+        if [[ $? -eq 0 ]]; then
             echo_g "Expired releases have removed from project! "
         else
             echo_r "Can NOT remove expired releases, please feel free to alter to administrators. "
@@ -374,10 +374,10 @@ function clean_old_logs(){
     echo_b "Clean old logs... "
     save_days=${save_old_releases_for_days:-10}
     need_clean=$(find ${WORKDIR}/ -name "*.log" -mtime +${save_days} -exec ls '{}' \;)
-    if [ ! -z ${need_clean} ]; then
+    if [[ ! -z ${need_clean} ]]; then
         echo_c "Expired releases found and will be removed from project! "
         find -L ${WORKDIR}/ -maxdepth 1 -name "*.log" -a ! -name "^." -mtime +${save_days} -exec rm -rf '{}' \;
-        if [ $? -eq 0 ]; then
+        if [[ $? -eq 0 ]]; then
             echo_g "Expired logs have removed from project! "
         else
             echo_r "Can NOT remove expired logs, please feel free to alter to administrators. "
@@ -393,7 +393,7 @@ function clean_old_files_older_than_day(){
     save_days=10
     files_ops="/data/docker/logs/myApp/"
     need_clean=$(find ${files_ops} -name "*.log" -mtime +${save_days} -exec ls '{}' \;)
-    if [ ! -z ${need_clean} ]; then
+    if [[ ! -z ${need_clean} ]]; then
         echo "Old logs have been found, clean old logs now. "
         find -L ${files_ops} -maxdepth 1 -name "*.log" -a ! -name "^." -mtime +${save_days} -exec rm -rf '{}' \;
     else
@@ -431,7 +431,7 @@ function keep_some_newest_files(){
 #   git checkout -b <branch name>, create current branch to new branch
 function git_project_clone(){
     set -o errexit
-    [ $# -ge 1 ] && project_clone_repository="$1"
+    [[ $# -ge 1 ]] && project_clone_repository="$1"
     project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
     # TODO(Guodong Ding) let user set this variable("branch")
@@ -485,14 +485,14 @@ function git_project_clone(){
 function maven_build_project(){
     echo_b "Do mvn build java project for `echo $1 | awk -F '[/.]+' '{ print $(NF-1)}'`... "
     check_command_can_be_execute mvn
-    [ $# -ge 1 ] && project_clone_repository="$1"
+    [[ $# -ge 1 ]] && project_clone_repository="$1"
     project_clone_repository_name="`echo ${project_clone_repository} | awk -F '[/.]+' '{ print $(NF-1)}'`"
     project_clone_directory=${WORKDIR}/repository/${project_clone_repository_name}
 
     cd ${project_clone_directory}
     mvn install >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         echo_r "mvn install failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
         exit 1
     else
@@ -501,7 +501,7 @@ function maven_build_project(){
 
     mvn clean package >>${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log 2>&1
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         echo_r "mvn clean package for ${project_clone_repository_name} failed! More details refer to ${WORKDIR}/mvn_build_$(date +%Y%m%d)_$$.log"
         exit 1
     else
@@ -515,10 +515,10 @@ function maven_build_project(){
 
 # ssh_execute_command_on_remote_host hostname command
 function ssh_execute_command_on_remote_host(){
-    [ $# -ne 2 ] && return 1
+    [[ $# -ne 2 ]] && return 1
     ssh -i /etc/ssh/ssh_host_rsa_key -p 22 -oStrictHostKeyChecking=no root@$1 "$2" >>${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log 2>&1
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         echo_r "ssh execute command on remote host $2 failed! "
         test -s ${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log && echo_r "\tMore details refer to ${WORKDIR}/ssh_command_$(date +%Y%m%d)_$$.log"
         return 1
@@ -531,7 +531,7 @@ function ssh_execute_command_on_remote_host(){
 
 function restart_docker_container(){
     echo_b "Restarting docker container..."
-    [ $# -ne 2 ] && return 1
+    [[ $# -ne 2 ]] && return 1
     # TODO(Guodong Ding) if we need restart more related docker container
     local user_defined_docker_container_name=""
     local remote_host_ip=""
@@ -539,7 +539,7 @@ function restart_docker_container(){
     test -n $2 && user_defined_docker_container_name="$2"
     ssh_execute_command_on_remote_host "$remote_host_ip" "docker restart $user_defined_docker_container_name"
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         echo_r "restart docker container for  $user_defined_docker_container_name on $remote_host_ip failed! "
         exit 1
     else
@@ -581,12 +581,12 @@ function restart_docker_containers(){
 
 # scp_local_files_to_remote_host local_path remote_hostname remote_path
 function scp_local_files_to_remote_host(){
-    [ $# -ne 3 ] && return 1
-    [ ! -d $1 -a ! -f $1 ] && return 1
+    [[ $# -ne 3 ]] && return 1
+    [[ ! -d $1 -a ! -f $1 ]] && return 1
 #    check_ssh_can_be_connect $2
     scp -i /etc/ssh/ssh_host_rsa_key -P 22 -oStrictHostKeyChecking=no -rp $1 root@$2:$3 >/dev/null 2>&1
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         echo_r "scp local files to remote host failed! "
         echo_r "scp -i /etc/ssh/ssh_host_rsa_key -P 22 -oStrictHostKeyChecking=no -rp $1 root@$2:$3 >/dev/null 2>&1"
         exit 1
@@ -599,11 +599,11 @@ function scp_local_files_to_remote_host(){
 
 # scp_remote_files_to_local_host remote_hostname remote_path local_path
 function scp_remote_files_to_local_host(){
-    [ $# -ne 3 ] && return 1
+    [[ $# -ne 3 ]] && return 1
 #    check_ssh_can_be_connect $1
     scp -i /etc/ssh/ssh_host_rsa_key -P 22 -oStrictHostKeyChecking=no -rp root@$1:$2 $3 >/dev/null 2>&1
     retval=$?
-    if [ ${retval} -ne 0 ] ; then
+    if [[ ${retval} -ne 0 ]] ; then
         echo_r "scp remote files to local host failed! "
         exit 1
     else
@@ -614,7 +614,7 @@ function scp_remote_files_to_local_host(){
 
 function backup_single_file(){
     set -o errexit
-    if [ "$#" -ne 1 ]; then
+    if [[ "$#" -ne 1 ]]; then
         return 1
     fi
     backup_filename_origin="$1"
@@ -632,7 +632,7 @@ function backup_single_file(){
 function backup_files(){
     # TODO(Guodong Ding) improvements here
     set -o errexit
-    if [ $# -eq 0 ]; then
+    if [[ $# -eq 0 ]]; then
         return 1
     fi
     file_list=$@
@@ -644,8 +644,8 @@ function backup_files(){
     IFS=" "
     for file in ${file_list};do
         real_file=$(realpath ${file})
-        [ -f ${real_file} ] && cp ${real_file} ${file}${operation_date_time}~
-        [ -f ${log_filename_full_path} ] && echo "\mv -f $file$operation_date_time~ $file" >>${log_filename_full_path}
+        [[ -f ${real_file} ]] && cp ${real_file} ${file}${operation_date_time}~
+        [[ -f ${log_filename_full_path} ]] && echo "\mv -f $file$operation_date_time~ $file" >>${log_filename_full_path}
     done
     IFS="$old_IFS"
     set +o errexit
@@ -656,7 +656,7 @@ function backup_files(){
 # Function description:
 function rollback_files(){
     # TODO(Guodong Ding) improvements here
-    [ -f ${log_filename_full_path} ] && . ${log_filename_full_path}
+    [[ -f ${log_filename_full_path} ]] && . ${log_filename_full_path}
     \rm -f ${log_filename_full_path}
     exit 2
 }
@@ -665,7 +665,7 @@ function rollback_files(){
 # backup directories locally
 function backup_directories(){
     # TODO(Guodong Ding) continue here
-    if [ $# -ne 1 ]; then
+    if [[ $# -ne 1 ]]; then
         return 1
     fi
     backup_filename_origin="$1"
@@ -691,14 +691,14 @@ function backup_remote_host_target_files(){
     # only exec this function when first deploy. After first deploy, new backups will be found in "${WORKDIR}/release" directory.
     test -f ${WORKDIR}/shared/workable_program.log && return 0
 
-    [ $# -ne 1 ] && return 1
+    [[ $# -ne 1 ]] && return 1
     ssh_execute_command_on_remote_host "$1" "tar czf $user_defined_project_top_directory_to_target_host /tmp/$(date +%Y%m%d).tar.gz"
     if test ! -d ${WORKDIR}/${user_defined_remote_host_target_backup_directory}; then
         echo_r "$WORKDIR/$user_defined_remote_host_target_backup_directory can NOT be found! "
         exit 1
     fi
     scp -i /etc/ssh/ssh_host_rsa_key -P 22 -oStrictHostKeyChecking=no root@$1:/tmp/$(date +%Y%m%d).tar.gz ${WORKDIR}/${user_defined_remote_host_target_backup_directory}/backup-$(date +%Y%m%d%H%M%S).tar.gz
-    if [ $? -eq 0 ];then
+    if [[ $? -eq 0 ]];then
         echo_g "Backup this project successfully! Now will return with status 0. "
         ssh_execute_command_on_remote_host "$1" "test -f /tmp/$(date +%Y%m%d).tar.gz && rm -rf /tmp/$(date +%Y%m%d).tar.gz"
         return 0
@@ -716,8 +716,8 @@ function backup_remote_host_config_files(){
 
     # backup operation only executed once time, using '$0 backup_manual' backup new configuration files.
     # if ${WORKDIR}/${user_defined_project_conf_directory} is not empty then return 0 to exit
-    if [ "$(ls -A ${WORKDIR}/${user_defined_project_conf_directory})" ]; then
-        [ -f ${WORKDIR}/${user_defined_project_conf_directory}.backup_operation_once.log ] && backup_operation="`cat ${WORKDIR}/${user_defined_project_conf_directory}/.backup_operation_once.log`"
+    if [[ "$(ls -A ${WORKDIR}/${user_defined_project_conf_directory})" ]]; then
+        [[ -f ${WORKDIR}/${user_defined_project_conf_directory}.backup_operation_once.log ]] && backup_operation="`cat ${WORKDIR}/${user_defined_project_conf_directory}/.backup_operation_once.log`"
         echo_g "Backup remote host config files operation had been done, $backup_operation, now skipping ... "
         return 0
     fi
@@ -727,7 +727,7 @@ function backup_remote_host_config_files(){
     if test $? -eq 0; then
         scp_remote_files_to_local_host ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}/* ${WORKDIR}/${user_defined_project_conf_directory}
         # get config files
-        [ "$(ls -A ${WORKDIR}/${user_defined_project_conf_directory})" ] && find ${WORKDIR}/${user_defined_project_conf_directory}/. -type f ! -name . -a ! -name '*.xml*' -a ! -name '*.properties*' -a ! -name '*.version*' -exec rm -f -- '{}' \;
+        [[ "$(ls -A ${WORKDIR}/${user_defined_project_conf_directory})" ]] && find ${WORKDIR}/${user_defined_project_conf_directory}/. -type f ! -name . -a ! -name '*.xml*' -a ! -name '*.properties*' -a ! -name '*.version*' -exec rm -f -- '{}' \;
         # remove empty directory, 'for + rmdir'
         find ${WORKDIR}/${user_defined_project_conf_directory}/. -empty -type d -delete
         # TODO(Guodong Ding) improvements here
@@ -793,20 +793,20 @@ function make_current_workable_source(){
         exit 1
     fi
     new_release_just_created="$WORKDIR/release/$(date +%Y%m%d%H%M%S)"
-    [ ! -d ${new_release_just_created} ] && mkdir ${new_release_just_created}
-    [ -d ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/ ] && \
+    [[ ! -d ${new_release_just_created} ]] && mkdir ${new_release_just_created}
+    [[ -d ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/ ]] && \
         \cp -rf ${WORKDIR}/repository/${project_clone_repository_name}/target/${project_clone_repository_name}/* ${new_release_just_created}
      # Make source code symbolic link to current
-    ( [ -f ${WORKDIR}/current ] || [ -d ${WORKDIR}/current ] ) && rm -rf ${WORKDIR}/current
+    ( [[ -f ${WORKDIR}/current ]] || [[ -d ${WORKDIR}/current ]] ) && rm -rf ${WORKDIR}/current
     ln -s ${new_release_just_created} ${WORKDIR}/current
 
     # Move conf and logs directives from release to share if found
-    [ -d ${WORKDIR}/release/conf ] && mv ${WORKDIR}/release/conf ${WORKDIR}/shared/conf
-    [ -d ${WORKDIR}/release/logs ] && mv ${WORKDIR}/release/logs ${WORKDIR}/shared/logs
+    [[ -d ${WORKDIR}/release/conf ]] && mv ${WORKDIR}/release/conf ${WORKDIR}/shared/conf
+    [[ -d ${WORKDIR}/release/logs ]] && mv ${WORKDIR}/release/logs ${WORKDIR}/shared/logs
 
     # Make conf and logs symbolic link to current
-    [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current/conf
-    [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current/logs
+    [[ -d ${WORKDIR}/shared/conf ]] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current/conf
+    [[ -d ${WORKDIR}/shared/logs ]] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current/logs
 }
 
 
@@ -821,7 +821,7 @@ function deploy() {
     echo_b "Do deploy on $user_defined_deploy_target_host_ip ..."
 
     # backup remote host config files
-    [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+    [[ -z ${user_defined_project_conf_directory} ]] && backup_remote_host_config_files
 
     # remove all file in remote host target directories and files
     ssh_execute_command_on_remote_host "$user_defined_deploy_target_host_ip" "cd $user_defined_project_top_directory_to_target_host && rm -rf ./*"
@@ -836,7 +836,7 @@ function deploy() {
     IFS=${saved_IFS}
 
     # rollback remote host config files
-    [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
+    [[ -z ${user_defined_project_conf_directory} ]] && rollback_remote_host_config_files
     if test ! -z "${user_defined_project_conf_directory}" -a -d ${WORKDIR}/${user_defined_project_conf_directory} ; then
         saved_IFS=$IFS
         IFS=' '
@@ -851,7 +851,7 @@ function deploy() {
     fi
 
     # backup remote host config files to local again for next using
-    [ ! -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+    [[ ! -z ${user_defined_project_conf_directory} ]] && backup_remote_host_config_files
 
     # Start service or validate status on remote host
     if [[ -e ${WORKDIR}/current/bin/startup.sh ]]; then
@@ -899,11 +899,11 @@ function rollback() {
     ln -s ${WORKABLE_PROGRAM} ${WORKDIR}/current
 
     # Remake conf and logs symbolic link to current
-    [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
-    [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
+    [[ -d ${WORKDIR}/shared/conf ]] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
+    [[ -d ${WORKDIR}/shared/logs ]] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
 
     # backup remote host config files
-    [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+    [[ -z ${user_defined_project_conf_directory} ]] && backup_remote_host_config_files
 
 #    scp_local_files_to_remote_host ${WORKDIR}/current/ ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
     saved_IFS=$IFS
@@ -916,7 +916,7 @@ function rollback() {
     IFS=${saved_IFS}
 
     # rollback remote host config files
-    [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
+    [[ -z ${user_defined_project_conf_directory} ]] && rollback_remote_host_config_files
     if test ! -z "${user_defined_project_conf_directory}" -a -d ${WORKDIR}/${user_defined_project_conf_directory}; then
         saved_IFS=$IFS
         IFS=' '
@@ -961,14 +961,14 @@ function rollback_manual(){
             rm -rf ${WORKDIR}/current
             ln -s ${user_input_release_to_rollback} ${WORKDIR}/current
             # Remake conf and logs symbolic link to current
-            [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
-            [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
+            [[ -d ${WORKDIR}/shared/conf ]] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
+            [[ -d ${WORKDIR}/shared/logs ]] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
 
             # backup remote host config files
-            [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+            [[ -z ${user_defined_project_conf_directory} ]] && backup_remote_host_config_files
 
 #            # rollback remote host config files
-#            [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
+#            [[ -z ${user_defined_project_conf_directory} ]] && rollback_remote_host_config_files
 
             if test ! -z "${user_defined_project_conf_directory}" -a -d ${WORKDIR}/${user_defined_project_conf_directory}; then
                 saved_IFS=$IFS
@@ -1033,7 +1033,7 @@ function backup_manual(){
     echo_b "backup remote host config files..."
     scp_remote_files_to_local_host ${user_defined_deploy_target_host_ip} "${user_defined_project_top_directory_to_target_host}/*" ${WORKDIR}/${user_defined_project_conf_directory}
     # get config files
-    [ "$(ls -A ${WORKDIR}/${user_defined_project_conf_directory})" ] && find ${WORKDIR}/${user_defined_project_conf_directory}/. -type f ! -name . -a ! -name '*.xml*' -a ! -name '*.properties*' -a ! -name '*.version*' -exec rm -f -- '{}' \;
+    [[ "$(ls -A ${WORKDIR}/${user_defined_project_conf_directory})" ]] && find ${WORKDIR}/${user_defined_project_conf_directory}/. -type f ! -name . -a ! -name '*.xml*' -a ! -name '*.properties*' -a ! -name '*.version*' -exec rm -f -- '{}' \;
     # remove empty directory, 'for + rmdir'
     find ${WORKDIR}/${user_defined_project_conf_directory}/. -empty -type d -delete
     # TODO(Guodong Ding) improvements here
@@ -1069,7 +1069,7 @@ function deploys() {
         IFS=${saved_IFS}
 
         # rollback remote host config files
-        [ -z ${user_defined_project_conf_directory} ] && rollback_remote_host_config_files
+        [[ -z ${user_defined_project_conf_directory} ]] && rollback_remote_host_config_files
         if test ! -z "${user_defined_project_conf_directory}" -a -d ${WORKDIR}/${user_defined_project_conf_directory}; then
             saved_IFS=$IFS
             IFS=' '
@@ -1131,11 +1131,11 @@ function rollbacks(){
             rm -rf ${WORKDIR}/current
             ln -s ${user_input_release_to_rollback} ${WORKDIR}/current
             # Remake conf and logs symbolic link to current
-            [ -d ${WORKDIR}/shared/conf ] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
-            [ -d ${WORKDIR}/shared/logs ] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
+            [[ -d ${WORKDIR}/shared/conf ]] && ln -s ${WORKDIR}/shared/conf ${WORKDIR}/current
+            [[ -d ${WORKDIR}/shared/logs ]] && ln -s ${WORKDIR}/shared/logs ${WORKDIR}/current
 
             # backup remote host config files
-            [ -z ${user_defined_project_conf_directory} ] && backup_remote_host_config_files
+            [[ -z ${user_defined_project_conf_directory} ]] && backup_remote_host_config_files
 
             #    scp_local_files_to_remote_host ${WORKDIR}/current/ ${user_defined_deploy_target_host_ip} ${user_defined_project_top_directory_to_target_host}
             saved_IFS=$IFS
@@ -1196,7 +1196,7 @@ function destroy() {
                 # find -L ./ -maxdepth 1 ! -name "deploy.sh" ! -wholename "./"
             # ls | grep -v "filename" | xargs rm -rf
             find -L ${WORKDIR} -maxdepth 1 ! -name "$(basename $0)" ! -wholename "$WORKDIR"  -exec rm -rf '{}' \;
-            if [ $? -eq 0 ];then
+            if [[ $? -eq 0 ]];then
                 test -f ${WORKDIR}/.capistrano_ds_lock && \rm -rf  ${WORKDIR}/.capistrano_ds_lock
                 echo_g "Destroy this project successfully! Now will exit with status 0. "
                 exit 0
@@ -1236,8 +1236,8 @@ function main(){
     lock_filename_full_path="/var/lock/$lock_filename"
     if ( set -o noclobber; echo "$$" > "$lock_filename_full_path") 2> /dev/null;then
         trap 'rm -f "$lock_filename_full_path"; exit $?' INT TERM EXIT
-        [ ! -x ${WORKDIR}/`basename $0` ] && chmod +x ${WORKDIR}/`basename $0`
-        [ -n "$header" ] && echo "$header"
+        [[ ! -x ${WORKDIR}/`basename $0` ]] && chmod +x ${WORKDIR}/`basename $0`
+        [[ -n "$header" ]] && echo "$header"
 
 #        # if exist file '.capistrano_ds_lock', then this is not first deployment, and unset
 #        if test -f ${WORKDIR}/.capistrano_ds_lock; then

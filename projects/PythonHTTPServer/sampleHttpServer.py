@@ -16,26 +16,9 @@ import os
 import signal
 import socket
 import sys
-import urlparse
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+import urllib.parse
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
-
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 hostname = socket.gethostname()
 
@@ -107,10 +90,10 @@ class S(BaseHTTPRequestHandler):
 
         if RegexURLResolver(r'^/\?', path):
             path, tmp = path.split('?', 1)
-            qs = urlparse.parse_qs(tmp)
-            print path, qs
-            for key, value in qs.items():
-                print key, value[0]
+            qs = urllib.parse.parse_qs(tmp)
+            print(path, qs)
+            for key, value in list(qs.items()):
+                print(key, value[0])
                 self.wfile.write("<html><body><h1>%s:%s</h1></body></html>" % (key, value[0]))
             self.finish()
         if RegexURLResolver(r'^/$', path):
@@ -129,7 +112,7 @@ class S(BaseHTTPRequestHandler):
             self.finish()
 
     def do_HEAD(self):
-        print self.headers.get('User-Agent')
+        print(self.headers.get('User-Agent'))
         self._send_response(200)
         self._set_headers()
         self._end_headers()
@@ -160,7 +143,7 @@ class S(BaseHTTPRequestHandler):
 
 
 def sigterm_handler(_signo, _stack_frame):
-    print "catch process signal %s, goodbye." % _signo
+    print("catch process signal %s, goodbye." % _signo)
     sys.exit(0)
 
 
@@ -170,23 +153,23 @@ def run(server_class=HTTPServer, handler_class=S, port=80):
         server_address = ('', port)
         httpd = server_class(server_address, handler_class)
         quit_command = 'CTRL-BREAK' if sys.platform == 'win32' else 'CONTROL-C'
-        print 'Starting httpd server at http://%s:%s' % (hostname, port)
+        print('Starting httpd server at http://%s:%s' % (hostname, port))
         # TODO(GuodongDing): Add bind address support, 'print' can using 'sys.stdout.write()' with a python 'dict'
-        print 'Server %s (bind-address): \'*\'; port: %s' % (hostname, port)
-        print '%s: ready for connections.' % os.path.basename(__file__)
-        print 'Quit the server with %s.' % quit_command
-        print sys.version
+        print('Server %s (bind-address): \'*\'; port: %s' % (hostname, port))
+        print('%s: ready for connections.' % os.path.basename(__file__))
+        print('Quit the server with %s.' % quit_command)
+        print(sys.version)
         httpd.serve_forever()
     except (KeyboardInterrupt, SystemExit) as e:
         if e:  # wtf, why is this creating a new line?
-            print >> sys.stderr, e
+            print(e, file=sys.stderr)
         if httpd is not None:
             httpd.socket.close()
-            print "Stopping httpd..."
+            print("Stopping httpd...")
             sys.exit(0)
     finally:
-        print "httpd stopped."
-        print "%s: Shutdown complete" % os.path.basename(__file__)
+        print("httpd stopped.")
+        print("%s: Shutdown complete" % os.path.basename(__file__))
         sys.exit(0)
 
 
@@ -199,5 +182,5 @@ if __name__ == "__main__":
     if len(argv) == 1:
         run()
     else:
-        print "Bad usage: %s" % argv
+        print("Bad usage: %s" % argv)
         usage()

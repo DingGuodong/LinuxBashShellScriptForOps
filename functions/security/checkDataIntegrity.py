@@ -75,7 +75,7 @@ def get_hash_sum(filename, method="sha256", block_size=65536):
 
 
 def makeDataIntegrity(path):
-    path = unicode(path, 'utf8')  # For Chinese Non-ASCII character
+    path = str(path, 'utf8')  # For Chinese Non-ASCII character
 
     if not os.path.exists(path):
         raise RuntimeError("Error: cannot access %s: No such file or directory" % path)
@@ -143,7 +143,7 @@ def remakeDataIntegrity(filename):
             suffix = "y/N"
         # Loop till we get something we like
         while True:
-            response = raw_input("%s [%s] " % (question, suffix)).lower()
+            response = input("%s [%s] " % (question, suffix)).lower()
             # Default
             if not response:
                 return default
@@ -159,41 +159,41 @@ def remakeDataIntegrity(filename):
     if os.path.exists(filename):
         if confirm("[warning] remake data integrity file \'%s\'?" % filename):
             os.remove(filename)
-            print "[successful] data integrity file \'%s\' has been remade." % filename
+            print("[successful] data integrity file \'%s\' has been remade." % filename)
             sys.exit(0)
         else:
-            print "[warning] data integrity file \'%s\'is not remade." % filename
+            print("[warning] data integrity file \'%s\'is not remade." % filename)
             sys.exit(0)
     else:
-        print >> sys.stderr, "[error] data integrity file \'%s\'is not exist." % filename
+        print("[error] data integrity file \'%s\'is not exist." % filename, file=sys.stderr)
 
 
 def checkDataIntegrity(path_to_check, file_to_save):
     from time import sleep
 
     if not os.path.exists(file_to_save):
-        print "[info] data integrity file \'%s\' is not exist." % file_to_save
-        print "[info] make a data integrity file to \'%s\'" % file_to_save
+        print("[info] data integrity file \'%s\' is not exist." % file_to_save)
+        print("[info] make a data integrity file to \'%s\'" % file_to_save)
         data = makeDataIntegrity(path_to_check)
         saveDataIntegrity(data, file_to_save)
-        print "[successful] make a data integrity file to \'%s\', finished!" % file_to_save,
-        print "Now you can use this script later to check data integrity."
+        print("[successful] make a data integrity file to \'%s\', finished!" % file_to_save, end=' ')
+        print("Now you can use this script later to check data integrity.")
     else:
         old_data = readDataIntegrity(file_to_save)
         new_data = makeDataIntegrity(path_to_check)
         error_flag = True
-        for item in old_data.keys():
+        for item in list(old_data.keys()):
             try:
                 if not old_data[item] == new_data[item]:
-                    print>> sys.stderr, new_data[item], item
+                    print(new_data[item], item, file=sys.stderr)
                     sleep(0.01)
-                    print "\told hash data is %s" % old_data[item], item
+                    print("\told hash data is %s" % old_data[item], item)
                     error_flag = False
             except KeyError as e:
-                print >> sys.stderr, "[error]", e.message, "Not Exist!"
+                print("[error]", e.message, "Not Exist!", file=sys.stderr)
                 error_flag = False
         if error_flag:
-            print "[ successful ] passed, All files integrity is ok!"
+            print("[ successful ] passed, All files integrity is ok!")
 
 
 if __name__ == '__main__':
@@ -208,6 +208,6 @@ if __name__ == '__main__':
         if arguments['FILE'] and arguments['HASH_FILE']:
             checkDataIntegrity(arguments['FILE'], arguments['HASH_FILE'])
     else:
-        print >> sys.stderr, "bad parameters"
+        print("bad parameters", file=sys.stderr)
         sys.stderr.flush()
-        print docopt(__doc__, argv="--help")
+        print(docopt(__doc__, argv="--help"))

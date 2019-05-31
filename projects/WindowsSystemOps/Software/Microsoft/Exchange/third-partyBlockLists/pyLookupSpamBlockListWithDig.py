@@ -97,11 +97,11 @@ class SpamHausChecker(object):
 
 if __name__ == '__main__':
     q = SpamHausChecker()
-    print q.is_spam("124.129.14.90")
-    print q.is_not_spam("124.129.14.90")
+    print(q.is_spam("124.129.14.90"))
+    print(q.is_not_spam("124.129.14.90"))
 
-    print q.is_spam("58.56.175.254")
-    print q.is_not_spam("58.56.175.254")
+    print(q.is_spam("58.56.175.254"))
+    print(q.is_not_spam("58.56.175.254"))
 
-    print q.real_is_spam('124.129.14.90')
-    print q.real_is_spam('58.56.175.254')
+    print(q.real_is_spam('124.129.14.90'))
+    print(q.real_is_spam('58.56.175.254'))

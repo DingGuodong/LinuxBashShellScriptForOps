@@ -46,10 +46,10 @@ def main():
         except psutil.Error:
             pass
     for c in psutil.net_connections(kind='inet'):
-        laddr = "%s:%s" % (c.laddr)
+        laddr = "%s:%s" % c.laddr
         raddr = ""
         if c.raddr:
-            raddr = "%s:%s" % (c.raddr)
+            raddr = "%s:%s" % c.raddr
         print(templ % (
             proto_map[(c.family, c.type)],
             laddr,

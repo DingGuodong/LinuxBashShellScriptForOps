@@ -32,9 +32,9 @@ def exec_local_cmd(cmd):
 
 for num in range(1, 24):
     result = str(exec_local_cmd("ping -n1 " + ping_network + str(num)))
-    print result.decode(sys.getfilesystemencoding()).encode(encoding='utf-8')
+    print(result.decode(sys.getfilesystemencoding()).encode(encoding='utf-8'))
     if result:
-        print ping_network + str(num)
+        print(ping_network + str(num))
     else:
         continue
 
@@ -48,6 +48,6 @@ match = pattern.findall(nmap_result)
 if match:
     for ip in match:
         try:
-            print ipaddress.IPv4Address(unicode(ip))
+            print(ipaddress.IPv4Address(str(ip)))
         except ipaddress.AddressValueError:
             pass

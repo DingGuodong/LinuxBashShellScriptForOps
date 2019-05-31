@@ -28,5 +28,5 @@ document = """
     d: 4
 """
 
-print dump(load(document), default_flow_style=False)
-print load(document)
+print(dump(load(document), default_flow_style=False))
+print(load(document))

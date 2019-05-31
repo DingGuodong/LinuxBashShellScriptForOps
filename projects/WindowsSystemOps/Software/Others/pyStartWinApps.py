@@ -10,29 +10,9 @@ Create Time:        16:30
  """
 import time
 import win32api
-from collections import Iterable
 
 
-def get_system_encoding():
-    import codecs
-    import locale
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-'''
+r'''
 # standard user
 win32api.ShellExecute(0, 'open', 'notepad.exe', '', '', 1)
 # administrative user
@@ -45,14 +25,14 @@ like this: C:\> start /B myprog.exe
 '''
 
 run_app_list = [
-    "C:\Program Files (x86)\Tencent\TIM\Bin\QQScLauncher.exe",
-    # "C:\Program Files (x86)\Tencent\QQ\Bin\QQScLauncher.exe",
-    "C:\Program Files (x86)\Tencent\WeChat\WeChat.exe",
-    "C:\Program Files\Sublime Text 2\sublime_text.exe",
-    "C:\Program Files\Everything\Everything.exe",
-    "C:\Program Files (x86)\NetSarang\Xmanager Enterprise 4\Xshell.exe",
-    "C:\Program Files (x86)\Evernote\Evernote\Evernote.exe",
-    "C:\Program Files (x86)\Skype\Phone\Skype.exe",
+    r"C:\Program Files (x86)\Tencent\TIM\Bin\QQScLauncher.exe",
+    # r"C:\Program Files (x86)\Tencent\QQ\Bin\QQScLauncher.exe",
+    r"C:\Program Files (x86)\Tencent\WeChat\WeChat.exe",
+    r"C:\Program Files\Sublime Text 2\sublime_text.exe",
+    r"C:\Program Files\Everything\Everything.exe",
+    r"C:\Program Files (x86)\NetSarang\Xmanager Enterprise 4\Xshell.exe",
+    r"C:\Program Files (x86)\Evernote\Evernote\Evernote.exe",
+    r"C:\Program Files (x86)\Skype\Phone\Skype.exe",
     r'C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE',
     # "C:\Users\Guodong\Desktop\XX-Net-3.2.8\start.vbs"
     # r"C:\Program Files\OpenVPN\bin\openvpn-gui.exe",
@@ -62,21 +42,14 @@ run_app_list = [
 win32api.ShellExecute(0, 'open', r'C:\Windows\system32\taskmgr.exe', '/7', '', 1)
 
 win32api.ShellExecute(0, 'open', r'C:\Windows\explorer.exe',
-                      r'D:\C盘桌面未整理\EBT\admin-playbook'.decode('utf-8').encode(DEFAULT_LOCALE_ENCODING), '', 1)
+                      r'D:\C盘桌面未整理\EBT\admin-playbook', '', 1)
 
 win32api.ShellExecute(0, 'open', r"C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE",
-                      r'D:\C盘桌面未整理\EBT\20170508-EBT-Chris丁国栋-2017年周报.xlsx'.decode('utf-8').encode(
-                          DEFAULT_LOCALE_ENCODING), '', 1)
+                      r'D:\C盘桌面未整理\EBT\20170508-EBT-Chris丁国栋-2017年周报.xlsx', '', 1)
 
 try:
     for app in run_app_list:
         win32api.ShellExecute(0, 'open', app, '', '', 1)
         time.sleep(2)
 except Exception as e:
-    print e
-    if isinstance(e, Iterable):
-        for item in list(e):
-            if isinstance(item, str):
-                print item.decode(DEFAULT_LOCALE_ENCODING),
-            else:
-                print item,
+    print(e)

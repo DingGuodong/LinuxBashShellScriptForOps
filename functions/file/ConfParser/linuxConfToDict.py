@@ -21,5 +21,5 @@ else:
         for member in linux_type_list:
             sub_member = member.split('=')
             linux_type_dict[sub_member[0]] = sub_member[1].strip('"')
-        print linux_type_dict
-        print linux_type_dict['ID']
+        print(linux_type_dict)
+        print(linux_type_dict['ID'])

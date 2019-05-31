@@ -35,8 +35,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 
@@ -125,12 +125,12 @@ def check_id_number3(number):
 
 
 if __name__ == '__main__':
-    print(check_id_number('370284199001123321'))
-    print(check_id_number1('370284199001123321'))
-    print(check_id_number2('370284199001123321'))
-    print(check_id_number3('370284199001123321'))
+    print((check_id_number('370284199001123321')))
+    print((check_id_number1('370284199001123321')))
+    print((check_id_number2('370284199001123321')))
+    print((check_id_number3('370284199001123321')))
 
-    print(check_id_number('21130219970323340X'))
-    print(check_id_number1('21130219970323340X'))
-    print(check_id_number2('21130219970323340X'))
-    print(check_id_number3('21130219970323340X'))
+    print((check_id_number('21130219970323340X')))
+    print((check_id_number1('21130219970323340X')))
+    print((check_id_number2('21130219970323340X')))
+    print((check_id_number3('21130219970323340X')))

@@ -17,11 +17,11 @@ def try_ssh_to_server():
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect("121.199.6.40", port=22, username="root",
-                   key_filename="C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem", timeout=5)
-    print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+                   key_filename=r"C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem", timeout=5)
+    print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     stdin, stdout, stderr = client.exec_command("uname -a")
     for line in stdout:
-        print line,
+        print(line, end=' ')
     client.close()
 
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     keep_running_flag = True
     times = 1
     while keep_running_flag:
-        print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), times
+        print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), times)
         try:
             try_ssh_to_server()
         except Exception as _:

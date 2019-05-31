@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import requests
@@ -32,17 +32,17 @@ try:
 except ImportError:
     import xml.etree.ElementTree as ET
 try:
-    import cStringIO as StringIO
+    import io as StringIO
 except ImportError:
-    import StringIO
+    import io
 
 test_xml_file_url = 'https://raw.githubusercontent.com/apache/tomcat/trunk/conf/server.xml'
 xml_string = requests.get(test_xml_file_url).content
-xml_file = StringIO.StringIO(xml_string)
+xml_file = io.StringIO(xml_string)
 
 new_tree = ET.ElementTree(file=xml_file)
 
 for element in new_tree.findall('Service/Connector'):  # <type 'Element'>
     # print(element.attrib)
     if element.get('protocol') == 'HTTP/1.1':
-        print element.get('port')
+        print(element.get('port'))

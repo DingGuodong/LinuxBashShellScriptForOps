@@ -21,44 +21,27 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 
 import wmi
 
 
-def decoding(text):
-    import sys
-    import codecs
+def always_to_utf8(text):
     import locale
 
-    if isinstance(text, unicode):
-        return text
-    elif isinstance(text, (basestring, str)):
-        pass
+    encoding = locale.getpreferredencoding()
+    if isinstance(text, bytes):
+        try:
+            return text.decode(encoding)
+        except UnicodeDecodeError:
+            return text.decode("utf-8")
+
     else:
         return text  # do not need decode, return original object if type is not instance of string type
         # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
-
-    mswindows = (sys.platform == "win32")
-
-    try:
-        encoding = locale.getdefaultlocale()[1] or ('ascii' if not mswindows else 'gbk')
-        codecs.lookup(encoding)  # codecs.lookup('cp936').name == 'gbk'
-    except Exception as _:
-        del _
-        encoding = 'ascii' if not mswindows else 'gbk'  # 'gbk' is Windows default encoding in Chinese language 'zh-CN'
-
-    msg = text
-    if mswindows:
-        try:
-            msg = text.decode(encoding)
-            return msg
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            pass
-    return msg
 
 
 def fn_timer(func):
@@ -73,8 +56,8 @@ def fn_timer(func):
             time_begin = time.time()
             result = func(*args, **kwargs)
             time_end = time.time()
-            print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                    time_spent=(time_end - time_begin))
+            print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.__name__,
+                                                                                    time_spent=(time_end - time_begin)))
             return result
 
     return function_timer
@@ -93,10 +76,10 @@ class localWindowsWMI(object):
 
     @fn_timer
     def getServiceName(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         win32_service_iterable = self.c.Win32_Service(Name=name)
         if len(win32_service_iterable) < 1:
             return None
@@ -106,10 +89,10 @@ class localWindowsWMI(object):
 
     @fn_timer
     def getServiceState(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(Name=name):
             return s.State, s.Status
 
@@ -123,19 +106,19 @@ class localWindowsWMI(object):
     # more quick way
     @fn_timer
     def getServiceStatus(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(Name=name):
             return s.State, s.Status
 
     @fn_timer
     def startServiceName(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(StartMode="Auto", State="Stopped"):
             if name.lower() == s.Name.lower() or name.lower() == s.Caption.lower():
                 s.StartService()
@@ -143,10 +126,10 @@ class localWindowsWMI(object):
 
     @fn_timer
     def stopServiceName(self, name):
-        if isinstance(name, unicode):
+        if isinstance(name, str):
             pass
-        elif isinstance(name, (basestring, str)):
-            name = decoding(name)
+        elif isinstance(name, str):
+            name = always_to_utf8(name)
         for s in self.c.Win32_Service(StartMode="Auto", State="Started"):
             if name.lower() == s.Name.lower() or name.lower() == s.Caption.lower():
                 s.StopService()
@@ -162,7 +145,7 @@ class localWindowsWMI(object):
 if __name__ == '__main__':
     enable_performance_statistics = False
     o = localWindowsWMI()
-    print o.getServiceStopped()
-    print o.getServiceName(u'ImControllerService')
-    print o.getServiceState(u'ImControllerService')
-    print o.getServiceStatus(u'ImControllerService')
+    print(o.getServiceStopped())
+    print(o.getServiceName('ImControllerService'))
+    print(o.getServiceState('ImControllerService'))
+    print(o.getServiceStatus('ImControllerService'))

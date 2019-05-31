@@ -51,7 +51,7 @@ env.roledefs = {
              ],
 }
 
-env.roledefs["all"] = [host for role in env.roledefs.values() for host in role]
+env.roledefs["all"] = [host for role in list(env.roledefs.values()) for host in role]
 
 STAGES = {
     'develop': {
@@ -86,7 +86,7 @@ env.timeout = 6000
 
 def stage_set(stage_name='develop'):
     env.stage = stage_name
-    for option, value in STAGES[env.stage].items():
+    for option, value in list(STAGES[env.stage].items()):
         setattr(env, option, value)
 
 
@@ -123,7 +123,7 @@ def with_defaults(func):
                        {'domain_path': env.domain_path})
         env.setdefault('shared_path', "%(domain_path)s/shared" %
                        {'domain_path': env.domain_path})
-        if 'releases' not in env.keys():
+        if 'releases' not in list(env.keys()):
             if dir_exists(env.releases_path):
                 env.releases = sorted(run('ls -x %(releases_path)s' % {'releases_path': env.releases_path}).split())
 
@@ -306,7 +306,7 @@ def terminal_debug(fabric_task):
                                                                                  roles="develop",
                                                                                  fab_file=__file__,
                                                                                  task=fabric_task)
-    print command
+    print(command)
     sys.exit(os.system(command))
 
 
@@ -325,5 +325,5 @@ if __name__ == '__main__':
         terminal_debug("develop deploy")  # execute "deploy" task on "develop" stage hosts
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    print(red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:])))
     sys.exit(1)

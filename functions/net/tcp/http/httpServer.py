@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 # -*- coding: utf8 -*-
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 import sys
 
 
@@ -29,14 +29,14 @@ def run(server_class=HTTPServer, handler_class=MyHTTPServer, port=80):
     try:
         server_address = ('', port)
         httpd = server_class(server_address, handler_class)
-        print 'Starting httpd...'
+        print('Starting httpd...')
         httpd.serve_forever()
     except (KeyboardInterrupt, SystemExit) as e:
         if e:  # wtf, why is this creating a new line?
-            print >> sys.stderr, e
+            print(e, file=sys.stderr)
         if httpd is not None:
             httpd.socket.close()
-            print "Stopping httpd..."
+            print("Stopping httpd...")
             exit(0)
 
 

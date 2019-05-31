@@ -9,7 +9,9 @@ Create Date:        2016/7/27
 Create Time:        16:59
  """
 
-import urllib2
+import urllib.error
+import urllib.parse
+import urllib.request
 
 # http://icanhazip.com/
 # http://ipecho.net/plain
@@ -27,32 +29,32 @@ class GetIP(object):
         self.api_city = api_city
 
     def cli(self):
-        req = urllib2.Request(self.api_url)
+        req = urllib.request.Request(self.api_url)
         req.add_header('User-Agent', 'curl/7.35.0')
-        res = urllib2.urlopen(req)
+        res = urllib.request.urlopen(req)
         return res.read()
 
     def json(self):
-        req = urllib2.Request(self.api_url)
+        req = urllib.request.Request(self.api_url)
         req.add_header('Accept', 'application/json')
-        res = urllib2.urlopen(req)
+        res = urllib.request.urlopen(req)
         return res.read()
 
     def country(self):
-        req = urllib2.Request(self.api_country)
+        req = urllib.request.Request(self.api_country)
         req.add_header('User-Agent', 'HTTPie/0.8.0')
-        res = urllib2.urlopen(req)
+        res = urllib.request.urlopen(req)
         return res.read()
 
     def city(self):
-        req = urllib2.Request(self.api_city)
+        req = urllib.request.Request(self.api_city)
         req.add_header('User-Agent', 'HTTPie/0.8.0')
-        res = urllib2.urlopen(req)
+        res = urllib.request.urlopen(req)
         return res.read()
 
 
 c = GetIP()
-print c.cli()
+print(c.cli())
 # print c.json()
 # print c.country()
-print c.city()
+print(c.city())

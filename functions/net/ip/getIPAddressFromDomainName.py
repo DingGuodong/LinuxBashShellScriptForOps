@@ -21,8 +21,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 
@@ -32,7 +31,7 @@ def get_domain_name_from_url(url):
     # https: // docs.python.org / 2 / library / urlparse.html
     if not is_url_valid(url):
         raise RuntimeError("invalid URL.")
-    from urlparse import urlparse
+    from urllib.parse import urlparse
     parsed_uri = urlparse(url)
     # domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
     domain_name = "{uri.netloc}".format(uri=parsed_uri)
@@ -85,4 +84,4 @@ http://subdomain.domain/
 """
     for url_to_handle in url_list.strip().split('\n'):
         domain_name_middle = get_domain_name_from_url(url_to_handle)
-        print get_ip_address_from_domain_name(domain_name_middle)
+        print(get_ip_address_from_domain_name(domain_name_middle))

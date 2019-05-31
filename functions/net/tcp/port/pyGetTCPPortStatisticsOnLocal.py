@@ -21,7 +21,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.7
+
 Topic:                  Utilities
  """
 from collections import \
@@ -45,7 +45,7 @@ def get_tcp_all_conns_count_top(top=10):
     if len(cared_data) < top:
         top = len(cared_data)
 
-    tcp_conns_top_x = sorted(cared_data_with_counter.iteritems(), key=lambda x: x[1], reverse=True)
+    tcp_conns_top_x = sorted(iter(cared_data_with_counter.items()), key=lambda x: x[1], reverse=True)
 
     return tcp_conns_top_x[0:top]
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     # (('192.168.88.32', 21836), 75)
 
     for item in get_tcp_all_conns_count_top():
-        print item
+        print(item)
 
     # print port statistics of each connected IP
     # such as:
@@ -97,4 +97,4 @@ if __name__ == '__main__':
     # }
     s = get_tcp_all_conns_count_top(top=5)
     for conn in s:
-        print json.dumps(get_tcp_port_conns_count(port=conn[0][1]), indent=4)
+        print(json.dumps(get_tcp_port_conns_count(port=conn[0][1]), indent=4))

@@ -54,6 +54,6 @@ for number, item in enumerate(file_url_list):
         break
 if file_url == "":
     file_url = file_url_list[number]
-    print file_url
+    print(file_url)
 else:
-    print file_url
+    print(file_url)

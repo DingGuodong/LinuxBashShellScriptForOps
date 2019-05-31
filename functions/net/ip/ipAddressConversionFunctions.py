@@ -3,27 +3,28 @@
 
 # IP address manipulation functions, dressed up a bit
 
-import socket
 import struct
+
+import socket
 
 
 def dottedQuadToNum(ip):
-    "convert decimal dotted quad string to long integer"
+    """convert decimal dotted quad string to long integer"""
     return struct.unpack('L', socket.inet_aton(ip))[0]
 
 
 def numToDottedQuad(n):
-    "convert long int to dotted quad string"
+    """convert long int to dotted quad string"""
     return socket.inet_ntoa(struct.pack('L', n))
 
 
 def makeMask(n):
-    "return a mask of n bits as a long integer"
-    return (2L << n - 1) - 1
+    """return a mask of n bits as a long integer"""
+    return (2 << n - 1) - 1
 
 
 def ipToNetAndHost(ip, maskbits):
-    "returns tuple (network, host) dotted-quad addresses given IP and mask size"
+    """returns tuple (network, host) dotted-quad addresses given IP and mask size"""
     # (by Greg Jorgensen)
 
     n = dottedQuadToNum(ip)
@@ -35,4 +36,4 @@ def ipToNetAndHost(ip, maskbits):
     return numToDottedQuad(net), numToDottedQuad(host)
 
 
-print ipToNetAndHost("192.168.1.1", 24)
+print(ipToNetAndHost("192.168.1.1", 24))

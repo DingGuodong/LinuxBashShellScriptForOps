@@ -25,8 +25,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import re
@@ -117,13 +117,13 @@ class ZabbixMonitorNginx(object):
 
 
 if __name__ == '__main__':
-    url_to_request = u"https://api.e-bao.cn/nginx_basic_status"
+    url_to_request = "https://api.e-bao.cn/nginx_basic_status"
     zmn = ZabbixMonitorNginx(url_to_request)
     if len(sys.argv) == 1:
-        print zmn.data
-        print zmn.stub_status_tuple
-        print zmn.stub_status_dict
+        print(zmn.data)
+        print(zmn.stub_status_tuple)
+        print(zmn.stub_status_dict)
     elif len(sys.argv) == 2:
-        print zmn.stub_status_dict.get(sys.argv[1], 0)
+        print(zmn.stub_status_dict.get(sys.argv[1], 0))
     else:
         raise RuntimeError("bad call")

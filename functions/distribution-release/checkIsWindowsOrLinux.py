@@ -47,3 +47,10 @@ def is_windows_u2():
 def is_linux_u2():
     # Note: not validate on Mac OS X
     return True if 'posix' in sys.builtin_module_names else False
+
+
+if __name__ == '__main__':
+    print(is_linux())
+    print(is_linux_u2())
+    print(is_windows())
+    print(is_windows_u2())

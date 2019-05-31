@@ -30,4 +30,4 @@ s = Student('Bob', 20, 88)
 
 class2json = json.dumps(s, indent=4, default=student2dict)
 
-print class2json
+print(class2json)

@@ -13,13 +13,13 @@ from IPy import IP
 hosts = set()
 while True:
     try:
-        hosts.add(IP(raw_input('Please input ip address which host to xxx:'), ipversion=4))
-    except ValueError, e:
-        print "Please input a valid IP address."
-        want_continue = raw_input("Continue? y/n <default is NO>")
+        hosts.add(IP(input('Please input ip address which host to xxx:'), ipversion=4))
+    except ValueError as e:
+        print("Please input a valid IP address.")
+        want_continue = input("Continue? y/n <default is NO>")
         if want_continue in ['Yes', 'YES', 'yes', 'Y', 'y']:
             continue
         else:
             break
 
-print hosts
+print(hosts)

@@ -3,7 +3,7 @@ import smtplib
 from email.mime.text import MIMEText
 
 HOST = "smtp.gmail.com"
-SUBJECT = u"官网流量数据报表"
+SUBJECT = "官网流量数据报表"
 TO = "test@qq.com"
 FROM = "test@gmail.com"
 
@@ -23,7 +23,7 @@ msg = MIMEText("""
         &nbsp;&nbsp;/index.php 42153<br>
         &nbsp;&nbsp;/view.php 21451<br>
         &nbsp;&nbsp;/login.php 5112<br>
-	</td>
+    </td>
       </tr>
     </table>""", "html", "utf-8")
 msg['Subject'] = SUBJECT
@@ -36,6 +36,6 @@ try:
     server.login("test@gmail.com", "123456")
     server.sendmail(FROM, TO, msg.as_string())
     server.quit()
-    print "邮件发送成功！"
-except Exception, e:
-    print "失败：" + str(e)
+    print("邮件发送成功！")
+except Exception as e:
+    print("失败：" + str(e))

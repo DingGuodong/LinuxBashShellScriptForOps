@@ -14,5 +14,5 @@ import urllib3
 # https://urllib3.readthedocs.io/en/latest/user-guide.html
 http = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
 r = http.request('GET', 'https://registry-1.docker.io/v1/', timeout=4.0, retries=3)
-print r.status
-print r.data
+print(r.status)
+print(r.data)

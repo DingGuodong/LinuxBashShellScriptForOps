@@ -30,8 +30,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 from fabric import Connection
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     fabric_config['port'] = 22
     fabric_config['user'] = 'root'
     fabric_config['connect_kwargs'] = {
-        "key_filename": "c:\Users\Guodong\.ssh\exportedkey201310171355",
+        "key_filename": r"c:\Users\Guodong\.ssh\exportedkey201310171355",
     }
 
     # Superuser privileges via auto-response
@@ -70,13 +70,13 @@ if __name__ == '__main__':
     cxn = Connection('192.168.88.19', config=fabric_config)
 
     # do tasks on host
-    print cxn.run("uname -a", hide=True).stdout
-    print cxn.sudo("whoami", hide=True).stdout
+    print(cxn.run("uname -a", hide=True).stdout)
+    print(cxn.sudo("whoami", hide=True).stdout)
     cxn.run('sudo whoami', pty=True, watchers=[sudo_pass_auto_respond])
     cxn.put(__file__, "/tmp/this.py")
     cxn.run("sudo rm -f /tmp/this.py")
     # cxn.get("/tmp/this.py", "this.py")
-    print disk_free(cxn)
+    print(disk_free(cxn))
 
     # config multiple servers with methods 1
     for host in ('192.168.88.19', '192.168.88.20', '192.168.88.21'):
@@ -85,5 +85,5 @@ if __name__ == '__main__':
 
     # config multiple servers, M2
     results = Group('192.168.88.19', '192.168.88.20', '192.168.88.21', config=fabric_config).run('uname -s', hide=True)
-    for connection, result in results.items():
+    for connection, result in list(results.items()):
         print("{0.host}: {1.stdout}".format(connection, result))

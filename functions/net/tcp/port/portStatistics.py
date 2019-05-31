@@ -106,7 +106,7 @@ for sconn in netstat:
 
 # print statistics result using prettytable
 if statistics['portIsUsed']:
-    print "Total connections of port %s is %d." % (port, statistics['portUsedCounts'])
+    print("Total connections of port %s is %d." % (port, statistics['portUsedCounts']))
     table = prettytable.PrettyTable()
     table.field_names = ["Total Counts", "Remote IP Address", "Established Conns", "Time_wait Conns",
                          "Others Conns"]
@@ -114,9 +114,9 @@ if statistics['portIsUsed']:
         if ip['ipaddress'] is not None:
             table.add_row([ip['counts'], ip['ipaddress'], ip['stat']['established'], ip['stat']['time_wait'],
                            ip['stat']['others']])
-    print table.get_string(sortby=table.field_names[1], reversesort=True)
+    print(table.get_string(sortby=table.field_names[1], reversesort=True))
 else:
-    print 'port %s has no connections, please make sure port is listen or in use.' % port
+    print('port %s has no connections, please make sure port is listen or in use.' % port)
 
 endTime = time.time()
-print "Elapsed time: %s seconds." % (endTime - startTime)
+print("Elapsed time: %s seconds." % (endTime - startTime))

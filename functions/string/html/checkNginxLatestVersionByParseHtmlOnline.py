@@ -23,22 +23,23 @@ url_to_check = r'http://nginx.org/en/download.html'
 
 
 def get_base_url(url):
-    import urllib
-    import urlparse
-    proto, rest = urllib.splittype(url)
-    res, rest = urllib.splithost(rest)
-    return urlparse.urlunsplit((proto, res, "", "", ""))
+    import urllib.request, urllib.parse, urllib.error
+    import urllib.parse
+    proto, rest = urllib.parse.splittype(url)
+    res, rest = urllib.parse.splithost(rest)
+    return urllib.parse.urlunsplit((proto, res, "", "", ""))
 
 
 def join_url(base, path):
-    import urllib
+    import urllib.request, urllib.parse, urllib.error
     return urllib.basejoin(base, path)
 
 
 headers = {
     'Cache-Control': 'max-age=0',
     'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Chrome/54.0.2840.99 Safari/537.36',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
     'DNT': '1',
     'Accept-Encoding': 'gzip, deflate, sdch',
@@ -63,4 +64,4 @@ table.field_names = ["Name", "Filename", "Version", "Download URL"]
 table.add_row([title, filename, version, join_url(get_base_url(url_to_check), href)])
 for field in table.field_names:
     table.align[field] = "l"
-print table
+print(table)

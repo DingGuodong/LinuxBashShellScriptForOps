@@ -43,7 +43,7 @@ eth0:
          broadcast : ff:ff:ff:ff:ff:ff
 """
 
-from __future__ import print_function
+
 import socket
 
 import psutil
@@ -64,8 +64,8 @@ duplex_map = {
 def main():
     stats = psutil.net_if_stats()
     io_counters = psutil.net_io_counters(pernic=True)
-    for nic, addrs in psutil.net_if_addrs().items():
-        print("%s:" % (nic))
+    for nic, addrs in list(psutil.net_if_addrs().items()):
+        print("%s:" % nic)
         if nic in stats:
             st = stats[nic]
             print("    stats          : ", end='')

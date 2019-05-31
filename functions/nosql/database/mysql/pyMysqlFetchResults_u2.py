@@ -21,8 +21,8 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
+
 Topic:                  Utilities
  """
 import sys
@@ -35,7 +35,7 @@ try:
                                  charset='utf8',
                                  cursorclass=pymysql.cursors.DictCursor)
 except pymysql.Error as e:
-    print e
+    print(e)
     sys.exit(1)
 
 table = prettytable.PrettyTable(border=True, header=True, left_padding_width=2, padding_width=1)
@@ -46,10 +46,10 @@ if connection is not None:
         if isinstance(item, dict):
             field_names_list = list()
             row_data_list = list()
-            for key, value in item.iteritems():
+            for key, value in item.items():
                 field_names_list.append(key)
                 row_data_list.append(value)
             table.add_row(row_data_list)
             del row_data_list
     table.field_names = field_names_list
-    print table
+    print(table)

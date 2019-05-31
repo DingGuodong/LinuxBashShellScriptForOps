@@ -20,9 +20,9 @@ enable_debug = True
 def debug(msg, code=None):
     if enable_debug:
         if code is None:
-            print "message: %s" % msg
+            print("message: %s" % msg)
         else:
-            print "message: %s, code: %s " % (msg, code)
+            print("message: %s, code: %s " % (msg, code))
 
 
 AUTHOR_MAIL = "uberurey_ups@163.com"
@@ -50,7 +50,7 @@ def sqlite3_conn(database):
     try:
         conn = sqlite3.connect(database)
     except sqlite3.Error:
-        print >> sys.stderr, """\
+        print("""\
     There was a problem connecting to Database:
 
         %s
@@ -65,7 +65,7 @@ def sqlite3_conn(database):
 
         %s
 
-    """ % (database, sys.exc_value, AUTHOR_MAIL)
+    """ % (database, sys.exc_info()[1], AUTHOR_MAIL), file=sys.stderr)
         sys.exit(1)
     else:
         return conn
@@ -87,7 +87,7 @@ def sqlite3_execute(database, sql):
         sql_conn.commit()
         sql_conn.close()
     except sqlite3.Error as e:
-        print e
+        print(e)
         sys.exit(1)
 
 
@@ -215,7 +215,7 @@ def sqlite3_get_credential():
         if result is not None:
             return result
         else:
-            print "unrecoverable problem, please alter to %s" % AUTHOR_MAIL
+            print("unrecoverable problem, please alter to %s" % AUTHOR_MAIL)
             sys.exit(1)
 
 
@@ -229,7 +229,7 @@ def sqlite3_get_token():
         sqlite3_close(sql_conn)
     except sqlite3.Error:
         info = sys.exc_info()
-        print info[0], ":", info[1]
+        print(info[0], ":", info[1])
     else:
         if result is not None:
             return result

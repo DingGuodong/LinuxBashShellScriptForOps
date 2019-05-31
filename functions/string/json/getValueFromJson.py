@@ -237,6 +237,6 @@ json_example = '''
 '''
 
 json_object = json.loads(json_example)  # type is a list
-print json_object[0]["Mounts"]
+print(json_object[0]["Mounts"])
 for i in json_object[0]["Mounts"]:
-    print i["Destination"]
+    print(i["Destination"])

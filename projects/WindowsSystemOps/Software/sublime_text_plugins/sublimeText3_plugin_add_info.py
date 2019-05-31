@@ -39,9 +39,6 @@ class add_info(sublime_plugin.TextCommand):
         raw_now = time.strftime('%a %b %d %H:%M:%S %Y', time.localtime(time.time()))
         # TODO(Guodong Ding)
         # in SublimeText3, %z in time,strftime() can NOT decoding well, we need a good plan.
-        # Python 3 different
-        # DEFAULT_LOCALE_ENCODING = get_system_encoding()
-        # now = raw_now.encode(DEFAULT_LOCALE_ENCODING, 'ignore').decode(DEFAULT_LOCALE_ENCODING)
         now = raw_now
         author = "default"
 

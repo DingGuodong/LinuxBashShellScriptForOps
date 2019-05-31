@@ -22,13 +22,13 @@ def remote_exec(hostname, command):
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(hostname, port=22, username="root",
-                       key_filename="C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem", timeout=5)
+                       key_filename=r"C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem", timeout=5)
         stdin, stdout, stderr = client.exec_command(command)
         # print "Hostname: {hostname}, Out: {out}".format(hostname=hostname, out=list(stdout))
         persistent_object[hostname] = list(stdout)  # save data into persistent object in this threading
         lock.release()
     except Exception as e:
-        print 'ssh failed', e
+        print('ssh failed', e)
 
 
 if __name__ == '__main__':
@@ -45,6 +45,6 @@ if __name__ == '__main__':
     for host in ip_list:
         # print persistent_object[host]
         for item in persistent_object[host]:  # fetch data from persistent object
-            print item,
+            print(item, end=' ')
     persistent_object.close()
     os.remove(tmp_db)

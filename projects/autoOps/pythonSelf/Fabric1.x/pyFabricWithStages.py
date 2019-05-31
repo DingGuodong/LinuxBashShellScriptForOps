@@ -35,7 +35,7 @@ STAGES = {
 
 def stage_set(stage_name='test'):
     env.stage = stage_name
-    for option, value in STAGES[env.stage].items():
+    for option, value in list(STAGES[env.stage].items()):
         setattr(env, option, value)
 
 

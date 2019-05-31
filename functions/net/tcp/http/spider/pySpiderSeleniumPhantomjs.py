@@ -13,10 +13,13 @@ References:         http://www.jianshu.com/p/3d84afc43d42
                     http://cuiqingcai.com/1001.html
 
  """
-import urllib2
-import re
-import os
 import datetime
+import os
+import re
+import urllib.error
+import urllib.parse
+import urllib.request
+
 from selenium import webdriver
 
 
@@ -45,8 +48,8 @@ class TaobaoMMSpider:
                      ' Chrome/44.0.2403.130 Safari/537.36'
         headers = {'User-Agent': USER_AGENT}
 
-        request = urllib2.Request(url, headers=headers)
-        response = urllib2.urlopen(request)
+        request = urllib.request.Request(url, headers=headers)
+        response = urllib.request.urlopen(request)
 
         # 正则获取
         pattern_link = re.compile(r'<div.*?class="pic-word">.*?<img src="(.*?)".*?'
@@ -57,9 +60,9 @@ class TaobaoMMSpider:
 
         for item in items:
             # 头像，个人详情，名字，年龄，地区
-            print u'发现一位MM 名字叫{name} 年龄{age} 坐标{location}'.format(name=item[2], age=item[3], location=item[4])
-            print u'{name}的个人主页是 {website}'.format(name=item[2], website=item[1])
-            print u'继续获取详情页面数据...'
+            print(('发现一位MM 名字叫{name} 年龄{age} 坐标{location}'.format(name=item[2], age=item[3], location=item[4])))
+            print(('{name}的个人主页是 {website}'.format(name=item[2], website=item[1])))
+            print('继续获取详情页面数据...')
             # 详情页面
             detailPage = item[1]
             name = item[2]
@@ -72,8 +75,8 @@ class TaobaoMMSpider:
         base_msg = self.driver.find_elements_by_xpath('//div[@class="mm-p-info mm-p-base-info"]/ul/li')
         brief = ''
         for item in base_msg:
-            text = item.text.replace(u'　', ' ')
-            print text
+            text = item.text.replace('　', ' ')
+            print(text)
             brief += text + '\n'
 
         icon_url = self.driver.find_element_by_xpath('//div[@class="mm-p-model-info-left-top"]//img')
@@ -85,23 +88,23 @@ class TaobaoMMSpider:
         # 保存头像
         try:
             self.saveIcon(icon_url, save_dir, name)
-        except Exception, e:
-            print u'保存头像失败 %s' % e.message
+        except Exception as e:
+            print(('保存头像失败 %s' % str(e)))
 
         # 开始跳转相册列表
         images_url = self.driver.find_element_by_xpath('//ul[@class="mm-p-menu"]//a')
         images_url = images_url.get_attribute('href')
         try:
             self.getAllImage(images_url, name)
-        except Exception, e:
-            print u'获取所有相册异常 %s' % e.message
+        except Exception as e:
+            print(('获取所有相册异常 %s' % str(e)))
 
         end_time = datetime.datetime.now()
         # 保存个人信息 以及耗时
         try:
             self.saveBrief(brief, save_dir, name, end_time - begin_time)
-        except Exception, e:
-            print u'保存个人信息失败 %s' % e.message
+        except Exception as e:
+            print(('保存个人信息失败 %s' % str(e)))
 
     def getAllImage(self, images_url, name):
         # 获取所有图片
@@ -121,7 +124,7 @@ class TaobaoMMSpider:
 
     def saveImages(self, images, name):
         index = 1
-        print u'%s 的相册有%s张照片, 尝试全部下载....' % (name, len(images))
+        print(('%s 的相册有%s张照片, 尝试全部下载....' % (name, len(images))))
 
         for imageUrl in images:
             splitPath = imageUrl.get_attribute('src').split('.')
@@ -129,25 +132,25 @@ class TaobaoMMSpider:
             if len(fTail) > 3:
                 fTail = "jpg"
             fileName = self.dirName + '/' + name + '/' + name + str(index) + "." + fTail
-            print u'下载照片地址%s ' % fileName
+            print(('下载照片地址%s ' % fileName))
 
             self.saveImage(imageUrl.get_attribute('src'), fileName)
             index += 1
 
     def saveIcon(self, url, save_dir, name):
-        print u'头像地址%s %s ' % (url, name)
+        print(('头像地址%s %s ' % (url, name)))
 
         splitPath = url.split('.')
         fTail = splitPath.pop()
         fileName = save_dir + '/' + name + '.' + fTail
-        print fileName
+        print(fileName)
         self.saveImage(url, fileName)
 
     @staticmethod
     def saveImage(imageUrl, fileName):
         # 写入图片
-        print imageUrl
-        u = urllib2.urlopen(imageUrl)
+        print(imageUrl)
+        u = urllib.request.urlopen(imageUrl)
         data = u.read()
         f = open(fileName, 'wb')
         f.write(data)
@@ -156,18 +159,18 @@ class TaobaoMMSpider:
     @staticmethod
     def saveBrief(content, save_dir, name, speed_time):
         # 保存个人信息
-        speed_time = u'当前MM耗时 ' + str(speed_time)
+        speed_time = '当前MM耗时 ' + str(speed_time)
         content = content + '\n' + speed_time
         fileName = save_dir + '/' + name + '.txt'
         f = open(fileName, 'w+')
-        print u'正在获取%s的个人信息保存到%s' % (name, fileName)
+        print(('正在获取%s的个人信息保存到%s' % (name, fileName)))
         f.write(content.encode('utf-8'))
 
     @staticmethod
     def mkdir(path):
         # 创建目录
         path = path.strip()
-        print u'创建目录%s' % path
+        print(('创建目录%s' % path))
         if os.path.exists(path):
             return False
         else:
@@ -198,9 +201,9 @@ def kill_process(name):
     currentUserName = getuser()
 
     if ProcessNameToKill in [x.name() for x in psutil.process_iter()]:
-        print "[I] Process \"%s\" is found!" % ProcessNameToKill
+        print(("[I] Process \"%s\" is found!" % ProcessNameToKill))
     else:
-        print "[E] Process \"%s\" is NOT running!" % ProcessNameToKill
+        print(("[E] Process \"%s\" is NOT running!" % ProcessNameToKill))
 
     for process in psutil.process_iter():
         if process.name() == ProcessNameToKill:
@@ -208,9 +211,9 @@ def kill_process(name):
                 # non-root user can only kill its process, but can NOT kill other users process
                 if process.username().endswith(currentUserName):
                     process.kill()
-                    print "[I] Process \"%s(pid=%s)\" is killed successfully!" % (process.name(), process.pid)
+                    print(("[I] Process \"%s(pid=%s)\" is killed successfully!" % (process.name(), process.pid)))
             except Exception as e:
-                print e
+                print(e)
 
 
 if __name__ == '__main__':

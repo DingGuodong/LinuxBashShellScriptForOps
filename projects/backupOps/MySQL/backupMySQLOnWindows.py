@@ -56,7 +56,7 @@ def confirm(question, default=True):
         suffix = "y/N"
     # Loop till we get something we like
     while True:
-        response = raw_input("%s [%s] " % (question, suffix)).lower()
+        response = input("%s [%s] " % (question, suffix)).lower()
         # Default
         if not response:
             return default
@@ -72,27 +72,27 @@ def confirm(question, default=True):
 
 def mysql_auth():
     global mysql_host, mysql_port, mysql_user, mysql_password
-    print '''default mysql client setting is:
+    print('''default mysql client setting is:
         host: {host}
         port: {port}
         user: {user}
         password: {password}
-    '''.format(host=mysql_host, port=mysql_port, user=mysql_user, password=mysql_password)
+    '''.format(host=mysql_host, port=mysql_port, user=mysql_user, password=mysql_password))
     if confirm('Is this right?'):
         print("default setting is accepted!")
     else:
         import getpass
-        mysql_host = raw_input('Enter MySQL host:')
-        mysql_port = raw_input('Enter MySQL port:')
-        mysql_user = raw_input('Enter MySQL user:')
+        mysql_host = input('Enter MySQL host:')
+        mysql_port = input('Enter MySQL port:')
+        mysql_user = input('Enter MySQL user:')
         mysql_password = getpass.getpass("Enter MySQL password: ")  # do run it in Pycharm or other pseudo-terminal etc
 
-        print '''mysql client setting is:
+        print('''mysql client setting is:
                 host: {host}
                 port: {port}
                 user: {user}
                 password: {password}
-            '''.format(host=mysql_host, port=mysql_port, user=mysql_user, password=mysql_password)
+            '''.format(host=mysql_host, port=mysql_port, user=mysql_user, password=mysql_password))
 
 
 def backup():
@@ -106,9 +106,9 @@ def backup():
             call("%s --help" % mysqldump_bin_file, stdout=null)  # run command without output
     except WindowsError as e:
         if e.args[0] == 2:
-            print "%s: command not found" % mysqldump_bin_file
+            print("%s: command not found" % mysqldump_bin_file)
         else:
-            print "some wrong with %s" % mysqldump_bin_file
+            print("some wrong with %s" % mysqldump_bin_file)
         sys.exit(e.args[0])
 
     if os.path.exists(backups_save_path):
@@ -128,10 +128,10 @@ def backup():
     for db in mysql_db_list:
         backup_file = os.path.join(backup_base_dir, '{db}_{time}.sql'.format(db=db, time=time.strftime("%Y%m%d%H%M%S")))
         if print_cli:
-            print "{mysqldump} {options} {database} > {path} 2>nul".format(mysqldump=mysqldump_bin_file,
+            print("{mysqldump} {options} {database} > {path} 2>nul".format(mysqldump=mysqldump_bin_file,
                                                                            options=mysqldump_parameters,
-                                                                           database=db, path=backup_file)
-        print "mysqldump database %s ..." % db
+                                                                           database=db, path=backup_file))
+        print("mysqldump database %s ..." % db)
         # Suppress error messages in Windows commandline
         return_code = call("{mysqldump} {options} {database} > {path} 2> nul".format(mysqldump=mysqldump_bin_file,
                                                                                      options=mysqldump_parameters,

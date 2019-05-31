@@ -31,7 +31,7 @@ def get_accept_info_all():
                 for line in f.readlines():
                     info = search_accept_info(line)
                     if info is not None:
-                        print info
+                        print(info)
 
 
 def get_accept_info_unique():
@@ -43,7 +43,7 @@ def get_accept_info_unique():
                     info = search_accept_info(line)
                     if info is not None and info[1] not in accepted_list:
                         accepted_list.append(info[1])
-                        print info
+                        print(info)
     del accepted_list
 
 
@@ -56,7 +56,7 @@ def get_ip_from_accept_info_unique():
                     info = search_accept_info(line)
                     if info is not None and info[1] not in accepted_list:
                         accepted_list.append(info[1])
-    print accepted_list
+    print(accepted_list)
 
 
 def search_accept_info(log):

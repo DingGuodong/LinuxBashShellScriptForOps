@@ -9,6 +9,6 @@ pattern = re.compile(reg)
 string = 'abb'
 search = pattern.search(string)
 if search:
-    print search.group()
+    print(search.group())
 else:
-    print None
+    print(None)

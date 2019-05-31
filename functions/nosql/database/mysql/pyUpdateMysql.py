@@ -14,7 +14,7 @@ pip install MySQL-python
 import MySQLdb
 import datetime
 
-password = raw_input("Please input MySQL password:\n")
+password = input("Please input MySQL password:\n")
 
 if password != "":
     pass
@@ -29,11 +29,11 @@ try:
     result = cur.fetchall()
     end_time = datetime.datetime.now()
     time = (end_time - start_time).microseconds / 1000000.000
-    print "%d rows in set (%f sec)" % (rows, time)
-    print conn.info()
+    print("%d rows in set (%f sec)" % (rows, time))
+    print(conn.info())
     for record in result:
-        print record
+        print(record)
     cur.close()
     conn.close()
-except MySQLdb.Error, e:
-    print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+except MySQLdb.Error as e:
+    print("Mysql Error %d: %s" % (e.args[0], e.args[1]))

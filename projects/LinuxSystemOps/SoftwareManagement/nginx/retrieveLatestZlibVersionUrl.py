@@ -43,4 +43,4 @@ for link in available_version:
     if match:
         file_url_list.append(downloads_page_url + match.group())
 
-print file_url_list[0]
+print(file_url_list[0])

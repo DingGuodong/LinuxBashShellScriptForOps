@@ -28,8 +28,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 
@@ -67,9 +66,8 @@ class TaobaoGeoIP(object):
                 data_str = json.dumps(data_dict, ensure_ascii=False, indent=4)
                 return data_str
             except ValueError as e:
-                print e
-                print e.args
-                print e.message
+                print(e)
+                print(e.args)
                 raise RuntimeError("fatal error: parse Json data failed")
         else:
             return None
@@ -80,9 +78,8 @@ class TaobaoGeoIP(object):
                 data_dict = json.loads(self.content, encoding="utf-8")
                 return data_dict
             except ValueError as e:
-                print e
-                print e.args
-                print e.message
+                print(e)
+                print(e.args)
                 raise RuntimeError("fatal error: parse Json data failed")
         else:
             return None
@@ -107,6 +104,6 @@ class TaobaoGeoIP(object):
 if __name__ == '__main__':
     ip_to_search = "42.120.147.1"
     p = TaobaoGeoIP(ip_to_search)
-    print p.get_country_id()
-    print p.get_country()
-    print p.get_city()
+    print(p.get_country_id())
+    print(p.get_country())
+    print(p.get_city())

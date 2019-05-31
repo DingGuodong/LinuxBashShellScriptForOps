@@ -23,7 +23,7 @@ def checkCRLFLineEnding(path):
             else:
                 return False
         else:
-            print "Empty file {file}".format(file=path)
+            print("Empty file {file}".format(file=path))
             return False
 
 
@@ -37,4 +37,4 @@ if __name__ == '__main__':
                 full_path_to_filename = os.path.join(top, filename)
                 if full_path_to_filename.endswith(tuple([ext for ext in file_extension_list])):
                     if checkCRLFLineEnding(full_path_to_filename):
-                        print full_path_to_filename
+                        print(full_path_to_filename)

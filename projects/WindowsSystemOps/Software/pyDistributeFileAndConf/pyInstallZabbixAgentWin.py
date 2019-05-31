@@ -10,6 +10,7 @@ Create Time:        9:28
  """
 import logging
 import os
+from IPy import IP
 
 ZABBIX_SERVER_CONF_SERVER_IP = '127.0.0.1,10.46.69.219'
 ZABBIX_SERVER_CONF_SERVER_ACTIVE_IP = '10.46.69.219'
@@ -22,30 +23,14 @@ log.setLevel(logging.INFO)
 log.info('Started')
 
 
-def get_system_encoding():
-    import codecs
-    import locale
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
-
-
-DEFAULT_LOCALE_ENCODING = get_system_encoding()
-
-
 def download_file(url_download_from, path_save_to):
-    import requests.packages.urllib3
+    try:
+        from requests.packages import urllib3
+    except ImportError:
+        import urllib3
     import os
     import sys
+    import requests
 
     url = url_download_from if is_url_valid(url_download_from) else ""
 
@@ -53,9 +38,11 @@ def download_file(url_download_from, path_save_to):
 
     save = os.path.join(check_path(path_save_to), filename).replace("\\", "/")
 
-    print "Downloading '%s',\n" \
-          "save '%s' to '%s'" % (url, filename, save)
-    requests.packages.urllib3.disable_warnings()
+    print("Downloading '%s',\n" \
+          "save '%s' to '%s'" % (url, filename, save))
+
+    urllib3.disable_warnings()  # equal to import logging; logging.captureWarnings(capture=True)
+
     response = requests.request("GET", url, stream=True, data=None, headers=None)
 
     total_length = int(response.headers.get("Content-Length"))
@@ -66,13 +53,13 @@ def download_file(url_download_from, path_save_to):
                 f.flush()
 
     if os.path.isfile(save):
-        print "Done: '%s'" % save
-        print "Total Size: %d" % total_length
-        print "md5sum:", get_hash_sum(save, method="md5")
-        print "sha1sum:", get_hash_sum(save, method="sha1sum")
-        print "sha256sum:", get_hash_sum(save, method="sha256sum")
+        print("Done: '%s'" % save)
+        print("Total Size: %d" % total_length)
+        print("md5sum:", get_hash_sum(save, method="md5"))
+        print("sha1sum:", get_hash_sum(save, method="sha1sum"))
+        print("sha256sum:", get_hash_sum(save, method="sha256sum"))
     else:
-        print "can not download", url
+        print("can not download", url)
         sys.exit(1)
 
 
@@ -92,7 +79,7 @@ def get_zip_path(full_path_to_zip_file):
 
 
 def config_conf(path_to_conf_file):
-    import ConfigParser
+    import configparser
 
     def __add_section_to_conf():
         with open(path_to_conf_file, 'r') as original:
@@ -112,13 +99,13 @@ def config_conf(path_to_conf_file):
 
     __add_section_to_conf()
 
-    zabbix_agent_conf = ConfigParser.ConfigParser(allow_no_value=True)
+    zabbix_agent_conf = configparser.ConfigParser(allow_no_value=True)
     zabbix_agent_conf.read(path_to_conf_file)
-    zabbix_agent_conf.set(section=ConfigParser.DEFAULTSECT, option='logfile'.strip(), value='c:\zabbix_agentd.log')
-    zabbix_agent_conf.set(section=ConfigParser.DEFAULTSECT, option='server'.strip(), value=ZABBIX_SERVER_CONF_SERVER_IP)
-    zabbix_agent_conf.set(section=ConfigParser.DEFAULTSECT, option='serveractive'.strip(),
+    zabbix_agent_conf.set(section=configparser.DEFAULTSECT, option='logfile'.strip(), value=r'c:\zabbix_agentd.log')
+    zabbix_agent_conf.set(section=configparser.DEFAULTSECT, option='server'.strip(), value=ZABBIX_SERVER_CONF_SERVER_IP)
+    zabbix_agent_conf.set(section=configparser.DEFAULTSECT, option='serveractive'.strip(),
                           value=ZABBIX_SERVER_CONF_SERVER_ACTIVE_IP)
-    zabbix_agent_conf.set(section=ConfigParser.DEFAULTSECT, option='hostname'.strip(), value=ZABBIX_AGENT_CONF_HOSTNAME)
+    zabbix_agent_conf.set(section=configparser.DEFAULTSECT, option='hostname'.strip(), value=ZABBIX_AGENT_CONF_HOSTNAME)
     with open(path_to_conf_file, 'wb') as f:
         zabbix_agent_conf.write(f)
 
@@ -138,12 +125,7 @@ def install_service():
             with open(zabbix_install_log, 'w') as f:
                 f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) + ' service installed.')
         except Exception as e:
-            print e
-            for item in list(e):
-                if isinstance(item, str):
-                    print item.decode(DEFAULT_LOCALE_ENCODING),
-                else:
-                    print item,
+            print(e)
             log.error('Install zabbix service failed')
             raise RuntimeError
 
@@ -163,12 +145,7 @@ def run_service():
             time.sleep(2)  # it is not essential
             log.info('Zabbix Agent service started')
         except Exception as e:
-            print e
-            for item in list(e):
-                if isinstance(item, str):
-                    print item.decode(DEFAULT_LOCALE_ENCODING),
-                else:
-                    print item,
+            print(e)
             raise RuntimeError
     else:
         log.info('Zabbix Agent service has already started, nothing to do')
@@ -197,30 +174,18 @@ def check_service_status(serviceName):
     try:
         result = win32serviceutil.QueryServiceStatus(serviceName)[1]
         if result == START_PENDING:
-            print "service %s is %s, please wait" % (serviceName, status_code[result])
+            print("service %s is %s, please wait" % (serviceName, status_code[result]))
             time.sleep(2)
             return RUNNING
         elif result == STOP_PENDING:
-            print "service %s is %s, please wait" % (serviceName, status_code[result])
+            print("service %s is %s, please wait" % (serviceName, status_code[result]))
             time.sleep(2)
             return STOPPED
         else:
             return result if result is not None else 0
     except Exception as e:
-        if e.message:
-            raise RuntimeError(e.message)
-        elif e.args:
-            # print e.args
-            args = list()
-            for arg in e.args:
-                if is_iterable(arg):
-                    args.append(unicode(eval(repr(arg)), DEFAULT_LOCALE_ENCODING))
-                else:
-                    args.append(arg)
-            print "Error:", args[-1], tuple(args)
-            raise RuntimeError
-        else:
-            raise RuntimeError("Uncaught exception, maybe it is a 'Access Denied'")  # will not reach here
+        print(e)
+        raise RuntimeError("Uncaught exception, maybe it is a 'Access Denied'")  # will not reach here
 
 
 def is_iterable(source):
@@ -294,7 +259,7 @@ def get_hash_sum(filename, method="md5", block_size=65536):
 def check_path(path):
     import os
     if not os.path.exists(path):
-        print '[Info] %s is not exist.' % path
+        print('[Info] %s is not exist.' % path)
         os.makedirs(path)
         return os.path.abspath(path).replace("\\", "/")
     else:
@@ -312,7 +277,7 @@ def get_ip_address():
             command_to_execute = "pip install netifaces || easy_install netifaces"
             os.system(command_to_execute)
         except OSError:
-            print "Can NOT install netifaces, Aborted!"
+            print("Can NOT install netifaces, Aborted!")
             sys.exit(1)
         import netifaces
 
@@ -326,22 +291,34 @@ def get_ip_address():
     return ip_address
 
 
+def is_valid_ipv4(ip, version=4):
+    try:
+        result = IP(ip, ipversion=version)
+    except ValueError:
+        return False
+    if result is not None and result != "":
+        return True
+
+
+def is_private_ipv4(ip, version=4):
+    """
+    check if the given ip address is valid and private ip
+    :param ip:
+    :param version:
+    :return:
+    """
+    if is_valid_ipv4(ip, version):
+        if IP(ip).iptype() == "PRIVATE":
+            return True
+        else:
+            return False
+    else:
+        raise RuntimeError("Error: invalid ip address: %s" % ip)
+
+
 def get_ip_address_internal():
-    # TODO(Guodong Ding) make this function more general use
-    list_ip_address_internal = ['10.160.46.5', '10.160.8.189', '10.161.216.18', '10.161.227.11', '10.45.51.99',
-                                '10.25.0.93', '10.24.232.132',
-                                '10.161.150.192', '10.161.154.226', '10.161.190.190', '10.171.168.179', '10.117.20.210',
-                                '10.252.248.183',
-                                '10.252.108.197', '10.46.68.233', '10.47.49.161', '10.132.10.244', '10.132.5.122',
-                                '10.132.4.168', '10.132.45.188',
-                                '10.132.1.123', '10.132.0.59', '10.132.10.208', '10.168.46.250', '10.168.87.198',
-                                '10.116.208.206',
-                                '10.116.208.199', '10.116.208.208', '10.116.194.41', '10.252.132.253', '10.168.220.108',
-                                '10.117.29.26',
-                                '10.162.52.179', '10.162.69.137', '10.47.50.145', '10.47.162.31', '10.46.69.219']
-    ip_address_internal = ''
     for ip in get_ip_address():
-        if ip in list_ip_address_internal:
+        if is_private_ipv4(ip):
             ip_address_internal = ip
             break
     log.warning('empty internal ip address ') if not ip_address_internal else ''
@@ -359,7 +336,7 @@ def get_ip_address_external():
             command_to_execute = "pip install netifaces || easy_install netifaces"
             os.system(command_to_execute)
         except OSError:
-            print "Can NOT install netifaces, Aborted!"
+            print("Can NOT install netifaces, Aborted!")
             sys.exit(1)
         import netifaces
 
