@@ -31,7 +31,7 @@ hostname = "120.27.194.133"
 port = paramiko.config.SSH_PORT
 username = 'root'
 password = None
-key_filename = "C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem"
+key_filename = r"C:\Users\Guodong\.ssh\ebt-linux-centos-ssh-root-key.pem"
 timeout = 5
 
 # making a connection with accept host key
