@@ -29,9 +29,10 @@ Topic:                  Utilities
 import time
 
 import psutil
+
 # from collections import namedtuple
 # addr = namedtuple('addr', ['ip', 'port'])
-from psutil._common import addr
+# from psutil._common import addr
 
 statistics_file = "statistics.txt"
 port = 993
@@ -47,9 +48,12 @@ try:
         now = time.time()
         sconn_list = psutil.net_connections(kind='tcp')
 
-        my_sconn_list = [sconn for sconn in sconn_list if
-                         isinstance(sconn.raddr,
-                                    addr) and sconn.raddr.port == port and sconn.status == 'ESTABLISHED']
+        # my_sconn_list = [sconn for sconn in sconn_list if
+        #                  isinstance(sconn.raddr,
+        #                             addr) and sconn.raddr.port == port and sconn.status == 'ESTABLISHED']
+
+        # see: https://github.com/giampaolo/psutil/issues/1513
+        my_sconn_list = [sconn for sconn in sconn_list if sconn.status == 'ESTABLISHED' and sconn.raddr.port == port]
 
         for my_sconn in my_sconn_list:
             ip = my_sconn.raddr.ip
