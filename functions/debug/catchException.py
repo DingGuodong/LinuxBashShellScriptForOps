@@ -10,6 +10,8 @@ Create Time:        10:36
  """
 import sys
 
+import time
+
 try:
     import os
     # raise SystemExit("raise SystemExit on purpose")
@@ -17,6 +19,7 @@ try:
 
 except SystemExit, e:
     print(e)
+    time.sleep(10)  # kill process here, finally statement will skipped
     print(e.args)
     print(e.message)
     sys.exit(1)
