@@ -192,6 +192,11 @@ datetime.datetime.strptime('2018-06-07T10:57:14Z', "%Y-%m-%dT%H:%M:%SZ").replace
 print((datetime.datetime.now() + datetime.timedelta(days=158)).strftime("%Y-%m-%d %H:%M:%S.%f"))
 
 # get timestamp before n days
-save_says = 30
-timestamp_before_save_days = time.mktime((datetime.datetime.today() + relativedelta(days=-save_says)).timetuple())
+save_days = 30
+timestamp_before_save_days = time.mktime((datetime.datetime.today() + relativedelta(days=-save_days)).timetuple())
 print(timestamp_before_save_days)
+
+# how many days between datetime A and datetime B
+print(
+    (datetime.datetime.strptime('2018-10-15', "%Y-%m-%d") - datetime.datetime.strptime('2018-08-29', "%Y-%m-%d")).days)
+print((datetime.datetime.now() - datetime.datetime.strptime('2019-05-09', "%Y-%m-%d")).days)
