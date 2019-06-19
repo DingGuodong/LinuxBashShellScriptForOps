@@ -20,11 +20,13 @@ import pyipcalc
 # https://pypi.python.org/pypi/pyipcalc/1.0.1
 
 print ipcalc.IP("192.168.1.1")
+print ipcalc.IP("192.168.1.1/24").info()  # PRIVATE
+print ipcalc.IP("124.129.14.90/30").mask
+
 print ipcalc.Network('192.168.1.0/24')
 print ipcalc.Network('192.168.1.0/255.255.255.0')
 
-print pyipcalc.IPNetwork("192.168.1.0/24").ip_network
-print pyipcalc.IPNetwork("192.168.1.0/24").subnet()
+print pyipcalc.IPNetwork("192.168.1.0/24").mask()  # better than ipcalc
 print pyipcalc.IPNetwork("192.168.1.0/24").network()
 
 ip_str = '''192.168.4.1
@@ -40,7 +42,7 @@ ip_network_list = list()
 for ip in ip_list:
     if len(ip.strip().split('/')) != 2:
         ip = ip + '/24'
-    ip_network_list.append(pyipcalc.IPNetwork(ip).ip_network)
+    ip_network_list.append(pyipcalc.IPNetwork(ip).network())
 ip_network_uniq_list = set(ip_network_list)
 
 ip_network_list2 = list()
