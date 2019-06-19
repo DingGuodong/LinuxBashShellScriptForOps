@@ -22,6 +22,10 @@ def get_local_ip_address():
             os.system(command_to_execute)
         except OSError:
             print "Can NOT install netifaces, Aborted!"
+            print("""Microsoft Visual C++ Compiler for Python 2.7 maybe need installed or reinstalled.
+See also: https://www.microsoft.com/en-us/download/confirmation.aspx?id=44266
+It can be download here: \
+https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi""")
             sys.exit(1)
         import netifaces
 
