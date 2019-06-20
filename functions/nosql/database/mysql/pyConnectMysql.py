@@ -8,13 +8,17 @@ User:               Guodong
 Create Date:        2016/9/13
 Create Time:        11:29
 
+# https://stackoverflow.com/questions/26866147/mysql-python-install-error-cannot-open-include-file-config-win-h
+# https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysql-python
 pip install MySQL-python
+pip install https://download.lfd.uci.edu/pythonlibs/t4jqbe6o/MySQL_python-1.2.5-cp27-none-win32.whl
 
  """
 
-import MySQLdb
 import datetime
 import sys
+
+import MySQLdb
 
 try:
     sql = 'select now()'
