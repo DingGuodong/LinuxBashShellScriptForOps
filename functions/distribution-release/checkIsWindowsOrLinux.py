@@ -8,7 +8,21 @@ User:               Guodong
 Create Date:        2016/12/1
 Create Time:        10:23
  """
+import os
 import sys
+
+# https://github.com/giampaolo/psutil/blob/master/psutil/_common.py
+POSIX = os.name == "posix"
+WINDOWS = os.name == "nt"
+LINUX = sys.platform.startswith("linux")
+MACOS = sys.platform.startswith("darwin")
+OSX = MACOS  # deprecated alias
+FREEBSD = sys.platform.startswith("freebsd")
+OPENBSD = sys.platform.startswith("openbsd")
+NETBSD = sys.platform.startswith("netbsd")
+BSD = FREEBSD or OPENBSD or NETBSD
+SUNOS = sys.platform.startswith(("sunos", "solaris"))
+AIX = sys.platform.startswith("aix")
 
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 
