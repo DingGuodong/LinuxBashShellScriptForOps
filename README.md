@@ -69,6 +69,31 @@ Email: uberurey_ups#163.com
 
 *欢迎提供其他QQ群，供交流参考，经营性或商业目的除外*
 
+
+## 编程风格与编程规范 - Programing Style Guides
+
+每个人都可以有自己的编程风格，但使用良好的编程规范可以帮助我们规范代码，也符合大多数人的阅读和使用习惯。
+
+通常一些知名的大厂和团队都会有自己的编程规范，感谢分享！
+
+NO1.从现有的产品或线上中学习，如参考系统中的脚本是如何写的，其他著名项目中的代码是怎样的。
+
+1.[Shell风格指南](https://zh-google-styleguide.readthedocs.io/en/latest/google-shell-styleguide/contents/) - 中文
+
+2.[Python 风格指南](https://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/contents/) - 中文
+
+3.[Style guides for Google-originated open-source projects](https://github.com/google/styleguide)
+
+4.[PEP 8](https://www.python.org/dev/peps/pep-0008/)
+
+5.[Python best practices guidebook, written for humans.](https://docs.python-guide.org)
+
+6.[Code Review Guidelines](https://docs.gitlab.com/ee/development/code_review.html#everyone)
+
+当然还有更多优秀的指南或参考，不一一例举。
+
+**最后，记住，规则有时就是用来打破的，做自己当然也是被允许的。**
+
 ## TODO List
 
 1. 应该把文档的编写和完善作为一项长期任务，维护好，并保持可用
