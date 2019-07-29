@@ -16,7 +16,7 @@ account_name='zabbix'
 recipient=$1
 subject=$2
 message=$3
-date=`date --rfc-2822`
+date=$(date --rfc-2822)
 sed 's/$/\r/' <<eof | /usr/bin/msmtp --account ${account_name} ${recipient}
 From: <${FROM}>
 To: <${recipient}>

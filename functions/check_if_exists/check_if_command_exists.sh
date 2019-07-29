@@ -11,8 +11,9 @@ function command_exists_v2() {
 }
 
 function is_command_exists(){
-if [ -z "`which $@ 2> /dev/null`" -o -z "`which $* 2> /dev/null`" ] ; then
-  # missing $@ and/or $*
-  exit 0
-fi
+  if [ -z "$(command -v "$@" 2> /dev/null)" ] || [ -z "$(command -v "$@" 2> /dev/null)" ] ; then
+      return 1
+  else
+      return 0
+  fi
 }

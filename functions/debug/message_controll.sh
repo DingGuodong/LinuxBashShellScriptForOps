@@ -10,7 +10,7 @@ function backtrace {
     local deep
     deep=$((${#BASH_SOURCE[@]} - 1))
     echo "[Call Trace]"
-    while [ ${level} -le ${deep} ]; do
+    while [ "${level}" -le ${deep} ]; do
         echo "${BASH_SOURCE[$deep]}:${BASH_LINENO[$deep-1]}:${FUNCNAME[$deep-1]}"
         deep=$((deep - 1))
     done
@@ -26,7 +26,7 @@ function die {
         exitcode=1
     fi
     backtrace 2
-    err ${line} "$*"
+    err "${line}" "$*"
     # Give buffers a second to flush
     sleep 1
     exit ${exitcode}
@@ -43,8 +43,8 @@ function die_if_not_set {
     set +o xtrace
     local line=$1; shift
     local evar=$1; shift
-    if ! is_set ${evar} || [ ${exitcode} != 0 ]; then
-        die ${line} "$*"
+    if ! is_set "${evar}" || [ ${exitcode} != 0 ]; then
+        die "${line}" "$*"
     fi
     ${xtrace}
 }
@@ -63,7 +63,7 @@ function err {
     xtrace=$(set +o | grep xtrace)
     set +o xtrace
     local msg="[ERROR] ${BASH_SOURCE[2]}:$1 $2"
-    echo ${msg} 1>&2;
+    echo "${msg}" 1>&2;
     if [[ -n ${LOGDIR} ]]; then
         echo "$msg" >> "${LOGDIR}/error.log"
     fi
@@ -82,8 +82,8 @@ function err_if_not_set {
     set +o xtrace
     local line=$1; shift
     local evar=$1; shift
-    if ! is_set ${evar} || [ ${exitcode} != 0 ]; then
-        err ${line} "$*"
+    if ! is_set "${evar}" || [ ${exitcode} != 0 ]; then
+        err "${line}" "$*"
     fi
     ${xtrace}
     return ${exitcode}
@@ -104,7 +104,7 @@ function warn {
     xtrace=$(set +o | grep xtrace)
     set +o xtrace
     local msg="[WARNING] ${BASH_SOURCE[2]}:$1 $2"
-    echo ${msg}
+    echo "${msg}"
     ${xtrace}
     return ${exitcode}
 }

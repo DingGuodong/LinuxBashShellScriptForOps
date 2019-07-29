@@ -16,7 +16,7 @@ www.aliyun.com
 www.163.com
 "
 for url in ${url_list}; do
-    curl -sL -w "%{http_code} %{size_download}\\n" ${url} -o /dev/null
+    curl -sL -w "%{http_code} %{size_download}\\n" "${url}" -o /dev/null
 done
 
 
@@ -24,7 +24,8 @@ done
 # Note: The file must use UNIX and OS X(LF, \n) line ending(Know as 'Line separators') not Windows(CRLF, \r\n),
 # you can use 'dos2unix -n url.txt url_unix.txt' to change it easily,
 # use 'dos2unix url.txt' will convert in old file mode
-for url in `cat url.txt`; do  # for url in $(cat url.txt); do
-    curl -sL -w "%{http_code} %{size_download}\\n" ${url} -o /dev/null
-    sleep $(($RANDOM % 7 + 3 ))
-done
+while IFS= read -r url
+do
+    curl -sL -w "%{http_code} %{size_download}\\n" "${url}" -o /dev/null
+    sleep $((RANDOM % 7 + 3 ))
+done < <(grep -v '^ *#' < url.txt)

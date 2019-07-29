@@ -4,7 +4,7 @@ set -e
 branch=""
 tag=""
 
-while getopts 'b:t:' opt; do
+while getopts 'b:h:t:' opt; do
     case ${opt}$OPTARG in
         b*)
             branch="$OPTARG"
@@ -20,8 +20,8 @@ while getopts 'b:t:' opt; do
             ;;
     esac
 done
-shift `expr $OPTIND - 1`
+shift "$((OPTIND - 1))"
 
-echo "position parameter is $@."
+echo "position parameter is $*."
 echo "branch is $branch."
 echo "tag is $tag."

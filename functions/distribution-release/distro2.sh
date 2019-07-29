@@ -40,7 +40,7 @@ fi
 if [ ! ${OS} ] ; then
     echo ":: Could not detect OS"
     echo ":: Press Enter to continue"
-    read -n1
+    read -n1 -r
 fi
 
 

@@ -4,7 +4,7 @@ PIDFILE=""
 # If sig is 0, then no signal is sent, but error checking is still performed;
 # this can be used to check for the existence of a process ID or process group ID.
 if test -s  ${PIDFILE}; then
-    if ! kill -0 $(cat ${PIDFILE}) >/dev/null 2>&1; then
+    if ! kill -0 "$(cat ${PIDFILE})" >/dev/null 2>&1; then
         echo xxx
     fi
 else

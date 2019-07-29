@@ -2,7 +2,7 @@
 # Refers: man useradd
 UID_MAX=6000
 UID_MIN=1000
-SYS_UID_MAX=`expr ${UID_MIN} - 1`
+SYS_UID_MAX=$((UID_MIN - 1))
 SYS_UID_MIN=101
 
 # root user

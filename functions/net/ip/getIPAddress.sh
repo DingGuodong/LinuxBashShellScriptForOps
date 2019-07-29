@@ -7,7 +7,6 @@ ipcalc -c  10.20.0.7
 ipcalc -c 10.104.28.0/255.255.192.0
 
 #egrep is the same as grep -E.
-IP=$(ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)" | awk -F ":" '{print $2}' | awk '{print $1}')
 IP=$(ifconfig | grep inet | grep -Ev "(inet6|127.0.0.1)" | awk -F ":" '{print $2}' | awk '{print $1}')
 hostname -i
 facter ipaddress_eth0
@@ -15,28 +14,28 @@ facter ipaddress_eth0
 ip addr show to 0.0.0.0/0 scope global | gawk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
 
 # Ubuntu
-DEVICE="`route -n | awk '/^0.0.0.0/ { print $NF  }'`"
-ip addr show to 0.0.0.0/0 scope global ${DEVICE} | gawk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
+DEVICE="$(route -n | awk '/^0.0.0.0/ { print $NF  }')"
+ip addr show to 0.0.0.0/0 scope global "${DEVICE}" | gawk '/[[:space:]]inet / { print gensub("/.*","","g",$2) }'
 
 # Get all IP
 ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)" | cut -d ":" -f2 | cut -d " " -f1
 
 # CentOS IP
 DEVICE=$(route -n | awk '/^0.0.0.0/ && /UG/ {print $NF}')
-IP=$(ifconfig ${DEVICE} | awk -F '[ :]+' '/inet/ && !/inet6/ {print $3}')
+IP=$(ifconfig "${DEVICE}" | awk -F '[ :]+' '/inet/ && !/inet6/ {print $3}')
 echo "$IP"
 
 # Ubuntu IP
 DEVICE=$(route -n | awk '/^0.0.0.0/ && /UG/ {print $NF}')
-IP=$(ifconfig ${DEVICE} | awk -F '[ :]+' '/inet/ && !/inet6/ {print $4}')
+IP=$(ifconfig "${DEVICE}" | awk -F '[ :]+' '/inet/ && !/inet6/ {print $4}')
 echo "$IP"
 
 # general distro using ip command
 # TODO(Guodong Ding) Ubuntu 16.04.1 LTS maybe not support, see 'ip route' for detail
-ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'
+ip addr show scope global "$(ip route | awk '/^default/ {print $NF}')" | awk -F '[ /]+' '/global/ {print $3}'
 
 #without awk or cut
-IP1=$(ifconfig | grep inet | egrep -v "(inet6|127.0.0.1)")
+IP1=$(ifconfig | grep inet | grep -Ev "(inet6|127.0.0.1)")
 IP2=${IP1#*addr:}
 IP=${IP2%% Bcast*}
 echo "$IP"

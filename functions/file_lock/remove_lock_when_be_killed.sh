@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 lock=/var/lock/subsys/lock
 if [ ! -e ${lock} ]; then
-    trap " rm -f ${lock}; exit" INT TERM EXIT
+    trap ' rm -f ${lock}; exit' INT TERM EXIT
     touch ${lock}
     #critical-section
     rm ${lock}
