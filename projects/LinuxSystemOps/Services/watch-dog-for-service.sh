@@ -12,6 +12,7 @@
 # Long Description:       check service running status, bring it up when service fail upto n times
 # Usage:                  */1 * * * * /root/watch-dog-for-service.sh
 # References:             Tips: 写代码尽量写得优雅，但优雅的前提是让他人更容易读懂和维护。
+#                         follow suggestions on https://github.com/koalaman/shellcheck
 # Prerequisites:          []
 # Development Status:     3 - Alpha, 5 - Production/Stable
 # Environment:            Console
@@ -31,7 +32,7 @@ ENABLE_DEBUG=1
 
 function log_message(){
     if [[ -n "${1:-}" ]]; then
-        [[ "$ENABLE_DEBUG" == 1 ]] && echo "$(date +%Y%m%d%H%M%S,%s) $@" | tee -a ${WDFS_LOG_FILE}
+        [[ "$ENABLE_DEBUG" == 1 ]] && echo "$(date +%Y%m%d%H%M%S,%s) $*" | tee -a ${WDFS_LOG_FILE}
     fi
 
 }
@@ -39,7 +40,7 @@ function log_message(){
 
 function check_service_status(){
     status="0"
-    ps aux | grep [a]pp_name || status="$?"  # RETURN="${?}", retval=$?
+    pgrep -f "app_name" || status="$?"  # RETURN="${?}", retval=$?
     if [[ "$status" = 0 ]]; then
         return 0
     else
@@ -50,14 +51,14 @@ function check_service_status(){
 
 
 function get_db_value(){
-    value_in_db=`cat ${WDFS_DB_FILE}`
-    echo ${value_in_db}  # `echo` is more better than `cat` because of it is more easy to understand
+    value_in_db=$(cat ${WDFS_DB_FILE})
+    echo "${value_in_db}"  # `echo` is more better than `cat` because of it is more easy to understand
 }
 
 
 function db_value_increase_one(){
-    value_in_db=`get_db_value`
-    echo "$(expr ${value_in_db} + 1)" > ${WDFS_DB_FILE}
+    value_in_db=$(get_db_value)
+    echo "$((value_in_db + 1))" > ${WDFS_DB_FILE}
 }
 
 
@@ -80,7 +81,7 @@ function watch_dog(){
         log_message "ok: process is running"
         return 0
     else
-        value_in_db=`get_db_value`
+        value_in_db=$(get_db_value)
         if [[ "$value_in_db" == "$MAX_TRY_TIMES" ]]; then
             log_message "err: process is not found upto max times, try to start it"
             bring_up_service
@@ -89,7 +90,7 @@ function watch_dog(){
             db_value_increase_one
         fi
 
-        value_in_db=`get_db_value`
+        value_in_db=$(get_db_value)
         log_message "warn: process is not found, current times is $value_in_db"
 
     fi
