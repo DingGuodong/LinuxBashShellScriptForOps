@@ -23,7 +23,8 @@ Long Description:       Fabric 2 is a high level SSH command execution library d
                         2. config many servers with different authentication methods is really boring and tedious
 
 References:             http://docs.fabfile.org/en/2.4/getting-started.html#run-commands-via-connections-and-run
-Prerequisites:          pip install fabric==2.4.0  #  use `pip install fabric==1.14.0` to enable Fabric 1.x
+Prerequisites:          pip install fabric==2.5.0  #  use `pip install fabric==1.14.1` to enable Fabric 1.x
+                        pip install --only-binary :all: fabric
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -57,7 +58,7 @@ if __name__ == '__main__':
     fabric_config['port'] = 22
     fabric_config['user'] = 'root'
     fabric_config['connect_kwargs'] = {
-        "key_filename": "c:\Users\Guodong\.ssh\exportedkey201310171355",
+        "key_filename": r"c:\Users\Guodong\.ssh\exportedkey201310171355",
     }
 
     # Superuser privileges via auto-response
