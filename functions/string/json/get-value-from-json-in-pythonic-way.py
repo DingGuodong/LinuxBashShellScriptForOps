@@ -64,3 +64,8 @@ print(wanted_value)
 print(jmespath.search("SecurityGroups.SecurityGroup[0].SecurityGroupId", target_json_dict))
 
 print(jmespath.search("SecurityGroups.SecurityGroup[*].SecurityGroupId", target_json_dict))
+
+print(jmespath.search("SecurityGroups.SecurityGroup[?Description=='Description'] | [0]", target_json_dict))
+
+print(jmespath.search("SecurityGroups.SecurityGroup[?Description=='Description'] | [0].SecurityGroupId",
+                      target_json_dict))
