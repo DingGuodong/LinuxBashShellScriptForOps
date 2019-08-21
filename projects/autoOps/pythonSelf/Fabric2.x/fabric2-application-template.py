@@ -63,7 +63,7 @@ def add_ssh_key():
     :return: None
     """
     try:
-        run_result = cxn.run('cat ~/.ssh/authorized_keys', hide=True)
+        run_result = cxn.run('cat ~/.ssh/authorized_keys', hide=True, warn=True)
         if run_result.failed:
             cxn.run('mkdir -p ~/.ssh', hide=True)
             cxn.run('echo %s >> ~/.ssh/authorized_keys' % ssh_public_key, hide=True)
@@ -118,23 +118,19 @@ def install_packages_base():
             'ntp ntp-doc '
             'bash-completion command-not-found '
             'net-tools iputils-ping dnsutils',
-            warn=True,
-            pty=True,
-            watchers=[sudo_pass_auto_respond])
+            hide=True, warn=True, pty=True, watchers=[sudo_pass_auto_respond])
     elif is_yum():
         cxn.sudo(
             'yum install -y epel-release && yum makecache fast',
-            warn=True, pty=True,
-            watchers=[sudo_pass_auto_respond])
+            hide=True, warn=True, pty=True, watchers=[sudo_pass_auto_respond])
         cxn.sudo(
             'yum install -y ca-certificates openssl openssl-devel curl rpm gnupg2 nss bash-completion '
             'facter ruby-json '
             'ntp ntpdate ntp-doc '
             'bash-completion PackageKit-command-not-found '
-            'net-tools iputils bind-utils ',
+            'net-tools iputils bind-utils '
             'yum-plugin-fastestmirror',
-            warn=True, pty=True,
-            watchers=[sudo_pass_auto_respond])
+            hide=True, warn=True, pty=True, watchers=[sudo_pass_auto_respond])
     else:
         raise Exit("install_packages_base failed.")
 
@@ -144,7 +140,7 @@ def get_system_info_from_facter():
     facter - Gather system information, Collect and display facts about the system.
     :return: str in json
     """
-    run_result = cxn.sudo('facter --json', hide=True)
+    run_result = cxn.sudo('facter --json', hide=True, warn=True)
     if run_result.ok:
         return run_result.stdout
     else:
@@ -169,7 +165,7 @@ def get_system_product_uuid():
 
     :return:
     """
-    run_result = cxn.sudo("cat /sys/class/dmi/id/product_uuid", hide=True)
+    run_result = cxn.sudo("cat /sys/class/dmi/id/product_uuid", hide=True, warn=True)
     if run_result.ok:
         return run_result.stdout
     else:
@@ -222,7 +218,7 @@ vm.swappiness = 10
 """
     cxn.run('sudo cp /etc/sysctl.conf /etc/sysctl.conf$(date +%Y%m%d%H%M%S)~', pty=True,
             watchers=[sudo_pass_auto_respond])
-    cxn.run("echo -e '{}' | sudo tee /etc/sysctl.conf".format(kernel_parameters), pty=True,
+    cxn.run("echo -e '{}' | sudo tee /etc/sysctl.conf".format(kernel_parameters), hide=True, pty=True,
             watchers=[sudo_pass_auto_respond])
 
 
@@ -279,24 +275,26 @@ def set_security_limits():
 
     cxn.run("echo -e '{text}' | sudo tee {option} {filename}".format(text=text_of_limits,
                                                                      option=tee_option, filename=security_limits_file),
-            pty=True,
+            hide=True, pty=True,
             watchers=[sudo_pass_auto_respond])
 
     if do_uniq_file_content:
         print("WARN: file {filename} maybe resorted.".format(filename=security_limits_file))
-        cxn.run("sort -u {filename} | sudo tee {filename}".format(filename=security_limits_file),
-                pty=True,
-                watchers=[sudo_pass_auto_respond])
+        if is_apt():  # sort (GNU coreutils) 8.25
+            cxn.run("sort -u {filename} | tee {filename}".format(filename=security_limits_file))
+        elif is_yum():  # sort (GNU coreutils) 8.4
+            cxn.run("sort -u {filename} -o {filename}".format(filename=security_limits_file))
 
 
 def performance_tuning():
-    set_security_limits()  # max proc and fileno
+    set_security_limits()
     configuring_kernel_parameters()
 
 
 def create_user(user, passwd, is_super=False):
     print("creating user with a password.")
-    run_result = cxn.run('sudo useradd {user}'.format(user=user), pty=True, watchers=[sudo_pass_auto_respond])
+    run_result = cxn.run('sudo useradd {user}'.format(user=user), warn=True, pty=True,
+                         watchers=[sudo_pass_auto_respond])
     if run_result.ok:
         print("user created.")
     elif "useradd: user '{}' already exists".format(user) in run_result.stdout:
@@ -341,6 +339,30 @@ def upload_file(src, dst):
                      watchers=[mv_answer_yes_auto_respond])
 
 
+def append_text_to_file(text, path):
+    cxn.run('cp {path} {path}$(date +%Y%m%d%H%M%S)~'.format(path=path))
+    cxn.run("echo -e '{}' | tee -a /etc/profile".format(text))
+
+
+def override_text_to_file(text, path):
+    cxn.run('cp {path} {path}$(date +%Y%m%d%H%M%S)~'.format(path=path))
+    cxn.run("echo -e '{}' | tee /etc/profile".format(text))
+
+
+def create_directory(path):
+    if cxn.run('test -d {}'.format(path), warn=True).failed:
+        cxn.run('mkdir -p {}'.format(path))
+
+
+def create_biz_directories():
+    """
+    biz is stand for business
+    e.g: /opt/<company abbr>/<sub-biz abbr>/{data, log}
+    :return:
+    """
+    pass
+
+
 if __name__ == '__main__':
     for host in hosts_ssh_config.strip().split("\n"):
         # get host config from 'hosts_ssh_config'
@@ -377,4 +399,13 @@ if __name__ == '__main__':
         cxn = Connection(ip, config=fabric_config)
 
         show_system_dist_and_version()
+
+        add_ssh_key()
+
         performance_tuning()
+
+        install_packages_base()
+
+        wanted_username = 'user'
+        wanted_password = 'password'
+        create_user(wanted_username, wanted_password, is_super=False)
