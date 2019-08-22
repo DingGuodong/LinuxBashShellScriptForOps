@@ -26,7 +26,7 @@ function _empty() { return; }
 
 # user defined variables
 # Where to get source code
-user_defined_project_clone="ssh://git@git.huntor.cn:18082/sino-agri/mscrm-front.git"
+user_defined_project_clone="ssh://git@git.example.com:18082/sino-agri/mscrm-front.git"
 user_defined_project_clone_branch_or_tag="develop-vux2" # this parameter can be replaced by option -b <branch name> or -t <tag name>
 user_defined_deploy_target_host_ip="10.6.28.46" # this is a mandatory field, and must be same as the first ip in $user_defined_deploy_targets_host_ip_list
 user_defined_project_top_directory_to_target_host="/data/docker/mscrm-front/htdocs"

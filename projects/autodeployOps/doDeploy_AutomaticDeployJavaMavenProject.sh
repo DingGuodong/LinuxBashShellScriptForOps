@@ -22,8 +22,8 @@ License: Open source software
 
 # user defined variables
 # Where to get source code
-user_defined_project_clone_depends="ssh://git@git.huntor.cn:18082/core/business-service-base.git"
-user_defined_project_clone="ssh://git@git.huntor.cn:18082/core/business-service-core.git"
+user_defined_project_clone_depends="ssh://git@git.example.com:18082/core/business-service-base.git"
+user_defined_project_clone="ssh://git@git.example.com:18082/core/business-service-core.git"
 # TODO(Guodong Ding) do deploy once time with multi-hosts support, try using 'for + deploy'
 user_defined_deploy_target_host_ip="10.6.28.135"
 #user_defined_project_top_directory_to_target_host="/data/docker/business-service/bs-core-01"
