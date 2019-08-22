@@ -39,14 +39,14 @@ if test ${UID} -ne 0; then
     exit 1
 fi
 
-ssh ${SSH_OPTION} ${USER}@${HOST} "mkdir -p ${DEST}"
+ssh "${SSH_OPTION}" ${USER}@${HOST} "mkdir -p ${DEST}"
 
 # run once time via check if log file exist
 test -f  ${RSYNC_LOG_FILE} || /usr/bin/rsync -azurR \
     -e "ssh ${SSH_OPTION}" \
     --delete --delete-excluded \
     --log-file=${RSYNC_LOG_FILE} \
-    ${SRC} ${USER}@${HOST}:${DEST}
+    ${SRC} ${USER}@${HOST}:"${DEST}"
 
 # fs.inotify.max_user_watches = 8192
 sysctl -w fs.inotify.max_user_watches=999999
@@ -57,10 +57,10 @@ sysctl -w fs.inotify.max_user_watches=999999
     --format '%w%f' \
     -e modify,delete,create,attrib \
     ${SRC} \
-| while read file; do
-    test -e ${file} && /usr/bin/rsync -azurR \
+| while read -r file; do
+    test -e "${file}" && /usr/bin/rsync -azurR \
         -e "ssh ${SSH_OPTION}" \
         --delete --delete-excluded \
         --log-file=${RSYNC_LOG_FILE} \
-        ${file} ${USER}@${HOST}:${DEST}
+        "${file}" ${USER}@${HOST}:"${DEST}"
 done

@@ -38,24 +38,24 @@ save_days=5
 
 function run() {
     SSH_OPTION="-oStrictHostKeyChecking=no"
-    ssh ${SSH_OPTION} -p ${backup_ssh_port} ${backup_ssh_user}@${backup_host} bash -c \"$@\"
+    # ssh ${SSH_OPTION} -p ${backup_ssh_port} -i "${backup_ssh_private_key}" ${backup_ssh_user}@${backup_host} bash -c \"$*\"
+    ssh ${SSH_OPTION} -p ${backup_ssh_port} -i "${backup_ssh_private_key}" ${backup_ssh_user}@${backup_host} "$*"
 }
 
 function is_backup_finished(){
-    is_backup_finished=0
+    is_backup_finished=1
     max_try_times=6
     goon=1
     while test ${goon} -eq 1; do
         is_all_true=0
-        for _ in `seq ${max_try_times}`; do
-            md5sum_1=`run md5sum ${backup_log}`
+        for _ in $(seq ${max_try_times}); do
+            md5sum_1=$(run md5sum ${backup_log})
             sleep 5
-            md5sum_2=`run md5sum ${backup_log}`
+            md5sum_2=$(run md5sum ${backup_log})
 
             if test "${md5sum_1}" == "${md5sum_2}"; then
-                is_all_true=$(($is_all_true + 1))
-            else
-                is_backup_finished=1
+                is_all_true=$((is_all_true + 1))
+                is_backup_finished=0
             fi
         done
 
@@ -66,7 +66,7 @@ function is_backup_finished(){
         fi
     done
 
-    return ${goon}
+    return ${is_backup_finished}
 }
 
 function do_archive_files(){
@@ -93,12 +93,12 @@ else
 fi
 
 echo "$(date +%s)  rsync remote files to local ..."
-test ! -d ${local_data_dir}/$(date -I) && mkdir -p ${local_data_dir}/$(date -I)
+test ! -d ${local_data_dir}/"$(date -I)" && mkdir -p ${local_data_dir}/"$(date -I)"
 rsync -azurR \
     -e "ssh ${SSH_OPTION}" \
     --delete --delete-excluded \
     --log-file=${RSYNC_LOG_FILE} \
-    ${backup_ssh_user}@${backup_host}:${backup_data_dir}/${backup_data_dirname}.tgz ${local_data_dir}/$(date -I)
+    ${backup_ssh_user}@${backup_host}:${backup_data_dir}/${backup_data_dirname}.tgz ${local_data_dir}/"$(date -I)"
 res=$?
 if test ${res} -ne 0 ; then
     echo "ERR: rsync failed"
