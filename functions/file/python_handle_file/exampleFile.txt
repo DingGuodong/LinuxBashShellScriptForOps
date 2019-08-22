@@ -14,18 +14,18 @@ Checking other dependencies for deploy procedure...
 	Checking disk space available passed!
 All required dependencies check passed!
 
-git pull from ssh://git@git.huntor.cn:18082/core/business-service-base.git
+git pull from ssh://git@git.example.com:18082/core/business-service-base.git
 位于分支 develop
 您的分支与上游分支 'origin/develop' 一致。
 
 无文件要提交，干净的工作区
-git pull from ssh://git@git.huntor.cn:18082/core/business-service-base.git successfully!
-git pull from ssh://git@git.huntor.cn:18082/core/business-service-sale.git
+git pull from ssh://git@git.example.com:18082/core/business-service-base.git successfully!
+git pull from ssh://git@git.example.com:18082/core/business-service-sale.git
 位于分支 develop
 您的分支与上游分支 'origin/develop' 一致。
 
 无文件要提交，干净的工作区
-git pull from ssh://git@git.huntor.cn:18082/core/business-service-sale.git successfully!
+git pull from ssh://git@git.example.com:18082/core/business-service-sale.git successfully!
 Do mvn install java project for business-service-base...
 mvn install for business-service-base successfully!
 Do mvn install java project finished for business-service-base with exit code 0!

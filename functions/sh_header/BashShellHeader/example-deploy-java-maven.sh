@@ -16,8 +16,8 @@ License: Open source software
 
 # user defined variables
 # Where to get source code
-project_clone_depends_1="ssh://git@git.huntor.cn:18082/core/business-service-base.git"
-project_clone="ssh://git@git.huntor.cn:18082/core/business-service-core.git"
+project_clone_depends_1="ssh://git@git.example.com:18082/core/business-service-base.git"
+project_clone="ssh://git@git.example.com:18082/core/business-service-core.git"
 deploy_target_host_ip="10.6.28.135"
 #project_top_directory_to_target_host="/data/docker/business-service/bs-core-01"
 #docker_container_name="bs-core-01"

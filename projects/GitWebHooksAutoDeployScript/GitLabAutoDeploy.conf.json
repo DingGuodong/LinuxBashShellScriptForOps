@@ -2,7 +2,7 @@
   "port": 9001,
   "repositories": [
     {
-      "url": "http://git.huntor.cn:18081/liyang/OperationMaintenance.git",
+      "url": "http://git.example.com:18081/liyang/OperationMaintenance.git",
       "path": "./OperationMaintenance",
       "deploy": "echo deploying"
     },

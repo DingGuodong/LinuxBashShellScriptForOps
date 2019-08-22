@@ -154,8 +154,8 @@ function startDockerContainersActiveMQ(){
         -e 'ACTIVEMQ_MIN_MEMORY=512' \
         -e 'ACTIVEMQ_MAX_MEMORY=2048' \
         -e 'ACTIVEMQ_NAME=amqp-srv1' \
-        -e 'ACTIVEMQ_ADMIN_LOGIN=huntor' \
-        -e 'ACTIVEMQ_ADMIN_PASSWORD=ht_2015' \
+        -e 'ACTIVEMQ_ADMIN_LOGIN=my_username' \
+        -e 'ACTIVEMQ_ADMIN_PASSWORD=my_password' \
         -e 'ACTIVEMQ_ENABLED_SCHEDULER=true' \
         -v /data/docker/amq-server/data:/data/activemq \
         -v /data/docker/amq-server/logs:/var/log/activemq \
@@ -189,7 +189,7 @@ function startDockerContainersEnvelope(){
         -v /data/docker/envelope-01:/data/tomcat-8.0.21/webapps/Envelope \
         -v /data/docker/logs/envelope-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection envelope-01
 
@@ -201,7 +201,7 @@ function startDockerContainersOS(){
         -v /data/docker/opensocial/os-gw-01:/data/tomcat-8.0.21/webapps/opensocial-gateway \
         -v /data/docker/logs/os-gw-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection os-gw-01
 
@@ -210,7 +210,7 @@ function startDockerContainersOS(){
         -v /data/docker/opensocial/os-msg-01:/data/tomcat-8.0.21/webapps/opensocial-message \
         -v /data/docker/logs/os-msg-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection os-msg-01
 
@@ -219,7 +219,7 @@ function startDockerContainersOS(){
         -v /data/docker/opensocial/os-inte-01:/data/tomcat-8.0.21/webapps/opensocial-integration \
         -v /data/docker/logs/os-inte-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection os-inte-01
 
@@ -228,7 +228,7 @@ function startDockerContainersOS(){
         -v /data/docker/opensocial/os-dsp-01:/data/tomcat-8.0.21/webapps/opensocial-dsp \
         -v /data/docker/logs/os-dsp-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection os-dsp-01
 
@@ -237,7 +237,7 @@ function startDockerContainersOS(){
         -v /data/docker/opensocial/os-web-01:/data/tomcat-8.0.21/webapps/opensocial-wechat-web \
         -v /data/docker/logs/os-web-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection os-web-01
 
@@ -249,7 +249,7 @@ function startDockerContainersBS(){
         -v /data/docker/business-service/bs-core-01:/data/tomcat-8.0.21/webapps/business-service-core \
         -v /data/docker/logs/bs-core-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection bs-core-01
 
@@ -258,7 +258,7 @@ function startDockerContainersBS(){
         -v /data/docker/business-service/bs-mobile-01:/data/tomcat-8.0.21/webapps/business-service-mobile \
         -v /data/docker/logs/bs-mobile-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection bs-mobile-01
 
@@ -267,7 +267,7 @@ function startDockerContainersBS(){
         -v /data/docker/business-service/bs-dsp-01:/data/tomcat-8.0.21/webapps/business-service-dsp \
         -v /data/docker/logs/bs-dsp-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection bs-dsp-01
 
@@ -276,7 +276,7 @@ function startDockerContainersBS(){
         -v /data/docker/business-service/bs-message-01:/data/tomcat-8.0.21/webapps/business-service-message \
         -v /data/docker/logs/bs-message-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection bs-message-01
 
@@ -285,7 +285,7 @@ function startDockerContainersBS(){
         -v /data/docker/business-service/bs-chatter-01:/data/chatter \
         -v /data/docker/logs/bs-chatter-01:/data/chatter/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-chatter
+        docker.example.com/jdk8-chatter
 
     docker network connect docker_connection bs-chatter-01
 
@@ -294,7 +294,7 @@ function startDockerContainersBS(){
     -v /data/docker/business-service/bs-publish-01:/data/tomcat-8.0.21/webapps/business-service-publish \
     -v /data/docker/logs/bs-publish-01:/data/tomcat-8.0.21/logs \
     -v /etc/localtime:/etc/localtime \
-    docker.huntor.cn/jdk8-tomcat8
+    docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection bs-publish-01
 
@@ -303,7 +303,7 @@ function startDockerContainersBS(){
         -v /data/docker/business-service/bs-serviceorder-01:/data/tomcat-8.0.21/webapps/business-service-serviceorder \
         -v /data/docker/logs/bs-serviceorder-01:/data/tomcat-8.0.21/logs \
         -v /etc/localtime:/etc/localtime \
-        docker.huntor.cn/jdk8-tomcat8
+        docker.example.com/jdk8-tomcat8
 
     docker network connect docker_connection bs-serviceorder-01
 }

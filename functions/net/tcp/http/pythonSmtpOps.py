@@ -4,10 +4,10 @@ from email.mime.text import MIMEText
 EMAIL_HOST = 'smtp.exmail.qq.com'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
-EMAIL_HOST_USER = 'noreply@huntor.cn'
-EMAIL_HOST_PASSWORD = 'huntor_nor_123'
-DEFAULT_FROM_EMAIL = 'noreply@huntor.cn'
-EMAIL_TO = 'dinggd@huntor.cn'
+EMAIL_HOST_USER = 'noreply@example.com'
+EMAIL_HOST_PASSWORD = 'my_password'
+DEFAULT_FROM_EMAIL = 'noreply@example.com'
+EMAIL_TO = 'dinggd@example.com'
 EMAIL_MESSAGE_SUBJECT = ''
 EMAIL_MESSAGE_CONTENT = ''
 msg = MIMEText(EMAIL_MESSAGE_CONTENT, _charset='utf-8')
