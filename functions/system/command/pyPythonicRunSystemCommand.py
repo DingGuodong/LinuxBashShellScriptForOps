@@ -43,6 +43,20 @@ def run_command(executable):
     return return_code, stdout, stderr
 
 
+def run_command_u1(executable):
+    """
+    run system command by subprocess.
+    u1: Combine stdout and stderr into stdout, such as 'exec >file 2>&1'
+    :param executable: executable command
+    :return: return_code, stdout, stderr
+    """
+    proc_obj = subprocess.Popen(executable, shell=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)  # Combine stdout and stderr into stdout
+    stdout, stderr = proc_obj.communicate()
+    return_code = proc_obj.returncode
+    return return_code, stdout
+
+
 def run(command):
     """
     run system command as if it were executed directly from the command line
