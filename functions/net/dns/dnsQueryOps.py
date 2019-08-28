@@ -9,14 +9,19 @@ query = dns.resolver.Resolver()
 query.nameservers = ['114.114.114.114']
 query.timeout = 1.0
 query.lifetime = 3.0
-answer = query.query(domain, 'A').response.answer
-
-# for record in answer[:-1]:
-#     if len(record) <= 1:
-#         print "CNAME records: %s" % record
-#     else:
-#         for cname in record:
-#             print "CNAME records: %s" % cname
+answer = query.query(domain, 'A').response.answer  # type: [dns.rrset.RRset,]
 
 for record in answer[-1]:
     print "A records: %s" % record
+
+
+def get_ip_with_socket(hostname):
+    import socket
+    try:
+        ip_address = socket.gethostbyname_ex(hostname)[-1]
+    except socket.error:
+        return None
+    return ip_address
+
+
+print(get_ip_with_socket(domain))

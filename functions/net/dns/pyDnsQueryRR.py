@@ -13,7 +13,7 @@ Create Date:            2018/3/21
 Create Time:            11:11
 Description:            python query dns RR(Resource Records), such as A, NS, CNAME, MX, TXT, SRV, etc
 Long Description:       
-References:             
+References:
 Prerequisites:          pip install dnspython
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
@@ -24,6 +24,8 @@ Operating System:       POSIX :: Linux, Microsoft :: Windows
 Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
+Tips:                   PEP 484 -- Type Hints, https://www.python.org/dev/peps/pep-0484/
+                        [Type hints cheat sheet (Python 2)](https://mypy.readthedocs.io/en/latest/cheat_sheet.html)
  """
 import dns.resolver
 
@@ -49,7 +51,7 @@ def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="8.8.8.8", debug=Fals
     resolver.cache = False
     answer = None
     try:
-        answer = resolver.query(qname, rdtype).response.answer
+        answer = resolver.query(qname, rdtype).response.answer  # type: [dns.rrset.RRset,]
     except dns.resolver.NoAnswer as e:
         if debug:
             print(e)
