@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 # Do not reinventing the wheel
 import platform
 import sys
@@ -15,11 +15,11 @@ import sys
 os_type = platform.uname()[0]
 
 if os_type == "Linux":
-    print "Linux"
+    print("Linux")
 elif os_type == "Windows":
-    print "Windows"
+    print("Windows")
 else:
     exit("Unknown Operating System!")
 
-print sys.version_info
-print sys.platform
+print(sys.version_info)
+print(sys.platform)

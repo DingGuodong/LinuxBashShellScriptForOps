@@ -1,10 +1,7 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
-import os
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 import re
 import sys
-
 from fabric.api import *
 from fabric.colors import *
 from fabric.context_managers import *
@@ -92,5 +89,5 @@ if __name__ == '__main__':
             sys.exit(0)
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    print(red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:])))
     sys.exit(1)

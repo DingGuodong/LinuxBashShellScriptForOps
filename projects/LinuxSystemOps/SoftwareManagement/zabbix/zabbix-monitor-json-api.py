@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:zabbix-monitor-json-api.py
@@ -23,36 +22,36 @@ import json
 
 
 def usage():
-    print """Usage:  %s [key_name]
+    print("""Usage:  %s [key_name]
 
 check health with json style API
-""" % __file__
+""" % __file__)
 
 
 if len(sys.argv) != 2:
-    print "syntax error, this script accepts one argument. but %d argument(s) received." % (len(sys.argv) - 1)
+    print("syntax error, this script accepts one argument. but %d argument(s) received." % (len(sys.argv) - 1))
     usage()
     sys.exit(1)
 
 api_url = r"monitor-afms.json"  # Note: using absolutely path is required
 if not os.path.exists(api_url):
-    print "API test failed, can not read API service file"
+    print("API test failed, can not read API service file")
     sys.exit(1)
 
 with open(api_url, 'r') as f:
     result = json.loads(f.read())
 
 if result['errcode'] == 0:
-    print 0
+    print(0)
 else:
     if sys.argv[1] in result['errmsg'].keys():
         if result['errmsg'][sys.argv[1]]['code'] != 0:
-            print 1
+            print(1)
         else:
-            print 0
+            print(0)
     else:
-        print """argument error, this script accepts argument(s):
+        print("""argument error, this script accepts argument(s):
 %s,
 but \"%s\" argument received.
-""" % (result['errmsg'].keys(), sys.argv[1])
+""" % (result['errmsg'].keys(), sys.argv[1]))
         sys.exit(1)

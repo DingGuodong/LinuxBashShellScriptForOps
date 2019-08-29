@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:get-value-from-json-in-pythonic-way.py

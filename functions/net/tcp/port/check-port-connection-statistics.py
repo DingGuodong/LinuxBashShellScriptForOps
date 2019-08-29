@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:check-port-connection-statistics.py
@@ -61,10 +61,10 @@ try:
                 remote_addr_set.add(ip)
                 wanted_res_list.append((now, my_sconn))
 
-                print wanted_res_list
+                print(wanted_res_list)
                 with open(statistics_file, 'w') as fp:
                     fp.write("\n".join([str(x) for x in wanted_res_list]))
         time.sleep(1)
 
 except (KeyboardInterrupt, SystemExit):
-    print "exited"
+    print("exited")

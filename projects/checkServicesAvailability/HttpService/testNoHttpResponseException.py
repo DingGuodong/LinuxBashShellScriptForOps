@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:testNoHttpResponseException,testHttpHostAvailability.py
@@ -39,7 +38,7 @@ def changeQuit_flag(signum, frame):
     del signum, frame
     global quit_flag
     quit_flag = True
-    print "Canceled task on their own by the user."
+    print("Canceled task on their own by the user.")
 
 
 def testNoHttpResponseException(url):
@@ -59,34 +58,34 @@ def testNoHttpResponseException(url):
                 endTime = time.time()
                 data = resp.read()
                 responseTime = endTime - startTime
-                print '%d bytes received from %s. response time is: %s' % (len(data), url, responseTime)
-                print "data received from %s at %d try is: %s" % (url, tryCounts, data)
+                print('%d bytes received from %s. response time is: %s' % (len(data), url, responseTime))
+                print("data received from %s at %d try is: %s" % (url, tryCounts, data))
                 gevent.sleep(2)
             except urllib2.HTTPError as e:
                 errorCounts += 1
                 statistics[url] = errorCounts
                 currentTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-                print "HTTPError occurred, %s, and this is %d times(total) occurs on %s at %s." % (
-                    e, statistics[url], url, currentTime)
+                print("HTTPError occurred, %s, and this is %d times(total) occurs on %s at %s." % (
+                    e, statistics[url], url, currentTime))
 
                 if errorCounts >= errorStopCounts:
                     globalEndTime = time.time()
                     tryFlag = False
             except Exception as e:
                 # Exception, such as 'error: [Errno 104] Connection reset by peer'
-                print "Error occurred, %s on %s" % (e, url)
+                print("Error occurred, %s on %s" % (e, url))
                 time.sleep(2)
         else:
             globalEndTime = time.time()
             break
 
     for url in statistics:
-        print "Total error counts is %d on %s" % (statistics[url], url)
+        print("Total error counts is %d on %s" % (statistics[url], url))
         hosts.remove(url)
     for url in hosts:
-        print "Total error counts is 0 on %s" % url
+        print("Total error counts is 0 on %s" % url)
     globalUsedTime = globalEndTime - globalStartTime
-    print "Total time use is %s" % globalUsedTime
+    print("Total time use is %s" % globalUsedTime)
     sys.exit(0)
 
 
@@ -98,5 +97,5 @@ try:
     gevent.joinall([gevent.spawn(testNoHttpResponseException, host) for host in hosts])
 except KeyboardInterrupt:
     # Note: this line can NOT be reached, because signal has been captured!
-    print "Canceled task on their own by the user."
+    print("Canceled task on their own by the user.")
     sys.exit(0)

@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:pyShutitOps.py

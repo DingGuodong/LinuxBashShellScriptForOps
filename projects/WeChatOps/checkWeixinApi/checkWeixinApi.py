@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:checkWeixinApi.py
@@ -33,9 +32,9 @@ def request_http(url):
 
     response = requests.request("GET", url, headers=headers)
 
-    print len(response.text), "retrieved from %s " % url
+    print(len(response.text), "retrieved from %s " % url)
     gevent.sleep(0.5)
-    print response.headers, "from %s " % url
+    print(response.headers, "from %s " % url)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:py_remove_old_releases.py
@@ -73,8 +72,8 @@ services_list = [  # put your service name here, filename starts with this servi
     r'zy-cloud',
 ]
 
-print "WARNING: files as follows will be deleted, this is unrecoverable."
-print "=" * 64
+print("WARNING: files as follows will be deleted, this is unrecoverable.")
+print("=" * 64)
 
 for service in services_list:
     for release in services_releases_to_clean_dict["releases"]:
@@ -111,13 +110,13 @@ for service in services_list:
                     if os.path.exists(filename):
 
                         if os.path.isdir(filename):
-                            print "[D]: ", filename, "; Last modify time: ", time.strftime('%Y-%m-%d %H:%M:%S',
-                                                                                           time.localtime(item[1]))
+                            print("[D]: ", filename, "; Last modify time: ", time.strftime('%Y-%m-%d %H:%M:%S',
+                                                                                           time.localtime(item[1])))
                             shutil.rmtree(filename)
                         elif os.path.isfile(filename):
-                            print "[F]: ", filename, "; Last modify time: ", time.strftime('%Y-%m-%d %H:%M:%S',
-                                                                                           time.localtime(item[1]))
+                            print("[F]: ", filename, "; Last modify time: ", time.strftime('%Y-%m-%d %H:%M:%S',
+                                                                                           time.localtime(item[1])))
                             os.remove(filename)
 
-print "=" * 64
-print "SUCCESS: clean finished"
+print("=" * 64)
+print("SUCCESS: clean finished")

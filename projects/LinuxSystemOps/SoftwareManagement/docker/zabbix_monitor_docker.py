@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:zabbix_monitor_docker.py
@@ -83,15 +82,15 @@ def check_container_stats(container_name, collect_item):
 if __name__ == "__main__":
     linux = (sys.platform == "linux2")
     if not linux:
-        print "Does not meet the prerequisites, Linux system is required. Aborted. "
+        print("Does not meet the prerequisites, Linux system is required. Aborted. ")
         sys.exit(1)
     docker_socket_abs_path = "/var/run/docker.sock"
     current_option_flags = os.getenv("-")  # TODO(Guodong Ding) check it out that if current shell is interactive shell.
     if "i" in current_option_flags:
         while True:
             if not os.path.exists(docker_socket_abs_path):
-                print "can not locate docker socket file, please manually specify one."
-                docker_socket_abs_path = raw_input("path to docker socket file, default is \"/var/run/docker.sock\": ")
+                print("can not locate docker socket file, please manually specify one.")
+                docker_socket_abs_path = input("path to docker socket file, default is \"/var/run/docker.sock\": ")
             else:
                 break
     client = Client(base_url='unix://' + docker_socket_abs_path)
@@ -102,4 +101,4 @@ if __name__ == "__main__":
         item = sys.argv[2]
     else:
         exit(1)
-    print check_container_stats(container, item)
+    print(check_container_stats(container, item))

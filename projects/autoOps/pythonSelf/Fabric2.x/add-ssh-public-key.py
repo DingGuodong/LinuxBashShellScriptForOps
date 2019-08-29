@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:add-ssh-public-key.py
@@ -87,6 +87,6 @@ for host in hosts_ssh_config.strip().split("\n"):
                 cxn.run('cp ~/.ssh/authorized_keys ~/.ssh/authorized_keys$(date +%Y%m%d%H%M%S)~', hide=True)
                 cxn.run('echo %s >> ~/.ssh/authorized_keys' % ssh_public_key, hide=True)
             else:
-                print "ssh key added already."
+                print("ssh key added already.")
     except AuthenticationException as e:
         raise Exit(e)

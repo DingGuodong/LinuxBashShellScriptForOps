@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:zabbix-monitor-nginx-stub-status.py
@@ -120,10 +119,10 @@ if __name__ == '__main__':
     url_to_request = u"https://api.e-bao.cn/nginx_basic_status"
     zmn = ZabbixMonitorNginx(url_to_request)
     if len(sys.argv) == 1:
-        print zmn.data
-        print zmn.stub_status_tuple
-        print zmn.stub_status_dict
+        print(zmn.data)
+        print(zmn.stub_status_tuple)
+        print(zmn.stub_status_dict)
     elif len(sys.argv) == 2:
-        print zmn.stub_status_dict.get(sys.argv[1], 0)
+        print(zmn.stub_status_dict.get(sys.argv[1], 0))
     else:
         raise RuntimeError("bad call")

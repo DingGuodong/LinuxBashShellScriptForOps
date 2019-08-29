@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:retrieveLatestOpenSSLVersionUrl.py
@@ -54,6 +53,6 @@ for number, item in enumerate(file_url_list):
         break
 if file_url == "":
     file_url = file_url_list[number]
-    print file_url
+    print(file_url)
 else:
-    print file_url
+    print(file_url)

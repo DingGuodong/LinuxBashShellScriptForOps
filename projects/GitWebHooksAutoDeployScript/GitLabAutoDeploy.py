@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 import json
 import os
 import re
@@ -87,7 +87,7 @@ class GitLabAutoDeploy(BaseHTTPRequestHandler):
         event = self.headers.getheader('X-Github-Event')
         if event == 'ping':
             if not self.quiet:
-                print 'Ping event received'
+                print('Ping event received')
             self.respond(204)
             return
 
@@ -123,7 +123,7 @@ class GitLabAutoDeploy(BaseHTTPRequestHandler):
             sys.exit('Get content-length from headers failed!')
         body = self.rfile.read(length)
         # Debug purpose
-        print 'Debug: Body is ' + body
+        print('Debug: Body is ' + body)
         try:
             json.loads(body)
         except Exception as _:
@@ -159,8 +159,8 @@ class GitLabAutoDeploy(BaseHTTPRequestHandler):
 
     def fetch(self, path):
         if not self.quiet:
-            print "\nPost push request received"
-            print 'Updating ' + path
+            print("\nPost push request received")
+            print('Updating ' + path)
         call(['cd "' + path + '" && git fetch'], shell=True)
 
     def deploy(self, path):
@@ -174,11 +174,11 @@ class GitLabAutoDeploy(BaseHTTPRequestHandler):
 
                     if branch is None or branch == self.branch:
                         if not self.quiet:
-                            print 'Executing deploy command'
+                            print('Executing deploy command')
                         call(['cd "' + path + '" && ' + repository['deploy']], shell=True)
 
                     elif not self.quiet:
-                        print 'Push to different branch (%s != %s), not deploying' % (branch, self.branch)
+                        print('Push to different branch (%s != %s), not deploying' % (branch, self.branch))
                 break
 
 
@@ -199,9 +199,9 @@ def main():
             os.setsid()
 
         if not GitLabAutoDeploy.quiet:
-            print 'Github AutoDeploy Service v0.2 started'
+            print('Github AutoDeploy Service v0.2 started')
         else:
-            print 'Github AutoDeploy Service v 0.2 started in daemon mode'
+            print('Github AutoDeploy Service v 0.2 started in daemon mode')
 
         server = HTTPServer(('', GitLabAutoDeploy.getConfig()['port']), GitLabAutoDeploy)
         server.serve_forever()
@@ -213,7 +213,7 @@ def main():
             server.socket.close()
 
         if not GitLabAutoDeploy.quiet:
-            print 'Goodbye'
+            print('Goodbye')
 
 
 if __name__ == '__main__':

@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:getDockerContainerInfoWithPidNumber.py
@@ -37,7 +36,7 @@ class dockerContainerUtils(object):
         if len(idList) != 0:
             return idList
         else:
-            print "Container ID is NOT found for pid %s, maybe this is NOT a container pid!" % self.pid
+            print("Container ID is NOT found for pid %s, maybe this is NOT a container pid!" % self.pid)
             pass  # sys.exit(1)
 
     @staticmethod
@@ -62,10 +61,10 @@ class dockerContainerUtils(object):
         else:
             raise RuntimeError('Unknown error. Aborted!')
         if version > versionSupported:
-            print "Docker Server Version is: %s. Congratulations! This version is supported!" % version
+            print("Docker Server Version is: %s. Congratulations! This version is supported!" % version)
             return True
         else:
-            print "Docker Server Version is: %s. Unfortunately! This version is NOT supported!" % version
+            print("Docker Server Version is: %s. Unfortunately! This version is NOT supported!" % version)
             return False
 
     @staticmethod
@@ -83,7 +82,7 @@ class dockerContainerUtils(object):
             if sys.argv[1] is not None and sys.argv[1].isdigit():
                 self.pid = int(sys.argv[1])
         else:
-            self.pid = int(raw_input('Please input pid number.'))
+            self.pid = int(input('Please input pid number.'))
         if self.isLegalPid() and self.isExistedPid():
             return self.pid
 
@@ -105,7 +104,7 @@ class dockerContainerUtils(object):
             return
         else:
             if objects is not None:
-                print objects
+                print(objects)
 
     def getCurrentAllPids(self):
         return [int(name) for name in os.listdir(self.proc) if name.isdigit()]
@@ -117,7 +116,7 @@ class dockerContainerUtils(object):
         if os.path.exists(pidDir):
             pass
         else:
-            print 'pid is not exist!'
+            print('pid is not exist!')
             sys.exit(1)
         try:
             with open(os.path.join(pidDir, "status"), 'r') as f:
@@ -126,7 +125,7 @@ class dockerContainerUtils(object):
                     kv = item.replace('\t', ' ').split(":")
                     status[kv[0].strip()] = kv[1].strip()
         except IOError:
-            print 'pid is not exist!'
+            print('pid is not exist!')
             sys.exit(1)
         return dict(status)
 
@@ -137,13 +136,13 @@ class dockerContainerUtils(object):
         if self.pid in self.getCurrentAllPids():
             pidDir = os.path.join(self.proc, str(self.pid))
         else:
-            print 'pid is not exist! Aborted!'
+            print('pid is not exist! Aborted!')
             sys.exit(1)
 
         if os.path.exists(pidDir):
             pass
         else:
-            print 'pid is not exist! Aborted!'
+            print('pid is not exist! Aborted!')
             sys.exit(1)
 
         try:
@@ -152,7 +151,7 @@ class dockerContainerUtils(object):
                 if cmdline is None or cmdline == '':
                     raise RuntimeError('cmdline is None or \'\', this always means pid is NOT exist! Aborted! ')
         except IOError:
-            print 'pid is not exist! Aborted!'
+            print('pid is not exist! Aborted!')
             sys.exit(1)
         return str(cmdline)
 
@@ -183,7 +182,7 @@ class dockerContainerUtils(object):
         pidChain = list()
         pidChain.append(self.pid)
         oldPid = self.pid
-        for i in xrange(maxPidChain - 1):
+        for i in range(maxPidChain - 1):
             pidItem = self.getPPid()
             if pidItem != 0:
                 pidChain.append(pidItem)
@@ -348,21 +347,21 @@ class dockerContainerUtils(object):
 
 if __name__ == '__main__':
     p = dockerContainerUtils()
-    print "Pid number is: %d" % p.pid
-    print "Pid number ContainerId is %s" % p.getContainerLongIdUsingDockerInspectAllContainerID()
-    print "Pid number cmdline is: %s" % p.getCmdline()
-    print "Parent pid number is: %s" % p.getPPid()
-    print "Parent pid number cmdline is: %s" % p.getPPidCmdline()
-    print "Parent parent pid number is: %s" % p.getPPPid()
-    print "Pid chain is: %s" % p.getPidChain()
-    print "Pid Cmdline chain is: %s" % p.getCmdlineChain()
+    print("Pid number is: %d" % p.pid)
+    print("Pid number ContainerId is %s" % p.getContainerLongIdUsingDockerInspectAllContainerID())
+    print("Pid number cmdline is: %s" % p.getCmdline())
+    print("Parent pid number is: %s" % p.getPPid())
+    print("Parent pid number cmdline is: %s" % p.getPPidCmdline())
+    print("Parent parent pid number is: %s" % p.getPPPid())
+    print("Pid chain is: %s" % p.getPidChain())
+    print("Pid Cmdline chain is: %s" % p.getCmdlineChain())
 
     # TODO(Guodong Ding) pid should use 'docker-proxy's' pid.
     # print "Pid number's socket inode number is %s" % p.getFDSocketInodeNumber()
     # print "Pid number's port number is %s" % p.getPortNumberWithInodeNumber()
     # print "Pid number ContainerShortId is %s" % p.getContainerShortIDWithPort()
 
-    print "Pid number ContainerId is %s" % p.getContainerId()
-    print "Pid number short ContainerId is %s" % p.getContainerShortID()
-    print "Pid number list container: %s" % p.listContainer()
+    print("Pid number ContainerId is %s" % p.getContainerId())
+    print("Pid number short ContainerId is %s" % p.getContainerShortID())
+    print("Pid number list container: %s" % p.listContainer())
     # print "Pid number Container info is: %s" % p.getContainerInfo()

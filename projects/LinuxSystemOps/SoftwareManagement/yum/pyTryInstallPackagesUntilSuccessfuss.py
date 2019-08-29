@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:pyTryInstallPackagesUntilSuccessfuss.py
@@ -29,14 +28,9 @@ import time
 
 
 def decoding(text):
-    import sys
-    import codecs
-    import locale
 
-    if isinstance(text, unicode):
+    if isinstance(text, str):
         return text
-    elif isinstance(text, (basestring, str)):
-        pass
     else:
         return text  # do not need decode, return original object if type is not instance of string type
         # raise RuntimeError("expected type is str, but got {type} type".format(type=type(text)))
@@ -69,8 +63,8 @@ def fn_timer(func):
         time_begin = time.time()
         result = func(*args, **kwargs)
         time_end = time.time()
-        print "Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
-                                                                                time_spent=(time_end - time_begin))
+        print("Total time running {function_name}: {time_spent} seconds".format(function_name=func.func_name,
+                                                                                time_spent=(time_end - time_begin)))
 
         return result
 
@@ -86,11 +80,11 @@ def run(command, capture_stdout=False, suppress_stdout=False):
     (stdout, stderr) = p.communicate()
 
     if p.returncode != 0:  # run command failed
-        print "encountered an error (return code %s) while executing '%s'" % (p.returncode, command)
+        print("encountered an error (return code %s) while executing '%s'" % (p.returncode, command))
         if stdout is not None:
-            print "Standard output:\n", decoding(stdout)
+            print("Standard output:\n", decoding(stdout))
         if stderr is not None:
-            print "Standard error:\n", decoding(stderr)
+            print("Standard error:\n", decoding(stderr))
         if not capture_stdout:
             return False
         else:
@@ -102,7 +96,7 @@ def run(command, capture_stdout=False, suppress_stdout=False):
                 return stdout
             else:
                 if not suppress_stdout:
-                    print decoding(stdout)
+                    print(decoding(stdout))
                 return True
 
 
@@ -111,11 +105,11 @@ if __name__ == '__main__':
     keep_running_flay = True
 
     while keep_running_flay:
-        print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
 
         if run("yum install -y mongodb-org"):
-            print "Successfully"
+            print("Successfully")
             keep_running_flay = False
         else:
-            print "Failed"
+            print("Failed")
             time.sleep(2)

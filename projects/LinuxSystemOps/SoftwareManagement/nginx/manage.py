@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:manage.py.py
@@ -24,14 +23,14 @@ BASE = "nginx"
 
 
 def usage():
-    print "using this script install nginx for specified host or hosts group."
-    print """Example:
+    print("using this script install nginx for specified host or hosts group.")
+    print("""Example:
     fab -i <PATH> -f <PATH> <command>
 
     -i <PATH>    path to SSH private key file. May be repeated.
     -f <PATH>    this file's full name, such as \'manage.py\'.
     <command>    def name in this file.
-    """
+    """)
     sys.exit(1)
 
 
@@ -66,16 +65,16 @@ host = ''
 hosts_list = list()
 while True:
     if len(hosts_list) == 0:
-        print "Please input host's IP for deploy %s here. <Press Enter to end input>" % BASE
-    host = raw_input()
+        print("Please input host's IP for deploy %s here. <Press Enter to end input>" % BASE)
+    host = input()
     if host == "":
         break
     else:
         try:
             host = str(IP(host, ipversion=4))
             hosts_list.append(host)
-        except ValueError, e:
-            print "Please input a valid IP address."
+        except ValueError as e:
+            print("Please input a valid IP address.")
             # want_continue = raw_input("Continue? y/n <default is NO>:\n")
             # if want_continue in ['Yes', 'YES', 'yes', 'Y', 'y']:
             #     continue
@@ -87,7 +86,7 @@ while True:
                 break
 
 if len(hosts_list) == 0:
-    print "No hostname specified, see usage for more :"
+    print("No hostname specified, see usage for more :")
     usage()
 
 env.hosts = list(set(hosts_list))  # remove duplicated host with set()
@@ -135,26 +134,24 @@ def load_script():
     script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "nginx-install-centos.sh")
     if os.path.exists(script_path):
         try:
-            print "uploading script file to %s" % env.host
+            print("uploading script file to %s" % env.host)
             put(script_path, '/tmp/' + os.path.basename(script_path))
-            print "run script file on %s" % env.host
+            print("run script file on %s" % env.host)
             run("bash %s" % ('/tmp/' + os.path.basename(script_path)))
         except Exception as err:
             log.error("task load_script failed! msg: %s" % err.message)
             abort("task load_script failed! msg: %s" % err.message)
     else:
-        print "Can NOT find script file."
+        print("Can NOT find script file.")
 
 
 def terminal_debug(defName):
-    print "This method is used to test this script file if works well, do not using it for production"
+    print("This method is used to test this script file if works well, do not using it for production")
     try:
         usage()
     except SystemExit:
         pass
-    command = "fab -i c:\Users\Guodong\.ssh\exportedkey201310171355\
-                -f %s \
-                %s" % (__file__, defName)
+    command = "fab -i c:\/Users\Guodong\.ssh\exportedkey201310171355 -f {} {}".format(__file__, defName)
     os.system(command)
     sys.exit(0)
 
@@ -164,5 +161,5 @@ if __name__ == '__main__':
         terminal_debug("load_script")
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    print(red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:])))
     sys.exit(1)

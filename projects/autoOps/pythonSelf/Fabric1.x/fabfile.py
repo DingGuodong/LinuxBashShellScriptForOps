@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-\
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 
 # Pythonic remote execution
 # Refer: http://docs.fabfile.org/en/1.6/tutorial.html#conclusion
@@ -79,7 +78,7 @@ elif os_release == "Linux":
         command_to_execute = "which pip &>/dev/null 1>&2 || yum -y install python-pip"
         os.system(command_to_execute)
 else:
-    print "Error => Unsupported OS type."
+    print("Error => Unsupported OS type.")
     logger.error("Unsupported OS type.")
     sys.exit(1)
 
@@ -237,7 +236,7 @@ def sudo_run(*args, **kwargs):
 
 def check_var_is_absent(var):
     if var is None or var == "":
-        print var + " is None or empty, please check and fix it!"
+        print(var + " is None or empty, please check and fix it!")
         sys.exit(1)
 
 
@@ -279,10 +278,10 @@ def check_network_connectivity():
         del _
         result_code = 1
     if result_code is not None:
-        print red("Error   => connect to Internet failed!")
+        print(red("Error   => connect to Internet failed!"))
         logger.error("connect to Internet failed!")
     else:
-        print green("Success => connect to Internet successfully!")
+        print(green("Success => connect to Internet successfully!"))
 
 
 def check_name_resolve():
@@ -295,10 +294,10 @@ def check_name_resolve():
         del _
         result_code = 1
     if result_code is not None:
-        print red("Error   => name resolve to Internet failed!")
+        print(red("Error   => name resolve to Internet failed!"))
         logger.error("name resolve to Internet failed!")
     else:
-        print green("Success => name resolve to Internet successfully!")
+        print(green("Success => name resolve to Internet successfully!"))
 
 
 def set_dns_resolver():
@@ -325,7 +324,7 @@ def set_hosts_file(hosts="/etc/hosts"):
         curl.close()
 
     hostname = socket.gethostname()  # socket.getfqdn()
-    print hostname
+    print(hostname)
     try:
         ip = socket.gethostbyname(socket.gethostname())  # TODO(Guodong Ding) Ubuntu not passed here, but CentOS passed!
     except Exception as _:
@@ -340,7 +339,7 @@ def set_hosts_file(hosts="/etc/hosts"):
 
 
 def set_capistrano_directory_structure_over_fabric():
-    print blue("setting capistrano directory structure ...")
+    print(blue("setting capistrano directory structure ..."))
     capistrano_release = env.basedir + '/release'
     capistrano_repository = env.basedir + '/repository'
     capistrano_share = env.basedir + '/share'
@@ -359,7 +358,7 @@ def set_capistrano_directory_structure_over_fabric():
 
         with open(env.capistrano_ds_lock, 'w') as f:
             if os.path.exists("/etc/timezone"):
-                tz = file("/etc/timezone").read().strip()
+                tz = open("/etc/timezone").read().strip()
                 if tz == 'Asia/Chongqing' or tz == 'Asia/Shanghai':
                     content = datetime.datetime.now(tz=pytz.timezone(tz))
                 else:
@@ -367,7 +366,7 @@ def set_capistrano_directory_structure_over_fabric():
             else:
                 content = datetime.datetime.now()
             f.write(str(content))
-    print green("setting capistrano directory structure successfully!")
+    print(green("setting capistrano directory structure successfully!"))
 
 
 def git_clone_local():
@@ -390,6 +389,6 @@ if __name__ == '__main__':
         sys.exit(0)
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))
+    print(red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:])))
     logger.error("Syntax error. Exit now.")
     sys.exit(1)

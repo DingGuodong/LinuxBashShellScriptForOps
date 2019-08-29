@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:retrieveLatestOpenSSLVersionUrl.py
@@ -43,4 +42,4 @@ for link in available_version:
     if match:
         file_url_list.append(downloads_page_url + match.group())
 
-print file_url_list[-1]
+print(file_url_list[-1])

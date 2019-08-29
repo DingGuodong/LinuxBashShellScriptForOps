@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 
 import json
 import os
@@ -47,12 +48,12 @@ class GitAutoDeploy(BaseHTTPRequestHandler):
         event = self.headers.getheader('X-Github-Event')
         if event == 'ping':
             if not self.quiet:
-                print 'Ping event received'
+                print('Ping event received')
             self.respond(204)
             return
         if event != 'push':
             if not self.quiet:
-                print 'We only handle ping and push events'
+                print('We only handle ping and push events')
             self.respond(304)
             return
 
@@ -87,8 +88,8 @@ class GitAutoDeploy(BaseHTTPRequestHandler):
 
     def fetch(self, path):
         if not self.quiet:
-            print "\nPost push request received"
-            print 'Updating ' + path
+            print("\nPost push request received")
+            print('Updating ' + path)
         call(['cd "' + path + '" && git fetch'], shell=True)
 
     def deploy(self, path):
@@ -102,11 +103,11 @@ class GitAutoDeploy(BaseHTTPRequestHandler):
 
                     if branch is None or branch == self.branch:
                         if not self.quiet:
-                            print 'Executing deploy command'
+                            print('Executing deploy command')
                         call(['cd "' + path + '" && ' + repository['deploy']], shell=True)
 
                     elif not self.quiet:
-                        print 'Push to different branch (%s != %s), not deploying' % (branch, self.branch)
+                        print('Push to different branch (%s != %s), not deploying' % (branch, self.branch))
                 break
 
 
@@ -127,9 +128,9 @@ def main():
             os.setsid()
 
         if not GitAutoDeploy.quiet:
-            print 'Github Autodeploy Service v0.2 started'
+            print('Github Autodeploy Service v0.2 started')
         else:
-            print 'Github Autodeploy Service v 0.2 started in daemon mode'
+            print('Github Autodeploy Service v 0.2 started in daemon mode')
 
         server = HTTPServer(('', GitAutoDeploy.getConfig()['port']), GitAutoDeploy)
         server.serve_forever()
@@ -141,7 +142,7 @@ def main():
             server.socket.close()
 
         if not GitAutoDeploy.quiet:
-            print 'Goodbye'
+            print('Goodbye')
 
 
 if __name__ == '__main__':

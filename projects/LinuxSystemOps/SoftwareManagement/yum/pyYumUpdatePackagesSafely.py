@@ -1,6 +1,5 @@
-#!/usr/bin/python
-# encoding: utf-8
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 """
 Created by PyCharm.
 File:               LinuxBashShellScriptForOps:pyYumUpdatePackagesSafely.py
@@ -38,7 +37,7 @@ def run_command_on_linux(command):
     import subprocess
     linux = (sys.platform == "linux2")
     if not linux:
-        print "Error: Linux platform is supported only!"
+        print("Error: Linux platform is supported only!")
         sys.exit(1)
 
     proc_obj = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
@@ -48,8 +47,8 @@ def run_command_on_linux(command):
     if return_code == 0:
         return stdout
     else:
-        print "command execute failed, return code is {return_code}".format(return_code=return_code)
-        print stdout, stderr
+        print("command execute failed, return code is {return_code}".format(return_code=return_code))
+        print(stdout, stderr)
         sys.exit(1)
 
 
@@ -64,4 +63,4 @@ if __name__ == '__main__':
         try:
             run_command_on_linux(r"yum update -y {package}".format(package=package))
         except SystemExit:
-            print "update failed, maybe due to already updated"
+            print("update failed, maybe due to already updated")

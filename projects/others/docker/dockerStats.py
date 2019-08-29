@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 # fork and modify something from http://dl528888.blog.51cto.com/2382721/1660844
 
 import os
@@ -81,4 +81,4 @@ if __name__ == "__main__":
         item = sys.argv[2]
     else:
         exit(1)
-    print check_container_stats(container, item)
+    print(check_container_stats(container, item))
