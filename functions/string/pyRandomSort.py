@@ -66,3 +66,18 @@ print(p.shuffle(range(10)))
 
 # call method 2
 print(shuffle(range(10)))
+
+# method 3
+try:
+    del shuffle
+except NameError:
+    pass
+finally:
+    from random import shuffle
+
+a_list = range(10)
+b_list = list(a_list)  # like deep copy
+shuffle(a_list)
+print a_list
+print b_list
+print(dict(zip(b_list, a_list)))
