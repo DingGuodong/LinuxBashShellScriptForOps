@@ -67,6 +67,8 @@ def add_ssh_key():
         if run_result.failed:
             cxn.run('mkdir -p ~/.ssh', hide=True)
             cxn.run('echo %s >> ~/.ssh/authorized_keys' % ssh_public_key, hide=True)
+            cxn.run('chmod 700 ~/.ssh', hide=True)
+            cxn.run('chmod 400 ~/.ssh/authorized_keys', hide=True)
         else:
             if ssh_public_key not in run_result.stdout:
                 cxn.run('cp ~/.ssh/authorized_keys ~/.ssh/authorized_keys$(date +%Y%m%d%H%M%S)~', hide=True)
@@ -117,7 +119,8 @@ def install_packages_base():
             'ruby facter '
             'ntp ntp-doc '
             'bash-completion command-not-found '
-            'net-tools iputils-ping dnsutils',
+            'net-tools iputils-ping dnsutils '
+            'unzip lrzsz',
             hide=True, warn=True)
     elif is_yum():
         cxn.run(
@@ -127,9 +130,10 @@ def install_packages_base():
             'yum install -y ca-certificates openssl openssl-devel curl rpm gnupg2 nss bash-completion '
             'facter ruby-json '
             'ntp ntpdate ntp-doc '
-            'bash-completion PackageKit-command-not-found '
+            'bash-completion bash-completion-extras '
             'net-tools iputils bind-utils '
-            'yum-plugin-fastestmirror',
+            'yum-plugin-fastestmirror '
+            'unzip lrzsz',
             hide=True, warn=True)
     else:
         raise Exit("install_packages_base failed.")

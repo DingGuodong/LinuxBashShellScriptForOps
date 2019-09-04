@@ -47,8 +47,10 @@ ecs3,192.168.88.20,22,username,password,true,dev,dev machine 3
 '''
 
 # ssh public key
-ssh_public_key = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDR/h48IUPlp8ho4MpW3ez49eN4OyB5U9gs4TlhTPHyf1F3nZvoWXveBtIYpFnr' \
-                 '/FnuiKK26hrJwNlDE1J66BK1IbJrgHbYEhYLbT5dT9a0cXvrhn/3pifQIKiaakC8XLvpGKafw2gW8T2pi6MeFmEToSU1OM59FysbqX' \
+ssh_public_key = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDR' \
+                 '/h48IUPlp8ho4MpW3ez49eN4OyB5U9gs4TlhTPHyf1F3nZvoWXveBtIYpFnr' \
+                 '/FnuiKK26hrJwNlDE1J66BK1IbJrgHbYEhYLbT5dT9a0cXvrhn' \
+                 '/3pifQIKiaakC8XLvpGKafw2gW8T2pi6MeFmEToSU1OM59FysbqX' \
                  '/blNBKRqqjadRUgS9dA4ZJL6IAvCngFUEJgWSVVe5oSYvJmtmRquYCISdMXQJB' \
                  '/uQwLqmcV2fbVoHI4zvfxjFVoQWRvtb2jddbd2US562IG' \
                  '/5Wv1vnzY4kBRkkulcHLie8NG/Yh6fBt+R0K0XKWDvrcFF7nm6sZOmg8BSX+g6dUfsPxN9r'
@@ -82,11 +84,13 @@ for host in hosts_ssh_config.strip().split("\n"):
         if run_result.failed:
             cxn.run('mkdir -p ~/.ssh', hide=True)
             cxn.run('echo %s >> ~/.ssh/authorized_keys' % ssh_public_key, hide=True)
+            cxn.run('chmod 700 ~/.ssh', hide=True)
+            cxn.run('chmod 400 ~/.ssh/authorized_keys', hide=True)
         else:
             if ssh_public_key not in run_result.stdout:
                 cxn.run('cp ~/.ssh/authorized_keys ~/.ssh/authorized_keys$(date +%Y%m%d%H%M%S)~', hide=True)
                 cxn.run('echo %s >> ~/.ssh/authorized_keys' % ssh_public_key, hide=True)
             else:
-                print "ssh key added already."
+                print("ssh key already added.")
     except AuthenticationException as e:
         raise Exit(e)
