@@ -12,6 +12,7 @@ Create Date:            2019/6/25
 Create Time:            9:43
 Description:            find directories larger than x bits
 Long Description:       get all directories which not empty and have no subdir, then get total size order by size
+                        find and ready to clean large directories
 References:             
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
@@ -43,7 +44,12 @@ def get_size_of_directory(path):
         for top, dirs, nondirs in os.walk(path):
             for filename in nondirs:
                 full_path = os.path.join(top, filename)
-                size += os.path.getsize(full_path)
+                try:
+                    size += os.path.getsize(full_path)
+                except (WindowsError, OSError) as e:
+                    # filename with non-ascii or other invalid string
+                    print(e)
+                    size = 0
         return size, path
 
 
@@ -117,4 +123,4 @@ if __name__ == '__main__':
                 goon = True
 
     for item in sorted(wanted_path_list, key=lambda x: x[0], reverse=True):
-        print(item)
+        print(", ".join((str(item[0] / 1024 / 1024) + " MB", item[1])))
