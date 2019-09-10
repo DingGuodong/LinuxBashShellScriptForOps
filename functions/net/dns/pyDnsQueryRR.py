@@ -24,13 +24,15 @@ Operating System:       POSIX :: Linux, Microsoft :: Windows
 Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
-Tips:                   PEP 484 -- Type Hints, https://www.python.org/dev/peps/pep-0484/
+Tips:                   [PEP 484 -- Type Hints](https://www.python.org/dev/peps/pep-0484/)
+                        [PEP 483 -- The Theory of Type Hints](https://www.python.org/dev/peps/pep-0483/)
                         [Type hints cheat sheet (Python 2)](https://mypy.readthedocs.io/en/latest/cheat_sheet.html)
  """
 import dns.resolver
 
 
 def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="8.8.8.8", debug=False):
+    # type: (str, str, str, bool) -> list
     """
     query ip address of given domain name
     :param qname: domain name
@@ -84,6 +86,7 @@ def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="8.8.8.8", debug=Fals
 
 
 def get_domain_name_from_url(url):
+    # type: (str) -> str
     # https://stackoverflow.com/questions/9626535/get-domain-name-from-url
     # https://docs.python.org/2/library/urlparse.html
     from urlparse import urlparse
@@ -103,7 +106,7 @@ def to_unicode_or_bust(obj, encoding='utf-8'):
 
 
 def unicode2punycode(obj):
-    # support  to resolve domain name in Chinese
+    # support to resolve domain name in Chinese
     if isinstance(obj, unicode):
         return obj.encode("idna")
     else:
