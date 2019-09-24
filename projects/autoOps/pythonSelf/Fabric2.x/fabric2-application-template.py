@@ -181,6 +181,8 @@ def configuring_kernel_parameters():
 # Best Practices and Tuning Recommendations
 # http://docs.oracle.com/cd/B28359_01/install.111/b32002/pre_install.htm#LADBI246
 # https://www.ibm.com/support/knowledgecenter/en/linuxonibm/liaag/wkvm/wkvm_c_tune_tcpip.htm
+# https://stackoverflow.com/questions/6426253/tcp-tw-reuse-vs-tcp-tw-recycle-which-to-use-or-both
+# https://stackoverflow.com/questions/7880383/what-benefit-is-conferred-by-tcp-timestamp
 fs.aio-max-nr = 1048576
 fs.file-max = 6815744
 kernel.core_uses_pid = 1
@@ -215,7 +217,7 @@ net.ipv4.tcp_synack_retries = 5
 net.ipv4.tcp_syncookies = 1
 net.ipv4.tcp_syn_retries = 5
 net.ipv4.tcp_timestamps = 0
-net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_tw_recycle = 0
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_window_scaling = 1
 vm.swappiness = 10
