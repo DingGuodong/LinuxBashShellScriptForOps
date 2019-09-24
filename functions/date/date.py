@@ -157,6 +157,7 @@ print("Number of days in month:", month_range[1])
 # Conversion between different types
 timestamp = 1226527167.595983
 date_str = "2008-11-13 17:53:59.595983"
+nginx_time_local = '08/Jan/2018:12:05:20 +0800'  # "%d/%b/%Y:%H:%M:%S %z"
 time_tuple = (2008, 11, 13, 5, 59, 27, 3, 318, 0)
 dt_obj = datetime.datetime(2008, 11, 13, 5, 59, 27, 595983)
 # timestamp to time tuple(time obj)
@@ -169,6 +170,17 @@ datetime.datetime.fromtimestamp(timestamp)
 time.strptime(date_str, "%Y-%m-%d %H:%M:%S.%f")
 # string to datetime(datetime obj)
 datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S.%f")
+
+# print time with timezone
+# timetuple(time.struct_time) -->float(timestamp) --> datetime.datetime with timezone
+print(datetime.datetime.fromtimestamp(
+    time.mktime(time.strptime(nginx_time_local[:-6], "%d/%b/%Y:%H:%M:%S")),
+    pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %z'))
+
+print(datetime.datetime.fromtimestamp(
+    time.mktime(datetime.datetime.strptime(nginx_time_local[:-6], "%d/%b/%Y:%H:%M:%S").timetuple()),
+    pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %z'))
+
 
 # time tuple(time obj) to string, precision lost
 time.strftime("%Y-%m-%d %H:%M:%S", time_tuple)  # <type 'str'>, '2008-11-13 05:59:27'
