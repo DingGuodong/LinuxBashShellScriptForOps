@@ -1,12 +1,12 @@
 # encoding: utf-8
 # -*- coding: utf8 -*-
 import calendar
-import datetime
 import sys
-import time
 
+import datetime
 import delorean
 import pytz
+import time
 from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
 
 # Define the constants
@@ -158,6 +158,13 @@ print("Number of days in month:", month_range[1])
 timestamp = 1226527167.595983
 date_str = "2008-11-13 17:53:59.595983"
 nginx_time_local = '08/Jan/2018:12:05:20 +0800'  # "%d/%b/%Y:%H:%M:%S %z"
+
+# mysql timezone setting
+# [mysqld]
+# log_timestamps = SYSTEM
+# default-time_zone = '+8:00'
+mysql_query_general_log_time = '2019-10-15T10:25:40.829852Z'  # "%Y-%m-%dT%H:%M:%S.%fZ"
+
 time_tuple = (2008, 11, 13, 5, 59, 27, 3, 318, 0)
 dt_obj = datetime.datetime(2008, 11, 13, 5, 59, 27, 595983)
 # timestamp to time tuple(time obj)
@@ -181,6 +188,29 @@ print(datetime.datetime.fromtimestamp(
     time.mktime(datetime.datetime.strptime(nginx_time_local[:-6], "%d/%b/%Y:%H:%M:%S").timetuple()),
     pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d %H:%M:%S %z'))
 
+# mysql time to nginx time
+# mysql time in CST
+print(datetime.datetime.strptime(mysql_query_general_log_time, "%Y-%m-%dT%H:%M:%S.%fZ").strftime(
+    '"%d/%b/%Y:%H:%M:%S %z"'))
+# mysql time in UTC
+print((datetime.datetime.strptime(mysql_query_general_log_time, "%Y-%m-%dT%H:%M:%S.%fZ") + (
+        datetime.datetime.now() - datetime.datetime.utcnow())).strftime('"%d/%b/%Y:%H:%M:%S %z"'))
+# mysql time in UTC, match nginx time well
+print(datetime.datetime.strptime(mysql_query_general_log_time, "%Y-%m-%dT%H:%M:%S.%fZ").replace(
+    tzinfo=pytz.timezone('UTC')).astimezone(pytz.timezone('Asia/Shanghai')).strftime('"%d/%b/%Y:%H:%M:%S %z"'))
+# python get current timezone and get the time difference from UTC
+# python获取当前时区并计算与UTC的时间差
+print(datetime.datetime.now(pytz.timezone('Asia/Shanghai')))
+# datetime.datetime(2019, 10, 16, 10, 58, 41, 860000, tzinfo=<DstTzInfo 'PRC' CST+8:00:00 STD>)
+# 2019-10-16 10:58:41.860000+08:00
+print(datetime.datetime.now(pytz.timezone('PRC')))
+# datetime.datetime(2019, 10, 16, 2, 58, 51, 119000, tzinfo=<UTC>)
+# 2019-10-16 02:58:51.119000+00:00
+print(datetime.datetime.now(pytz.timezone('UTC')))
+
+assert datetime.datetime.now(pytz.timezone('PRC')) == datetime.datetime.now(pytz.timezone('UTC'))
+
+print((datetime.datetime.now() - datetime.datetime.utcnow()).seconds / 3600)
 
 # time tuple(time obj) to string, precision lost
 time.strftime("%Y-%m-%d %H:%M:%S", time_tuple)  # <type 'str'>, '2008-11-13 05:59:27'
