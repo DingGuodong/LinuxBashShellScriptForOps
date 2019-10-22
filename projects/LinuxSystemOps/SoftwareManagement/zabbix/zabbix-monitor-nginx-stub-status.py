@@ -15,6 +15,14 @@ Description:            Python get nginx stub status data for Zabbix use
 Long Description:       
 References:             http://nginx.org/en/docs/http/ngx_http_stub_status_module.html#stub_status
                         http://tengine.taobao.org/document/http_stub_status.html
+
+location /nginx_basic_status {
+    allow 10.0.0.0/8;
+    deny all;
+    stub_status on;
+    access_log off;
+}
+
 Prerequisites:          []
                         pip install --upgrade pip
                         pip install -U urllib3
@@ -59,8 +67,8 @@ class ZabbixMonitorNginx(object):
 
     def get_numbers_from_string(self):
         string_to_number = self.data.replace("\n", "").strip()
-        pattern = re.compile("Active connections: (\d+) server accepts handled requests request_time"
-                             " (\d+) (\d+) (\d+) (\d+)Reading: (\d+) Writing: (\d+) Waiting: (\d+)")
+        pattern = re.compile(r"Active connections: (\d+) server accepts handled requests request_time"
+                             r" (\d+) (\d+) (\d+) (\d+)Reading: (\d+) Writing: (\d+) Waiting: (\d+)")
         match = pattern.search(string_to_number)
         if match:
             return match.groups()
@@ -117,13 +125,13 @@ class ZabbixMonitorNginx(object):
 
 
 if __name__ == '__main__':
-    url_to_request = u"https://api.e-bao.cn/nginx_basic_status"
+    url_to_request = u"https://example.com/nginx_basic_status"
     zmn = ZabbixMonitorNginx(url_to_request)
     if len(sys.argv) == 1:
-        print zmn.data
-        print zmn.stub_status_tuple
-        print zmn.stub_status_dict
+        print(zmn.data)
+        print(zmn.stub_status_tuple)
+        print(zmn.stub_status_dict)
     elif len(sys.argv) == 2:
-        print zmn.stub_status_dict.get(sys.argv[1], 0)
+        print(zmn.stub_status_dict.get(sys.argv[1], 0))
     else:
         raise RuntimeError("bad call")
