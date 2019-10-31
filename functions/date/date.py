@@ -1,12 +1,12 @@
 # encoding: utf-8
 # -*- coding: utf8 -*-
 import calendar
-import sys
-
 import datetime
+import sys
+import time
+
 import delorean
 import pytz
-import time
 from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
 
 # Define the constants
@@ -21,12 +21,18 @@ print(time.localtime())
 # GMT structure time
 print(time.gmtime())
 
-# Convert seconds into GMT date
+# Convert seconds(timestamp) into GMT date
 print(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime(time.time())))
 
+# Get GMT datetime
+date_utc_string = datetime.datetime.strftime(datetime.datetime.utcnow(), "%a, %d %b %Y %H:%M:%S GMT")
+print(date_utc_string)
+
+GMT_FORMAT = '%b %d %H:%M:%S %Y GMT'
+print(datetime.datetime.utcnow().strftime(GMT_FORMAT))
+
+
 # Python's program to get current time MST EST UTC GMT HST
-
-
 mst = pytz.timezone('MST')
 print("Time in MST:", datetime.datetime.now(mst))
 
@@ -41,6 +47,7 @@ print("Time in GMT:", datetime.datetime.now(gmt))
 
 hst = pytz.timezone('HST')
 print("Time in HST:", datetime.datetime.now(hst))
+
 
 print(time.strftime('%Y%m%d%H%M%S', time.localtime(time.time())))
 print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
@@ -60,9 +67,6 @@ i = datetime.datetime.now()
 print(str(i))
 print(i.strftime('%Y/%m/%d %H:%M:%S'))
 print("%s" % i.isoformat())
-
-GMT_FORMAT = '%b %d %H:%M:%S %Y GMT'
-print(datetime.datetime.utcnow().strftime(GMT_FORMAT))
 
 # Get Unix timestamp
 print(time.time())
