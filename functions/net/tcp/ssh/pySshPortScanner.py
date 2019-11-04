@@ -44,8 +44,7 @@ def try_connect(ip, port):
         s.settimeout(timeout)
         return_code = s.connect_ex((ip, port))
         if return_code == 0:
-            with lock:  # use lock here is not essential
-                port_opened_list.append(port)
+            port_opened_list.append(port)
         s.close()
     except Exception as _:
         del _
@@ -55,11 +54,11 @@ def try_connect(ip, port):
 def scan_port_alive(ip):
     # TODO(GuodongDing): run this function without limit thread number will cause high CPU usage
     # 1. using queue.Queue. Pain Point: complex, and need create threads manually
-    # 2. using multiprocessing.Pool. Pain Point:
+    # 2. using multiprocessing.Pool. Pain Point: can not display any kind of UI
     # 3. Others?
     try:
         for thread in [threading.Thread(target=try_connect, args=(ip, port), ) for port in xrange(1, 65535)]:
-            thread.setDaemon(True)
+            # do NOT set thread.setDaemon(True), especially if you don't need it
             thread.start()
         thread.join()
     except Exception as e:
@@ -92,14 +91,14 @@ def ssh_connect(port):
         if e.args[0] == 'Negotiation failed.':  # https://github.com/paramiko/paramiko/issues/1222
             print "port %s can be connected." % port
         pass
-    ssh_client.close()
+    finally:
+        ssh_client.close()
 
 
 def scan_ssh_port_alive():
     if 'win32' in sys.platform:
         try:
             for thread in [threading.Thread(target=ssh_connect, args=(port,)) for port in port_opened_list]:
-                thread.setDaemon(True)
                 thread.start()
             thread.join()
         except Exception as e:
@@ -124,8 +123,8 @@ if __name__ == '__main__':
     port_opened_list = list()
 
     # scan ports opened
-    lock = threading.Lock()
     scan_port_alive(host)
+    print "port opened: ", port_opened_list
 
     # scan ports can be ssh
     scan_ssh_port_alive()
