@@ -12,7 +12,7 @@
 # Long Description:       The reason for writing this script in bash shell language instead of writing it in Python is
 #                         because it is not pythonic at all
 # Usage:                  sudo bash $0
-# References:
+# References:             https://www.nginx.com/resources/wiki/start/topics/examples/full/
 # Prerequisites:          []
 # Development Status:     3 - Alpha, 5 - Production/Stable
 # Environment:            Console
@@ -25,10 +25,10 @@
 
 #set -e
 
-NGINX_SOURCE_LATEST_VERSION="nginx-1.14.2"
+NGINX_SOURCE_LATEST_VERSION="nginx-1.16.1"
 PCRE_SOURCE_LATEST_VERSION="pcre-8.43"
 ZLIB_SOURCE_LATEST_VERSION="zlib-1.2.11"
-OPENSSL_SOURCE_LATEST_VERSION="openssl-1.1.1b"
+OPENSSL_SOURCE_LATEST_VERSION="openssl-1.1.1d"
 
 
 function echo_r (){
@@ -36,27 +36,35 @@ function echo_r (){
     [[ $# -ne 1 ]] && return 1
     echo -e "\033[31m$1\033[0m"
 }
+
+
 function echo_g (){
     # Color green: Success
     [[ $# -ne 1 ]] && return 1
     echo -e "\033[32m$1\033[0m"
 }
+
+
 function echo_y (){
     # Color yellow: Warning
     [[ $# -ne 1 ]] && return 1
     echo -e "\033[33m$1\033[0m"
 }
+
+
 function echo_b (){
     # Color blue: Debug Level 1
     [[ $# -ne 1 ]] && return 1
     echo -e "\033[34m$1\033[0m"
 }
 
+
 function echo_p (){
     # Color purple,magenta: Debug Level 2
     [[ $# -ne 1 ]] && return 1
     echo -e "\033[35m$1\033[0m"
 }
+
 
 function echo_c (){
     # Color cyan: friendly prompt, Level 1
@@ -104,6 +112,7 @@ function compare_version(){
     fi
 }
 
+
 function can_install_update(){
     if which nginx >/dev/null 2>&1; then
         current_version=`/usr/sbin/nginx -V |& grep "nginx\ version" | awk -F"/" '{print$NF}'`
@@ -123,6 +132,7 @@ function can_install_update(){
     fi
 }
 
+
 function add_users(){
     if ! grep ^www: /etc/passwd >/dev/null 2>&1; then
         echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` adding group and user ..."
@@ -130,6 +140,7 @@ function add_users(){
         useradd -r -g www www -c "Web user" -d /dev/null -s /sbin/nologin
     fi
 }
+
 
 function is_nginx_installed(){
     if test -d /usr/local/nginx && test -x /usr/local/nginx/sbin/nginx || test -f ${HOME}/.nginx_installed; then
@@ -141,6 +152,7 @@ function is_nginx_installed(){
     fi
 }
 
+
 function download_source_packages(){
     echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` downloading packages ..."
     # http://nchc.dl.sourceforge.net/project/pcre/pcre/8.39/pcre-8.39.tar.gz
@@ -150,12 +162,14 @@ function download_source_packages(){
     [[ ! -f ${WORKDIR}/${OPENSSL_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c https://www.openssl.org/source/${OPENSSL_SOURCE_LATEST_VERSION}.tar.gz  >/dev/null 2>&1 # https://www.openssl.org/source/
 }
 
+
 function install_base(){
     # Completing Preinstallation Tasks
     echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` install base packages ..."
     apt-get -y update >/dev/null 2>&1 || yum makecache >/dev/null 2>&1
     apt-get -y install gcc g++ make >/dev/null 2>&1 || yum install -y gcc gcc-c++ make >/dev/null 2>&1
 }
+
 
 function compile_nginx_source(){
     echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` compile nginx and install nginx ..."
@@ -167,7 +181,11 @@ function compile_nginx_source(){
     cd ${WORKDIR}/${NGINX_SOURCE_LATEST_VERSION}
     ./configure --prefix=/usr/local/nginx \
         --with-http_ssl_module \
+        --with-http_v2_module \
+        --with-http_realip_module \
         --with-stream \
+        --with-stream_ssl_module \
+        --with-stream_realip_module \
         --user=www --group=www \
         --with-pcre-jit \
         --with-pcre=${WORKDIR}/${PCRE_SOURCE_LATEST_VERSION} \
@@ -176,6 +194,7 @@ function compile_nginx_source(){
     make >/dev/null 2>&1 && make install >/dev/null 2>&1
     cd
 }
+
 
 function post_install(){
     echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` pos-install nginx ..."
@@ -192,6 +211,7 @@ function post_install(){
 
     netstat -lnpt | grep nginx
 }
+
 
 function optimize_security_rules(){
     # Checking Resource Limits
@@ -212,6 +232,7 @@ eof
 #ulimit -Ss # Check the soft limit for the stack setting.
 #ulimit -Hs
 }
+
 
 function optimize_kernel_parameters(){
     # Configuring Kernel Parameters for Linux
@@ -254,12 +275,12 @@ net.ipv4.tcp_synack_retries = 5
 net.ipv4.tcp_syncookies = 1
 net.ipv4.tcp_syn_retries = 5
 net.ipv4.tcp_timestamps = 0
-net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_tw_recycle = 0
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_window_scaling = 1
 net.ipv4.tcp_wmem = 4096 16384 4194304
 vm.swappiness = 0
-m.max_map_count=262144
+vm.max_map_count=262144
 eof
     sysctl -p
 
@@ -270,6 +291,7 @@ eof
         echo_y "if your kernel version >3, net.core.default_qdisc maybe need to configured."
     fi
 }
+
 
 function generate_config_file(){
     echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` generating nginx config file ..."
@@ -325,6 +347,7 @@ server {
         server_name  localhost;
 
         access_log  logs/http_default.access.log  main;
+        error_log  logs/http_default.error.log  warn;
 
         location / {
             root   html;
@@ -343,12 +366,14 @@ eof
     fi
 }
 
+
 function clean(){
     echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` clean installation ..."
     test ! -f ${HOME}/.nginx_installed && touch ${HOME}/.nginx_installed
     # cd && rm -rf ${WORKDIR}
     echo_g "`date '+%Y-%m-%d %H:%M:%S.%N'` nginx installation or update finished successfully!"
 }
+
 
 function install_nginx(){
     if can_install_update; then # install
@@ -371,9 +396,11 @@ function install_nginx(){
     fi
 }
 
+
 function main(){
     install_nginx
 }
+
 
 main
 

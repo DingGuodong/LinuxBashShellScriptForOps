@@ -97,7 +97,7 @@ def confirm(question, default=True):
 
 
 def get_nginx_url():
-    downloads_page_url = 'https://nginx.org/en/download.html'
+    downloads_page_url = 'https://nginx.org/en/download.html'  # type: str
     scheme = urlparse(downloads_page_url).scheme
     netloc = urlparse(downloads_page_url).netloc
     base_url = urlunsplit((scheme, netloc, '', '', ''))
@@ -118,7 +118,7 @@ def get_nginx_url():
 
 
 def get_openssl_url():
-    downloads_page_url = 'https://www.openssl.org/source/'
+    downloads_page_url = 'https://www.openssl.org/source/'  # type: str
     file_url_list = list()
     latest_version = ""
     file_url = ""
@@ -138,6 +138,8 @@ def get_openssl_url():
     match = pattern.search(str(latest_version_mass))
     if match:
         latest_version = match.groups()[0]
+
+    number = 0
     for number, item in enumerate(file_url_list):
         if latest_version != "" and latest_version in file_url_list[number]:
             file_url = file_url_list[number]
@@ -202,6 +204,7 @@ def render_file(versions):
     :param versions: tuple or list which has 4 items
     :return:
     """
+    nginx_ver, openssl_ver, pcre_ver, zlib_ver = ('',) * 4
     if len(versions) == 4:
         nginx_ver, openssl_ver, pcre_ver, zlib_ver = versions
     else:
