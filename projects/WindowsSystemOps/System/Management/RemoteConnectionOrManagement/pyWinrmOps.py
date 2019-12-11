@@ -7,11 +7,11 @@ File:               LinuxBashShellScriptForOps:pyWinrmOps.py
 User:               Guodong
 Create Date:        2017/7/12
 Create Time:        16:36
-Description:
+Description:        pywinrm official demo
 References:         http://docs.ansible.com/ansible/intro_windows.html#using-a-windows-control-machine
                     https://pypi.python.org/pypi/pywinrm/0.2.2
 Dependence:
-                    Windows Services:
+                    远程服务器需要运行以下Windows Services:
                         服务名称: WinRM
                         显示名称: Windows Remote Management (WS-Management)
                         描述: Windows 远程管理(WinRM)服务执行 WS-Management 协议来实现远程管理。
@@ -29,7 +29,8 @@ Dependence:
 import winrm  # https://pypi.python.org/pypi/pywinrm/0.2.2
 
 # Run a process on a remote host
-s = winrm.Session('windows-host.example.com', auth=('john.smith', 'secret'))
+# ntlm: Will use NTLM authentication for both domain and local accounts.
+s = winrm.Session('windows-host.example.com', auth=('john.smith', 'secret'), transport="ntlm")
 r = s.run_cmd('ipconfig', ['/all'])
 print r.status_code, r.std_out,
 
@@ -43,11 +44,12 @@ $MB = 1048576
 r = s.run_ps(ps_script)
 print r.status_code, r.std_out,
 
+
 # Run process with low-level API with domain user, disabling HTTPS cert validation
 from winrm.protocol import Protocol
 
 p = Protocol(
-    endpoint='https://windows-host:5986/wsman',
+    endpoint='https://windows-host:5986/wsman',  # http://windows-host:5985/wsman
     transport='ntlm',
     username=r'somedomain\someuser',
     password='secret',
