@@ -5,7 +5,7 @@
 # https://docs.gitlab.com/ee/ci/variables/deprecated_variables.html#gitlab-90-renamed-variables
 # https://docs.gitlab.com/ee/ci/variables/README.html#predefined-environment-variables
 
-image: cetest:centos6  # https://docs.gitlab.com/ee/ci/yaml/README.html#image
+image: centos:centos6  # https://docs.gitlab.com/ee/ci/yaml/README.html#image
 
 stages:
   - test
@@ -16,9 +16,12 @@ before_script:  # https://docs.gitlab.com/ee/ci/yaml/README.html#before_script-a
   - 'which ssh-agent || yum install openssh-clients -y'
   - eval $(ssh-agent -s)
   # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
-  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")  # $SSH_PRIVATE_KEY is defined in Project|Settings|CI/CD Pipelines|Secret Variables
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - 'which rsync || yum install -y rsync'
+  - pwd
+  - ls -al
 
 after_script:
   - date
@@ -26,6 +29,7 @@ after_script:
 variables:  # https://docs.gitlab.com/ee/ci/yaml/README.html#variables
   APP_NAME: "app-name"
   APP_ROOT: "/opt/my/apps"
+  APP_USER: "username"  # can be overwritten in file '<env>_deploy_host.conf'
   POST_DEPLOY_SCRIPT: "$APP_ROOT/$APP_NAME/post_deploy.sh"
 
 test:  # define a job named "test",   # padding
@@ -39,11 +43,11 @@ staging:  # padding
   variables:
     APP_ENV: "overwrite global env variables here"
   script:
-  - echo "staging"
-  - echo "${APP_ENV}"
-  - echo "staging finished"
+    - echo "staging"
+    - echo "${APP_ENV}"
+    - echo "staging finished"
   only:
-  - master
+    - master
   when: manual
 
 deploy-qa:
@@ -52,7 +56,7 @@ deploy-qa:
     - /^test/.*$/
   when: on_success # https://docs.gitlab.com/ee/ci/yaml/README.html#when
   script:
-    - 'scripts/deploy-script-for-gitlab-ci.sh test'
+    - /bin/bash scripts/deploy-script-for-gitlab-ci.sh test
 
 deploy-production:
   stage: deploy
@@ -60,4 +64,4 @@ deploy-production:
     - master
   when: manual
   script:
-    - 'scripts/deploy-script-for-gitlab-ci.sh prod'
+    - /bin/bash scripts/deploy-script-for-gitlab-ci.sh prod
