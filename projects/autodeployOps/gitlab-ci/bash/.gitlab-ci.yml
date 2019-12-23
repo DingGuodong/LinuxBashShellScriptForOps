@@ -1,0 +1,63 @@
+# auto-deploy-based-on-gitlab-ci-cd
+# https://docs.gitlab.com/ee/ci/yaml/README.html
+
+# https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+# https://docs.gitlab.com/ee/ci/variables/deprecated_variables.html#gitlab-90-renamed-variables
+# https://docs.gitlab.com/ee/ci/variables/README.html#predefined-environment-variables
+
+image: cetest:centos6  # https://docs.gitlab.com/ee/ci/yaml/README.html#image
+
+stages:
+  - test
+  - deploy # release
+
+before_script:  # https://docs.gitlab.com/ee/ci/yaml/README.html#before_script-and-after_script
+  # Install ssh-agent if not already installed
+  - 'which ssh-agent || yum install openssh-clients -y'
+  - eval $(ssh-agent -s)
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+after_script:
+  - date
+
+variables:  # https://docs.gitlab.com/ee/ci/yaml/README.html#variables
+  APP_NAME: "app-name"
+  APP_ROOT: "/opt/my/apps"
+  POST_DEPLOY_SCRIPT: "$APP_ROOT/$APP_NAME/post_deploy.sh"
+
+test:  # define a job named "test",   # padding
+  stage: test  # https://docs.gitlab.com/ee/ci/yaml/README.html#stages
+  only:  # https://docs.gitlab.com/ee/ci/yaml/README.html#onlyexcept-basic
+    - /^feature/.*$/
+  script:  # https://docs.gitlab.com/ee/ci/yaml/README.html#script
+    - echo "test $APP_NAME"
+
+staging:  # padding
+  variables:
+    APP_ENV: "overwrite global env variables here"
+  script:
+  - echo "staging"
+  - echo "${APP_ENV}"
+  - echo "staging finished"
+  only:
+  - master
+  when: manual
+
+deploy-qa:
+  stage: deploy
+  only:
+    - /^test/.*$/
+  when: on_success # https://docs.gitlab.com/ee/ci/yaml/README.html#when
+  script:
+    - 'scripts/deploy-script-for-gitlab-ci.sh test'
+
+deploy-production:
+  stage: deploy
+  only:
+    - master
+  when: manual
+  script:
+    - 'scripts/deploy-script-for-gitlab-ci.sh prod'
