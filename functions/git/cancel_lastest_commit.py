@@ -26,5 +26,5 @@ Topic:                  Utilities
  """
 
 import os
-os.chdir('C:\\Users\\Guodong\\PycharmProjects\\LinuxBashShellScriptForOps')
+os.chdir('C:\\Users\\dgden\\PycharmProjects\\LinuxBashShellScriptForOps')
 os.system("git reset HEAD^ --soft")

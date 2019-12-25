@@ -33,7 +33,7 @@ import git
 git_top_dir = r"D:\GitHub"
 os.chdir(git_top_dir)
 
-repos_dir = [os.path.join(git_top_dir, x) for x in os.listdir(r"D:\GitHub")]
+repos_dir = [os.path.join(git_top_dir, x) for x in os.listdir(git_top_dir)]
 
 
 def git_pull(path):
