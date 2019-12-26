@@ -9,6 +9,9 @@ import delorean
 import pytz
 from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
 
+# print localtime, When the time tuple is not present, current time as returned by localtime() is used.
+print(time.strftime('%Y-%m-%d %H:%M:%S'))
+
 # Define the constants
 SECONDS_PER_MINUTE = 60
 SECONDS_PER_HOUR = 3600
@@ -168,6 +171,10 @@ nginx_time_local = '08/Jan/2018:12:05:20 +0800'  # "%d/%b/%Y:%H:%M:%S %z"
 # log_timestamps = SYSTEM
 # default-time_zone = '+8:00'
 mysql_query_general_log_time = '2019-10-15T10:25:40.829852Z'  # "%Y-%m-%dT%H:%M:%S.%fZ"
+
+# About 'T' in time
+# sep(e.g. 'T') is used to separate the year from the time, and defaults to 'T' in ISO 8601 format,
+# YYYY-MM-DDTHH:MM:SS[.mmmmmm][+HH:MM], see datetime.datetime.isoformat .
 
 time_tuple = (2008, 11, 13, 5, 59, 27, 3, 318, 0)
 dt_obj = datetime.datetime(2008, 11, 13, 5, 59, 27, 595983)
