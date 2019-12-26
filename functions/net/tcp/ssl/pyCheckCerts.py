@@ -13,17 +13,23 @@ performs a deep analysis of the configuration of any SSL web server on the publi
 https://globalsign.ssllabs.com/
 
  """
-import certifi
-import ssl
+import datetime
 import pprint
 import socket
-import datetime
+import ssl
 import time
+
+import certifi
 
 soc = ssl.SSLSocket(socket.socket(),
                     ca_certs=certifi.where(),
                     cert_reqs=ssl.CERT_REQUIRED)
-soc.connect(("www.baidu.com", 443))
+try:
+    soc.connect(("www.baidu.com", 443))
+except socket.error as e:
+    # such as '10061', '[Errno 10061]  Connection refused.'
+    print(str(e), socket.errorTab.get(int(str(e).strip()[7:-1])))
+
 cert = soc.getpeercert()
 soc.close()
 
