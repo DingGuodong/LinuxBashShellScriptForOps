@@ -58,8 +58,23 @@ print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
 print(time.strftime('%Y-%m-%d %H:%M:%S', time.strptime("20170416145604.489009+480".split(".")[0], '%Y%m%d%H%M%S')))
 
 # week number of year, with Monday as first day of week (00..53), For Linux, command is 'date +%W'
-print(time.strftime("%W"))
-print(time.strftime("%W", time.localtime(time.mktime(time.strptime('2017/11/30', '%Y/%m/%d')))))
+# time format string
+# https://docs.python.org/3/library/time.html#time.strftime
+# '%W' or '%U' means week number of this month or in this year,
+# '%U': Sunday as the first day of the week
+# '%W': Monday as the first day of the week
+# print(time.strftime("%W"))
+# print(time.strftime("%W", time.localtime(time.mktime(time.strptime('2017/11/30', '%Y/%m/%d')))))
+#
+# https://docs.python.org/3/library/datetime.html#datetime.datetime.isocalendar
+# Return the day of the week as an integer, where Monday is 0 and Sunday is 6.
+# print(datetime.datetime.strptime('2020/02/07', '%Y/%m/%d').strftime("%W"))
+# print(datetime.datetime.strptime('2020/02/07', '%Y/%m/%d').weekday()
+#
+# Return a 3-tuple, (ISO year, ISO week number, ISO weekday). The same as self.date().isocalendar().
+print(datetime.datetime.now().isocalendar())
+print(datetime.datetime.strptime('2020/02/07', '%Y/%m/%d').isocalendar())
+
 
 system_encoding = sys.getfilesystemencoding()
 print("Current system encoding is \"%s\"." % system_encoding)
