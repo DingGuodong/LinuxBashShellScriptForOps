@@ -279,7 +279,9 @@ def call_service_start_script(app_path):
             real_script_path = script_full_path
     if real_script_path is not None:
         print("INFO: found script path: ".format(path=real_script_path))
-        return_code, stdout, stderr = run_command("su - ebt -c \"/bin/bash {path}\"".format(path=real_script_path))
+        return_code, stdout, stderr = run_command(
+            "su - ebt -c \"cd {app_path} && /bin/bash {script_path}\"".format(app_path=app_path,
+                                                                              script_path=real_script_path))
         if return_code != 0:
             print("ERROR: script execute failed: {path}".format(path=real_script_path))
             console_log_msg("script execute failed: {path}".format(path=real_script_path))
