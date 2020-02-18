@@ -161,7 +161,8 @@ def debug_msg_with_logging(msg, *args, **kwargs):
     :return:
     """
     if DEBUG:
-        set_stream_logger('ssd', logging.INFO)  # service_starter_debug
+        if not logger.handlers:  # block same/duplicate log messages/entries multiple times
+            set_stream_logger('ssd', logging.INFO)  # service_starter_debug
         logger.debug(msg, *args, **kwargs)
 
 
@@ -169,12 +170,13 @@ def console_log_msg(msg, level="error", *args, **kwargs):
     """
     记录日志到指定的文件并按照日期切割
     :param msg: str, 需要打印日志的普通字符串
-    :param level: str, 打印日志的级别，可以定error、warn、debug、info等其他
+    :param level: str, 打印日志的级别，可以定义error、warn、debug、info等其他
     :param args: 需要打印日志的list、tuple等
     :param kwargs: 需要打印日志的字典
     :return:
     """
-    set_file_logger_date(self_script_output_log_path, name="ssc")  # service_starter_common
+    if not logger.handlers:  # block same/duplicate log messages/entries multiple times
+        set_file_logger_date(self_script_output_log_path, name="ssc")  # service_starter_common
     if level == "error":
         logger.error(msg, *args, **kwargs)
     elif level == "warn":
