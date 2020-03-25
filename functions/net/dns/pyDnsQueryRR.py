@@ -49,6 +49,7 @@ def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="8.8.8.8", debug=Fals
 
     resolver = dns.resolver.Resolver()
     resolver.timeout = 3  # TODO(Guodong) does it really works?
+    resolver.lifetime = 3.0  # dns.exception.Timeout: The DNS operation timed out after 3.0 seconds
     resolver.nameservers = [nameserver]  # default_nameserver = resolver.nameservers
     resolver.cache = False
     answer = None

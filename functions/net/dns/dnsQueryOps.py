@@ -6,9 +6,9 @@ import dns.resolver
 domain = "api.weixin.qq.com"
 
 query = dns.resolver.Resolver()
-query.nameservers = ['114.114.114.114']
+query.nameservers = ['14.114.114.114']
 query.timeout = 1.0
-query.lifetime = 3.0
+query.lifetime = 3.0  # dns.exception.Timeout: The DNS operation timed out after 3.0 seconds
 answer = query.query(domain, 'A').response.answer  # type: [dns.rrset.RRset,]
 
 for record in answer[-1]:
