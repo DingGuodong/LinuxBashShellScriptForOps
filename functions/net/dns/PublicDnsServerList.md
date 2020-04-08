@@ -20,6 +20,9 @@
 ### Google [Website](https://developers.google.com/speed/public-dns/)
 8.8.8.8;
 8.8.4.4;
+### [OpenDNS](https://www.opendns.com/)
+208.67.222.222;
+208.67.220.220;
 ### others  [Website](http://public-dns.info/nameserver/cn.html)
 http://public-dns.info/nameserver/cn.json
 
