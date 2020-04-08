@@ -131,3 +131,26 @@ if __name__ == '__main__':
     print(query_dns_rr("github.com", rdtype="NS", nameserver="114.114.114.114"))
     print(query_dns_rr("github.com", rdtype="MX", nameserver="114.114.114.114"))
     print(query_dns_rr("aliyun.com", rdtype="TXT", nameserver="114.114.114.114"))
+
+    # resolve a domain name with different dns resolver
+    name = "mobile-dat.sinatay.com"
+    dns_servers_list = [
+        "114.114.114.114",
+        "114.114.115.115",
+        "202.102.128.68",
+        "202.102.134.68",
+        "211.137.191.26",
+        "218.201.96.130",
+        "223.5.5.5",
+        "223.6.6.6",
+        "119.29.29.29",
+        "182.254.116.116",
+        "180.76.76.76",
+        "8.8.8.8",
+        "8.8.4.4",
+        "208.67.222.222",
+        "208.67.220.220",
+    ]
+
+    for dns_server in dns_servers_list:
+        print(dns_server, query_dns_rr(name, rdtype="A", nameserver=dns_server))
