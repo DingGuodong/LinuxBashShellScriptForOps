@@ -35,13 +35,15 @@ Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
 
+import ftplib
+
+import six
 import socket
 import ssl
-from ftplib import FTP, FTP_TLS, error_perm
 
 
 def connect_ftp():
-    ftp = FTP()
+    ftp = ftplib.FTP()
     # ftp.set_debuglevel(2)
     ftp.connect(host=server, port=port, timeout=10)
     ftp.login(user=username, passwd=password)
@@ -57,9 +59,14 @@ def connect_ftps():
         or server side will show '450 TLS session of data connection has not resumed or the session does not match the control connection'
     :return:
     """
-    ftps = FTP_TLS()
+    ftps = ftplib.FTP_TLS()
     # ftps.set_debuglevel(2)
-    ssl_version_stack = [ssl.PROTOCOL_SSLv23, ssl.PROTOCOL_SSLv3]
+    if six.PY2:
+        ssl_version_stack = [ssl.PROTOCOL_SSLv23, ssl.PROTOCOL_SSLv3]
+    elif six.PY3:
+        ssl_version_stack = [ssl.PROTOCOL_SSLv23, ]
+    else:
+        ssl_version_stack = [ssl.PROTOCOL_SSLv23, ]
     tls_version_stack = [ssl.PROTOCOL_TLSv1_2, ssl.PROTOCOL_TLSv1, ssl.PROTOCOL_TLS]
     is_connected = False
     for ssl_version in ssl_version_stack + tls_version_stack:  # also can use list.extend() or list slice instead of +
@@ -87,10 +94,12 @@ def put_file_to_ftp(ftp, src, dst):
     try:
         with open(src, 'rb') as fp:
             ftp.storbinary('STOR ' + dst, fp)
-    except socket.error:
+    except socket.error as e:
         # [ssl unwrap fails with Error 0](https://bugs.python.org/issue10808)
         # [FTP_TLS errors when use certain subcommands](https://bugs.python.org/issue31727)
-        pass
+        print(e)
+    except ftplib.error_reply as e:
+        print(e)
 
 
 def get_file_from_ftp(ftp, src, dst):
@@ -107,14 +116,15 @@ if __name__ == '__main__':
 
     try:
         conn = connect_ftp()
-    except error_perm as e:
+    except ftplib.error_perm as e:
         print(e)
         # 530 This server does not allow plain FTP. You have to use FTP over TLS.
         conn = connect_ftps()
 
-    # conn.set_debuglevel(0)
+    conn.set_debuglevel(0)  # 0, 1, 2
     print(conn.getwelcome())
-    # print(conn.pwd())
-    # conn.dir()
+    print(conn.pwd())  # show cwd
+    conn.dir()  # list cwd
     print(conn.retrlines("LIST"))  # conn.putcmd("LIST")
+    put_file_to_ftp(conn, "note.md", "note.md")
     conn.quit()
