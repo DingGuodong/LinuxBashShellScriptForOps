@@ -26,6 +26,7 @@ Topic:                  Utilities
  """
 
 import os
+import sys
 from multiprocessing import Pool
 
 import git
@@ -48,9 +49,10 @@ def git_pull(path):
     elif not repo.is_dirty():
         remote = repo.remote()
         try:
-            remote.pull()
+            remote.pull()  # type: git.util.IterableList
         except Exception as e:
-            print(e)
+            sys.stderr.write(str(e) + "\n")
+            sys.stderr.flush()
             pass
 
 
