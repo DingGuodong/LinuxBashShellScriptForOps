@@ -2,7 +2,7 @@
 # Get the default routing IP
 # get_default_host_ip
 #校验验证IP是否合法
-ipcalc -c  10.20.0.7
+ipcalc -c 10.20.0.7
 # 验证一个IP是否是合法的IP需要与子网掩码一起计算
 ipcalc -c 10.104.28.0/255.255.192.0
 
@@ -44,4 +44,16 @@ echo "$IP"
 ifconfig | grep -Po '(?<=:).*(?=  B)'
 
 # others
-ifconfig eth0 |awk -F '[ :]+' 'NR==2 {print $4}'
+ifconfig eth0 | awk -F '[ :]+' 'NR==2 {print $4}'
+
+# 获取内网网卡名称(适用于2个网卡，1个用做内网，1个用作外网), U (route is up), G (use gateway), see 'man route' Flags
+route -n | awk '/UG/&&!/0.0.0.0/ {print$NF;exit}'
+
+# 获取外网网卡名称
+route -n | awk '/^0.0.0.0/ {print$NF}'
+
+# 获取内网网卡IP地址(适用于2个网卡，1个用做内网，1个用作外网)
+ip addr show scope global "$(route -n | awk '/UG/ && ! /0.0.0.0/ {print$NF;exit}')" | awk -F '[ /]+' '/global/ {print $3}'
+
+# 获取外网网卡IP
+ip addr show scope global "$(ip route | awk '/^default/ {print $5}')" | awk -F '[ /]+' '/global/ {print $3}'

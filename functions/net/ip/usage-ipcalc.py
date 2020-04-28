@@ -21,7 +21,10 @@ import pyipcalc
 
 print ipcalc.IP("192.168.1.1")
 print ipcalc.IP("192.168.1.1/24").info()  # PRIVATE
-print ipcalc.IP("124.129.14.90/30").mask
+print ipcalc.IP("124.129.14.90/30").mask  # 30
+print ipcalc.IP("124.129.14.90/255.255.255.252").mask  # 30
+print ipcalc.Network('123.235.52.106/30').netmask()  # IP('255.255.255.252')
+print ipcalc.Network('123.235.52.106/30').network()
 
 print ipcalc.Network('192.168.1.0/24')
 print ipcalc.Network('192.168.1.0/255.255.255.0')

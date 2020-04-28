@@ -1,7 +1,8 @@
-import os
-import sys
+# coding=utf-8
 import datetime
+import os
 import socket
+import sys
 
 try:
     from IPy import IP
