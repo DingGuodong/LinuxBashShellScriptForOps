@@ -16,15 +16,17 @@
 
 Git有两个repository，远程仓库（remote）和本地仓库（local），其中remote并不是必须的
 
-远程库的默认名称是origin
+远程库的默认名称是origin，即远程库上的分支通常以origin/xxx/xyz表示，而本地仓库上的分支一般以xxx/xyz表示。
 
 本地仓库涉及两个区，工作区和暂存区，已经add但未commit的文件在暂存区。
 1. 使用 git add 把文件添加进去，实际上就是把文件添加到暂存区。
-2. 使用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支上。
+2. 使用git commit提交更改，实际上就是把暂存区的所有内容提交到本地仓库的当前分支上，尚未push到远程仓库。
 
 HEAD是git指向当前分支节点的一个指针，也叫游标。它可以指向分支里的任何一个节点，通常也会把它理解为表示当前的分支。
 
-git pull 是git fetch + git merge的组合。
+git fetch 更新的是本地仓库中的origin部分，并不影响本地仓库中已经创建、打开、签出的分支。
+
+git pull 是git fetch + git merge的组合。git pull是把远程仓库更新到本地仓库。
 >注意：pull操作可能会影响工作区，而fetch只影响本地仓库，merge操作并不影响本地仓库，只有commit后才会被提交。
 >
 >pull后，如果远程仓库和工作区文件存在冲突，则会自动提示，并显示出差异。
