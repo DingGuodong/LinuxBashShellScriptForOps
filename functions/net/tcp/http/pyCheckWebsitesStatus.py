@@ -80,11 +80,12 @@ def query_dns_rr(qname, rdtype="A", nameserver="8.8.8.8", debug=False):
 
     resolver = dns.resolver.Resolver()
     resolver.timeout = 3  # does it really works?
+    resolver.lifetime = 3    # dns.exception.Timeout: The DNS operation timed out after 3.0 seconds
     resolver.nameservers = [nameserver]  # default_nameserver = resolver.nameservers
     resolver.cache = False
     answer = None
     try:
-        answer = resolver.query(qname, rdtype).response.answer
+        answer = resolver.query(qname, rdtype, lifetime=resolver.timeout).response.answer
     except dns.resolver.NoAnswer as e:
         if debug:
             print(e)

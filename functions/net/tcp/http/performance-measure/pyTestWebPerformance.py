@@ -1,4 +1,31 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/python
+# encoding: utf-8
+# -*- coding: utf8 -*-
+"""
+Created by PyCharm.
+File Name:              LinuxBashShellScriptForOps:pyTestWebPerformance.py
+Version:                0.0.1
+Author:                 Guodong
+Author Email:           dgdenterprise@gmail.com
+URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
+Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
+Create Date:            2018/3/13
+Create Time:            15:36
+Description:            python test web performance like Apache ab
+Long Description:       
+References:             
+Prerequisites:          []
+Development Status:     3 - Alpha, 5 - Production/Stable
+Environment:            Console
+Intended Audience:      System Administrators, Developers, End Users/Desktop
+License:                Freeware, Freely Distributable
+Natural Language:       English, Chinese (Simplified)
+Operating System:       POSIX :: Linux, Microsoft :: Windows
+Programming Language:   Python :: 2.6
+Programming Language:   Python :: 2.7
+Topic:                  Utilities
+ """
+
 import sys
 from StringIO import StringIO
 
@@ -11,17 +38,6 @@ c = pycurl.Curl()
 c.setopt(pycurl.URL, URL)
 c.setopt(pycurl.WRITEDATA, data_buffer)
 c.setopt(pycurl.FOLLOWLOCATION, 1L)
-
-# comment those lines because of some websites response too slow
-# # 连接超时时间,5秒
-# c.setopt(pycurl.CONNECTTIMEOUT, 5)
-#
-# # 下载超时时间,30秒
-# c.setopt(pycurl.TIMEOUT, 30)
-# c.setopt(pycurl.FORBID_REUSE, 1)
-# c.setopt(pycurl.MAXREDIRS, 1)
-# c.setopt(pycurl.NOPROGRESS, 1)
-# c.setopt(pycurl.DNS_CACHE_TIMEOUT, 30)
 c.setopt(pycurl.CAINFO, certifi.where())  # c.setopt(pycurl.SSL_VERIFYPEER, False)  # useful for HTTPS connection
 
 try:
@@ -40,7 +56,7 @@ HTTP_CODE = c.getinfo(pycurl.HTTP_CODE)
 SIZE_DOWNLOAD = c.getinfo(pycurl.SIZE_DOWNLOAD)
 HEADER_SIZE = c.getinfo(pycurl.HEADER_SIZE)
 SPEED_DOWNLOAD = c.getinfo(pycurl.SPEED_DOWNLOAD)
-
+DATA = data_buffer.getvalue()
 c.close()
 
 print(u"HTTP状态码：%s" % HTTP_CODE)
@@ -53,5 +69,3 @@ print(u"传输结束总时间：%.2f ms" % (TOTAL_TIME * 1000))
 print(u"下载数据包大小：%d bytes/s" % SIZE_DOWNLOAD)
 print(u"HTTP头部大小：%d byte" % HEADER_SIZE)
 print(u"平均下载速度：%d bytes/s" % SPEED_DOWNLOAD)
-
-# print data_buffer.getvalue()

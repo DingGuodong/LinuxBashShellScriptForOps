@@ -57,5 +57,20 @@ def requests_example3():
     print(response.encoding)
 
 
+def requests_post_example_1():
+    url = 'https://51devops.com/httpbin/anything'
+    data = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+    }
+    res = requests.post(url, data)
+    if res.ok:
+        print res.content
+    else:
+        print res.status_code
+        print res.content
+
+
 if __name__ == '__main__':
-    requests_example3()
+    requests_post_example_1()

@@ -5,7 +5,7 @@
 # Create Date:          2017/7/6
 # Create Time:          16:33
 # Function:             
-# Note:                 
+# Note:                 curl --head --silent --show-error --connect-timeout 5 --retry 3 --retry-delay 2 --retry-max-time 5 --url http://www.baidu.com/ --output /dev/null
 # Prerequisite:         
 # Description:          Linux curl examples, sleep random seconds
 # Reference:
