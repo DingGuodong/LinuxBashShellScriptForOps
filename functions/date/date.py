@@ -75,6 +75,11 @@ print(time.strftime('%Y-%m-%d %H:%M:%S', time.strptime("20170416145604.489009+48
 print(datetime.datetime.now().isocalendar())
 print(datetime.datetime.strptime('2020/02/07', '%Y/%m/%d').isocalendar())
 
+# Python3.x support same format in GNU `date`
+# in GNU `date`, '%U': week number of year, with Sunday as first day of week (00..53)
+# in GNU `date`, '%W':week number of year, with Monday as first day of week (00..53)
+# in GNU `date`, '%V':ISO week number, with Monday as first day of week (01..53)
+# print(time.strftime("%V"))
 
 system_encoding = sys.getfilesystemencoding()
 print("Current system encoding is \"%s\"." % system_encoding)
@@ -249,7 +254,7 @@ datetime.datetime(*time_tuple[0:6])  # <type 'datetime.datetime'>, datetime.date
 dt_obj.timetuple()
 # datetime(datetime obj) to string
 dt_obj.strftime("%Y-%m-%d %H:%M:%S.%f")  # <type 'str'>, '2008-11-13 05:59:27.595983'
-# datetime(datetime obj) can not to timestamp
+# datetime(datetime obj) can not to timestamp in Python2.x but it can in Python3.x 'dt.timestamp()'
 
 # UTC time('Z' letter in string) convert to another timezone
 datetime.datetime.strptime('2018-06-07T10:57:14Z', "%Y-%m-%dT%H:%M:%SZ").replace(
