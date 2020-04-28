@@ -59,6 +59,7 @@ def get_all_tcp_conn_count_by_status(status='ESTABLISHED'):
 
 
 def get_private_tcp_conn_count_established():
+    # Known issue: AttributeError: 'tuple' object has no attribute 'ip'
     return len([sconn for sconn in sconn_list if sconn.status == 'ESTABLISHED' and is_private_ipv4(sconn.raddr.ip)])
 
 
