@@ -1,12 +1,10 @@
 #!/bin/bash
-set -x
 
 ENVIRONMENT="$1"
 CURRENT_APP_ROOT="$APP_ROOT/$APP_NAME"
 POST_DEPLOY_SCRIPT="$CURRENT_APP_ROOT/scripts/post_deploy.sh"
 
 DEPLOY_HOSTS_CONF_FILE="scripts/""$ENVIRONMENT""_deploy_host.conf"
-
 
 function do_deploy() {
   local DEST_HOST_IP
@@ -15,9 +13,14 @@ function do_deploy() {
   DEST_HOST_IP=$(echo "$1" | awk -F":" '{print $1}')
   DEST_HOST_PORT=$(echo "$1" | awk -F":" '{print $2}')
   DEST_HOST_USER=$(echo "$1" | awk -F":" '{print $3}')
+  DEST_HOST_EXTERNAL_IP=$(echo "$1" | awk -F":" '{print $NF}')
+
+  if [[ "x$DEST_HOST_EXTERNAL_IP" != "x" ]]; then
+    DEST_HOST_IP="$DEST_HOST_EXTERNAL_IP"
+  fi
 
   if [[ "$DEST_HOST_USER" == "" ]]; then
-    DEST_HOST_USER=$APP_USER
+    DEST_HOST_USER="$APP_USER"
   fi
 
   ssh -p "$DEST_HOST_PORT" "$DEST_HOST_USER@$DEST_HOST_IP" "mkdir -p $APP_ROOT/$APP_NAME"
@@ -31,28 +34,28 @@ function do_deploy() {
 
 function deploy() {
   # shellcheck disable=SC2013
-  for DEPLOY_HOSTS_SSH_ARGUMENTS in $(cat "$DEPLOY_HOSTS_CONF_FILE"); do
-    echo "deploying $DEPLOY_HOSTS_SSH_ARGUMENTS"
+  for DEPLOY_HOST in $(cat "$DEPLOY_HOSTS_CONF_FILE"); do
+    echo "deploying $DEPLOY_HOST"
 
     # deploy project
-    do_deploy "$DEPLOY_HOSTS_SSH_ARGUMENTS"
+    do_deploy "$DEPLOY_HOST"
 
-    httpstatus=1
+    http_code_status=1
     # check project status
     if [ "$HEALTHY_CHECK_OFF" == "true" ]; then
       do_sleep 10 "waiting service to startup"
       continue
+    else
+      return 0
     fi
 
-    set +e
     check_healthy 0
-    httpstatus=$?
-    set -e
-    if [ $httpstatus == 0 ]; then
+    http_code_status=$?
+    if [ $http_code_status == 0 ]; then
       continue
     else
-      echo "fail to deploy $DEPLOY_HOSTS_SSH_ARGUMENTS"
-      return $httpstatus
+      echo "fail to deploy $DEPLOY_HOST"
+      return $http_code_status
     fi
   done
 }
@@ -67,8 +70,8 @@ function do_sleep() {
 }
 
 function check_healthy() {
-  retrytime=$1
-  retrytime=$((1 + retrytime))
+  retry_time=$1
+  retry_time=$((1 + retry_time))
   status_code=000
   RETRY_SLEEP_TIMES=6
   RETRY_SLEEP_SECOND=10
@@ -78,13 +81,13 @@ function check_healthy() {
   else
     status_code=$(curl -I -m 10 -o /dev/null -s -w "%{http_code}" "${HEALTHY_CHECK_URL/hostip/$DEST_HOST_IP}")
   fi
-  if [ "$status_code" == 200 ]; then
+  if [[ "$status_code" == 200 ]]; then
     echo "connection is ok!!!"
     return 0
   else
-    if [ $retrytime -le $RETRY_SLEEP_TIMES ]; then
+    if [[ $retry_time -le $RETRY_SLEEP_TIMES ]]; then
       do_sleep $RETRY_SLEEP_SECOND "waiting to do next healthy check"
-      check_healthy $retrytime
+      check_healthy $retry_time
     else
       echo "disconnected after $RETRY_SLEEP_TIMES retry..."
       return 1
@@ -93,6 +96,6 @@ function check_healthy() {
 }
 
 set -e
-echo '----deploy begin # from deploy.sh ----'
+echo '----deploy begin ----'
 deploy
-echo '----deploy end # from deploy.sh ----'
+echo '----deploy end ----'
