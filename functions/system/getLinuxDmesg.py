@@ -7,28 +7,34 @@ File:               LinuxBashShellScriptForOps:getLinuxDmesg.py
 User:               Guodong
 Create Date:        2016/10/28
 Create Time:        16:15
+
+yum install -y python-devel
+python -m pip install -U pip
+pip install psutil
+
  """
 
 # using python to get 'dmesg' messages with full time human readable
 
 import os
-import time
-import psutil
 import subprocess
 import sys
+import time
+
+import psutil
 
 
-def getDmesg():
+def get_human_readable_dmesg():
     # because can NOT get data from /proc, so use 'dmesg' command to get data
-    dmesg = subprocess.check_output(['dmesg']).split('\n')
-    for message in dmesg:
+    dmesg = subprocess.check_output(['dmesg']).split('\n')  # check_output is not available in Python 2.6
+    for line in dmesg:
         try:
             print time.strftime('%Y-%m-%d %H:%M:%S',
                                 time.localtime(
-                                    (float(psutil.boot_time()) + float(message.split('] ')[0][2:].strip())))), message
+                                    (float(psutil.boot_time()) + float(line.split('] ')[0][2:].strip())))), line
             sys.stdout.flush()
         except ValueError:
-            pass
+            print(line)
 
 
 if __name__ == '__main__':
@@ -39,7 +45,7 @@ if __name__ == '__main__':
         sys.exit(1)
     else:
         try:
-            getDmesg()
+            get_human_readable_dmesg()
         except IOError:
             pass
             # TODO(Guodong Ding) fix next desc when using 'python getLinuxDmesg.py | more' with a 'q' interrupt
