@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ### DO NOT MODIFY THE FOLLOWING PART, UNLESS YOU KNOW WHAT IT MEANS ###
 echo_r () {

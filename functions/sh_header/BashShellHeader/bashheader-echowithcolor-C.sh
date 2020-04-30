@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # refer to: https://raw.githubusercontent.com/springlie/cecho/master/cecho.sh
 

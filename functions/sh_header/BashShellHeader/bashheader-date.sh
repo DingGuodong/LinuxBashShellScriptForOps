@@ -1,10 +1,9 @@
 #!/bin/bash
-stime=$(date +%s)
-shstime=$(date +%H:%M:%S:%N)
 
+begin_time=$(date +%s)
 sleep 2
+end_time=$(date +%s)
 
-etime=$(date +%s)
-shetime=$(date +%H:%M:%S:%N)
-shptime=$(expr ${etime} - ${stime})
-echo ${shptime}
+elapsed_time=$((end_time - begin_time))
+
+echo ${elapsed_time }
