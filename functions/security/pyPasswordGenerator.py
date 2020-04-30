@@ -14,7 +14,7 @@ References:         How can I get around declaring an unused variable in a for l
  """
 
 
-class PasswordGenerator:
+class PasswordGenerator(object):
     def __init__(self):
         self.strength_level_map = {
             'weak': 0,
