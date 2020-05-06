@@ -36,6 +36,7 @@ $s|Get-Member
 Get-PSSession -ComputerName $COMPUTER_NAME -State Opened
 
 # 开始执行多个命令（PSSession支持上下文，所以命令之间可以存在联系（如可共享变量等））
+Invoke-Command -Session $s -ScriptBlock {whoami}
 Invoke-Command -Session $s -ScriptBlock {$p = Get-Process PowerShell}
 Invoke-Command -Session $s -ScriptBlock {$p.VirtualMemorySize}
 
