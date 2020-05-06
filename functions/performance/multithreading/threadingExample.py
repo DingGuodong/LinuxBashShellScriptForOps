@@ -67,6 +67,7 @@ if __name__ == '__main__':
         thread.setDaemon(True)
         thread.start()
 
-    thread.join()
+    for thread in threadingPool:
+        thread.join()
 
     print "All jobs is done! at %s" % time.ctime()

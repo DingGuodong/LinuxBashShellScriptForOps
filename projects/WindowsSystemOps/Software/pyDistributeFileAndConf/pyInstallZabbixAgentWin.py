@@ -11,6 +11,8 @@ Create Time:        9:28
 import logging
 import os
 
+from IPy import IP
+
 ZABBIX_SERVER_CONF_SERVER_IP = '127.0.0.1,10.46.69.219'
 ZABBIX_SERVER_CONF_SERVER_ACTIVE_IP = '10.46.69.219'
 ZABBIX_WIN32_SERVICE_NAME = 'Zabbix Agent'
@@ -43,9 +45,13 @@ DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 
 def download_file(url_download_from, path_save_to):
-    import requests.packages.urllib3
+    try:
+        from requests.packages import urllib3
+    except ImportError:
+        import urllib3
     import os
     import sys
+    import requests
 
     url = url_download_from if is_url_valid(url_download_from) else ""
 
@@ -55,7 +61,9 @@ def download_file(url_download_from, path_save_to):
 
     print "Downloading '%s',\n" \
           "save '%s' to '%s'" % (url, filename, save)
-    requests.packages.urllib3.disable_warnings()
+
+    urllib3.disable_warnings()  # equal to import logging; logging.captureWarnings(capture=True)
+
     response = requests.request("GET", url, stream=True, data=None, headers=None)
 
     total_length = int(response.headers.get("Content-Length"))
@@ -114,7 +122,7 @@ def config_conf(path_to_conf_file):
 
     zabbix_agent_conf = ConfigParser.ConfigParser(allow_no_value=True)
     zabbix_agent_conf.read(path_to_conf_file)
-    zabbix_agent_conf.set(section=ConfigParser.DEFAULTSECT, option='logfile'.strip(), value='c:\zabbix_agentd.log')
+    zabbix_agent_conf.set(section=ConfigParser.DEFAULTSECT, option='logfile'.strip(), value=r'c:\zabbix_agentd.log')
     zabbix_agent_conf.set(section=ConfigParser.DEFAULTSECT, option='server'.strip(), value=ZABBIX_SERVER_CONF_SERVER_IP)
     zabbix_agent_conf.set(section=ConfigParser.DEFAULTSECT, option='serveractive'.strip(),
                           value=ZABBIX_SERVER_CONF_SERVER_ACTIVE_IP)
@@ -326,22 +334,34 @@ def get_ip_address():
     return ip_address
 
 
+def is_valid_ipv4(ip, version=4):
+    try:
+        result = IP(ip, ipversion=version)
+    except ValueError:
+        return False
+    if result is not None and result != "":
+        return True
+
+
+def is_private_ipv4(ip, version=4):
+    """
+    check if the given ip address is valid and private ip
+    :param ip:
+    :param version:
+    :return:
+    """
+    if is_valid_ipv4(ip, version):
+        if IP(ip).iptype() == "PRIVATE":
+            return True
+        else:
+            return False
+    else:
+        raise RuntimeError("Error: invalid ip address: %s" % ip)
+
+
 def get_ip_address_internal():
-    # TODO(Guodong Ding) make this function more general use
-    list_ip_address_internal = ['10.160.46.5', '10.160.8.189', '10.161.216.18', '10.161.227.11', '10.45.51.99',
-                                '10.25.0.93', '10.24.232.132',
-                                '10.161.150.192', '10.161.154.226', '10.161.190.190', '10.171.168.179', '10.117.20.210',
-                                '10.252.248.183',
-                                '10.252.108.197', '10.46.68.233', '10.47.49.161', '10.132.10.244', '10.132.5.122',
-                                '10.132.4.168', '10.132.45.188',
-                                '10.132.1.123', '10.132.0.59', '10.132.10.208', '10.168.46.250', '10.168.87.198',
-                                '10.116.208.206',
-                                '10.116.208.199', '10.116.208.208', '10.116.194.41', '10.252.132.253', '10.168.220.108',
-                                '10.117.29.26',
-                                '10.162.52.179', '10.162.69.137', '10.47.50.145', '10.47.162.31', '10.46.69.219']
-    ip_address_internal = ''
     for ip in get_ip_address():
-        if ip in list_ip_address_internal:
+        if is_private_ipv4(ip):
             ip_address_internal = ip
             break
     log.warning('empty internal ip address ') if not ip_address_internal else ''

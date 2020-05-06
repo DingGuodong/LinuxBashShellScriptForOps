@@ -32,14 +32,13 @@ Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
+import datetime
 import json
+import logging
 import os
 import re
 import sys
 from collections import defaultdict
-
-import datetime
-import logging
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
 # from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
@@ -265,7 +264,8 @@ def get_valid_backup_files(files_list):
 
 if __name__ == '__main__':
     self_script_output_log_path = r"C:\clean-old-backup-files.log"
-    backup_files_path_list = [r"D:\DataBackup\Daily", r"D:\SqlAutoBakup\Daily"]
+    backup_files_path_list = [r"D:\DataBackup\Daily", r"D:\SqlAutoBakup\Daily", r"E:\Data\SqlAutoBakup\Daily",
+                              r"D:\MSSQL\Backup"]
     backup_file_extension = ".bak"
     save_days = 30
 

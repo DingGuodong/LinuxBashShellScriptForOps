@@ -63,3 +63,7 @@ def google_authenticator_compatible():
     print(pyotp.totp.TOTP('JBSWY3DPEHPK3PXP').provisioning_uri("alice@google.com", issuer_name="Secure App"))
     print(pyotp.hotp.HOTP('JBSWY3DPEHPK3PXP').provisioning_uri("alice@google.com", initial_count=0,
                                                                issuer_name="Secure App"))
+
+
+if __name__ == '__main__':
+    google_authenticator_compatible()

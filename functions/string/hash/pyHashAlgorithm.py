@@ -11,7 +11,7 @@ URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOp
 Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
 Create Date:            2018/5/16
 Create Time:            20:19
-Description:            hash algorithm exampleshash algorithm examples
+Description:            hash algorithm examples
 Long Description:       
 References:             see also 'django.utils.crypto'
 Prerequisites:          []

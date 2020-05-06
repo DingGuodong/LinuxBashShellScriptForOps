@@ -15,8 +15,8 @@ Prerequisites:      pypiwin32: pip install pypiwin32
 import os
 import sys
 import time
-import win32service
 
+import win32service
 import win32serviceutil
 
 
@@ -92,7 +92,7 @@ def reset_printer():
                         os.remove(path_to_remove)
                     except WindowsError:
                         time.sleep(2)
-                        """ KNOWN ISSUE:
+                        r""" KNOWN ISSUE:
                         It will also can NOT remove some files in some Windows, such as 'Windows Server 2012'
                         Because file maybe used by a program named "Print Filter Pipeline Host",
                         "C:\Windows\System32\printfilterpipelinesvc.exe"

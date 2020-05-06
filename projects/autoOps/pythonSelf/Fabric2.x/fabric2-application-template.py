@@ -42,9 +42,9 @@ from paramiko.ssh_exception import AuthenticationException
 
 # name, ip, port, username, password, is_sudo, tag, description
 hosts_ssh_config = '''
-ecs3,192.168.88.14,22,ebt,ebt,true,k8s,k8s node 3
-ecs1,192.168.88.15,22,ebt,ebt,true,k8s,k8s node 1
-ecs2,192.168.88.16,22,ebt,ebt,true,k8s,k8s node 2
+ecs3,192.168.88.14,22,ebt,password,true,k8s,k8s node 3
+ecs1,192.168.88.15,22,ebt,password,true,k8s,k8s node 1
+ecs2,192.168.88.16,22,ebt,password,true,k8s,k8s node 2
 '''
 
 # ssh public key
@@ -177,6 +177,12 @@ def get_system_product_uuid():
 
 
 def configuring_kernel_parameters():
+    """
+    Tips:
+        set vm.swappiness = 0 if there is no swap configured
+        set net.ipv4.conf.default.rp_filter = 1 may be not preferred on cloud ecs
+    :return:
+    """
     kernel_parameters = """
 # Best Practices and Tuning Recommendations
 # http://docs.oracle.com/cd/B28359_01/install.111/b32002/pre_install.htm#LADBI246
@@ -258,13 +264,13 @@ def add_security_limits(domain, type_, item, value):
 def set_security_limits():
     """
     nofile - max number of open files, 1024, 65536
-    nproc - max number of processes, 2047, 16384
+    nproc - max number of processes, 16384, 16384
     stack - max stack size (KB), 10240, 32768
     """
     text_of_limits = """
 {username} soft nofile 1024
 {username} hard nofile 65536
-{username} soft nproc 2047
+{username} soft nproc 16384
 {username} hard nproc 16384
 {username} soft stack 10240
 {username} hard stack 32768

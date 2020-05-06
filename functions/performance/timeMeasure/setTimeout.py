@@ -9,7 +9,7 @@ Create Date:        2017/1/16
 Create Time:        9:50
 Linux only
  """
-import timeout
+import timeout  # from timeout_decorator import timeout
 
 
 @timeout.timeout(timeout=5)

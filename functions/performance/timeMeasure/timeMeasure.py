@@ -34,6 +34,33 @@ def fn_timer(func):
     return function_timer
 
 
+def fn_timer_py2py3(func):
+    """
+    测量函数执行所用时间的装饰器
+    https://stackoverflow.com/questions/8885663/how-to-format-a-floating-number-to-fixed-width-in-python
+    :param func:
+    :return:
+    """
+    from functools import wraps
+
+    @wraps(func)
+    def func_timer(*args, **kwargs):
+        import time
+        time_begin = time.time()
+        result = None
+        try:
+            result = func(*args, **kwargs)
+        except Exception as e:
+            print(e.message)
+        time_end = time.time()
+        print("Total time running {func_name}: {time_spent:16.8f} seconds".format(func_name=func.__name__,
+                                                                                  time_spent=time_end - time_begin))
+        return result
+
+    return func_timer
+
+
+@fn_timer_py2py3
 @fn_timer
 def _random_sort(n):
     import random

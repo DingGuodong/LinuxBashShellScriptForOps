@@ -163,3 +163,7 @@ if __name__ == '__main__':
     print(password_generator(7, 2, '@'))
     print(password_generator(7, 3, '#'))
     print(password_generator())
+
+    num = 27  # generate 27 passwords
+    for _ in range(num):
+        print(password_generator(length=16, complexity=3, must_include='@'))

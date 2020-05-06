@@ -10,14 +10,13 @@ Create Time:        9:52
  """
 import sys
 
-print unicode(eval(repr('\xbe\xdc\xbe\xf8\xb7\xc3\xce\xca\xa1\xa3')), 'gbk')
+print('\xbe\xdc\xbe\xf8\xb7\xc3\xce\xca\xa1\xa3'.decode("gbk"))
+print(unicode('\xbe\xdc\xbe\xf8\xb7\xc3\xce\xca\xa1\xa3', 'gbk'))
 
-message = (5, 'OpenSCManager', '\xbe\xdc\xbe\xf8\xb7\xc3\xce\xca\xa1\xa3')
-print unicode(eval(repr(message[2])), 'gbk')
-
-print sys.getdefaultencoding()
-print sys.stdout.encoding
+print(sys.getdefaultencoding())  # Out: 'ascii'
+print(sys.stdout.encoding)  # Out: 'UTF-8'
 if 'utf8' not in sys.getdefaultencoding():
-    reload(sys)
-    sys.setdefaultencoding("utf8")
-    print sys.getdefaultencoding()
+    # https://stackoverflow.com/questions/3828723/why-should-we-not-use-sys-setdefaultencodingutf-8-in-a-py-script
+    reload(sys)  # The reload() call restores the deleted attribute.
+    sys.setdefaultencoding("UTF-8")
+    print(sys.getdefaultencoding())  # Out: 'UTF-8'

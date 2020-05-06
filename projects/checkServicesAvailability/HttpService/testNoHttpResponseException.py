@@ -17,8 +17,9 @@ Some helpful message:
     For Windows: pip install gevent
  """
 import signal
-import time
 import sys
+import time
+
 #  execute some operations concurrently using python
 from gevent import monkey
 
@@ -49,6 +50,7 @@ def testNoHttpResponseException(url):
     tryCounts = 0
     global statistics
     globalStartTime = time.time()
+    globalEndTime = None
     while tryFlag:
         if not quit_flag:
             tryCounts += 1

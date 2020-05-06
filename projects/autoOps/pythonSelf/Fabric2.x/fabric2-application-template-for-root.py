@@ -177,6 +177,12 @@ def get_system_product_uuid():
 
 
 def configuring_kernel_parameters():
+    """
+    Tips:
+        set vm.swappiness = 0 if there is no swap configured
+        set net.ipv4.conf.default.rp_filter = 1 may be not preferred on cloud ecs
+    :return:
+    """
     kernel_parameters = """
 # Best Practices and Tuning Recommendations
 # http://docs.oracle.com/cd/B28359_01/install.111/b32002/pre_install.htm#LADBI246
@@ -255,13 +261,13 @@ def add_security_limits(domain, type_, item, value):
 def set_security_limits():
     """
     nofile - max number of open files, 1024, 65536
-    nproc - max number of processes, 2047, 16384
+    nproc - max number of processes, 16384, 16384
     stack - max stack size (KB), 10240, 32768
     """
     text_of_limits = """
 {username} soft nofile 1024
 {username} hard nofile 65536
-{username} soft nproc 2047
+{username} soft nproc 16384
 {username} hard nproc 16384
 {username} soft stack 10240
 {username} hard stack 32768
@@ -286,6 +292,16 @@ def set_security_limits():
             cxn.run("sort -u {filename} | tee {filename}".format(filename=security_limits_file))
         elif is_yum():  # sort (GNU coreutils) 8.4
             cxn.run("sort -u {filename} -o {filename}".format(filename=security_limits_file))
+
+
+def disable_ipv6():
+    disable_ipv6_parameters = """
+    net.ipv6.conf.all.disable_ipv6 = 1
+    net.ipv6.conf.default.disable_ipv6 = 1
+    net.ipv6.conf.lo.disable_ipv6 = 1
+    """.strip()
+    cxn.run('cp /etc/sysctl.conf /etc/sysctl.conf$(date +%Y%m%d%H%M%S)~')
+    cxn.run("echo -e '{}' | tee -a /etc/sysctl.conf".format(disable_ipv6_parameters), hide=True)
 
 
 def performance_tuning():

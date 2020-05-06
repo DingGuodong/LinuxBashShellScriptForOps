@@ -29,30 +29,12 @@ Topic:                  Utilities
 import os
 import sys
 import time
-import win32print
-import win32service
 from collections import Counter
 from hashlib import md5
 
+import win32print
+import win32service
 import win32serviceutil
-
-
-def get_system_encoding():
-    """
-    The encoding of the default system locale but falls back to the given
-    fallback encoding if the encoding is unsupported by python or could
-    not be determined.  See tickets #10335 and #5846
-    """
-    import codecs
-    import locale
-
-    try:
-        encoding = locale.getdefaultlocale()[1] or 'ascii'
-        codecs.lookup(encoding)
-    except Exception as _:
-        del _
-        encoding = 'ascii'
-    return encoding
 
 
 def reset_printer():
@@ -77,8 +59,6 @@ def reset_printer():
         3: "STOP_PENDING",
         4: "RUNNING"
     }
-
-    DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
     print "printer spool folder is: %s" % path
 
@@ -109,7 +89,7 @@ def reset_printer():
                         os.remove(path_to_remove)
                     except WindowsError:
                         time.sleep(2)
-                        """ KNOWN ISSUE:
+                        r""" KNOWN ISSUE:
                         It will also can NOT remove some files in some Windows, such as 'Windows Server 2012'
                         Because file maybe used by a program named "Print Filter Pipeline Host",
                         "C:\Windows\System32\printfilterpipelinesvc.exe"
@@ -146,12 +126,10 @@ def reset_printer():
                 print "service {service} started.".format(service=service_name)
         except Exception as e:
             print e
-            print [msg.decode(DEFAULT_LOCALE_ENCODING) for msg in e.args]
-            print e.message.decode(DEFAULT_LOCALE_ENCODING)
+            print [msg for msg in e.args]
 
 
 def printer_watchdog():
-    # DEFAULT_LOCALE_ENCODING = get_system_encoding()
     print win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL)  # get local printers
     print win32print.EnumPrinters(win32print.PRINTER_ENUM_CONNECTIONS)  # get printers which other computer shared
 

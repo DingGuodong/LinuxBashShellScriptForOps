@@ -17,7 +17,7 @@ import sys
 
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 if not mswindows:
-    print "Only Microsoft Windows Operating System Is Supported."
+    print("Only Microsoft Windows Operating System Is Supported.")
     sys.exit(1)
 
 
@@ -39,13 +39,8 @@ def get_system_encoding():
 DEFAULT_LOCALE_ENCODING = get_system_encoding()
 
 # 'files_to_remove' can be a filename path(type: str) or a set of filenames(type: list)
-files_to_remove = "" or [
-    'C:\Users\Guodong\AppData\Roaming\Tencent\QQ\Misc\com.tencent.advertisement',
-    'C:\Users\Guodong\Documents\WeChat Files\chris-dj\Image\Image',
-    'C:\Users\Guodong\Documents\WeChat Files\chris-dj\Image\HttpImage',
-    'C:\Users\Guodong\Documents\WeChat Files\chris-dj\Attachment',
-    'C:\Users\Guodong\Documents\WeChat Files\chris-dj\Video',
-]
+files_to_remove = "" or [r"D:\Users\Chris\Documents\WeChat Files\chris-dj" + x for x in
+                         [r'\Image\Image', r'\Image\HttpImage', r'\Attachment', r'\Video', ]]
 
 
 def confirm(question, default=True):
@@ -100,14 +95,14 @@ def remove_file(path, save_dirs=True):
         return_code = proc_obj.returncode
         if return_code == 0:
             if stdout is not None:
-                print stdout.decode(DEFAULT_LOCALE_ENCODING)
+                print(stdout.decode(DEFAULT_LOCALE_ENCODING))
             takeown_success = True
         else:
-            print "command execute failed, return code is {return_code}".format(return_code=return_code)
+            print("command execute failed, return code is {return_code}".format(return_code=return_code))
             if stdout is not None:
-                print "[STDOUT]" + stdout.decode(DEFAULT_LOCALE_ENCODING)
+                print("[STDOUT]" + stdout.decode(DEFAULT_LOCALE_ENCODING))
             if stderr is not None:
-                print "[STDERR]" + stderr.decode(DEFAULT_LOCALE_ENCODING)
+                print("[STDERR]" + stderr.decode(DEFAULT_LOCALE_ENCODING))
 
         cmd = 'ICACLS ' + path + ' /grant Everyone:F' + ' /inheritance:e'
         proc_obj = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
@@ -116,15 +111,15 @@ def remove_file(path, save_dirs=True):
         return_code = proc_obj.returncode
         if return_code == 0:
             if stdout is not None:
-                print stdout.decode(DEFAULT_LOCALE_ENCODING)
+                print(stdout.decode(DEFAULT_LOCALE_ENCODING))
             icacls_success = True
         else:
             icacls_success = True
-            print "command execute failed, return code is {return_code}".format(return_code=return_code)
+            print("command execute failed, return code is {return_code}".format(return_code=return_code))
             if stdout is not None:
-                print "[STDOUT]" + stdout.decode(DEFAULT_LOCALE_ENCODING)
+                print("[STDOUT]" + stdout.decode(DEFAULT_LOCALE_ENCODING))
             if stderr is not None:
-                print "[STDERR]" + stderr.decode(DEFAULT_LOCALE_ENCODING)
+                print("[STDERR]" + stderr.decode(DEFAULT_LOCALE_ENCODING))
 
         if takeown_success and icacls_success:
             return True

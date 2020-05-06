@@ -180,7 +180,7 @@ def console_log_msg(msg, level="error", *args, **kwargs):
     if level == "error":
         logger.error(msg, *args, **kwargs)
     elif level == "warn":
-        logger.warn(msg, *args, **kwargs)
+        logger.warning(msg, *args, **kwargs)
     elif level == "debug":
         logger.debug(msg, *args, **kwargs)
     else:
