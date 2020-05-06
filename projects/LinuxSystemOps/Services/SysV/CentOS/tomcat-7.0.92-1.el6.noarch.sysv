@@ -1,0 +1,325 @@
+#!/bin/bash
+#
+# tomcat      This shell script takes care of starting and stopping Tomcat
+#
+# chkconfig: - 80 20
+#
+### BEGIN INIT INFO
+# Provides: tomcat
+# Required-Start: $network $syslog
+# Required-Stop: $network $syslog
+# Default-Start:
+# Default-Stop:
+# Description: Release implementation for Servlet 3.0 and JSP 2.2
+# Short-Description: start and stop tomcat
+### END INIT INFO
+#
+# - originally written by Henri Gomez, Keith Irwin, and Nicolas Mailhot
+# - heavily rewritten by Deepak Bhole and Jason Corley
+#
+
+## Source function library.
+#. /etc/rc.d/init.d/functions
+# Source LSB function library.
+if [ -r /lib/lsb/init-functions ]; then
+    . /lib/lsb/init-functions
+else
+    exit 1
+fi
+
+DISTRIB_ID=`lsb_release -i -s 2>/dev/null`
+
+NAME="$(basename $0)"
+unset ISBOOT
+if [ "${NAME:0:1}" = "S" -o "${NAME:0:1}" = "K" ]; then
+    NAME="${NAME:3}"
+    ISBOOT="1"
+fi
+
+# For SELinux we need to use 'runuser' not 'su'
+if [ -x "/sbin/runuser" ]; then
+    SU="/sbin/runuser -s /bin/sh"
+else
+    SU="/bin/su -s /bin/sh"
+fi
+
+# Get the tomcat config (use this for environment specific settings)
+TOMCAT_CFG="/etc/tomcat/tomcat.conf"
+if [ -r "$TOMCAT_CFG" ]; then
+    . $TOMCAT_CFG
+fi
+
+# Get instance specific config file
+if [ -r "/etc/sysconfig/${NAME}" ]; then
+    . /etc/sysconfig/${NAME}
+fi
+
+# Define which connector port to use
+CONNECTOR_PORT="${CONNECTOR_PORT:-8080}"
+
+# Path to the tomcat launch script
+TOMCAT_SCRIPT="${TOMCAT_SCRIPT:-/usr/sbin/tomcat}"
+
+# Tomcat program name
+TOMCAT_PROG="${NAME}"
+
+# Define the tomcat username
+TOMCAT_USER="${TOMCAT_USER:-tomcat}"
+
+# Define the tomcat group
+TOMCAT_GROUP="${TOMCAT_GROUP:-`id -gn $TOMCAT_USER`}"
+
+# Define the tomcat log file
+TOMCAT_LOG="${TOMCAT_LOG:-${CATALINA_HOME}/logs/${NAME}-initd.log}"
+
+# Define the tomcat pid file
+CATALINA_PID="${CATALINA_PID:-/var/run/${NAME}.pid}"
+
+RETVAL="0"
+
+# Look for open ports, as the function name might imply
+function findFreePorts() {
+    local isSet1="false"
+    local isSet2="false"
+    local isSet3="false"
+    local lower="8000"
+    randomPort1="0"
+    randomPort2="0"
+    randomPort3="0"
+    local -a listeners="( $(
+                        netstat -ntl | \
+                        awk '/^tcp/ {gsub("(.)*:", "", $4); print $4}'
+                    ) )"
+    while [ "$isSet1" = "false" ] || \
+          [ "$isSet2" = "false" ] || \
+          [ "$isSet3" = "false" ]; do
+        let port="${lower}+${RANDOM:0:4}"
+        if [ -z `expr " ${listeners[*]} " : ".*\( $port \).*"` ]; then
+            if [ "$isSet1" = "false" ]; then
+                export randomPort1="$port"
+                isSet1="true"
+            elif [ "$isSet2" = "false" ]; then
+                export randomPort2="$port"
+                isSet2="true"
+            elif [ "$isSet3" = "false" ]; then
+                export randomPort3="$port"
+                isSet3="true"
+            fi
+        fi
+    done
+}
+
+function makeHomeDir() {
+    if [ ! -d "$CATALINA_HOME" ]; then
+        echo "$CATALINA_HOME does not exist, creating"
+        if [ ! -d "/usr/share/${NAME}" ]; then
+            mkdir /usr/share/${NAME}
+            cp -pLR /usr/share/tomcat/* /usr/share/${NAME}
+        fi
+        mkdir -p /var/log/${NAME} \
+                 /var/cache/${NAME} \
+                 /var/tmp/${NAME}
+        ln -fs /var/cache/${NAME} ${CATALINA_HOME}/work
+        ln -fs /var/tmp/${NAME} ${CATALINA_HOME}/temp
+        cp -pLR /usr/share/${NAME}/bin $CATALINA_HOME
+        cp -pLR /usr/share/${NAME}/conf $CATALINA_HOME
+        ln -fs /usr/share/java/tomcat ${CATALINA_HOME}/lib
+        ln -fs /usr/share/tomcat/webapps ${CATALINA_HOME}/webapps
+        install -o ${TOMCAT_USER} -g ${TOMCAT_GROUP} -d -m 0770 /var/log/${NAME}
+    fi
+}
+
+function parseOptions() {
+    options=""
+    options="$options $(
+                 awk '!/^#/ && !/^$/ { ORS=" "; print "export ", $0, ";" }' \
+                 $TOMCAT_CFG
+             )"
+    if [ -r "/etc/sysconfig/${NAME}" ]; then
+        options="$options $(
+                     awk '!/^#/ && !/^$/ { ORS=" ";
+                                           print "export ", $0, ";" }' \
+                     /etc/sysconfig/${NAME}
+                 )"
+    fi
+    TOMCAT_SCRIPT="$options ${TOMCAT_SCRIPT}"
+}
+
+# See how we were called.
+function start() {
+
+   echo -n "Starting ${TOMCAT_PROG}: "
+   if [ "$RETVAL" != "0" ]; then
+     log_failure_msg
+     return
+   fi
+   if [ -f "/var/lock/subsys/${NAME}" ]; then
+        if [ -s "$CATALINA_PID" ]; then
+            read kpid < $CATALINA_PID
+#           if checkpid $kpid 2>&1; then
+            if [ -d "/proc/${kpid}" ]; then
+                log_success_msg
+                if [ "$DISTRIB_ID" = "MandrivaLinux" ]; then
+                    echo
+                fi
+                return 0
+            fi
+        fi
+    fi
+    # fix permissions on the log and pid files
+    touch $CATALINA_PID 2>&1 || RETVAL="4"
+    if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
+      install -o ${TOMCAT_USER} -g ${TOMCAT_GROUP} -m 644 /dev/null "${CATALINA_PID}"
+    fi
+    [ "$RETVAL" -eq "0" ] && touch $TOMCAT_LOG 2>&1 || RETVAL="4"
+    if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
+      if [ ! -f "${TOMCAT_LOG}" ]; then
+        install -o ${TOMCAT_USER} -g ${TOMCAT_GROUP} -m 644 /dev/null "${TOMCAT_LOG}"
+      fi
+    fi
+    if [ "$CATALINA_HOME" != "/usr/share/tomcat" -a "$RETVAL" -eq "0" ]; then
+        # Create a tomcat directory if it doesn't exist
+        makeHomeDir
+        # If CATALINA_HOME doesn't exist modify port number so that
+        # multiple instances don't interfere with each other
+        findFreePorts
+        sed -i -e "s/8005/${randomPort1}/g" -e "s/8080/${CONNECTOR_PORT}/g" \
+            -e "s/8009/${randomPort2}/g" -e "s/8443/${randomPort3}/g" \
+            ${CATALINA_HOME}/conf/server.xml
+    fi
+    parseOptions
+    if [ "$RETVAL" -eq "0" -a "$SECURITY_MANAGER" = "true" ]; then
+        $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start-security" \
+            >> ${TOMCAT_LOG} 2>&1 || RETVAL="4"
+    else
+
+       [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start" >> ${TOMCAT_LOG} 2>&1 || RETVAL="4"
+    fi
+    if [ "$RETVAL" -eq "0" ]; then
+        log_success_msg
+        touch /var/lock/subsys/${NAME}
+    else
+        log_failure_msg "Error code ${RETVAL}"
+    fi
+    if [ "$DISTRIB_ID" = "MandrivaLinux" ]; then
+        echo
+    fi
+}
+
+function stop() {
+    echo -n "Stopping ${TOMCAT_PROG}: "
+    if [ -f "/var/lock/subsys/${NAME}" ]; then
+      parseOptions
+      if [ "$RETVAL" -eq "0" ]; then
+         touch /var/lock/subsys/${NAME} 2>&1 || RETVAL="4"
+         [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} stop" >> ${TOMCAT_LOG} 2>&1 || RETVAL="4"
+      fi
+      if [ "$RETVAL" -eq "0" ]; then
+         count="0"
+         if [ -s "$CATALINA_PID" ]; then
+            read kpid < $CATALINA_PID
+            until [ "$(ps --pid $kpid | grep -c $kpid)" -eq "0" ] || \
+                      [ "$count" -gt "$SHUTDOWN_WAIT" ]; do
+                    if [ "$SHUTDOWN_VERBOSE" = "true" ]; then
+                        echo "waiting for processes $kpid to exit"
+                    fi
+                    sleep 1
+                    let count="${count}+1"
+                done
+                if [ "$count" -gt "$SHUTDOWN_WAIT" ]; then
+                    if [ "$SHUTDOWN_VERBOSE" = "true" ]; then
+                        log_warning_msg "killing processes which did not stop after ${SHUTDOWN_WAIT} seconds"
+                    fi
+                    kill -9 $kpid
+                fi
+                log_success_msg
+            fi
+            rm -f /var/lock/subsys/${NAME} $CATALINA_PID
+        else
+            log_failure_msg
+            RETVAL="4"
+        fi
+    else
+        log_success_msg
+        RETVAL="0"
+    fi
+    if [ "$DISTRIB_ID" = "MandrivaLinux" ]; then
+        echo
+    fi
+}
+
+function usage()
+{
+   echo "Usage: $0 {start|stop|restart|condrestart|try-restart|reload|force-reload|status|version}"
+   RETVAL="2"
+}
+
+# See how we were called.
+RETVAL="0"
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    condrestart|try-restart)
+        if [ -s "$CATALINA_PID" ]; then
+            stop
+            start
+        fi
+        ;;
+    reload)
+        RETVAL="3"
+        ;;
+    force-reload)
+        if [ -s "$CATALINA_PID" ]; then
+            stop
+            start
+        fi
+        ;;
+    status)
+        if [ -s "$CATALINA_PID" ]; then
+            read kpid < $CATALINA_PID
+            if [ -d "/proc/${kpid}" ]; then
+                log_success_msg "${NAME} (pid ${kpid}) is running..."
+                RETVAL="0"
+            else
+# The pid file exists but the process is not running
+               log_warning_msg "PID file exists, but process is not running"
+               RETVAL="1"
+            fi
+        else
+            pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_USER} -f "catalina\.base=${CATALINA_BASE}[ $]")"
+            if [ -z "$pid" ]; then
+#               status ${NAME}
+#               RETVAL="$?"
+                log_success_msg "${NAME} is stopped"
+                RETVAL="3"
+            else
+                log_success_msg "${NAME} (pid $pid) is running..."
+                RETVAL="0"
+            fi
+        fi
+         if [ -f /var/lock/subsys/${NAME} ]; then
+            pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_USER} -f "catalina\.base=${CATALINA_BASE}[ $]")"
+# The lockfile exists but the process is not running
+            if [ -z "$pid" ]; then
+               log_failure_msg "${NAME} lockfile exists but process is not running"
+               RETVAL="2"
+            fi
+         fi
+        ;;
+    version)
+        ${TOMCAT_SCRIPT} version
+        ;;
+    *)
+      usage
+      ;;
+esac
+
+exit $RETVAL

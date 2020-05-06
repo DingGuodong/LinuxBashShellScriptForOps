@@ -107,7 +107,7 @@ function check_network_connectivity(){
         elif ! ip route | grep default >/dev/null; then
             echo_r "Network is unreachable, gateway is not set."
             exit 1
-        elif ! ping -c2 $(ip route | awk '/default/ {print $3}') >/dev/null; then
+        elif ! ping -c2 "$(ip route | awk '/default/ {print $3}')" >/dev/null; then
             echo_r "Network is unreachable, gateway is unreachable."
             exit 1
         else
@@ -130,12 +130,12 @@ function check_name_resolve(){
         if ping  -c${ping_count} ${stable_target_name_to_resolve} >/dev/null; then
             echo_g "Name lookup success for $stable_target_name_to_resolve with $ping_count times "
         fi
-        eval_md5sum_of_nameserver_config="`md5sum /etc/resolv.conf | awk '{ print $1 }'`"
-        if test ${eval_md5sum_of_nameserver_config} = "674ea91675cdfac353bffbf49dc593c3"; then
+        eval_md5sum_of_nameserver_config="$(md5sum /etc/resolv.conf | awk '{ print $1 }')"
+        if test "${eval_md5sum_of_nameserver_config}" = "674ea91675cdfac353bffbf49dc593c3"; then
             echo_y "Nameserver config file is validated, but name lookup failed for $target_name_to_resolve with $ping_count times"
             return 0
         fi
-        [ -f /etc/resolv.conf ] && cp /etc/resolv.conf /etc/resolv.conf_$(date +%Y%m%d%H%M%S)~
+        [ -f /etc/resolv.conf ] && cp /etc/resolv.conf /etc/resolv.conf_"$(date +%Y%m%d%H%M%S)"~
         cat >/etc/resolv.conf<<eof
 nameserver 114.114.114.114
 nameserver 8.8.4.4
@@ -150,8 +150,8 @@ eof
 
 
 command_exists() {
-    # which "$@" >/dev/null 2>&1
-    command -v "$@" >/dev/null 2>&1
+    # which "$*" >/dev/null 2>&1
+    command -v "$*" >/dev/null 2>&1
 }
 
 check_command_can_be_execute(){
@@ -159,26 +159,26 @@ check_command_can_be_execute(){
 }
 
 yum_install_packages(){
-    echo_b "yum install $@ ..."
-    yum -q -yy install $@
+    echo_b "yum install $* ..."
+    yum -q -yy install "$*"
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "yum install $@ failed! "
+        echo_r "yum install $* failed! "
         exit 1
     else
-        echo_g "yum install $@ successfully! "
+        echo_g "yum install $* successfully! "
     fi
 }
 
 apt_get_install_packages(){
-    echo_b "apt-get install $@ ..."
-    apt-get -qq -y install $@
+    echo_b "apt-get install $* ..."
+    apt-get -qq -y install "$*"
     retval=$?
     if [ ${retval} -ne 0 ] ; then
-        echo_r "apt-get install $@ failed! "
+        echo_r "apt-get install $* failed! "
         exit 1
     else
-        echo_g "apt-get install $@ successfully! "
+        echo_g "apt-get install $* successfully! "
     fi
 }
 
@@ -243,7 +243,7 @@ check_linux_distribution(){
     fi
     DISTRIB_ID=""
     if [ -z "$lsb_dist" ] && [ -r /etc/lsb-release ]; then
-            lsb_dist="$(test -f /etc/lsb-release && . /etc/lsb-release && echo "$DISTRIB_ID")"
+            lsb_dist=$(test -f /etc/lsb-release && . /etc/lsb-release && echo "$DISTRIB_ID")
     fi
     if [ -z "$lsb_dist" ] && [ -r /etc/debian_version ]; then
         lsb_dist='debian'
@@ -320,7 +320,7 @@ check_linux_distribution(){
 
 # refer to LNMP, http://lnmp.org/download.html
 function Get_OS_Bit(){
-    if [[ `getconf WORD_BIT` = '32' && `getconf LONG_BIT` = '64' ]] ; then
+    if [[ $(getconf WORD_BIT) = '32' && $(getconf LONG_BIT) = '64' ]] ; then
         Is_64bit='y'
     else
         Is_64bit='n'
@@ -390,21 +390,21 @@ Install_LSB()
 Get_Dist_Version()
 {
     Install_LSB
-    eval ${DISTRO}_Version=`lsb_release -rs`
+    eval ${DISTRO}_Version=$(lsb_release -rs)
     eval echo "${DISTRO} \${${DISTRO}_Version}"
 }
 # end refer to http://lnmp.org/download.html
 
 function restorecon_if_selinux_is_enabled(){
     [ -f /selinux/enforce ] && SELINUX_STATE=$(cat "/selinux/enforce")
-    [ -n "$SELINUX_STATE" -a -x /sbin/restorecon ] && /sbin/restorecon -r $@
+    [ -n "$SELINUX_STATE" ] && [ -x /sbin/restorecon ] && /sbin/restorecon -r "$*"
 }
 
 function backup_old_hosts_file(){
     echo_b "backup old hosts file ... "
     ops_time="$(date +%Y%m%d%H%M%S)~"
-    [ -f /etc/hosts ] && cp /etc/hosts /etc/hosts_${ops_time}
-    [ -f /etc/hosts_${ops_time} ] && echo_g "backup old hosts file successfully! file is\"/etc/hosts_$ops_time\" "
+    [ -f /etc/hosts ] && cp /etc/hosts /etc/hosts_"${ops_time}"
+    [ -f /etc/hosts_"${ops_time}" ] && echo_g "backup old hosts file successfully! file is\"/etc/hosts_$ops_time\" "
 }
 
 function roll_back_to_old_hosts_file(){
@@ -412,11 +412,11 @@ function roll_back_to_old_hosts_file(){
     if [ "x$ops_time" = "x" ]; then
         echo_y "Can NOT find backup files, try to find a oldest backup manually! \
 But do NOT worry, it usually because you have backup it last time"
-        oldest_backup_file="`find /etc -name hosts*~ ! -type d -printf "%T@ %p\n" | sort -n | head -n1 | awk '{print $NF}'`"
-        [ -f oldest_backup_file ] && \mv -f ${oldest_backup_file} /etc/hosts
+        oldest_backup_file="$(find /etc -name 'hosts*~' ! -type d -printf "%T@ %p\n" | sort -n | head -n1 | awk '{print $NF}')"
+        [ -f oldest_backup_file ] && \mv -f "${oldest_backup_file}" /etc/hosts
         [ -s /etc/hosts ] && echo_g "Rolling back to old hosts file successfully! "
     else
-        \mv -f /etc/hosts_${ops_time} /etc/hosts
+        \mv -f /etc/hosts_"${ops_time}" /etc/hosts
         restorecon_if_selinux_is_enabled /etc/hosts
         [ -s /etc/hosts ] && echo_g "Rolling back to old hosts file successfully! "
     fi
@@ -483,11 +483,11 @@ function get_hosts_file_from_github(){
         # rm: cannot remove ‘/etc/hosts’: Device or resource busy
         # it occurs in docker when mount /etc/hosts to container as a volume
         rm -f /etc/hosts
-        [ -f hosts/hosts ] && \cp -f hosts/hosts /etc/hosts || ( echo_r "can NOT find file \"hosts/hosts\"" && exit 1 )
+        ([ -f hosts/hosts ] && \cp -f hosts/hosts /etc/hosts) || ( echo_r "can NOT find file \"hosts/hosts\"" && exit 1 )
 
         # check if able to resolve host `hostname -f`, if not, sudo will throw a exception 'sudo: unable to resolve host xxx'
-        echo "127.0.0.1 `hostname` `hostname -f`" >> /etc/hosts
-        echo "`ip addr show scope global $(ip route | awk '/^default/ {print $NF}') | awk -F '[ /]+' '/global/ {print $3}'` `hostname` `hostname -f`" >> /etc/hosts
+        echo "127.0.0.1 $(hostname) $(hostname -f)" >> /etc/hosts
+        echo "$(ip addr show scope global "$(ip route | awk '/^default/ {print $NF}')" | awk -F '[ /]+' '/global/ {print $3}') $(hostname) $(hostname -f)" >> /etc/hosts
 
         echo_g "Replace hosts file succeeded!"
     fi
@@ -498,7 +498,7 @@ function validate_network_to_outside(){
     for (( i=1 ; i<=3 ; i++ )) do
         http_code=$(curl -o /dev/null -m 10 --connect-timeout 10 -s -w "%{http_code}" https://www.google.com.hk/)
         retval=$?
-        if test "$http_code" = "200" -o ${http_code} -eq 200 ; then
+        if test "$http_code" = "200" -o "${http_code}" -eq 200 ; then
             echo_g "Now you can access Google via HTTPS not HTTP protocol, etc easily! "
             break
         else
@@ -518,14 +518,14 @@ function validate_etc_host_conf(){
     echo_b "validating /etc/host.conf file ... "
     if [ -f /etc/host.conf ]; then
         command_exists md5sum || ( echo_r "system is broken, md5sum comes from coreutils usually! " && exit 1 )
-        md5="`md5sum /etc/host.conf`"
-        content="`cat /etc/host.conf`"
+        md5="$(md5sum /etc/host.conf)"
+        content="$(cat /etc/host.conf)"
         if test "$md5" == "ea2ffefe1a1afb7042be04cd52f611a6" -o "$content" == "order hosts,bind" -o \
         "$md5" == "4eb63731c9f5e30903ac4fc07a7fe3d6" -o "$content" == "multi on"; then
             echo_g "Validating /etc/host.conf file passed! "
             return
         else
-            echo_y "Note: /etc/host.conf file's content is \"`cat /etc/host.conf`\""
+            echo_y "Note: /etc/host.conf file's content is \"$(cat /etc/host.conf)\""
             return
         fi
     else
@@ -542,6 +542,7 @@ eof
 cat -<<eof
 ${header}
 eof
+cd "$WORKDIR" || exit 1
 check_network_connectivity
 validate_etc_host_conf
 check_name_resolve

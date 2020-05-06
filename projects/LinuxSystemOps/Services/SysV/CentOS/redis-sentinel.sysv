@@ -1,0 +1,94 @@
+#!/bin/sh
+#
+# redis        init file for starting up the redis-sentinel daemon
+#
+# chkconfig:   - 21 79
+# description: Starts and stops the redis-sentinel daemon.
+#
+### BEGIN INIT INFO
+# Provides: redis-sentinel
+# Required-Start: $local_fs $remote_fs $network
+# Required-Stop: $local_fs $remote_fs $network
+# Short-Description: start and stop Sentinel server
+# Description: A persistent key-value database
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+name="redis-sentinel"
+exec="/usr/bin/$name"
+shut="/usr/libexec/redis-shutdown"
+pidfile="/var/run/redis/sentinel.pid"
+SENTINEL_CONFIG="/etc/redis-sentinel.conf"
+
+[ -e /etc/sysconfig/redis-sentinel ] && . /etc/sysconfig/redis-sentinel
+
+lockfile=/var/lock/subsys/redis
+
+start() {
+    [ -f $SENTINEL_CONFIG ] || exit 6
+    [ -x $exec ] || exit 5
+    echo -n $"Starting $name: "
+    daemon --user ${REDIS_USER-redis} "$exec $SENTINEL_CONFIG --daemonize yes --pidfile $pidfile"
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && touch $lockfile
+    return $retval
+}
+
+stop() {
+    echo -n $"Stopping $name: "
+    [ -x $shut ] && $shut $name
+    retval=$?
+    if [ -f $pidfile ]
+    then
+        # shutdown haven't work, try old way
+        killproc -p $pidfile $name
+        retval=$?
+    else
+        success "$name shutdown"
+    fi
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+restart() {
+    stop
+    start
+}
+
+rh_status() {
+    status -p $pidfile $name
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+
+case "$1" in
+    start)
+        rh_status_q && exit 0
+        $1
+        ;;
+    stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart}"
+        exit 2
+esac
+exit $?

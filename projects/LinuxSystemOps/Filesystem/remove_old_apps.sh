@@ -38,8 +38,8 @@ zyj-touch
 [ -d ${apps_dir} ] || exit 5
 
 current_pwd=$(pwd)  # crontab maybe can not recognize $PWD or `pwd` if without 'bash --login', need a test
-if [[ ${current_pwd} != ${apps_dir} ]]; then
-    cd ${apps_dir}
+if [[ ${current_pwd} != "${apps_dir}" ]]; then
+    cd ${apps_dir} || exit
 fi
 
 current_app_list=$(ls -1 .)
@@ -51,10 +51,10 @@ IFS=' '$'\t'$'\n'
 for app in ${app_list};do
     all_app_count=0
     old_app_count=0
-    if echo "$current_app_list" | grep ${app} >/dev/null 2>&1; then #if [[ ${current_app_list} =~ ${app} ]]; then
-        all_app_count=$(ls -t . | grep ${app}| wc -l)
+    if echo "$current_app_list" | grep "${app}" >/dev/null 2>&1; then #if [[ ${current_app_list} =~ ${app} ]]; then
+        all_app_count=$(ls -t . | grep -c "${app}")
         if [[ ${all_app_count} -gt 2 ]]; then # Note: do NOT use '>', use '-gt' in '[[ EXPRESSION ]]' instead
-            old_app_count=$(expr ${all_app_count} - 2 ) # old_app_count=$((all_app_count-2))
+            old_app_count=$((all_app_count - 2)) # old_app_count=$((all_app_count-2))
             echo "Info: Found:$app, Total files count: $all_app_count, Old files count: $old_app_count, clean them"
 #            ls -dt ./* | grep ${app} | tail -${old_app_count} | xargs ls -dl
             ls -dt ./* | grep ${app} | tail -${old_app_count} | xargs rm -rf

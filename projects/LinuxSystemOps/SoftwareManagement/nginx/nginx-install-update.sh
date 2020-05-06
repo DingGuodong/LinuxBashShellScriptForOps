@@ -87,25 +87,25 @@ function confirm_continue(){
 
 WORKDIR="/tmp/.install_nginx_from_source"
 [[ ! -d ${WORKDIR} ]] && mkdir ${WORKDIR}
-[[ -d ${WORKDIR} ]] && cd ${WORKDIR}
+[[ -d ${WORKDIR} ]] && cd ${WORKDIR} || exit 1
 
 
 function check_ports(){
     if netstat -ntl | awk '{if($4 ~ /:80$/ ) print}' | grep ':80'; then
-        echo_y "`date '+%Y-%m-%d %H:%M:%S.%N'` WARNING: port 80 in use"
+        echo_y "$(date '+%Y-%m-%d %H:%M:%S.%N') WARNING: port 80 in use"
         confirm_continue
     elif netstat -ntl | awk '{if($4 ~ /:443/ ) print}' | grep ':443'; then
-        echo_y "`date '+%Y-%m-%d %H:%M:%S.%N'` WARNING: port 443 in use"
+        echo_y "$(date '+%Y-%m-%d %H:%M:%S.%N') WARNING: port 443 in use"
         confirm_continue
     else
-        echo_g "`date '+%Y-%m-%d %H:%M:%S.%N'` Passed: port 80/443 not in use"
+        echo_g "$(date '+%Y-%m-%d %H:%M:%S.%N') Passed: port 80/443 not in use"
     fi
 }
 
 
 function compare_version(){
     # Compare the version number with `sort -V` or directly remove the dot before comparison
-    if test $(echo $@ | tr " " "\n"| sort -rV | head -1) == $1; then
+    if test "$(echo "$*" | tr " " "\n"| sort -rV | head -1)" == "$1"; then
         return 0
     else
         return 1
@@ -114,19 +114,19 @@ function compare_version(){
 
 
 function can_install_update(){
-    if which nginx >/dev/null 2>&1; then
-        current_version=`/usr/sbin/nginx -V |& grep "nginx\ version" | awk -F"/" '{print$NF}'`
-        latest_version=`echo ${NGINX_SOURCE_LATEST_VERSION}| awk -F"-" '{print$NF}'`
-        if compare_version ${current_version} ${latest_version}; then
-            echo_g "`date '+%Y-%m-%d %H:%M:%S.%N'` check passed and skipped!"
+    if command -v nginx >/dev/null 2>&1; then
+        current_version=$(/usr/sbin/nginx -V |& grep "nginx\ version" | awk -F"/" '{print$NF}')
+        latest_version=$(echo ${NGINX_SOURCE_LATEST_VERSION}| awk -F"-" '{print$NF}')
+        if compare_version "${current_version}" "${latest_version}"; then
+            echo_g "$(date '+%Y-%m-%d %H:%M:%S.%N') check passed and skipped!"
             exit 0
         else
-            echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` nginx can be upgrade!"
+            echo_c "$(date '+%Y-%m-%d %H:%M:%S.%N') nginx can be upgrade!"
             check_ports
             return 1
         fi
     else
-        echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` nginx can be install!"
+        echo_c "$(date '+%Y-%m-%d %H:%M:%S.%N') nginx can be install!"
         check_ports
         return 0
     fi
@@ -135,7 +135,7 @@ function can_install_update(){
 
 function add_users(){
     if ! grep ^www: /etc/passwd >/dev/null 2>&1; then
-        echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` adding group and user ..."
+        echo_b "$(date '+%Y-%m-%d %H:%M:%S.%N') adding group and user ..."
         groupadd -r www
         useradd -r -g www www -c "Web user" -d /dev/null -s /sbin/nologin
     fi
@@ -143,7 +143,7 @@ function add_users(){
 
 
 function is_nginx_installed(){
-    if test -d /usr/local/nginx && test -x /usr/local/nginx/sbin/nginx || test -f ${HOME}/.nginx_installed; then
+    if test -d /usr/local/nginx && test -x /usr/local/nginx/sbin/nginx || test -f "${HOME}/.nginx_installed"; then
         # installed
         return 0  # return will save result to $?
     else
@@ -154,7 +154,7 @@ function is_nginx_installed(){
 
 
 function download_source_packages(){
-    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` downloading packages ..."
+    echo_b "$(date '+%Y-%m-%d %H:%M:%S.%N') downloading packages ..."
     # http://nchc.dl.sourceforge.net/project/pcre/pcre/8.39/pcre-8.39.tar.gz
     [[ ! -f ${WORKDIR}/${NGINX_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c http://nginx.org/download/${NGINX_SOURCE_LATEST_VERSION}.tar.gz  >/dev/null 2>&1 # http://nginx.org/en/download.html
     [[ ! -f ${WORKDIR}/${PCRE_SOURCE_LATEST_VERSION}.tar.gz ]] && wget -c https://ftp.pcre.org/pub/pcre/${PCRE_SOURCE_LATEST_VERSION}.tar.gz  >/dev/null 2>&1 # ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/
@@ -165,20 +165,20 @@ function download_source_packages(){
 
 function install_base(){
     # Completing Preinstallation Tasks
-    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` install base packages ..."
+    echo_b "$(date '+%Y-%m-%d %H:%M:%S.%N') install base packages ..."
     apt-get -y update >/dev/null 2>&1 || yum makecache >/dev/null 2>&1
     apt-get -y install gcc g++ make >/dev/null 2>&1 || yum install -y gcc gcc-c++ make >/dev/null 2>&1
 }
 
 
 function compile_nginx_source(){
-    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` compile nginx and install nginx ..."
+    echo_b "$(date '+%Y-%m-%d %H:%M:%S.%N') compile nginx and install nginx ..."
     tar zxf ${NGINX_SOURCE_LATEST_VERSION}.tar.gz
     tar zxf ${PCRE_SOURCE_LATEST_VERSION}.tar.gz
     tar zxf ${ZLIB_SOURCE_LATEST_VERSION}.tar.gz
     tar zxf ${OPENSSL_SOURCE_LATEST_VERSION}.tar.gz
 
-    cd ${WORKDIR}/${NGINX_SOURCE_LATEST_VERSION}
+    cd ${WORKDIR}/${NGINX_SOURCE_LATEST_VERSION} || exit 1
     ./configure --prefix=/usr/local/nginx \
         --with-http_ssl_module \
         --with-http_v2_module \
@@ -192,18 +192,18 @@ function compile_nginx_source(){
         --with-zlib=${WORKDIR}/${ZLIB_SOURCE_LATEST_VERSION} \
         --with-openssl=${WORKDIR}/${OPENSSL_SOURCE_LATEST_VERSION} >/dev/null 2>&1
     make >/dev/null 2>&1 && make install >/dev/null 2>&1
-    cd
+    cd || exit 1
 }
 
 
 function post_install(){
-    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` pos-install nginx ..."
+    echo_b "$(date '+%Y-%m-%d %H:%M:%S.%N') pos-install nginx ..."
     [[ -h /usr/sbin/nginx ]] || ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
 
     nginx -V
     nginx -t >/dev/null 2>&1
 
-    if [[ -f /usr/local/nginx/logs/nginx.pid ]] && kill -0 `cat /usr/local/nginx/logs/nginx.pid` >/dev/null 2>&1 ; then
+    if [[ -f /usr/local/nginx/logs/nginx.pid ]] && kill -0 "$(cat /usr/local/nginx/logs/nginx.pid)" >/dev/null 2>&1 ; then
         nginx -s stop && nginx
     else
         nginx
@@ -217,7 +217,7 @@ function optimize_security_rules(){
     # Checking Resource Limits
     # https://docs.oracle.com/cd/B28359_01/install.111/b32002/pre_install.htm#LADBI246
     # https://docs.oracle.com/en/database/oracle/oracle-database/18/ladbi/checking-resource-limits-for-oracle-software-installation-users.html#GUID-293874BD-8069-470F-BEBF-A77C06618D5A
-    cp /etc/security/limits.d/www.conf /etc/security/limits.d/www.conf$(date +%Y%m%d%H%M%S)~
+    cp /etc/security/limits.d/www.conf "/etc/security/limits.d/www.conf$(date +%Y%m%d%H%M%S)~"
     tee /etc/security/limits.d/www.conf<<'eof'
 www              soft    nproc   2047
 www              hard    nproc   16384
@@ -239,7 +239,7 @@ function optimize_kernel_parameters(){
     # http://docs.oracle.com/cd/B28359_01/install.111/b32002/pre_install.htm#LADBI246
     # https://docs.oracle.com/en/database/oracle/oracle-database/18/ladbi/minimum-parameter-settings-for-installation.html#GUID-CDEB89D1-4D48-41D9-9AC2-6AD9B0E944E3
     # https://docs.oracle.com/en/database/oracle/oracle-database/18/ladbi/changing-kernel-parameter-values.html#GUID-FB0CC366-61C9-4AA2-9BE7-233EB6810A31
-    cp /etc/sysctl.conf /etc/sysctl.conf$(date +%Y%m%d%H%M%S)~
+    cp /etc/sysctl.conf "/etc/sysctl.conf$(date +%Y%m%d%H%M%S)~"
     cat >/etc/sysctl.conf<<eof
 # http://docs.oracle.com/cd/B28359_01/install.111/b32002/pre_install.htm#LADBI246
 fs.aio-max-nr = 1048576
@@ -281,12 +281,13 @@ net.ipv4.tcp_window_scaling = 1
 net.ipv4.tcp_wmem = 4096 16384 4194304
 vm.swappiness = 0
 vm.max_map_count=262144
+vm.overcommit_memory = 1
 eof
     sysctl -p
 
     test -x /etc/init.d/procps && (service procps start || systemctl start systemd-sysctl.service)
 
-    if test $(uname -r | awk -F'.' '{print$1}') -gt 3; then
+    if test "$(uname -r | awk -F'.' '{print$1}')" -gt 3; then
         # https://www.bufferbloat.net/projects/codel/wiki/
         echo_y "if your kernel version >3, net.core.default_qdisc maybe need to configured."
     fi
@@ -294,9 +295,9 @@ eof
 
 
 function generate_config_file(){
-    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` generating nginx config file ..."
+    echo_b "$(date '+%Y-%m-%d %H:%M:%S.%N') generating nginx config file ..."
     # /var/lib/python/python3.5_installed
-    if ! -f ${HOME}/.nginx_installed ; then
+    if [[ ! -f ${HOME}/.nginx_installed ]]; then
         tee /usr/local/nginx/conf/nginx.conf<<-'eof'
 user www;
 worker_processes  auto;
@@ -368,27 +369,25 @@ eof
 
 
 function clean(){
-    echo_b "`date '+%Y-%m-%d %H:%M:%S.%N'` clean installation ..."
-    test ! -f ${HOME}/.nginx_installed && touch ${HOME}/.nginx_installed
+    echo_b "$(date '+%Y-%m-%d %H:%M:%S.%N') clean installation ..."
+    test ! -f "${HOME}/.nginx_installed" && touch "${HOME}/.nginx_installed"
     # cd && rm -rf ${WORKDIR}
-    echo_g "`date '+%Y-%m-%d %H:%M:%S.%N'` nginx installation or update finished successfully!"
+    echo_g "$(date '+%Y-%m-%d %H:%M:%S.%N') nginx installation or update finished successfully!"
 }
 
 
 function install_nginx(){
     if can_install_update; then # install
-        echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` begin install nginx ..."
+        echo_c "$(date '+%Y-%m-%d %H:%M:%S.%N') begin install nginx ..."
         install_base
         add_users
         download_source_packages
         compile_nginx_source
         post_install
-        if ! is_nginx_installed; then
-            generate_config_file
-        fi
+        generate_config_file
         clean
     else # update
-        echo_c "`date '+%Y-%m-%d %H:%M:%S.%N'` begin update nginx ..."
+        echo_c "$(date '+%Y-%m-%d %H:%M:%S.%N') begin update nginx ..."
         download_source_packages
         compile_nginx_source
         post_install

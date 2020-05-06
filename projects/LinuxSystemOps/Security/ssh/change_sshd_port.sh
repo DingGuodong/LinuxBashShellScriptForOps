@@ -52,6 +52,10 @@ function restart_ssh_service() {
 
 }
 
+function todo(){
+  register_to_configration_center
+}
+
 # Check that we are root ... so non-root users stop here
 [[ $(id -u) -eq "0" ]] || echo -e "\033[01;31myou would have to be root to run it.\033[0m" && exit 1
 
