@@ -227,6 +227,8 @@ net.ipv4.tcp_tw_recycle = 0
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_window_scaling = 1
 vm.swappiness = 10
+vm.max_map_count=262144
+vm.overcommit_memory = 1
 """
     cxn.run('cp /etc/sysctl.conf /etc/sysctl.conf$(date +%Y%m%d%H%M%S)~')
     cxn.run("echo -e '{}' | tee /etc/sysctl.conf".format(kernel_parameters), hide=True)
