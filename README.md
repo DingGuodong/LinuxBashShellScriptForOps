@@ -24,6 +24,16 @@ projects目录存放比较完整的脚本文件，用于做成某件完整的事
 
 一些有用的笔记会存放在note.md文件中，也会穿插在代码注释中。
 
+## 关于本项目使用的开发环境和运维环境
+本项目通常使用Microsoft Windows 10 中文简体系统进行代码编写，
+因此经常会在Python2.x的脚本中发现部分用gbk编解码，特别是用于Windows系统的Python脚本
+
+主要运维环境是CentOS6.x、7.x，Ubuntu16、18 LTS，以及少量的Debian（多用于Docker容器场景）
+
+>因此requirements.txt文件的内容仅用于参考，不作为环境要求
+
+推荐使用JetBrains的PyCharm作为Bash Script和Python的开发工具，并安装配套的Git等工具。
+
 ## 如何使用该项目
 使用Git工具克隆到本地。
 
@@ -39,8 +49,6 @@ git clone https://github.com/DingGuodong/LinuxBashShellScriptForOps.git
 
 如果是要使用projects，则可以根据项目的名字查看自己感兴趣或者需要的部分，
 或者使用“Find in Path”或者“search in this repository”功能按照关键字搜索。
-
-推荐使用JetBrains的PyCharm作为Bash Script和Python的开发工具。
 
 ## 此项目是如何进行和维护的
 此项目的所有内容均来自日常的运维工作，因此全部与运维相关，遇到用脚本解决的问题就会写进此项目。
