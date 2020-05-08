@@ -67,7 +67,7 @@ daemon==1.2
 decorator==4.4.2
 defusedxml==0.6.0
 Delorean==1.0.0
-Django==1.11.24
+Django==1.11.28
 django-bootstrap-form==3.4
 django-bootstrap3==11.1.0
 django-crispy-forms==1.7.2
