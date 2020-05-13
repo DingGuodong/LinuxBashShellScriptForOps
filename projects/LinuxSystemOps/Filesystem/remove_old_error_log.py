@@ -191,6 +191,7 @@ if __name__ == '__main__':
         for file_to_delete in files_to_delete:
             try:
                 if os.path.exists(file_to_delete):
+                    # os.rename() is equal to GNU 'mv' and  shutil.move()
                     os.rename(file_to_delete, os.path.join(trash_dir, os.path.basename(file_to_delete)))
                 else:
                     print('WARNING: file not exist, No such file or directory, {file}'.format(
