@@ -14,6 +14,7 @@ Create Time:            11:03
 Description:            send alter message to somebody over DingTalk(Ali DingDing)
 Long Description:       
 References:             https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.karFPe&treeId=257&articleId=105735&docType=1
+                        https://open-doc.dingtalk.com/microapp/faquestions/vzbp02
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
@@ -38,7 +39,7 @@ def usage():
                     https://hostname/zabbix.php?action=mediatype.edit&mediatypeid=4
                     Script parameters: {ALERT.SENDTO} {ALERT.SUBJECT} {ALERT.MESSAGE}
     Example: python %s "admin@example.domain" "Test email from Python" "Python rules them all!"
-""") % (__file__, sys.argv[0])
+""" % (__file__, sys.argv[0]))
     sys.exit(0)
 
 
