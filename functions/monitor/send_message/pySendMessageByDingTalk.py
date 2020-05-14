@@ -39,7 +39,7 @@ def usage():
                     https://hostname/zabbix.php?action=mediatype.edit&mediatypeid=4
                     Script parameters: {ALERT.SENDTO} {ALERT.SUBJECT} {ALERT.MESSAGE}
     Example: python %s "admin@example.domain" "Test email from Python" "Python rules them all!"
-""") % (__file__, sys.argv[0])
+""" % (__file__, sys.argv[0]))
     sys.exit(0)
 
 
@@ -86,11 +86,11 @@ def send_message(access_token, title, content, mobile, enable_at_all=False):
     result_string = response.text
     result_dict = json.loads(result_string)
     if result_dict["errcode"] == 0:
-        print "send ok"
-        print json.dumps(result_string, indent=4)
+        print("send ok")
+        print(json.dumps(result_string, indent=4))
     else:
-        print "send failed"
-        print json.dumps(result_string, indent=4)
+        print("send failed")
+        print(json.dumps(result_string, indent=4))
 
 
 if __name__ == '__main__':
