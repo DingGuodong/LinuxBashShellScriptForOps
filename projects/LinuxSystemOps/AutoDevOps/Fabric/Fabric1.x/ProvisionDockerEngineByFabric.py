@@ -12,12 +12,12 @@ Important:
     You can NOT use 'runs_once' (one fabric.decorators) in multi-hosts roles, such as roles('all')
 
  """
-import logging
-import logging.handlers
 import os
 import sys
-import time
 
+import logging
+import logging.handlers
+import time
 from fabric.api import *
 from fabric.colors import *
 from fabric.context_managers import *

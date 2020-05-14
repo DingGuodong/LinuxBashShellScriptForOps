@@ -3,35 +3,21 @@
 # -*- coding: utf8 -*-
 """
 Created by PyCharm.
-File Name:              LinuxBashShellScriptForOps:pyFabricAndStrictCapistrano.py.py
-Version:                0.0.1
-Author:                 Guodong
-Author Email:           dgdenterprise@gmail.com
-URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
-Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
-Create Date:            2018/3/9
-Create Time:            14:42
-Description:            python script for automatic deploy using Fabric and Strict Capistrano structure
-Long Description:       Strict Capistrano is more like Capistrano
-References:             https://github.com/dlapiduz/fabistrano
-                        http://www.fabfile.org/
-                        http://capistranorb.com/documentation/getting-started/structure/#
-Prerequisites:          fabric
-Development Status:     3 - Alpha, 5 - Production/Stable
-Environment:            Console
-Intended Audience:      System Administrators, Developers, End Users/Desktop
-License:                Freeware, Freely Distributable
-Natural Language:       English, Chinese (Simplified)
-Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
-Topic:                  Utilities
+File:               LinuxBashShellScriptForOps:pyFabricAndCapistrano.py
+User:               Guodong
+Create Date:        2017/9/12
+Create Time:        13:48
+Description:        python script for automatic deploy using Fabric and Capistrano structure
+References:         https://github.com/dlapiduz/fabistrano
+                    http://www.fabfile.org/
+                    http://capistranorb.com/documentation/getting-started/structure/#
+Prerequisites:      fabric
  """
 import functools
 import re
 import sys
-import time
 
+import time
 from fabric.api import run, env, sudo, task
 from fabric.colors import *
 from fabric.operations import require
@@ -78,10 +64,10 @@ STAGES = {
         "scm": 'git',
         "repo_url": 'https://github.com/DingGuodong/kissops.git',
         'git_branch': 'master',
-        'packages_install': 'libmysqlclient-dev',  # TODO(Guodong Ding) complete this in 'before_deploy()'
-        'restart_cmd': "/etc/init.d/kissops restart",  # TODO(Guodong Ding) complete this in 'before_deploy()'
+        'packages_install': 'libmysqlclient-dev',  # TODO
+        'restart_cmd': "/etc/init.d/kissops restart",
         "log_level": 'debug',
-        "keep_releases": 5
+        "keep_releases": 10
         # ...
     },
     'production': {
@@ -110,16 +96,6 @@ def develop():
 
 
 @task
-def sit():
-    stage_set('sit')
-
-
-@task
-def uat():
-    stage_set('uat')
-
-
-@task
 def prod():
     stage_set('prod')
 
@@ -129,7 +105,7 @@ def dir_exists(path):
 
 
 def with_defaults(func):
-    """A decorator that sets all env defaults for certain fabric task."""
+    """A decorator that sets all defaults for a task."""
 
     @functools.wraps(func)
     def decorated(*args, **kwargs):
@@ -141,17 +117,12 @@ def with_defaults(func):
         env.setdefault('domain_path', "%(base_dir)s/%(app_name)s" %
                        {'base_dir': env.base_dir,
                         'app_name': env.app_name})
-        env.setdefault('repo_path', "%(domain_path)s/repo" %
-                       {'domain_path': env.domain_path})
         env.setdefault('current_path', "%(domain_path)s/current" %
                        {'domain_path': env.domain_path})
         env.setdefault('releases_path', "%(domain_path)s/releases" %
                        {'domain_path': env.domain_path})
         env.setdefault('shared_path', "%(domain_path)s/shared" %
                        {'domain_path': env.domain_path})
-        env.setdefault('revisions_log_path', "%(domain_path)s/revisions.log" %
-                       {'domain_path': env.domain_path})  # TODO(Guodong Ding) complete this in 'after_deploy()'
-        env.setdefault('current_time', time.strftime('%Y%m%d%H%M%S', time.localtime(time.time())))
         if 'releases' not in env.keys():
             if dir_exists(env.releases_path):
                 env.releases = sorted(run('ls -x %(releases_path)s' % {'releases_path': env.releases_path}).split())
@@ -181,6 +152,21 @@ def sudo_run(*args, **kwargs):
         run(*args, **kwargs)
 
 
+@task
+@with_defaults
+def restart():
+    """Restarts your application"""
+    try:
+        run("touch %(current_release)s/%(wsgi_path)s" %
+            {'current_release': env.current_release,
+             'wsgi_path': env.wsgi_path})
+    except AttributeError:
+        try:
+            sudo_run(env.restart_cmd)
+        except AttributeError:
+            pass
+
+
 @with_defaults
 def permissions():
     """Make the release group-writable"""
@@ -194,71 +180,38 @@ def permissions():
 @task
 @with_defaults
 def setup():
-    """Prepares one or more servers for deployment, like 'cap install'
-    Capistrano uses a strictly defined directory hierarchy
-    on each remote server to organise the source code and other deployment-related data.
-    """
-    sudo_run("mkdir -p %(domain_path)s/{releases,repo,shared}" % {'domain_path': env.domain_path})
+    """Prepares one or more servers for deployment"""
+    sudo_run("mkdir -p %(domain_path)s/{releases,shared}" % {'domain_path': env.domain_path})
     sudo_run("mkdir -p %(shared_path)s/{system,log,data,conf}" % {'shared_path': env.shared_path})
     permissions()
 
 
 @with_defaults
-def pull():
-    run("cd %(repo_path)s; [ -d .git ] && git pull -q" % {'repo_path': env.repo_path})
-
-
-@with_defaults
 def checkout():
     """Checkout code to the remote servers"""
-    env.current_release = "%(releases_path)s/%(time)s" % {'releases_path': env.releases_path, 'time': env.current_time}
-    run("cd %(repo_path)s; [ -d .git ] || git clone -b %(git_branch)s -q %(git_clone)s ." %
-        {'repo_path': env.repo_path,
-         'git_branch': env.git_branch,
+    current_time = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+    env.current_release = "%(releases_path)s/%(time)s" % {'releases_path': env.releases_path, 'time': current_time}
+    run("cd %(releases_path)s; git clone -b %(git_branch)s -q %(git_clone)s %(current_release)s" %
+        {'releases_path': env.releases_path,
          'git_clone': env.repo_url,
-         })
-    pull()
-
-
-@task
-def update_code():
-    """Copies your project to the remote servers"""
-    checkout()
-    permissions()
-
-
-@with_defaults
-def update_env():
-    """Update servers environment on the remote servers"""
-    sudo_run("cd %(current_release)s; %(pip_install_command)s" % {'current_release': env.current_release,
-                                                                  'pip_install_command': env.pip_install_command})
-    permissions()
-
-
-def compile_source_code():
-    pass
-
-
-def gen_current_release():
-    env.current_release = "%(releases_path)s/%(time)s" % {'releases_path': env.releases_path, 'time': env.current_time}
-    sudo_run("cd %(domain_path)s; cp -R %(repo_path)s %(current_release)s" %
-             {
-                 'domain_path': env.domain_path,
-                 'repo_path': env.repo_path,
-                 'current_release': env.current_release
-             })
-    compile_source_code()
+         'current_release': env.current_release,
+         'git_branch': env.git_branch})
 
 
 @task
 def update():
     """Copies your project and updates environment and symlink"""
     update_code()
-    compile_source_code()
-    gen_current_release()
     update_env()
     symlink()
     set_current()
+    permissions()
+
+
+@task
+def update_code():
+    """Copies your project to the remote servers"""
+    checkout()
     permissions()
 
 
@@ -276,39 +229,22 @@ def set_current():
                                                           'current_path': env.current_path})
 
 
-def before_deploy():
-    """check env, upload files, execute shell script(such as add user, install essential packages)"""
-    pass
-
-
-def after_deploy():
-    """ mail to admin, etc"""
-    cleanup()
-
-
-@task
 @with_defaults
-def restart():
-    """Restarts your application"""
-    try:
-        run("touch %(current_release)s/%(wsgi_path)s" %
-            {'current_release': env.current_release,
-             'wsgi_path': env.wsgi_path})
-    except AttributeError:
-        try:
-            sudo_run(env.restart_cmd)
-        except AttributeError:
-            pass
+def update_env():
+    """Update servers environment on the remote servers"""
+    sudo_run("cd %(current_release)s; %(pip_install_command)s" % {'current_release': env.current_release,
+                                                                  'pip_install_command': env.pip_install_command})
+    permissions()
 
 
 @task
 @with_defaults
 def cleanup():
     """Clean up old releases"""
-    if len(env.releases) > env.keep_releases:
+    if len(env.releases) > 3:
         directories = env.releases
         directories.reverse()
-        del directories[:env.keep_releases]
+        del directories[:3]
         env.directories = ' '.join(
             ["%(releases_path)s/%(release)s" % {'releases_path': env.releases_path, 'release': release} for release in
              directories])
@@ -333,20 +269,29 @@ def rollback_code():
 @task
 def rollback():
     """Rolls back to a previous version and restarts"""
-    require('stage', provided_by=(develop, sit, uat, prod))  # make sure 'develop' or 'prod' env stage is set
     rollback_code()
     permissions()
-    # restart() # reload application
+    restart()
+
+
+def before_deploy():
+    """check env, upload files, execute shell script(such as add user, install essential packages)"""
+    pass
+
+
+def after_deploy():
+    """ mail to admin, etc"""
+    pass
 
 
 @task(default=True)
 def deploy():
     """Deploys your project. This calls both `update' and `restart'"""
-    require('stage', provided_by=(develop, sit, uat, prod))  # make sure 'develop' or 'prod' env stage is set
+    require('stage', provided_by=(develop,))  # make sure 'develop' env stage is set
     before_deploy()
     setup()
     update()
-    # restart() # reload application
+    restart()
     after_deploy()
 
 
@@ -378,7 +323,6 @@ if __name__ == '__main__':
     if len(sys.argv) == 1 and is_windows():
         # terminal_debug("connectivity_test")
         terminal_debug("develop deploy")  # execute "deploy" task on "develop" stage hosts
-        # terminal_debug("develop rollback")  # execute "rollback" task on "develop" stage hosts
 
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
     print red("Please use 'fab -f %s'" % " ".join(str(x) for x in sys.argv[0:]))

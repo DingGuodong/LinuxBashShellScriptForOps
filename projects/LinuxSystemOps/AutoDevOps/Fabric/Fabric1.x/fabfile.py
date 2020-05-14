@@ -9,16 +9,16 @@
 # Refer: http://docs.fabfile.org/en/1.12/usage/env.html
 # fab -i c:\Users\Guodong\.ssh\exportedkey201310171355 -f .\projects\autoOps\pythonSelf\fabfile.py dotask
 
-import datetime
-import logging
-import logging.handlers
 import os
 import platform
 import re
 import sys
-import time
 
+import datetime
+import logging
+import logging.handlers
 import requests
+import time
 
 
 def win_or_linux():

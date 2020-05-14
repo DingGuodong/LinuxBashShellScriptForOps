@@ -8,12 +8,12 @@ User:               Guodong
 Create Date:        2017/3/9
 Create Time:        23:05
  """
-import logging
-import logging.handlers
 import os
 import sys
-import time
 
+import logging
+import logging.handlers
+import time
 from fabric.api import *
 from fabric.colors import red, green, yellow, blue
 from fabric.context_managers import *
