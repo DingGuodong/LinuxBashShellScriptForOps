@@ -42,9 +42,9 @@ table = prettytable.PrettyTable(border=True, header=True, left_padding_width=2, 
 if connection is not None:
     with connection.cursor() as cursor:
         cursor.execute("show full processlist")
+    field_names_list = list()
     for item in cursor:
         if isinstance(item, dict):
-            field_names_list = list()
             row_data_list = list()
             for key, value in item.items():
                 field_names_list.append(key)
