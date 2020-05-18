@@ -44,6 +44,7 @@ def print_first_last_line(inputfile):
         maxseekpoint = blocksize % filesize
         dat_file.seek(maxseekpoint)
     lines = dat_file.readlines()
+    last_line = ""
     if lines:
         last_line = lines[-1].strip()
     # print "first line : ", headers
