@@ -16,7 +16,9 @@ Long Description:
 References:             https://docs.microsoft.com/en-us/sql/connect/python/pymssql/python-sql-driver-pymssql
                         https://docs.microsoft.com/en-us/sql/connect/python/pymssql/step-3-proof-of-concept-connecting-to-sql-using-pymssql
                         https://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql
-Prerequisites:          []
+Prerequisites:          #pip3.8 install Cython
+                        #pip3.8 install pymssql  # https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
+                        pip3.8 install https://download.lfd.uci.edu/pythonlibs/s2jqpv5t/pymssql-2.1.4-cp38-cp38-win_amd64.whl
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -27,8 +29,9 @@ Programming Language:   Python :: 3
 
 Topic:                  Utilities
  """
-import pymssql
 from collections import Iterable
+
+import pymssql
 
 server = 'rdsxxxx.sqlserver.rds.aliyuncs.com'
 port = '3433'
