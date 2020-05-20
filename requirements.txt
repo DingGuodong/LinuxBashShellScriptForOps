@@ -113,7 +113,7 @@ h5py==2.10.0
 hexdump==3.3
 hpack==3.0.0
 http==0.2
-httplib2==0.17.3
+httplib2==0.18.0
 humanfriendly==8.2
 humanize==1.0.0
 hyper==0.7.0
