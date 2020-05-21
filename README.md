@@ -41,7 +41,12 @@ projects目录存放比较完整的脚本文件，用于做成某件完整的事
 git clone https://github.com/DingGuodong/LinuxBashShellScriptForOps.git
 ```
 
-此项目有多个分支用于区分Python2.x和Python3.x，目前master分支为Python2.x的代码，
+此项目目前有2个分支用于区分Python2.x和Python3.x，master分支为Python2.x的代码，python3分支为Python3.x的代码。
+
+- [Python2.x 版本](https://github.com/DingGuodong/LinuxBashShellScriptForOps/tree/master)
+
+- [Python3.x 版本](https://github.com/DingGuodong/LinuxBashShellScriptForOps/tree/python3)
+
 在日后的使用过程中不断更新完善和优化。
 
 如果是要使用functions，则需要自己翻阅functions下的所有目录以及各个文件，
