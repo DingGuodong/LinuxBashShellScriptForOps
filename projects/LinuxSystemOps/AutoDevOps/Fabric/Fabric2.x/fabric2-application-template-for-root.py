@@ -267,7 +267,7 @@ def set_security_limits():
     stack - max stack size (KB), 10240, 32768
     """
     text_of_limits = """
-{username} soft nofile 1024
+{username} soft nofile 65536
 {username} hard nofile 65536
 {username} soft nproc 16384
 {username} hard nproc 16384
