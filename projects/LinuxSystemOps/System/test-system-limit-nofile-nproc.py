@@ -19,7 +19,7 @@ Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
-Operating System:       POSIX :: Linux, Microsoft :: Windows
+Operating System:       POSIX :: Linux
 Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
@@ -44,6 +44,7 @@ def create_file(filename):
 
 
 def test_nofile(count=-1):
+    print("Note: remember exec: `rm ptf_* -f` after you test.", file=sys.stderr)
     nofile_soft, nofile_hard = resource.getrlimit(resource.RLIMIT_NOFILE)
 
     # allow user test nofile count
