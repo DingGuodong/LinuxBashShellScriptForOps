@@ -58,7 +58,8 @@ grep pam_limits.so -r /etc/pam.d/
 
 除非sshd配置了UsePAM，否则ssh登录启动的进程的limits继承自sshd，而ssh继承自init或systemd。
 
-一般情况下，进程的limits值通常继承自它的父进程，如果配置有PAM，则受/etc/security/limits.conf的限制，且覆盖父进程的limits值。
+一般情况下，进程的limits值通常继承自它的父进程，
+如果配置有PAM，则受/etc/security/limits.conf的限制，且覆盖继承自它父进程的limits值。
 
 部分发行版本，如Debian系，可能对root用户有单独的设置，root用户不能使用*代替，如/etc/security/limits.conf中明确说明：
 ```text
