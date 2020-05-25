@@ -140,13 +140,45 @@ def console_log_msg(msg, level="error", *args, **kwargs):
 
 
 def get_keyword_from_name(name):
-    # name: OSAP_YingShi2018-03-28 01.00.00.bak
-    pattern = re.compile(r"^([A-Za-z_]+)\d.*")
-    groups_tuple = pattern.match(name).groups()
-    if groups_tuple:
-        return groups_tuple[0]
+    """
+    name type1: master2018-03-28 01.00.00.bak --> master
+    name type2: master_backup_2020_05_15_145050_0886796.bak --> master
+    name type3: ReportServer$MSSQL2K8R2TempDB_backup_2020_05_18_000003_2507890.bak --> ReportServer$MSSQL2K8R2TempDB
+    :param name: database backup filename
+    :type name: str
+    :return: database name in filename
+    :rtype: str
+    """
+
+    pattern = re.compile(r"^([A-Za-z_$]+)\d.*")
+    match = pattern.match(name)
+    if match:
+        groups_tuple = match.groups()
+        keyword = groups_tuple[0]
+        if "_backup_" in keyword:
+            return keyword.strip("_backup_")
+        else:
+            return keyword
     else:
+        if DEBUG:
+            debug_msg_with_logging(name)
         return None
+
+
+def get_keyword_from_name_u1(name):
+    """
+    name type1: master2018-03-28 01.00.00.bak --> master
+    name type2: master_backup_2020_05_15_145050_0886796.bak --> master
+    name type3: ReportServer$MSSQL2K8R2TempDB_backup_2020_05_18_000003_2507890.bak --> ReportServer$MSSQL2K8R2TempDB
+    :param name: database backup filename
+    :type name: str
+    :return: database name in filename
+    :rtype: str
+    """
+    pattern = r'_backup_|\d{4}[-_]\d{2}[-_]\d{2}'
+    split_list = re.split(pattern, name)
+    # Note: len(split_list) >= 1
+    return split_list[0]
 
 
 def sort_files_by_ctime(files_list):
@@ -170,7 +202,7 @@ def get_all_files(path):
 
     for backup_file in files_list:
         if backup_file.endswith(backup_file_extension):  # only processing file ext ends with ".bak"
-            keyword = get_keyword_from_name(os.path.basename(backup_file))
+            keyword = get_keyword_from_name_u1(os.path.basename(backup_file))
             files_dict[keyword].append(backup_file)
 
     if DEBUG:
@@ -181,7 +213,8 @@ def get_all_files(path):
 
 if __name__ == '__main__':
     self_script_output_log_path = r"C:\clean-old-backup-files.log"
-    backup_files_path_list = [r"D:\DataBackup\Daily", r"D:\SqlAutoBakup\Daily"]
+    backup_files_path_list = [r"D:\DataBackup\Daily", r"D:\SqlAutoBakup\Daily", r"E:\Data\SqlAutoBakup\Daily",
+                              r"D:\MSSQL\Backup", r"D:\Data\SqlAutoBakup\Daily"]
     backup_file_extension = ".bak"
     save_days = 30
 
