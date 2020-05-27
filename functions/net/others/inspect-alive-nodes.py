@@ -13,7 +13,7 @@ Create Time:            17:27
 Description:            inspect if node is alive using icmp and tcp
 Long Description:       
 References:             
-Prerequisites:          []
+Prerequisites:          pip install ping || sudo -H pip install ping
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -24,16 +24,28 @@ Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
-import socket
-from multiprocessing.pool import ThreadPool
+from __future__ import print_function
+
+import re
+from multiprocessing.pool import ThreadPool, Pool
 
 import ipaddress
 import ping
-from queue import Queue
+import requests
+import socket
+from typing import Generator
+
+try:
+    from queue import Queue  # Windows test passed
+except ImportError:
+    try:
+        from Queue import Queue  # Linux test passed
+    except ImportError:
+        from multiprocessing import Queue  # others
 
 
 def get_hosts_from_network(address):
-    # type: (unicode) -> generator
+    # type: (unicode) -> Generator
     """
     :param address: such as '192.168.0.0/24', '192.168.0.1/24'
     :return: generator
@@ -94,12 +106,70 @@ def get_nodes_alive_using_ping(nodes):
     pool.map(is_node_alive_with_icmp_ping_thread, [(str(node), queue) for node in nodes])
     pool.close()
     pool.join()
+    nodes_alive_list = list()
     for _ in range(queue.qsize()):
-        print(queue.get())
+        host = queue.get()
+        print(host)
+        nodes_alive_list.append(host)
+    return nodes_alive_list
+
+
+def get_title_from_html(text):
+    """
+    also can use 'lxml' or 'BeautifulSoup'
+    :param text:
+    :type text: str
+    :return:
+    :rtype: str
+    """
+    pattern = re.compile('<title>(.*?)</title>')
+    match = pattern.search(text)
+    if match:
+        groups_tuple = match.groups()
+        return groups_tuple[0]
+    else:
+        return text
+
+
+def request_ip_port_80(ip):
+    """
+    request a url with redirect
+    :return:
+    """
+    url = 'http://{}/'.format(ip)
+
+    try:
+        response = requests.request('GET', url, allow_redirects=True, timeout=(2.0, 2.0))  # Defaults to ``True``.
+    except requests.exceptions.ConnectTimeout:
+        print("{} : {}".format(ip, "connect timeout"))
+        return False
+    except requests.exceptions.ReadTimeout:
+        print("{} : {}".format(ip, "read timeout"))
+        return False
+    except requests.exceptions.SSLError:
+        print("{} : {}".format(ip, "ssl error"))
+        return False
+    except requests.exceptions.ConnectionError:
+        print("{} : {}".format(ip, "connection failed"))
+        return False
+
+    if response.ok:
+        # response.content type: bytes
+        print("{} : {}".format(ip, get_title_from_html(str(response.content))))
+        # print("{} : {}".format(ip, get_title_from_html(response.content.decode("utf-8").encode("utf-8"))))
+        # response.text    type: unicode
+        print("{} : {}".format(ip, get_title_from_html(str(response.text.encode(response.encoding)))))
+        return True
+    else:
+        return False
 
 
 if __name__ == '__main__':
     given_network = u'192.168.88.0/24'  # must be unicode
     hosts = get_hosts_from_network(given_network)
-    get_nodes_alive_using_ping(hosts)
+    alive_nodes_list = get_nodes_alive_using_ping(hosts)
+
+    process_pool = Pool(2)
+    process_pool.map(request_ip_port_80, alive_nodes_list)
+
     is_node_alive_with_port_opened('192.168.88.19')
