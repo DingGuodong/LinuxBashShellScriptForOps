@@ -306,6 +306,15 @@ def disable_ipv6():
     cxn.run("echo -e '{}' | tee -a /etc/sysctl.conf".format(disable_ipv6_parameters), hide=True)
 
 
+def get_and_set_time_related():
+    cxn.run('date')
+    cxn.run('test -x $(which timedatectl) && timedatectl')
+    # CHECKPOINT
+    cxn.run('diff /etc/localtime /usr/share/zoneinfo/Asia/Shanghai')
+    # some application such as 'java, Atlassian JIRA' requires this setting
+    cxn.run('test -f /etc/timezone && cat /etc/timezone')
+
+
 def performance_tuning():
     set_security_limits()
     configuring_kernel_parameters()
