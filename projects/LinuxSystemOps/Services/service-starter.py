@@ -26,6 +26,8 @@ References:             [Linux command to find the which are the jars loaded by 
                         lsof -p $(ps -ef|awk '/[d]ataexchange/{print $2}') | awk '$4=="cwd"{print $NF}'
                         # 注意：使用jps时需要使用运行java服务的账户运行
                         lsof -p $(su - ebt -c "jps -l" | awk '/dataexchange/{print $1}') | awk '$4=="cwd"{print $NF}'
+                        # 使用"/proc/<pid>/cwd"查看
+                        ls /proc/20546/cwd -l | awk -F'-> ' '{print $2}'
                         ```
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
@@ -38,9 +40,10 @@ Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
-import logging
 import os
 import subprocess
+
+import logging
 import time
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
