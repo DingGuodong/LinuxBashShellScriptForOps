@@ -17,8 +17,10 @@
 
 daemon_name="dockerd"  # the program name to check out
 
-daemon_name_to_search_pid=$(echo ${daemon_name} | sed "s/\([a-z]\{1\}\)\(.*\)/\[\1\]\2/g")
-pid_to_trace=$(ps -ef | grep ${daemon_name_to_search_pid} | awk 'NR==1{print $2}')
+## shellcheck disable=SC2001
+#daemon_name_to_search_pid=$(echo ${daemon_name} | sed "s/\([a-z]\{1\}\)\(.*\)/\[\1\]\2/g")
+#pid_to_trace=$(ps -ef | grep "${daemon_name_to_search_pid}" | awk 'NR==1{print $2}')
+pid_to_trace=$(pgrep $daemon_name)
 
 if "x$pid_to_trace" == "x"; then
     echo "pid can NOT be found"
@@ -34,7 +36,7 @@ while [[ ${keep_running_flag} -eq 1 ]]; do
         date --rfc-2822
         echo "CPU idle percentage is too small!"
         vmstat 1 5
-        top -bn 2 -d 0.01 -p ${pid_to_trace}
+        top -bn 2 -d 0.01 -p "${pid_to_trace}"
         keep_running_flag=0
     fi
 done
