@@ -29,6 +29,7 @@
 # crontab setting
 # */30 * * * * /bin/bash /root/rsync-directory-with-crontab.sh
 # 30 19 * * * /bin/bash /root/rsync-directory-with-crontab.sh
+# 0 */2 * * * /bin/bash /root/rsync-directory-with-crontab.sh  # wrong way: * */2 * * *
 
 # rsync task config
 ################
