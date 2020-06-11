@@ -62,7 +62,7 @@ def is_file_encoding_with_utf8_or_utf16(path, encoding='utf-8'):
 
         encoding_from_chardet_raw = chardet.detect(content).get("encoding")
         if encoding_from_chardet_raw:
-            encoding_from_chardet = chardet.detect(content).get("encoding").lower()
+            encoding_from_chardet = encoding_from_chardet_raw.lower()
             try:
                 _ = content.decode(encoding_from_chardet)
             except UnicodeDecodeError:
@@ -139,6 +139,7 @@ def compress_src_directory_to_dst(save_name, source):
         # put all files wanted into a list obj
         wanted_files_list = list()
         for top, dirs, nondirs in os.walk(source_path):
+            # WARNING: some empty folder which has no file will not add zip
             for filename in nondirs:
                 cur_file = os.path.join(top, filename)
                 convert_file_from_utf16_to_utf8(cur_file)
