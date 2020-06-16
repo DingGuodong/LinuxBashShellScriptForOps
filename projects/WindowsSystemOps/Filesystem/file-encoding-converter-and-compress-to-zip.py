@@ -23,14 +23,87 @@ Operating System:       POSIX :: Linux, Microsoft :: Windows
 Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
+
+FAQ:
+    Q: UnicodeDecodeError: 'utf16' codec can't decode byte 0x0a in position 245098: truncated data
+    A: use try..except to catch exception, then verify it
+    Tips: it can use 'notepad++'(npp) with the shortcut key 'Ctrl+G' to goto the offset or position of file
+
  """
 import os
 import zipfile
 
 import chardet
 import datetime
+import logging
+from logging.handlers import TimedRotatingFileHandler
+
+logger = logging.getLogger('mylog')
 
 
+def set_file_logger_date(filename, name="mylog", saves=10, level=logging.INFO, format_string=None):
+    global logger
+    if not format_string:
+        format_string = "%(asctime)s %(name)s %(levelname)s %(thread)d : %(message)s"
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    file_handler = TimedRotatingFileHandler(filename, when='d', backupCount=saves, )
+    file_handler.setLevel(level)
+    formatter = logging.Formatter(format_string, datefmt=None)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+
+def console_log_msg(msg, level="error", name="mylog", *args, **kwargs):
+    """
+    记录日志到指定的文件并按照日期切割
+    :param msg: str, 需要打印日志的普通字符串
+    :param level: str, 打印日志的级别，可以定义error、warn、debug、info等其他
+    :param name: str, set the logger with the specified name
+    :param args: 需要打印日志的list、tuple等
+    :param kwargs: 需要打印日志的字典
+    :return:
+    """
+    if not logger.handlers:  # block same/duplicate Log messages/entries multiple times
+        set_file_logger_date(self_script_output_log_path, name=name)
+    if level.lower() == "error":
+        logger.error(msg, *args, **kwargs)
+    elif "warn" in level.lower():
+        logger.warning(msg, *args, **kwargs)
+    elif level.lower() == "debug":
+        logger.debug(msg, *args, **kwargs)
+    else:
+        logger.info(msg, *args, **kwargs)
+
+
+def timeit(func):
+    """
+    测量函数执行所用时间的装饰器
+    https://stackoverflow.com/questions/8885663/how-to-format-a-floating-number-to-fixed-width-in-python
+    :param func:
+    :return:
+    """
+    from functools import wraps
+
+    @wraps(func)
+    def func_timer(*args, **kwargs):
+        import time
+        time_begin = time.time()
+        result = None
+        try:
+            result = func(*args, **kwargs)
+        except Exception as e:
+            print(e.message)
+        time_end = time.time()
+        msg = "Total time running {func_name}: {time_spent:16.8f} seconds".format(func_name=func.__name__,
+                                                                                  time_spent=time_end - time_begin)
+        console_log_msg(msg, level='debug')
+        return result
+
+    return func_timer
+
+
+@timeit
 def is_file_encoding_with_utf8_or_utf16(path, encoding='utf-8'):
     """
     usage:
@@ -52,6 +125,8 @@ def is_file_encoding_with_utf8_or_utf16(path, encoding='utf-8'):
     if os.path.exists(path):
         with open(path, 'r') as fp:
             content = fp.read()
+            if len(content) > 2048:  # improve performance when processing large file
+                content = content[:2048]
 
         try:
             _ = content.decode(encoding)
@@ -88,8 +163,18 @@ def is_file_encoding_with_utf8_or_utf16(path, encoding='utf-8'):
         return False
 
 
+@timeit
 def convert_file_from_utf16_to_utf8(path):
+    """
+    :param path: file path
+    :type path: str
+    :return: success code
+    :rtype: bool
+    """
     if not is_file_encoding_with_utf8_or_utf16(path, 'utf-8'):
+        msg = "{msg}: {path}".format(msg="file change encoding in progress: ", path=path)
+        console_log_msg(msg, level="debug")
+
         with open(path, 'rb') as fp1:
             content = fp1.read()
         with open(path, 'wb') as fp2:
@@ -99,9 +184,21 @@ def convert_file_from_utf16_to_utf8(path):
 
             # source: Little-endian UTF-16 Unicode text, with CRLF, CR line terminators
             # output: UTF-8 Unicode text, with CRLF line terminators
-            fp2.write(content.decode("utf-16").encode("utf-8"))
+            try:
+                wanted_content = content.decode("utf-16").encode("utf-8")
+            except UnicodeDecodeError as e:
+                msg = "{msg}: {path}".format(msg=str(e), path=path)
+                console_log_msg(msg)
+                return False
+            else:
+                fp2.write(wanted_content)
+                return True
+    else:
+        msg = "{msg}: {path}".format(msg="file encoding is ok", path=path)
+        console_log_msg(msg, level="info")
 
 
+@timeit
 def zip_compress(name, files, arc, keep_name=True):
     """
     compress files using zip
@@ -134,6 +231,7 @@ def zip_compress(name, files, arc, keep_name=True):
             fp.write(origin_file, arcname=archive_name)
 
 
+@timeit
 def compress_src_directory_to_dst(save_name, source):
     if os.path.isdir(source):
         # put all files wanted into a list obj
@@ -142,14 +240,17 @@ def compress_src_directory_to_dst(save_name, source):
             # WARNING: some empty folder which has no file will not add zip
             for filename in nondirs:
                 cur_file = os.path.join(top, filename)
-                convert_file_from_utf16_to_utf8(cur_file)
-                wanted_files_list.append(cur_file)
+                is_success = convert_file_from_utf16_to_utf8(cur_file)
+                if is_success:
+                    wanted_files_list.append(cur_file)
 
         if wanted_files_list:
             zip_compress(save_name, wanted_files_list, arc=source, keep_name=False)
 
 
 if __name__ == '__main__':
+    self_script_output_log_path = r"C:\file-encoding-converter-and-compress-to-zip.log"
+
     # source data path
     source_path = r"D:\WWW\DingLvAnHou\Databakup"
 
