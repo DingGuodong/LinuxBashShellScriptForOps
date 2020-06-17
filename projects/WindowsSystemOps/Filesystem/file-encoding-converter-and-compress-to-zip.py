@@ -27,6 +27,7 @@ Topic:                  Utilities
 FAQ:
     Q: UnicodeDecodeError: 'utf16' codec can't decode byte 0x0a in position 245098: truncated data
     A: use try..except to catch exception, then verify it
+    [python 读取utf-16时缺少字节的处理](https://blog.csdn.net/roymno2/article/details/71628128)
     Tips: it can use 'notepad++'(npp) with the shortcut key 'Ctrl+G' to goto the offset or position of file
 
  """
@@ -65,7 +66,7 @@ def console_log_msg(msg, level="error", name="mylog", *args, **kwargs):
     :return:
     """
     if not logger.handlers:  # block same/duplicate Log messages/entries multiple times
-        set_file_logger_date(self_script_output_log_path, name=name)
+        set_file_logger_date(self_script_output_log_path, name=name, level=logging.DEBUG)
     if level.lower() == "error":
         logger.error(msg, *args, **kwargs)
     elif "warn" in level.lower():
@@ -175,8 +176,22 @@ def convert_file_from_utf16_to_utf8(path):
         msg = "{msg}: {path}".format(msg="file change encoding in progress: ", path=path)
         console_log_msg(msg, level="debug")
 
-        with open(path, 'rb') as fp1:
+        with open(path, 'rb') as fp1:  # in py2, codecs.open(path, 'r','utf-16') -> unicode
             content = fp1.read()
+
+        try:
+            wanted_content = content.decode("utf-16").encode("utf-8")
+        except UnicodeDecodeError as e:
+            msg = "caught e: {msg}: {path} : try ignore".format(msg=str(e), path=path)
+            console_log_msg(msg, level='warn')
+
+            try:
+                wanted_content = content.decode("utf-16", "ignore").encode("utf-8")
+            except UnicodeDecodeError as e:
+                msg = "{msg}: {path}".format(msg=str(e), path=path)
+                console_log_msg(msg, level='error')
+                return False
+
         with open(path, 'wb') as fp2:
             # # source: Little-endian UTF-16 Unicode text, with CRLF, CR line terminators
             # # output: UTF-8 Unicode (with BOM) text, with CRLF line terminators
@@ -184,15 +199,9 @@ def convert_file_from_utf16_to_utf8(path):
 
             # source: Little-endian UTF-16 Unicode text, with CRLF, CR line terminators
             # output: UTF-8 Unicode text, with CRLF line terminators
-            try:
-                wanted_content = content.decode("utf-16").encode("utf-8")
-            except UnicodeDecodeError as e:
-                msg = "{msg}: {path}".format(msg=str(e), path=path)
-                console_log_msg(msg)
-                return False
-            else:
-                fp2.write(wanted_content)
-                return True
+            fp2.write(wanted_content)
+        return True
+
     else:
         msg = "{msg}: {path}".format(msg="file encoding is ok", path=path)
         console_log_msg(msg, level="info")
