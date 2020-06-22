@@ -13,28 +13,28 @@ import platform
 import re
 import subprocess
 import sys
-import time
 
 import prettytable
 import psutil
+import time
 
 mswindows = (sys.platform == "win32")  # learning from 'subprocess' module
 linux = (sys.platform == "linux2")
 
 
-def getLocalIP():
+def get_local_ip():
     import netifaces
-    routingNicName = netifaces.gateways()['default'][netifaces.AF_INET][1]
+    routing_nic_name = netifaces.gateways()['default'][netifaces.AF_INET][1]
     for interface in netifaces.interfaces():
-        if interface == routingNicName:
+        if interface == routing_nic_name:
             try:
-                routingIPAddr = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr']
-                return interface, routingIPAddr
+                routing_ip_addr = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr']
+                return interface, routing_ip_addr
             except KeyError:
                 pass
 
 
-def getUser():
+def get_user():
     if linux:
         proc_obj = subprocess.Popen(r'tty', shell=True, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
@@ -50,23 +50,23 @@ def getUser():
         except ValueError:  # different version
             # suser(name='Guodong', terminal=None, host='0.0.0.0', started=1511519014.0, pid=None)
             username, login_tty, login_host, login_time, pid = [suser for suser in login]
-        print username, login_tty, login_host, time.strftime('%b %d %H:%M:%S', time.localtime(login_time)),
+        print(username, login_tty, login_host, time.strftime('%b %d %H:%M:%S', time.localtime(login_time)),)
         if login_tty in tty:
-            print '**current user**'
+            print('**current user**')
         else:
-            print
+            print('')
 
 
-def getTimeZone():
+def get_timezone():
     return time.strftime("%Z", time.gmtime())
 
 
-def getTimeNow():
+def get_time_now():
     now = time.strftime('%a %b %d %H:%M:%S %Y %Z', time.localtime(time.time()))
     return now
 
 
-def printHeader():
+def show_header():
     if linux:
         try:
             with open('/etc/issue') as f:
@@ -78,7 +78,7 @@ def printHeader():
         else:
             if linux_type is not None:
                 return "Welcome to %s (%s %s %s)\n  System information as of %s" % (
-                    linux_type, platform.system(), platform.release(), platform.machine(), getTimeNow()
+                    linux_type, platform.system(), platform.release(), platform.machine(), get_time_now()
                 )
             else:
                 return
@@ -112,18 +112,18 @@ def printHeader():
                 return "%s, %s [%s]\r\nVersion %s (OS Internal Version %s)" % (
                     ProductName, EditionId, platform.version(), ReleaseId, BuildLabEx)
         except Exception as e:
-            print e.message.decode(DEFAULT_LOCALE_ENCODING)
+            print(e.message.decode(DEFAULT_LOCALE_ENCODING))
 
 
-def getHostname():
+def get_hostname():
     return platform.node()
 
 
-def getCPU():
+def get_cpu_percent():
     return [round(x / 100.0, 3) for x in psutil.cpu_percent(interval=0.1, percpu=True)]
 
 
-def getLoadAverage():
+def get_system_load():
     if linux:
         import multiprocessing
         k = 1.0
@@ -135,14 +135,14 @@ def getLoadAverage():
             return [float(x.strip(',')) * k for x in tokens[-3:]]
     if mswindows:
         # TODO(Guodong Ding) get this field data like on Linux for Windows
-        # print psutil.cpu_percent()
-        # print psutil.cpu_times_percent()
-        # print psutil.cpu_times()
-        # print psutil.cpu_stats()
+        # print(psutil.cpu_percent())
+        # print(psutil.cpu_times_percent())
+        # print(psutil.cpu_times())
+        # print(psutil.cpu_stats())
         return "%.2f%%" % psutil.cpu_percent()
 
 
-def getMemory():
+def get_memory():
     v = psutil.virtual_memory()
     return {
         'used': v.total - v.available,
@@ -152,7 +152,7 @@ def getMemory():
     }
 
 
-def getVirtualMemory():
+def get_swap_memory():
     v = psutil.swap_memory()
     return {
         'used': v.used,
@@ -162,7 +162,7 @@ def getVirtualMemory():
     }
 
 
-def getUptime():
+def get_uptime():
     uptime_file = "/proc/uptime"
     if os.path.exists(uptime_file):
         with open(uptime_file, 'r') as f:
@@ -171,26 +171,26 @@ def getUptime():
         return time.time() - psutil.boot_time()
 
 
-def getUptime2():
+def get_uptime_u1():
     boot_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(psutil.boot_time()))
-    print "system start at: %s" % boot_time,
+    print("system start at: %s" % boot_time,)
     uptime_total_seconds = time.time() - psutil.boot_time()
     uptime_days = int(uptime_total_seconds / 24 / 60 / 60)
     uptime_hours = int(uptime_total_seconds / 60 / 60 % 24)
     uptime_minutes = int(uptime_total_seconds / 60 % 60)
     uptime_seconds = int(uptime_total_seconds % 60)
-    print "uptime: %d days %d hours %d minutes %d seconds" % (uptime_days, uptime_hours, uptime_minutes, uptime_seconds)
+    print("uptime: %d days %d hours %d minutes %d seconds" % (uptime_days, uptime_hours, uptime_minutes, uptime_seconds))
 
     user_number = len(psutil.users())
-    print "%d user:" % user_number
-    print "  \\"
+    print("%d user:" % user_number)
+    print("  \\")
     for user_tuple in psutil.users():
         user_name = user_tuple[0]
         user_terminal = user_tuple[1]
         user_host = user_tuple[2]
         user_login_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(user_tuple[3]))
-        print "  |- user online: %s, login from %s with terminal %s at %s" % (
-            user_name, user_host, user_terminal, user_login_time)
+        print("  |- user online: %s, login from %s with terminal %s at %s" % (
+            user_name, user_host, user_terminal, user_login_time))
 
     cpu_count = psutil.cpu_count()
     try:
@@ -203,33 +203,33 @@ def getUptime2():
                 loadavg['lavg_15'] = loadavg_c[2]
                 loadavg['nr'] = loadavg_c[3]
                 loadavg['last_pid'] = loadavg_c[4]
-        print "load average: %s, %s, %s" % (loadavg['lavg_1'], loadavg['lavg_5'], loadavg['lavg_15'])
+        print("load average: %s, %s, %s" % (loadavg['lavg_1'], loadavg['lavg_5'], loadavg['lavg_15']))
         if float(loadavg['lavg_15']) > cpu_count:
-            print "Note: cpu 15 min load is high!"
+            print("Note: cpu 15 min load is high!")
         if float(loadavg['lavg_5']) > cpu_count:
-            print "Note: cpu 5 min load is high!"
+            print("Note: cpu 5 min load is high!")
         if float(loadavg['lavg_1']) > cpu_count:
-            print "Note: cpu 1 min load is high!"
+            print("Note: cpu 1 min load is high!")
     except IOError:
         pass
 
 
 if __name__ == '__main__':
-    header = printHeader()
-    print header
-    print
+    header = show_header()
+    print(header)
+    print('')
 
-    system_load = str(getLoadAverage()).strip("[]")
+    system_load = str(get_system_load()).strip("[]")
     user_logged_in = len(psutil.users())
     info_of_root_partition = psutil.disk_usage("/")
     percent_of_root_partition_usage = "%.2f%%" % (
         float(info_of_root_partition.used) * 100 / float(info_of_root_partition.total))
     total_size_of_root_partition = "%.2f" % (float(psutil.disk_usage("/").total / 1024) / 1024 / 1024)
-    memory_info = getMemory()
+    memory_info = get_memory()
     memory_usage = "%.2f%%" % (float(memory_info['used']) * 100 / float(memory_info['total']))
-    swap_info = getVirtualMemory()
+    swap_info = get_swap_memory()
     swap_usage = "%.2f%%" % (float(swap_info['used']) * 100 / float(swap_info['total']))
-    local_ip_address = getLocalIP()
+    local_ip_address = get_local_ip()
 
     table = prettytable.PrettyTable(border=False, header=False, left_padding_width=2)
     table.field_names = ["key1", "value1", "key2", "value2"]
@@ -241,8 +241,8 @@ if __name__ == '__main__':
     for field in table.field_names:
         table.align[field] = "l"
 
-    print table.get_string()
-    print
-    getUser()
-    print
-    getUptime2()
+    print(table.get_string())
+    print('')
+    get_user()
+    print('')
+    get_uptime_u1()
