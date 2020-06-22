@@ -179,7 +179,8 @@ def get_uptime_u1():
     uptime_hours = int(uptime_total_seconds / 60 / 60 % 24)
     uptime_minutes = int(uptime_total_seconds / 60 % 60)
     uptime_seconds = int(uptime_total_seconds % 60)
-    print("uptime: %d days %d hours %d minutes %d seconds" % (uptime_days, uptime_hours, uptime_minutes, uptime_seconds))
+    print("uptime: %d days %d hours %d minutes %d seconds" % (
+        uptime_days, uptime_hours, uptime_minutes, uptime_seconds))
 
     user_number = len(psutil.users())
     print("%d user:" % user_number)
@@ -223,7 +224,7 @@ if __name__ == '__main__':
     user_logged_in = len(psutil.users())
     info_of_root_partition = psutil.disk_usage("/")
     percent_of_root_partition_usage = "%.2f%%" % (
-        float(info_of_root_partition.used) * 100 / float(info_of_root_partition.total))
+            float(info_of_root_partition.used) * 100 / float(info_of_root_partition.total))
     total_size_of_root_partition = "%.2f" % (float(psutil.disk_usage("/").total / 1024) / 1024 / 1024)
     memory_info = get_memory()
     memory_usage = "%.2f%%" % (float(memory_info['used']) * 100 / float(memory_info['total']))
