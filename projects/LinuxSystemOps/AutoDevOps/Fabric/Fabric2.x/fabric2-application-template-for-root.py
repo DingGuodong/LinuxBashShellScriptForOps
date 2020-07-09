@@ -20,6 +20,8 @@ Long Description:       Fabric 2 is a high level SSH command execution library d
                         [limits]
                         1. fewer functions than Ansible, etc
                         2. config many servers with different authentication methods is really boring and tedious
+                        3. using Python to do some task is not good enough than using Bash Shell Script
+                        4. recommended to using shell script to do system initialization, and use fabric to dist it
 
 References:             http://docs.fabfile.org/en/2.5/getting-started.html#run-commands-via-connections-and-run
 Prerequisites:          pip install fabric==2.5.0  #  use `pip install fabric==1.14.1` to enable Fabric 1.x
@@ -34,6 +36,7 @@ Programming Language:   Python :: 2.7
 Topic:                  Utilities
 Todo:                   support dry-run, such as show direct commands which can be executed on Linux System
  """
+import fabric
 from fabric import Connection
 from fabric.config import Config
 from invoke import Responder
@@ -63,7 +66,7 @@ def add_ssh_key():
     :return: None
     """
     try:
-        run_result = cxn.run('cat ~/.ssh/authorized_keys', hide=True, warn=True)
+        run_result = cxn.run('cat ~/.ssh/authorized_keys', hide=True, warn=True)  # type: fabric.runners.Result
         if run_result.failed:
             cxn.run('mkdir -p ~/.ssh', hide=True)
             cxn.run('echo %s >> ~/.ssh/authorized_keys' % ssh_public_key, hide=True)
@@ -79,13 +82,34 @@ def add_ssh_key():
         raise Exit(e)
 
 
+def get_ip_info():
+    run_result = cxn.run(
+        "ip addr show scope global $(ip route | awk '/^default/ {print $5}') | awk -F '[ /]+' '/global/ {print $3}'",
+        hide=True, warn=True)
+    print("local IP is: {}".format(run_result.stdout).strip())
+
+    run_result = cxn.run('curl https://ifconfig.co --connect-timeout 10', hide=True, warn=True)
+    print("public IP is: {}".format(run_result.stdout).strip())
+
+
 def show_system_dist_and_version():
     """
     To determine the distribution and version of Linux installed
     :return:
     """
-    run_result = cxn.run('lsb_release -idrc && cat /proc/version', hide=True, warn=True)
-    print(run_result.stdout)
+    run_result = cxn.run('lsb_release -idrc || cat /proc/version', hide=True, warn=True)  # type: fabric.runners.Result
+    print(run_result.stdout.strip())
+
+
+def set_timezone():
+    """
+    set timezone to Asia/Shanghai
+    note: /usr/share/zoneinfo/PRC == /usr/share/zoneinfo/Asia/{Shanghai, Chongqing}
+    """
+    cxn.run('date', hide=True, warn=True)
+    cxn.run('rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime', hide=True, warn=True)
+    cxn.run('echo "Asia/Shanghai" > /etc/timezone', hide=True, warn=True)
+    cxn.run('date', hide=True, warn=True)
 
 
 def is_apt():
@@ -113,30 +137,52 @@ def install_packages_base():
     :return:
     """
     if is_apt():
-        cxn.run(
-            'apt update && apt install -y '
-            'apt-transport-https ca-certificates openssl libssl-dev curl bash-completion '
-            'ruby facter '
-            'ntp ntp-doc '
-            'bash-completion command-not-found '
-            'net-tools iputils-ping dnsutils '
-            'unzip lrzsz',
-            hide=True, warn=True)
+        apt_command = 'apt update && apt install -y ' \
+                      'apt-transport-https ca-certificates openssl libssl-dev curl bash-completion ' \
+                      'ruby facter ' \
+                      'ntp ntp-doc ' \
+                      'bash-completion command-not-found ' \
+                      'net-tools iputils-ping dnsutils ' \
+                      'unzip lrzsz'
+        run_result = cxn.run(apt_command, hide=True, warn=True)
+        if run_result.ok:
+            print("packages are installed.")
+        else:
+            print("packages installation fail. {}".format(apt_command))
     elif is_yum():
-        cxn.run(
-            'yum install -y epel-release && yum makecache fast',
-            hide=True, warn=True)
-        cxn.run(
-            'yum install -y ca-certificates openssl openssl-devel curl rpm gnupg2 nss bash-completion '
-            'facter ruby-json '
-            'ntp ntpdate ntp-doc '
-            'bash-completion bash-completion-extras '
-            'net-tools iputils bind-utils '
-            'yum-plugin-fastestmirror '
-            'unzip lrzsz',
-            hide=True, warn=True)
+        yum_command = 'yum install -y ca-certificates openssl openssl-devel curl rpm gnupg2 nss bash-completion ' \
+                      'facter ruby-json ' \
+                      'ntp ntpdate ntp-doc ' \
+                      'bash-completion bash-completion-extras ' \
+                      'net-tools iputils bind-utils ' \
+                      'yum-plugin-fastestmirror ' \
+                      'unzip wget lrzsz'
+        run_result = cxn.run(yum_command, hide=True, warn=True)
+        if run_result.ok:
+            print("packages are installed.")
+        else:
+            print("packages installation fail. {}".format(yum_command))
     else:
         raise Exit("install_packages_base failed.")
+
+
+def upgrade_system_package():
+    if is_apt():
+        apt_command = 'apt upgrade -y'
+        run_result = cxn.run(apt_command, hide=True, warn=True)
+        if run_result.ok:
+            print("packages are upgraded.")
+        else:
+            print("packages upgrade fail. {}".format(apt_command))
+    elif is_yum():
+        yum_command = 'yum update -y'
+        run_result = cxn.run(yum_command, hide=True, warn=True)
+        if run_result.ok:
+            print("packages are upgraded.")
+        else:
+            print("packages upgrade fail. {}".format(yum_command))
+    else:
+        raise Exit("upgraded failed.")
 
 
 def get_system_info_from_facter():
@@ -266,6 +312,13 @@ def set_security_limits():
     nproc - max number of processes, 16384, 16384
     stack - max stack size (KB), 10240, 32768
     """
+    global biz_username
+
+    try:
+        biz_username = biz_username
+    except NameError:
+        return True  # pass, root user does not need set this
+
     text_of_limits = """
 {username} soft nofile 65536
 {username} hard nofile 65536
@@ -273,7 +326,7 @@ def set_security_limits():
 {username} hard nproc 16384
 {username} soft stack 10240
 {username} hard stack 32768
-    """.format(username=username)
+    """.format(username=biz_username)
 
     security_limits_file = '/etc/security/limits.d/90-user.conf'
     do_uniq_file_content = False
@@ -294,6 +347,10 @@ def set_security_limits():
             cxn.run("sort -u {filename} | tee {filename}".format(filename=security_limits_file))
         elif is_yum():  # sort (GNU coreutils) 8.4
             cxn.run("sort -u {filename} -o {filename}".format(filename=security_limits_file))
+
+    # for RedHat/CentOS
+    cxn.run("test -f /etc/security/limits.d/90-nproc.conf && "
+            "mv /etc/security/limits.d/90-nproc.conf /etc/security/limits.d/90-nproc.conf~", warn=True)
 
 
 def disable_ipv6():
@@ -322,10 +379,10 @@ def performance_tuning():
 
 def create_user(user, passwd, is_super=False):
     print("creating user with a password.")
-    run_result = cxn.run('useradd {user}'.format(user=user), warn=True)
+    run_result = cxn.run('useradd {user}'.format(user=user), hide=True, warn=True)
     if run_result.ok:
         print("user created.")
-    elif "useradd: user '{}' already exists".format(user) in run_result.stdout:
+    elif "useradd: user '{}' already exists".format(user) in run_result.stderr:
         print("useradd: user '{}' already exists".format(user))
     else:
         raise Exit("useradd user failed.")
@@ -338,7 +395,7 @@ def create_user(user, passwd, is_super=False):
 
     if is_super:
         cxn.run('echo "{username} ALL=(ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/{username}'.format(username=user),
-                warn=True)
+                hide=True, warn=True)
         cxn.run('chmod 0440 /etc/sudoers.d/{username}'.format(username=user), warn=True)
         print("enable sudo success.")
 
@@ -419,14 +476,16 @@ if __name__ == '__main__':
         # create ssh connection
         cxn = Connection(ip, config=fabric_config)
 
+        get_ip_info()
         show_system_dist_and_version()
 
+        set_timezone()
         add_ssh_key()
+        install_packages_base()
+        upgrade_system_package()
+
+        wanted_username = biz_username = 'user'
+        wanted_password = 'password'
+        create_user(wanted_username, wanted_password, is_super=True)
 
         performance_tuning()
-
-        install_packages_base()
-
-        wanted_username = 'user'
-        wanted_password = 'password'
-        create_user(wanted_username, wanted_password, is_super=False)
