@@ -245,6 +245,8 @@ def get_weekly_backups(files_list, count=5):
     :param files_list:
     :param count:
     :return:
+    FIXME:TODO: known bug: just can run in first time which all backups present.
+    this bug will lead to only daily backups are reserved.
     """
     count_day_in_week = 7
     weekly_backups_list = list()
@@ -264,6 +266,8 @@ def get_monthly_backups(files_list, count=7):
     :param files_list:
     :param count:
     :return:
+    FIXME:TODO: known bug: just can run in first time which all backups present.
+    this bug will lead to only daily backups are reserved.
     """
     count_day_in_month = 30
     monthly_backups_list = list()
