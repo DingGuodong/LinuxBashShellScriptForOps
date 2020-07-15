@@ -258,6 +258,9 @@ def compress_src_directory_to_dst(save_name, source):
 
 
 if __name__ == '__main__':
+    start_time = datetime.datetime.now()
+    console_log_msg("-------- BEGIN: this task is in processing. --------", level='info')
+
     self_script_output_log_path = r"C:\file-encoding-converter-and-compress-to-zip.log"
 
     # source data path
@@ -272,3 +275,6 @@ if __name__ == '__main__':
 
     # compress source data
     compress_src_directory_to_dst(save_as_zip, source_path)
+
+    used_seconds_str = str((datetime.datetime.now() - start_time).total_seconds())
+    console_log_msg("-------- END: all task finished in {} seconds. --------".format(used_seconds_str), level='info')
