@@ -60,6 +60,10 @@ ssh_public_key = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDR' \
                  '/5Wv1vnzY4kBRkkulcHLie8NG/Yh6fBt+R0K0XKWDvrcFF7nm6sZOmg8BSX+g6dUfsPxN9r'
 
 
+def create_backup_file(path):
+    cxn.run('cp {path} {path}$(date +%Y%m%d%H%M%S)~'.format(path=path))
+
+
 def add_ssh_key():
     """
     add an ssh key to host
@@ -74,7 +78,7 @@ def add_ssh_key():
             cxn.run('chmod 400 ~/.ssh/authorized_keys', hide=True)
         else:
             if ssh_public_key not in run_result.stdout:
-                cxn.run('cp ~/.ssh/authorized_keys ~/.ssh/authorized_keys$(date +%Y%m%d%H%M%S)~', hide=True)
+                create_backup_file("~/.ssh/authorized_keys")
                 cxn.run('echo %s >> ~/.ssh/authorized_keys' % ssh_public_key, hide=True)
             else:
                 print("ssh key already added.")
@@ -276,7 +280,7 @@ vm.swappiness = 10
 vm.max_map_count=262144
 vm.overcommit_memory = 1
 """
-    cxn.run('cp /etc/sysctl.conf /etc/sysctl.conf$(date +%Y%m%d%H%M%S)~')
+    create_backup_file("/etc/sysctl.conf")
     cxn.run("echo -e '{}' | tee /etc/sysctl.conf".format(kernel_parameters), hide=True)
 
 
@@ -359,7 +363,7 @@ def disable_ipv6():
     net.ipv6.conf.default.disable_ipv6 = 1
     net.ipv6.conf.lo.disable_ipv6 = 1
     """.strip()
-    cxn.run('cp /etc/sysctl.conf /etc/sysctl.conf$(date +%Y%m%d%H%M%S)~')
+    create_backup_file("/etc/sysctl.conf")
     cxn.run("echo -e '{}' | tee -a /etc/sysctl.conf".format(disable_ipv6_parameters), hide=True)
 
 
@@ -418,12 +422,12 @@ def upload_file(src, dst):
 
 
 def append_text_to_file(text, path):
-    cxn.run('cp {path} {path}$(date +%Y%m%d%H%M%S)~'.format(path=path))
+    create_backup_file(path)
     cxn.run("echo -e '{}' | tee -a /etc/profile".format(text))
 
 
 def override_text_to_file(text, path):
-    cxn.run('cp {path} {path}$(date +%Y%m%d%H%M%S)~'.format(path=path))
+    create_backup_file(path)
     cxn.run("echo -e '{}' | tee /etc/profile".format(text))
 
 
