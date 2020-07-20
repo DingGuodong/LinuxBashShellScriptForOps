@@ -258,10 +258,10 @@ def compress_src_directory_to_dst(save_name, source):
 
 
 if __name__ == '__main__':
+    self_script_output_log_path = r"C:\file-encoding-converter-and-compress-to-zip.log"
+
     start_time = datetime.datetime.now()
     console_log_msg("-------- BEGIN: this task is in processing. --------", level='info')
-
-    self_script_output_log_path = r"C:\file-encoding-converter-and-compress-to-zip.log"
 
     # source data path
     source_path = r"D:\WWW\DingLvAnHou\Databakup"
