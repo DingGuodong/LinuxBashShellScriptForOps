@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import datetime
+import json
 import os
 import sys
-import urllib.request, urllib.parse, urllib.error
-import urllib.request, urllib.error, urllib.parse
-import json
-import datetime
+import urllib.parse
+import urllib.request
 
 grant_type = None
 appid = None
