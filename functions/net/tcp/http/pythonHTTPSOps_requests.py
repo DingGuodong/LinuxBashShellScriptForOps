@@ -23,7 +23,7 @@ def requests_example1():
     print r.headers['content-type']
     print r.encoding
     print r.text.encode(r.encoding)
-    print r.content.encode(r.encoding)
+    print r.content.decode(r.encoding)
     print r.json()
 
 
