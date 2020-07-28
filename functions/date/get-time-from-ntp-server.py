@@ -29,8 +29,18 @@ import time
 from time import ctime
 
 c = ntplib.NTPClient()
-response = c.request('pool.ntp.org')
-print("current offset time: {}".format(response.offset))
-print("current server time: {}".format(ctime(response.tx_time)))
-print("current system time: {}".format(ctime()))
-print("current system time: {}".format(time.strftime("%a %b %d %H:%M:%S %Y")))
+
+response = None
+
+try:
+    response = c.request('pool.ntp.org')
+except ntplib.NTPException as e:
+    print(e)
+except Exception as e:
+    print(e)
+
+if response:
+    print("current offset time: {}".format(response.offset))
+    print("current server time: {}".format(ctime(response.tx_time)))
+    print("current system time: {}".format(ctime()))
+    print("current system time: {}".format(time.strftime("%a %b %d %H:%M:%S %Y")))
