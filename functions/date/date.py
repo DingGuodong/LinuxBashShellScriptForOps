@@ -1,12 +1,12 @@
 # encoding: utf-8
 # -*- coding: utf8 -*-
 import calendar
-import datetime
 import sys
-import time
 
+import datetime
 import delorean
 import pytz
+import time
 from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
 
 # print localtime, When the time tuple is not present, current time as returned by localtime() is used.
@@ -273,3 +273,8 @@ print(timestamp_before_save_days)
 print(
     (datetime.datetime.strptime('2018-10-15', "%Y-%m-%d") - datetime.datetime.strptime('2018-08-29', "%Y-%m-%d")).days)
 print((datetime.datetime.now() - datetime.datetime.strptime('2019-05-09', "%Y-%m-%d")).days)
+
+# other time format for lower frequency use
+raw_now = time.strftime('%a %b %d %H:%M:%S %Y', time.localtime(time.time()))  # type: str
+raw_now_example = 'Tue Jul 28 14:38:32 2020'
+raw_now_to_other = time.strftime("%Y-%m-%d %H:%M:%S", time.strptime(raw_now_example, '%a %b %d %H:%M:%S %Y'))
