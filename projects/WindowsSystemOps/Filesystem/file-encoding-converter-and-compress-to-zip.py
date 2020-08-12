@@ -33,6 +33,8 @@ FAQ:
 import datetime
 import logging
 import os
+import shutil
+import time
 import zipfile
 from logging.handlers import TimedRotatingFileHandler
 
@@ -204,6 +206,7 @@ def convert_file_from_utf16_to_utf8(path):
     else:
         msg = "{msg}: {path}".format(msg="file encoding is ok", path=path)
         console_log_msg(msg, level="info")
+        return True
 
 
 @timeit
@@ -256,8 +259,44 @@ def compress_src_directory_to_dst(save_name, source):
             zip_compress(save_name, wanted_files_list, arc=source, keep_name=False)
 
 
+def backup_source_dir(src, dst):
+    try:
+        shutil.copytree(src, dst, dirs_exist_ok=True)  # to avoid 'WindowsError: [Error 183]'
+    except TypeError:  # improve compatibility
+        if os.path.exists(dst):
+            shutil.rmtree(dst)  # do NOT use 'os.rmdir(dst)'
+        shutil.copytree(src, dst)
+
+
+def cleanup_backup_dir(src, save_days=7):
+    now = time.time()
+    for top, dirs, nondirs in os.walk(src):
+        for filename in dirs:
+            cur_dir = os.path.join(top, filename)
+            dir_ctime = os.path.getctime(cur_dir)
+            if now - dir_ctime > save_days * 24 * 3600:
+                os.remove(cur_dir)
+
+
+def cleanup_used_files(src):
+    """
+    keep directory structures, delete files recursively only
+    :param src:
+    :type src:
+    :return:
+    :rtype:
+    """
+    for top, dirs, nondirs in os.walk(src):
+        for filename in nondirs:
+            cur_file = os.path.join(top, filename)
+            os.remove(cur_file)
+
+
 if __name__ == '__main__':
     self_script_output_log_path = r"C:\file-encoding-converter-and-compress-to-zip.log"
+
+    start_time = datetime.datetime.now()
+    console_log_msg("-------- BEGIN: this task is in processing. --------", level='info')
 
     # source data path
     source_path = r"D:\WWW\DingLvAnHou\Databakup"
@@ -269,5 +308,19 @@ if __name__ == '__main__':
     save_as_path = r"D:\WWW\DingLvAnHou\DataBak"
     save_as_zip = os.path.join(save_as_path, save_as_filename)
 
+    # backup source dir
+    console_log_msg("backup source dir ... ", level='info')
+    backup_dst_dir_base = r"D:\WWW\DingLvAnHou\Databakup.old"
+    backup_dst_dir = os.path.join(backup_dst_dir_base, today)
+    backup_source_dir(source_path, backup_dst_dir)
+
     # compress source data
     compress_src_directory_to_dst(save_as_zip, source_path)
+
+    # cleanup source dir and backup dir for source
+    console_log_msg("cleanup files ... ", level='info')
+    cleanup_used_files(source_path)
+    cleanup_backup_dir(backup_dst_dir_base)
+
+    used_seconds_str = str((datetime.datetime.now() - start_time).total_seconds())
+    console_log_msg("-------- END: all task finished in {} seconds. --------".format(used_seconds_str), level='info')
