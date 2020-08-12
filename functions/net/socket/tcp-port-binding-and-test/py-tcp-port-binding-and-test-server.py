@@ -12,7 +12,8 @@ Create Date:            2019/9/5
 Create Time:            14:14
 Description:            python test listen on the TCP port(create a simple TCP Server)
 Long Description:       
-References:             https://python3-cookbook.readthedocs.io/zh_CN/latest/c12/p07_creating_thread_pool.html
+References:             https://docs.python.org/2/library/socketserver.html
+                        https://python3-cookbook.readthedocs.io/zh_CN/latest/c12/p07_creating_thread_pool.html
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
@@ -25,9 +26,15 @@ Topic:                  Utilities
 Notes:                  test passed on Python 2.7.17 (v2.7.17:c2f86d86e6, Oct 19 2019, 21:01:17)
  """
 import os
+import sys
+
 import time
 
-from socketserver import BaseRequestHandler, ForkingTCPServer, ThreadingTCPServer
+try:
+    from socketserver import BaseRequestHandler, ForkingTCPServer, ThreadingTCPServer
+except ImportError:
+    # for older python 2 version
+    from SocketServer import BaseRequestHandler, ForkingTCPServer, ThreadingTCPServer
 
 
 class PlainTextEchoHandler(BaseRequestHandler):
@@ -41,7 +48,7 @@ class PlainTextEchoHandler(BaseRequestHandler):
             if not msg:
                 break
             print(time.strftime('%Y-%m-%d %H:%M:%S'), self.client_address, msg)
-            self.request.send(msg)
+            self.request.send("bot: " + msg)
 
     def finish(self):
         self.request.send("bye\n")
@@ -49,19 +56,31 @@ class PlainTextEchoHandler(BaseRequestHandler):
 
 
 if __name__ == '__main__':
-    port = 20000
+    if len(sys.argv) == 2:
+        port = int(sys.argv[1]) if sys.argv[1].isdigit() else 20000
+    else:
+        port = 20000
+
+    serv = None
     ForkingTCPServer.allow_reuse_address = False
     if os.name == 'posix':
-        serv = ForkingTCPServer(('', port), PlainTextEchoHandler)
+        serv = ForkingTCPServer(('', port), PlainTextEchoHandler)  # socket.error can be raised
     elif os.name == 'nt':
-        serv = ThreadingTCPServer(('', port), PlainTextEchoHandler)
+        serv = ThreadingTCPServer(('', port), PlainTextEchoHandler)  # socket.error can be raised
     else:
         raise OSError("system is not supported.")
 
-    serv.allow_reuse_address = True
-    serv.max_children = 2000
-    print(
-        time.strftime('%Y-%m-%d %H:%M:%S'),
-        "port {port} is listened, try with 'telnet localhost {port}'".format(port=port)
-    )
-    serv.serve_forever()
+    if serv is not None:
+        serv.allow_reuse_address = True
+        serv.max_children = 2000
+        print(
+            time.strftime('%Y-%m-%d %H:%M:%S'),
+            "Port {port} is listened, try with 'telnet localhost {port}'".format(port=port)
+        )
+        try:
+            serv.serve_forever()
+        except KeyboardInterrupt:
+            print("goodbye")
+            exit(0)
+    else:
+        raise OSError("can NOT create socket.")
