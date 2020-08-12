@@ -32,13 +32,13 @@ FAQ:
 
  """
 import os
-import zipfile
 
 import chardet
 import datetime
 import logging
 import shutil
 import time
+import zipfile
 from logging.handlers import TimedRotatingFileHandler
 
 logger = logging.getLogger('mylog')
@@ -207,6 +207,7 @@ def convert_file_from_utf16_to_utf8(path):
     else:
         msg = "{msg}: {path}".format(msg="file encoding is ok", path=path)
         console_log_msg(msg, level="info")
+        return True
 
 
 @timeit
