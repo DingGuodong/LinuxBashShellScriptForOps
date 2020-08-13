@@ -40,8 +40,10 @@ ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'mysqlpassword';
 ```
 
 ```shell script
-sudo apt install -y percona-xtrabackup
+sudo apt install -y percona-xtrabackup  # may fail in Ubuntu 20.04.1 LTS (Focal Fossa)
 sudo mkdir -p /backup/db/mysql/xtrabackup_backupfiles
 sudo xtrabackup --host=127.0.0.1 --port=3306 --user=root --password=mysqlpassword --backup --target-dir=/backup/db/mysql/xtrabackup_backupfiles
-sudo xtrabackup --defaults-file=/etc/my.cnf --user=root -socket=/var/run/mysqld/mysqld.sock --backup --target-dir=/backup/db/mysql/xtrabackup_backupfiles
+sudo xtrabackup --defaults-file=/etc/mysql/my.cnf --user=root --socket=/var/run/mysqld/mysqld.sock --backup --target-dir=/backup/db/mysql/xtrabackup_backupfiles
+sudo xtrabackup --user=root --password=mysqlpassword --backup --compress --compress-threads=2 --target-dir=/backup/db/mysql/xtrabackup_backupfiles_full
+sudo xtrabackup --user=root --password=mysqlpassword --backup --compress --compress-threads=2 --target-dir=/backup/db/mysql/xtrabackup_backupfiles_full --incremental-basedir=/backup/db/mysql/xtrabackup_backupfiles_incremental
 ```
