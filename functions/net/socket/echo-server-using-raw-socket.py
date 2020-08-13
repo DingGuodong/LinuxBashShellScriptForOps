@@ -14,6 +14,7 @@ Description:            echoes all data that it receives back (servicing only on
 Long Description:       
 References:             https://docs.python.org/3/library/socket.html
                         https://docs.python.org/3/library/socket.html#example
+                        [Python Socket Multiple Clients](https://stackoverflow.com/questions/10810249/python-socket-multiple-clients)
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
@@ -28,6 +29,8 @@ Topic:                  Utilities
 import sys
 
 import socket
+# import thread
+import threading
 
 # host is a domain name, a string representation of an IPv4/v6 address or None.
 HOST = None  # '0.0.0.0'(IPv4)  # Symbolic name meaning all available interfaces
@@ -58,11 +61,21 @@ if s is None:
     print('could not open socket')
     sys.exit(1)
 
-conn, addr = s.accept()
 
-print('Connected by', addr)
+def conn_handler(cur_conn, cur_addr):
+    print('Connected by', cur_addr)
+    while True:
+        data = cur_conn.recv(1024)
+        if not data:
+            break
+        cur_conn.send(data)
+
+
 while True:
-    data = conn.recv(1024)
-    if not data:
-        break
-    conn.send(data)
+    # blocking until accept one client
+    conn, addr = s.accept()
+
+    # thread.start_new_thread(conn_handler, (conn, addr))
+    # thread._count()
+    threading.Thread(target=conn_handler, args=(conn, addr)).start()
+    print(threading.active_count())
