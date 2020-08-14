@@ -12,8 +12,8 @@ Create Date:            2020/7/28
 Create Time:            15:50
 Description:            query dns rr record
 Long Description:       
-References:             
-Prerequisites:          []
+References:
+Prerequisites:          pip install dnspython
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
