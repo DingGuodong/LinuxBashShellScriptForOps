@@ -105,6 +105,8 @@ NO1.从现有的产品或线上中学习，如参考系统中的脚本是如何�
 
 6.[Code Review Guidelines](https://docs.gitlab.com/ee/development/code_review.html#everyone)
 
+7.[Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)
+
 当然还有更多优秀的指南或参考，不一一例举。
 
 **最后，记住，规则有时就是用来打破的，做自己当然也是被允许的。**
