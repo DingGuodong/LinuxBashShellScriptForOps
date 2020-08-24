@@ -15,7 +15,7 @@ Long Description:       持续查询某个端口如22的网络连接情况，将
                         应用场景：
                             1. 对外攻击，查被攻击对象；遭受攻击，查攻击对象
 References:             
-Prerequisites:          []
+Prerequisites:          pip install psutil
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -26,9 +26,8 @@ Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
-import time
-
 import psutil
+import time
 
 # from collections import namedtuple
 # addr = namedtuple('addr', ['ip', 'port'])
@@ -53,7 +52,8 @@ try:
         #                             addr) and sconn.raddr.port == port and sconn.status == 'ESTABLISHED']
 
         # see: https://github.com/giampaolo/psutil/issues/1513
-        my_sconn_list = [sconn for sconn in sconn_list if sconn.status == 'ESTABLISHED' and sconn.raddr.port == port]
+        my_sconn_list = [sconn for sconn in sconn_list if
+                         sconn.status == 'ESTABLISHED' and sconn.raddr.port == port]
 
         for my_sconn in my_sconn_list:
             ip = my_sconn.raddr.ip
@@ -61,10 +61,10 @@ try:
                 remote_addr_set.add(ip)
                 wanted_res_list.append((now, my_sconn))
 
-                print wanted_res_list
+                print(wanted_res_list)
                 with open(statistics_file, 'w') as fp:
                     fp.write("\n".join([str(x) for x in wanted_res_list]))
         time.sleep(1)
 
 except (KeyboardInterrupt, SystemExit):
-    print "exited"
+    print("exited")
