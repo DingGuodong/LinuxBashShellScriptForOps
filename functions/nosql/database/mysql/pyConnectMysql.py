@@ -13,12 +13,13 @@ Create Time:        11:29
 pip install MySQL-python
 pip install https://download.lfd.uci.edu/pythonlibs/t4jqbe6o/MySQL_python-1.2.5-cp27-none-win32.whl
 
+pip install mysql
  """
 
-import datetime
 import sys
 
 import MySQLdb
+import datetime
 
 try:
     sql = 'select now()'

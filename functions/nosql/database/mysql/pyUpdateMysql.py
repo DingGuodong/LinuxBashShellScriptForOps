@@ -8,6 +8,7 @@ User:               Guodong
 Create Date:        2016/9/28
 Create Time:        14:35
 
+pip install mysql
 pip install MySQL-python
 
  """
