@@ -3,8 +3,8 @@
 # -*- coding: utf-8 -*-
 """
 Created by PyCharm.
-File Name:              LinuxBashShellScriptForOps:pyRSACrypt.py
-Version:                0.0.1
+File Name:              LinuxBashShellScriptForOps:rsa-encrypt-decrypt.py
+Version:                0.0.2
 Author:                 Guodong
 Author Email:           dgdenterprise@gmail.com
 URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
@@ -26,23 +26,23 @@ Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
 import os
-from itertools import imap
 
 import rsa
 
 
 def gen_rsa_key():
     print("generating rsa key pairs, it will take some long time, please keep waiting.")
-    PublicKey, PrivateKey = rsa.newkeys(4096)
+    pub_key, priv_key = rsa.newkeys(4096)
     with open(public_key_file, 'w') as fp:
-        fp.write(PublicKey.save_pkcs1())
+        fp.write(pub_key.save_pkcs1())
 
     with open(private_key_file, 'w') as fp:
-        fp.write(PrivateKey.save_pkcs1())
+        fp.write(priv_key.save_pkcs1())
 
 
 def check_keys():
-    if not all(imap(os.path.exists, [private_key_file, public_key_file])):
+    # in Python 2.x using `from itertools import imap` to improve performance if arguments list too large
+    if not all(map(os.path.exists, [private_key_file, public_key_file])):
         gen_rsa_key()
 
 
@@ -50,35 +50,36 @@ def load_keys():
     check_keys()
 
     with open(public_key_file, 'r') as fp:
-        public_key = fp.read()
+        pub_key = fp.read()
 
     with open(private_key_file, 'r') as fp:
-        private_key = fp.read()
+        priv_key = fp.read()
 
-    PublicKey = rsa.PublicKey.load_pkcs1(public_key)
-    PrivateKey = rsa.PrivateKey.load_pkcs1(private_key)
+    # pub_key = rsa.PublicKey.load_pkcs1_openssl_pem(pub_key)  # for openssl public key
+    pub_key = rsa.PublicKey.load_pkcs1(pub_key)
+    priv_key = rsa.PrivateKey.load_pkcs1(priv_key)
 
-    return PublicKey, PrivateKey
+    return pub_key, priv_key
 
 
 if __name__ == '__main__':
     private_key_file = "rsa_4096_private.pem"
     public_key_file = "rsa_4096_public.pem"
 
-    pub_key, priv_key = load_keys()
+    cur_pub_key, cur_priv_key = load_keys()
 
     message = "hello"
 
-    crypto = rsa.encrypt(message, pub_key)
-    message_decrypted = rsa.decrypt(crypto, priv_key)
+    crypto = rsa.encrypt(message, cur_pub_key)
+    message_decrypted = rsa.decrypt(crypto, cur_priv_key)
     print message == message_decrypted
 
     hash_method = 'SHA-512'
-    signature = rsa.sign(message, priv_key, hash_method)
+    signature = rsa.sign(message, cur_priv_key, hash_method)
     print signature.encode('hex')
 
     try:
-        rsa.verify(message, signature, pub_key)
+        rsa.verify(message, signature, cur_pub_key)
     except rsa.pkcs1.VerificationError:
         print 'Verification failed'
     else:
