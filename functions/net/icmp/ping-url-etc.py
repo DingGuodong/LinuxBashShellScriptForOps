@@ -18,8 +18,7 @@ Intended Audience:      System Administrators, Developers, End Users/Desktop
 License:                Freeware, Freely Distributable
 Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
-Programming Language:   Python :: 2.6
-Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
 TODO(Guodong): using `pyinstaller` to pack this script into ONE executable file(such as p.exe)
 """
@@ -55,6 +54,6 @@ if __name__ == "__main__":
 
     host = sys.argv[1]
     if host.startswith("http"):
-        host = get_domain_name_from_url(host)
+        host = get_domain_name_from_url(host).split(":")[0]
 
     run_ping(host)
