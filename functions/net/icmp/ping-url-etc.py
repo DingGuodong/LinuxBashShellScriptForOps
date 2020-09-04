@@ -55,6 +55,6 @@ if __name__ == "__main__":
 
     host = sys.argv[1]
     if host.startswith("http"):
-        host = get_domain_name_from_url(host)
+        host = get_domain_name_from_url(host).split(":")[0]
 
     run_ping(host)
