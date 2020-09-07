@@ -59,7 +59,7 @@ class ZabbixMonitorNginx(object):
             'cache-control': "no-cache",
         }
 
-        response = requests.request("GET", self.url, headers=headers)
+        response = requests.request("GET", self.url, headers=headers, verify=False)
         if response.status_code == 200:
             return response.text.encode('utf-8')
         else:
