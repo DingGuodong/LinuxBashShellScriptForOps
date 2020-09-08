@@ -1,13 +1,13 @@
 #!/bin/bash
 
-echo "Partitioned table maintenance tasks begin at $(date +%Y%m%d%H%M%S)." > /tmp/partition_maintenance_all_mail.tmp
+echo "Partitioned table maintenance tasks begin at $(date +%Y%m%d%H%M%S)." >/tmp/partition_maintenance_all_mail.tmp
 # shellcheck disable=SC2129
-echo '' >> /tmp/partition_maintenance_all_mail.tmp
+echo '' >>/tmp/partition_maintenance_all_mail.tmp
 
-mysql -D zabbix -e 'CALL partition_maintenance_all("zabbix");' >> /tmp/partition_maintenance_all_mail.tmp 2>&1
+mysql -D zabbix -e 'CALL partition_maintenance_all("zabbix");' >>/tmp/partition_maintenance_all_mail.tmp 2>&1
 
-echo '' >> /tmp/partition_maintenance_all_mail.tmp
-echo "Partitioned table maintenance tasks finish at $(date +%Y%m%d%H%M%S)." >> /tmp/partition_maintenance_all_mail.tmp
+echo '' >>/tmp/partition_maintenance_all_mail.tmp
+echo "Partitioned table maintenance tasks finish at $(date +%Y%m%d%H%M%S)." >>/tmp/partition_maintenance_all_mail.tmp
 
 #cat /tmp/partition_maintenance_all_mail.tmp | mailx -r 'ITmonitor@didichuxing.com' -s 'Partitioned table maintenance' gaoyuebruce@didiglobal.com
 
