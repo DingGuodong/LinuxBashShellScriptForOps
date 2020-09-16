@@ -56,6 +56,10 @@ Test commands examples:
 # [shell - Execute commands in nodes](http://docs.ansible.com/ansible/shell_module.html#shell-execute-commands-in-nodes)
 # [About Modules](http://docs.ansible.com/ansible/modules.html#about-modules)
 ansible raleigh -m shell -a 'echo $TERM'
+ansible -i hosts prod -a "uname -a"
+ansible -i hosts test -m command -a "uname -a"
+ansible -i hosts nginx -m shell -a "uname -a"
+
 # To transfer a file directly to many servers:
 ansible atlanta -m copy -a "src=/etc/hosts dest=/tmp/hosts"
 ansible webservers -m file -a "dest=/srv/foo/a.txt mode=600"
