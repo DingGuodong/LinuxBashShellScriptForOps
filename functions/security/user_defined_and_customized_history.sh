@@ -79,3 +79,19 @@ tail -n20 -f /var/spool/insight
 # others
 echo readonly PROMPT_COMMAND="'"'{ echo "$(date "+%F %T") $(who am i |awk "{print \$1\" \"\$2\" \"\$5}") $(whoami) $(pwd) # $(history 1 | { read a b c cmd; echo "$cmd"; })"; } >> /var/log/cmd.log'"'" > /etc/profile.d/cmd_log.sh
 
+
+# using a `logger` using a `logger` to log bash history, test passed on Ubuntu 20.04.1 LTS, logger in some old version(< util-linux 2.34) may not support '--id' option
+sudo tee /etc/profile.d/insight.sh<<'eof'
+# using a `logger` using a `logger` to log bash history
+declare -r HISTTIMEFORMAT="%F %T "
+#declare -r PS1="[\u@\h \[\e[36m\]\w\[\e[0m\]]\\$ "  # see man bash "PROMPTING" section
+declare -r PROMPT_COMMAND='{ cmd=$(history 1 | { read a b c d; echo "$d"; });msg=$(who am i |awk "{print \$2,\$5}");logger --id=$$ -p user.notice "$msg $USER $PWD # $cmd"; }'
+eof
+
+# using a `logger` to log bash history, test passed on CentOS release 6.10 (Final), CentOS Linux release 7.6.1810 (Core)
+cat >/etc/profile.d/insight.sh<<'eof'
+# using a `logger` using a `logger` to log bash history
+declare -r HISTTIMEFORMAT="%F %T "
+declare -r PS1="[\u@\h \w]\\$ "  # about PS1, see man bash "PROMPTING" section
+declare -r PROMPT_COMMAND='{ cmd=$(history 1 | { read a b c d; echo "$d"; });msg=$(who am i |awk "{print \$2,\$5}");logger -p user.notice "[$$] $msg $USER $PWD # $cmd"; }'
+eof
