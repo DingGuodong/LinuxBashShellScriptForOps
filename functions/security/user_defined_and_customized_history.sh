@@ -3,13 +3,13 @@
 # PROMPT_COMMAND
 # If set, the value is interpreted as a command to execute before the printing of each primary prompt ($PS1).
 # refer 1
-echo 'export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "' >> /etc/bashrc
-echo export PROMPT_COMMAND="'"'{ msg=$(history 1 | { read x y; echo $y; }); user=$(whoami); logger -p local4.info $(date "+%Y-%m-%d %H:%M:%S") "$user" "$msg"; }'"'">> /etc/bashrc
+echo 'export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "' >>/etc/bashrc
+echo export PROMPT_COMMAND="'"'{ msg=$(history 1 | { read x y; echo $y; }); user=$(whoami); logger -p local4.info $(date "+%Y-%m-%d %H:%M:%S") "$user" "$msg"; }'"'" >>/etc/bashrc
 # refer 1 will send message to syslog, depends logger
 
 # refer 2
 # Refer: http://dl528888.blog.51cto.com/2382721/1703059
-cat >refer2<<'eof'
+cat >refer2 <<'eof'
 HISTDIR='/var/log/command.log'
 if [ ! -f ${HISTDIR} ];then
 touch ${HISTDIR}
@@ -21,10 +21,10 @@ eof
 source refer2
 
 # TODO(Guodong Ding) a known bug, using 'refer 2' above will make user confused when a command line include a double quotes(")
-    #like this "{"TIME":"2016-05-18 15:43:14", "HOSTNAME":"chris.51devops.com", "IP":"10.20.0.1", "LOGIN":"root", "USER":"root", "CMD":"echo "xxx""}"
-    #FIXED: use 'base64' to encoding history
+#like this "{"TIME":"2016-05-18 15:43:14", "HOSTNAME":"chris.51devops.com", "IP":"10.20.0.1", "LOGIN":"root", "USER":"root", "CMD":"echo "xxx""}"
+#FIXED: use 'base64' to encoding history
 # refer 3  ✓✓✓ **production environment ready**
-cat >refer3<<'eof'
+cat >refer3 <<'eof'
 HISTDIR='/var/spool/insight'
 if [ ! -f ${HISTDIR} ];then
     touch ${HISTDIR}
@@ -36,7 +36,7 @@ eof
 source refer3
 rm -f refer3
 
-cat >/etc/profile.d/insight.sh<<'eof'
+cat >/etc/profile.d/insight.sh <<'eof'
 HISTDIR='/var/spool/insight'
 if [ ! -f ${HISTDIR} ];then
     touch ${HISTDIR}
@@ -45,14 +45,13 @@ fi
 export PROMPT_COMMAND='history 1|sed "s/^[\ 0-9]\+//"| sed "s/^/\{\"TIME\":\"$(date +%F\ %T)\",\"USER\"\:\"$USER\",\"SSH_CLIENT\":\"$(echo $SSH_CLIENT | cut -f1,2 -d " ")\",\"CMD\"\:\"/"|sed "s/$/\"\}/">>${HISTDIR}'
 eof
 
-
 tail -f -n20 /var/spool/insight
 
 # TODO(Guodong Ding) using 'refer 3' can not ignore enter key when users type nothing but press enter key, there will be many duplicate content.
 # TODO(Guodong Ding) previous history record will be recorded into log file when user login to system.
 
 # refer 4
-cat >/etc/profile.d/insight.sh<<'eof'
+cat >/etc/profile.d/insight.sh <<'eof'
 declare -r HISTDIR='/var/spool/insight'
 if [ ! -f ${HISTDIR} ];then
     touch ${HISTDIR}
@@ -75,13 +74,11 @@ tail -n20 -f /var/spool/insight
 # { time_now=$(date +%F\ %T); last_history=$(history 1|sed "s/^[\ 0-9]\+//"); real_ip=$(who -m 2>/dev/null| awk "{print \$NF}"|sed -e "s/[()]//g"); ssh_client=$(echo $SSH_CLIENT | cut -f1,2 -d " "); echo "{\"TIME\":\"${time_now}\",\"USER\":\"${USER}\",\"REAL_IP\":\"${real_ip}\",\"SSH_CLIENT\":\"${ssh_client}\",\"CMD\":\"${last_history}\"}"; }
 # bash -c '{ time_now=$(date +%F\ %T); last_history=$(history 1|sed "s/^[\ 0-9]\+//"); real_ip=$(who -m 2>/dev/null| awk "{print \$NF}"|sed -e "s/[()]//g"); ssh_client=$(echo $SSH_CLIENT | cut -f1,2 -d " "); echo "{\"TIME\":\"${time_now}\",\"USER\":\"${USER}\",\"REAL_IP\":\"${real_ip}\",\"SSH_CLIENT\":\"${ssh_client}\",\"CMD\":\"${last_history}\"}"; }'
 
-
 # others
-echo readonly PROMPT_COMMAND="'"'{ echo "$(date "+%F %T") $(who am i |awk "{print \$1\" \"\$2\" \"\$5}") $(whoami) $(pwd) # $(history 1 | { read a b c cmd; echo "$cmd"; })"; } >> /var/log/cmd.log'"'" > /etc/profile.d/cmd_log.sh
-
+echo readonly PROMPT_COMMAND="'"'{ echo "$(date "+%F %T") $(who am i |awk "{print \$1\" \"\$2\" \"\$5}") $(whoami) $(pwd) # $(history 1 | { read a b c cmd; echo "$cmd"; })"; } >> /var/log/cmd.log'"'" >/etc/profile.d/cmd_log.sh
 
 # using a `logger` using a `logger` to log bash history, test passed on Ubuntu 20.04.1 LTS, logger in some old version(< util-linux 2.34) may not support '--id' option
-sudo tee /etc/profile.d/insight.sh<<'eof'
+sudo tee /etc/profile.d/insight.sh <<'eof'
 # using a `logger` using a `logger` to log bash history
 declare -r HISTTIMEFORMAT="%F %T "
 #declare -r PS1="[\u@\h \[\e[36m\]\w\[\e[0m\]]\\$ "  # see man bash "PROMPTING" section
@@ -89,7 +86,7 @@ declare -r PROMPT_COMMAND='{ cmd=$(history 1 | { read a b c d; echo "$d"; });msg
 eof
 
 # using a `logger` to log bash history, test passed on CentOS release 6.10 (Final), CentOS Linux release 7.6.1810 (Core)
-cat >/etc/profile.d/insight.sh<<'eof'
+cat >/etc/profile.d/insight.sh <<'eof'
 # using a `logger` using a `logger` to log bash history
 declare -r HISTTIMEFORMAT="%F %T "
 declare -r PS1="[\u@\h \w]\\$ "  # about PS1, see man bash "PROMPTING" section
