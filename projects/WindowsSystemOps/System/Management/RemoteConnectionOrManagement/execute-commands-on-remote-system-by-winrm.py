@@ -13,6 +13,15 @@ Create Time:            9:01
 Description:            Run the commands on remote server 使用Python在远程服务器上执行命令行
 Long Description:       令人兴奋的是，pywinrm支持Linux, Mac OS X or Windows
                         与使用PowerShell执行远程命令相似，目标机器需要开启WinRM服务，而本地不强制需要开启
+
+                        Enable-PSRemoting -Force
+                            Set-WSManQuickConfig
+                                winrm quickconfig
+                                winrm enumerate winrm/config/listener
+                                winrm set winrm/config @{AllowUnencrypted="true"}  # use in cmd, not in ps
+                        Test-WSMan
+                            Test-WSMan -ComputerName dc1.example.com
+
 References:             [diyan/pywinrm](https://github.com/diyan/pywinrm)
 Prerequisites:          pip install pywinrm
 Development Status:     3 - Alpha, 5 - Production/Stable
