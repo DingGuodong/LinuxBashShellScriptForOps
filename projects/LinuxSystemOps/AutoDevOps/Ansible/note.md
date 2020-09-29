@@ -9,11 +9,17 @@ so there’s no real question about how to upgrade Ansible when moving to a new 
 
 ## Ansible Control node
 
+Any machine with Ansible installed.
+
 Currently Ansible can be run from any machine with Python 2 (version 2.7) or Python 3 (versions 3.5 and higher) installed. 
 This includes Red Hat, Debian, CentOS, macOS, any of the BSDs, and so on. 
 Windows is not supported for the control node.
 
 ## Ansible Managed node
+
+The network devices (and/or servers) you manage with Ansible. 
+Managed nodes are also sometimes called “hosts”. 
+Ansible is not installed on managed nodes.
 
 ssh with sftp enabled and python installed.
 
@@ -57,6 +63,10 @@ Ansible will process the above list and use the first file found, all others are
 
 ## Ad-hoc command
 
+ad-hoc: created or done for a particular purpose as necessary.
+made or happening only for a particular purpose or need, not planned before it happens
+中文释义：临时安排的
+
 ### pipe('|') support
 shell module support pipe('|'), but command module does not.
 
@@ -66,4 +76,29 @@ ansible -i hosts prod -a 'pgrep ftp'  # default module is command
 ansible -i hosts prod -m shell -a 'ps -ef|grep ftp'
 ansible -i hosts prod --become -m raw -a "ps -ef|grep ftp"
 ``` 
+
+## Modules
+
+[Module Index](https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html)
+
+- command
+- shell
+- raw
+- yum
+- file
+- copy
+- user
+- service
+- setup
+- debug
+
+
+# Templating (Jinja2)
+
+All templating happens on the Ansible controller before the task is sent and executed on the target machine. 
+
+
+# Tips and tricks
+
+[Tips and tricks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html)
 
