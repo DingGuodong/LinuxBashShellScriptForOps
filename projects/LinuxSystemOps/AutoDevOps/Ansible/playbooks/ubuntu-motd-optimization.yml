@@ -1,0 +1,31 @@
+- name: ubuntu motd optimization
+  hosts: webservers
+  ignore_unreachable: yes
+  gather_facts: true
+
+  tasks:
+    - name: execute motd optimization
+      file:
+        path: /etc/update-motd.d/{{ item }}
+        mode: "0644"
+      register: out
+      with_items:
+        - 10-help-text
+        - 50-motd-news
+        - 95-hwe-eol
+      become: true
+      become_user: root
+      when: ansible_facts['distribution'] == "Ubuntu"
+      ignore_errors: yes
+
+#    - name: get path from file result
+#      set_fact:
+#        result_list: "{{ out.results | map(attribute='path') | list }}"
+#      command: /bin/ture
+#      ignore_errors: yes
+#
+#    - name: debug motd optimization
+#      debug:
+#        msg: "processing file path: {{ item }}"
+#      with_items: "{{ result_list }}"
+#      ignore_errors: yes
