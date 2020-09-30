@@ -1,0 +1,67 @@
+- name: install essential packages
+  hosts: webservers
+  vars:
+    centos_yum_packages:
+      - ca-certificates
+      - openssl
+      - openssl-devel
+      - curl
+      - rpm
+      - gnupg2
+      - nss
+      - bash-completion
+      - facter  # epel is required
+      - ntp
+      - ntpdate
+      - ntp-doc
+      - bash-completion
+      - bash-completion-extras  # epel is required
+      - net-tools
+      - iputils
+      - bind-utils
+      - yum-plugin-fastestmirror
+      - unzip
+      - wget
+      - lrzsz
+    ubuntu_apt_packages:
+      - apt-transport-https
+      - ca-certificates
+      - openssl
+      - libssl-dev
+      - curl
+      - bash-completion
+      - command-not-found
+      - facter
+      - ntp
+      - net-tools
+      - iputils-ping
+      - dnsutils
+      - unzip
+      - lrzsz
+  ignore_unreachable: yes
+  gather_facts: true
+
+  tasks:
+    - name: install epel-release
+      yum:
+        name: epel-release
+        state: latest
+      when: ansible_facts['distribution'] == "CentOS"  # and ansible_facts['ansible_distribution_major_version'] == 6
+      retries: 3
+      delay: 2
+      #      until: result is not failed
+      ignore_errors: yes
+
+    - name: install packages for centos
+      yum:
+        name: "{{ centos_yum_packages }}"
+        state: latest
+      when: ansible_facts['distribution'] == "CentOS"  # and ansible_facts['ansible_distribution_major_version'] == 6
+      ignore_errors: yes
+
+    - name: install packages for ubuntu
+      apt:
+        name: "{{ ubuntu_apt_packages }}"
+        state: latest
+      when: ansible_facts['distribution'] == "Ubuntu"
+      ignore_errors: yes
