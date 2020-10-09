@@ -1,0 +1,56 @@
+- name: add user and set security limits
+  hosts: webservers
+  vars:
+    username:
+      - "u01"
+      - "u02"
+
+    groupname:
+      - "bizgrp01"
+      - "bizgrp02"
+
+    limits:
+      nofile:
+        soft: 200000
+        hard: 819200
+      nproc:
+        soft: 4096
+        hard: 8192
+      stack:
+        soft: 10240
+        hard: 32768
+
+  tasks:
+    - name: debug msg
+      debug:
+        var: limits.nproc.soft
+
+    - name: create group
+      group:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ groupname }}"
+
+    - name: create user
+      user:
+        name: "{{ item }}"
+        groups: "{{ groupname | join(', ') }}"
+        state: present
+      with_items: "{{ username }}"
+
+    - name: rename `/etc/security/limits.d/90-nproc.conf` for CentOS releases
+      shell: >
+        (test -f /etc/security/limits.d/90-nproc.conf
+        && mv /etc/security/limits.d/90-nproc.conf /etc/security/limits.d/90-nproc.conf~) || true
+
+    - name: set limits content for each user
+      copy:
+        dest: "/etc/security/limits.d/{{ item }}.conf"
+        content: |
+          {{ item }}  nofile  soft  {{ limits.nofile.soft }}
+          {{ item }}  nofile  hard  {{ limits.nofile.soft }}
+          {{ item }}  nproc   soft  {{ limits.nproc.soft }}
+          {{ item }}  nproc   hard  {{ limits.nproc.soft }}
+          {{ item }}  stack   soft  {{ limits.stack.soft }}
+          {{ item }}  stack   hard  {{ limits.stack.soft }}
+      with_items: "{{ username }}"
