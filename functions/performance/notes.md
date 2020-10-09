@@ -30,3 +30,17 @@ Tips：如何判断CPU密集型还是IO密集型，所有操作是通过CPU和�
 10.python的多线程适用于大量密集的I/O处理
 11.python的多进程适用于大量的密集并行计算
 ```
+
+## 关于线程池的大小(ideal thread pool size)
+
+https://engineering.zalando.com/posts/2019/04/how-to-set-an-ideal-thread-pool-size.html
+
+```text
+Number of threads = Number of Available Cores * (1 + Wait time / Service time)
+```
+
+**Waiting time** - is the time spent waiting for IO bound tasks to complete, say waiting for HTTP response from remote service.
+
+**Service time** - is the time spent being busy, say processing the HTTP response, marshaling/unmarshaling, any other transformations etc.
+ 
+ 
