@@ -1,0 +1,98 @@
+- name: Add swap memory with ansible
+  hosts: dev
+  vars:
+    swap_file_path: /swapfile
+    swap_file_size_mb: "{{ ansible_memtotal_mb * 2 }}"
+
+
+  tasks:
+    - name: show debug msg of swap config
+      debug:
+        msg: |
+          swap_file_path is: {{swap_file_path }}
+          swap_file_size_mb is: {{ swap_file_size_mb }}
+
+
+    - name: Check existed swap file type
+      command: file {{ swap_file_path }}
+      register: swapfile_existed
+      ignore_errors: yes
+      become: true
+      become_user: root
+      tags:
+        - swap.file.check
+
+
+    - name: End task graceful for swap
+      block:
+        - name: skip this host when swap is configed
+          debug:
+            msg: skip this host when swap is configed
+        - meta: end_host
+      when: "'swap file' in swapfile_existed.stdout or ansible_swaptotal_mb > 1"
+      tags:
+        - swap.file.check
+
+
+    - name: Clean old swap file
+      file:
+        path: "{{ swap_file_path }}"
+        state: absent
+      when: swapfile_existed.stdout.find('No such file or directory') == -1
+      become: true
+      tags:
+        - swap.file.check
+
+
+    - name: Create swap file
+      shell: test -f {{ swap_file_path }} || dd if=/dev/zero of={{ swap_file_path }} bs=1024 count={{ swap_file_size_mb }}K
+      become: true
+      tags:
+        - swap.file.create
+
+
+    - name: Change swap file permissions
+      file: path="{{ swap_file_path }}"
+        owner=root
+        group=root
+        mode=0600
+      become: true
+      tags:
+        - swap.file.permissions
+
+
+    - name: Check swap file type
+      command: file {{ swap_file_path }}
+      register: swapfile
+      become: true
+      tags:
+        - swap.file.mkswap
+
+
+    - name: Make swap file
+      command: "mkswap {{ swap_file_path }}"
+      when: "'swap file' not in swapfile_existed.stdout"
+      become: true
+      tags:
+        - swap.file.mkswap
+
+
+    - name: Write swap entry in fstab
+      mount: name=none
+        src={{ swap_file_path }}
+        fstype=swap
+        opts=sw
+        passno=0
+        dump=0
+        state=present
+      become: true
+      tags:
+        - swap.fstab
+
+
+    - name: Mount swap
+      command: "swapon {{ swap_file_path }}"
+      when: ansible_swaptotal_mb < 1
+      become: true
+      tags:
+        - swap.file.swapon
