@@ -97,8 +97,13 @@ ansible -i hosts prod --become -m raw -a "ps -ef|grep ftp"
 
 All templating happens on the Ansible controller before the task is sent and executed on the target machine. 
 
+when: conditional statements should not include jinja2 templating delimiters such as {{ }}
+or {% %}.
 
 # Tips and tricks
 
 [Tips and tricks](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html)
 
+# start the playbook at the task matching this name and confirm each task before running
+
+ansible-playbook -i hosts enable-swap-memory.yml -K --step --start-at-task='Mount swap'
