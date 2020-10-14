@@ -1,4 +1,15 @@
-# PowerShell Scripting Notes
+# PowerShell 5.1 Scripting Notes
+
+# install Windows Management Framework 5.1
+[download .NET Framework](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-offline-installer)
+[download](https://www.microsoft.com/en-us/download/details.aspx?id=54616)
+
+> **reboot computer is needed.**
+
+# checkout powershell version
+```shell script
+Get-Host
+```
 
 [PowerShell Module Browser](https://docs.microsoft.com/en-us/powershell/module/)
 [Powershell Scripting Reference](https://docs.microsoft.com/en-us/powershell/module/cimcmdlets/?view=powershell-5.1)
