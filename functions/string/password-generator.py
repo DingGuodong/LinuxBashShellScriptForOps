@@ -28,8 +28,9 @@ Topic:                  Utilities
 import hashlib
 import random
 import string
-import time
 from itertools import repeat
+
+import time
 
 PASSWORD_COMPLEXITY_ONLY_DIGITS = 0  # Only digits
 PASSWORD_COMPLEXITY_WITHOUT_CASE = 1  # Case insensitive
@@ -157,6 +158,76 @@ def password_generator(length=7, complexity=3, must_include='.'):
     return ''.join(middle_result_list)
 
 
+def password_generator_for_human(length=7, complexity=3, must_include='.', human_readable=True):
+    # type: (int, int, str, bool) -> str
+    """
+    :param length: password length
+    :param complexity: password complexity level
+    :param must_include: password must include chars
+    :param human_readable: remove illegible password characters
+    :return: str: password
+    """
+    if length < 7:
+        raise InvalidPasswordLength("Invalid password length. Password should be at least 7 digits")
+    else:
+        length = length - complexity
+
+    if length < len(must_include):
+        raise InvalidPasswordMustIncludeLength("Invalid password must include length, "
+                                               "length of must_include must less than (length - complexity)")
+
+    if complexity == PASSWORD_COMPLEXITY_WITH_SPECIAL:
+        chars = string.letters + string.digits + '!@#$%^&*(-_=+)'  # limited special character
+    elif complexity == PASSWORD_COMPLEXITY_WITH_CASE:
+        chars = string.letters + string.digits
+    elif complexity == PASSWORD_COMPLEXITY_WITHOUT_CASE:
+        chars = string.lowercase + string.digits
+    elif complexity == PASSWORD_COMPLEXITY_ONLY_DIGITS:
+        chars = string.digits
+    else:
+        raise InvalidPasswordComplexity(
+            "Invalid password complexity. "
+            "The value of complexity parameter only can be 0, 1, 2 or 3")
+
+    if human_readable:
+        illegible_password_characters = ['1', '0', 'i', 'j', 'k', 'l', 'o', 'p', 's', 'I', 'J', 'K', 'L', 'O', 'P', 'S']
+        chars = "".join(set(list(chars)) - set(illegible_password_characters))
+
+    middle_result = get_random_string(length, chars)
+    middle_result_list = list(middle_result)
+
+    while True:
+        for item in list(must_include):
+            pos = random.choice(range(len(middle_result)))
+            middle_result_list[pos] = item
+
+        # must include must_include
+        for item in list(must_include):
+            if item not in middle_result_list:
+                break  # break current for loop
+        else:
+            break  # break while loop
+
+    num_pos = random.choice(range(len(string.digits)))
+    lower_pos = random.choice(range(len(string.lowercase)))
+    upper_pos = random.choice(range(len(string.uppercase)))
+    random_pos1, random_pos2, random_pos3 = repeat(random.choice(range(len(middle_result))), 3)
+
+    if complexity == PASSWORD_COMPLEXITY_WITH_SPECIAL:
+        middle_result_list[random_pos1] = middle_result_list[random_pos1] + string.digits[num_pos]
+        middle_result_list[random_pos2] = middle_result_list[random_pos2] + string.lowercase[lower_pos]
+        middle_result_list[random_pos3] = middle_result_list[random_pos3] + string.uppercase[upper_pos]
+
+    elif complexity == PASSWORD_COMPLEXITY_WITH_CASE:
+        middle_result_list[random_pos2] = middle_result_list[random_pos2] + string.lowercase[lower_pos]
+        middle_result_list[random_pos3] = middle_result_list[random_pos3] + string.uppercase[upper_pos]
+
+    elif complexity == PASSWORD_COMPLEXITY_WITHOUT_CASE:
+        middle_result_list[random_pos1] = middle_result_list[random_pos1] + string.digits[num_pos]
+
+    return ''.join(middle_result_list)
+
+
 if __name__ == '__main__':
     print(password_generator(7, 0, ''))
     print(password_generator(7, 1, '!'))
@@ -166,4 +237,4 @@ if __name__ == '__main__':
 
     num = 27  # generate 27 passwords
     for _ in range(num):
-        print(password_generator(length=16, complexity=3, must_include='@'))
+        print(password_generator_for_human(length=16, complexity=3, must_include='@'))
