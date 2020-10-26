@@ -15,5 +15,7 @@ p - P
 s - S
 ```
 
-
-
+## special characters for password
+```text
+! @ # $ % ^ & * () _ + - =
+```
