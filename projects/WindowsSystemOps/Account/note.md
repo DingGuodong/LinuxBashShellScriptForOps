@@ -59,3 +59,12 @@ Get-WmiObject Win32_UserAccount -filter 'LocalAccount=True AND Name="guodong"' |
 ```
 /usr/lib/python3/dist-packages/ansible/modules/windows/win_user.ps1
 ```
+
+## use `NET USER` command to manage user accounts
+
+```shell script
+# disable user account
+NET USER username /ACTIVE:NO
+# enable user account
+NET USER username /ACTIVE:YES
+```
