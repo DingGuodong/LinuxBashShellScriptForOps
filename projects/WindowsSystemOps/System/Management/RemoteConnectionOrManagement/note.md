@@ -8,7 +8,9 @@
 
 # checkout powershell version
 ```shell script
+$PSVersionTable
 Get-Host
+$Host
 ```
 
 [PowerShell Module Browser](https://docs.microsoft.com/en-us/powershell/module/)
