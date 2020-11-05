@@ -39,7 +39,7 @@ with open("config.json") as fp:
 
 def get_ip_with_ends(num):
     """
-    get full ip address with given ip num from config.json, ip num can be fourth part or full ip, such as '3' in '192.168.1.3'
+    get full ip address with ip from config.json, ip num can be fourth part or full ip, such as '3' in '192.168.1.3'
     :param num: ip
     :type num: str | int
     :return: ip
@@ -50,7 +50,8 @@ def get_ip_with_ends(num):
 
     if servers is not None:
         keys_list = servers.keys()
-        for item in keys_list:
+        for item in keys_list:  # type: str
+            item = item.strip()
             if item.endswith(num):
                 return item
 
@@ -102,9 +103,8 @@ def disable_account(server, name):
     :rtype:None
     """
     ip, user, psw = get_acc_psw_with_ends(server)
-    biz_name = "company."
-    if biz_name not in name:
-        name = biz_name + name
+    if BIZ_USERNAME_PREFIX not in name:
+        name = BIZ_USERNAME_PREFIX + name
     script = 'NET USER {name} /ACTIVE:NO'.format(name=name)
     run_powershell(ip, user, psw, script)
 
@@ -120,13 +120,14 @@ def enable_account(server, name):
     :rtype:None
     """
     ip, user, psw = get_acc_psw_with_ends(server)
-    biz_name = "company."
-    if biz_name not in name:
-        name = biz_name + name
+    if BIZ_USERNAME_PREFIX not in name:
+        name = BIZ_USERNAME_PREFIX + name
     script = 'NET USER {name} /ACTIVE:YES'.format(name=name)
     run_powershell(ip, user, psw, script)
 
 
 if __name__ == '__main__':
+    BIZ_USERNAME_PREFIX = "company."
+
     disable_account(169, 'username')
     enable_account(132, 'username')
