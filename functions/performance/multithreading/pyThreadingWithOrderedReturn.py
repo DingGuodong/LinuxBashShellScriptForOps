@@ -30,6 +30,7 @@ Topic:                  Utilities
  """
 import random
 from collections import defaultdict
+
 from time import sleep
 
 
@@ -151,7 +152,7 @@ if __name__ == '__main__':
     for thread in (t1, t2, t3, t4, t5):
         thread.start()
     for thread in (t1, t2, t3, t4, t5):
-        if thread.isAlive():
+        if thread.is_alive():
             thread.join()
 
     print [data[1] for data in sorted(results.iteritems(), key=lambda x: x[0].split('x')[1])]
