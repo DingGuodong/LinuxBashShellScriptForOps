@@ -1,0 +1,3 @@
+# https://www.debian.org/mirror/list
+http://ftp2.cn.debian.org/debian/
+http://ftp.cn.debian.org/debian/

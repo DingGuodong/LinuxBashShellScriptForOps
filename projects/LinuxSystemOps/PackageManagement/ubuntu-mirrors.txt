@@ -1,0 +1,18 @@
+# http://mirrors.ubuntu.com/mirrors.txt
+http://mirrors.cn99.com/ubuntu/
+http://mirrors.njupt.edu.cn/ubuntu/
+http://mirrors.ustc.edu.cn/ubuntu/
+http://mirrors.nju.edu.cn/ubuntu/
+http://mirrors.tuna.tsinghua.edu.cn/ubuntu/
+http://mirror.lzu.edu.cn/ubuntu/
+http://mirrors.sohu.com/ubuntu/
+https://mirrors.bfsu.edu.cn/ubuntu/
+http://mirrors.yun-idc.com/ubuntu/
+http://mirrors.huaweicloud.com/repository/ubuntu/
+http://mirrors.cqu.edu.cn/ubuntu/
+http://ftp.sjtu.edu.cn/ubuntu/
+https://mirrors.hit.edu.cn/ubuntu/
+http://mirrors.aliyun.com/ubuntu/
+http://mirrors.dgut.edu.cn/ubuntu/
+http://linux.xjtuns.cn/ubuntu/
+http://archive.ubuntu.com/ubuntu/
