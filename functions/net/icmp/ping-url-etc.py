@@ -22,6 +22,7 @@ Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
 TODO(Guodong): using `pyinstaller` to pack this script into ONE executable file(such as p.exe)
+Update:                 add arguments supports
 """
 import os
 import sys
@@ -41,20 +42,45 @@ def get_domain_name_from_url(url):
     parsed_uri = urlparse(url)
     # domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
     domain_name = "{uri.netloc}".format(uri=parsed_uri)
-    return domain_name
+    if domain_name != "":
+        return domain_name
+    else:
+        # return original url, usually as parsed_uri.path
+        return url
 
 
-def run_ping(target_name):
-    os.system("ping.exe {}".format(target_name))
+def run_ping(destination, option=""):
+    command = "ping.exe {} {}".format(option, destination)
+    try:
+        os.system(command)
+    except KeyboardInterrupt:
+        sys.exit(0)
+
+
+def find_max_len_item(the_list):
+    """
+    find the max length string in the list
+    :param the_list: A list of strings
+    :type the_list: list
+    :return: a string in the list
+    :rtype: str
+    """
+    return max(the_list, key=len)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("USAGE: {} target_name".format(sys.argv[0]))
+    if len(sys.argv) < 2:
+        print("USAGE: {} option destination".format(sys.argv[0]))
         exit(1)
 
     host = sys.argv[1]
     if host.startswith("http"):
         host = get_domain_name_from_url(host).split(":")[0]
+        run_ping(host, " ".join(sys.argv[2:]))
+    else:
+        host = find_max_len_item(sys.argv[1:])
 
-    run_ping(host)
+        cur_option = sys.argv[1:]
+        cur_option.remove(host)
+        host = get_domain_name_from_url(host).split(":")[0]
+        run_ping(host, " ".join(cur_option))
