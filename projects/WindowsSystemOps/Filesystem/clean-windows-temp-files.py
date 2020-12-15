@@ -43,11 +43,17 @@ for temp_directory in TEMP_DIRECTORIES_LIST:
                 except WindowsError as e:
                     print(cur_file, e)
                     continue
-            for item in dirs:
-                cur_dir = cur_file = os.path.join(top, item)
-                try:
-                    os.removedirs(cur_dir)
-                except WindowsError as e:
-                    print(cur_file, e)
-                    continue
 
+            #
+            # do NOT remove the dirs and keep the original directory structure
+            # reason: some core application will use some special dirs,
+            # such as 'Microsoft SQL Server' will use 'C:\Users\<username>\AppData\Local\Temp\3'
+            #
+
+            # for item in dirs:
+            #     cur_dir = cur_file = os.path.join(top, item)
+            #     try:
+            #         os.removedirs(cur_dir)
+            #     except WindowsError as e:
+            #         print(cur_file, e)
+            #         continue
