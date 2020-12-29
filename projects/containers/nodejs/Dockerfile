@@ -11,9 +11,9 @@ ENV NODE_VERSION=12.16.3
 ENV YARN_VERSION=1.22.10
 
 # modify apt sources, note: use HTTP protocol as possible, 'Certificate verification failed:The certificate is NOT trusted.'
-RUN /bin/sed -i 's@http://deb.debian.org/debian@[trusted=yes] http://mirrors.aliyun.com/debian@g' /etc/apt/sources.list && /bin/sed -i 's@http://security.debian.org/debian-security@[trusted=yes] http://mirrors.aliyun.com/debian-security@g' /etc/apt/sources.list
+RUN /bin/sed -i 's@http://deb.debian.org/debian@http://mirrors.aliyun.com/debian@g' /etc/apt/sources.list && /bin/sed -i 's@http://security.debian.org/debian-security@http://mirrors.aliyun.com/debian-security@g' /etc/apt/sources.list
 
-RUN /bin/sh -c set -eux; apt-get update; apt-get install -y --no-install-recommends ca-certificates curl netbase wget xz-utils unzip apt-utils; rm -rf /var/lib/apt/lists/*
+RUN /bin/sh -c set -eux; apt-get update; apt-get install -y --no-install-recommends ca-certificates curl netbase wget xz-utils unzip rsync apt-utils; rm -rf /var/lib/apt/lists/*
 
 RUN  /bin/sh -c set -ex; if ! command -v gpg > /dev/null; then apt-get update; apt-get install -y --no-install-recommends gnupg dirmngr;rm -rf /var/lib/apt/lists/*; fi
 
