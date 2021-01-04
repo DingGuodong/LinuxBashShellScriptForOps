@@ -68,6 +68,7 @@ made or happening only for a particular purpose or need, not planned before it h
 中文释义：临时安排的
 
 ### pipe('|') support
+
 shell module support pipe('|'), but command module does not.
 
 ```shell script
@@ -76,6 +77,14 @@ ansible -i hosts prod -a 'pgrep ftp'  # default module is command
 ansible -i hosts prod -m shell -a 'ps -ef|grep ftp'
 ansible -i hosts prod --become -m raw -a "ps -ef|grep ftp"
 ``` 
+
+## ssh tips
+
+send the public key to remote server using `ssh-copy-id`
+
+```shell
+ssh-copy-id -i /root/.ssh/id_rsa.pub root@192.168.0.1
+```
 
 ## Modules
 
