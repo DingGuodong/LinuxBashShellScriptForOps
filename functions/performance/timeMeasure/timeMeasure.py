@@ -14,7 +14,16 @@ Others:
     2. cProfile Module in Python
     3. line_profiler Module in Python
     4. memory_profiler Module in Python
- """
+
+"永远不要使用 except: 语句来捕获所有异常, 也不要捕获 Exception 或者 StandardError ,
+除非你打算重新触发该异常, 或者你已经在当前线程的最外层(记得还是要打印一条错误消息).
+在异常这方面, Python非常宽容, except: 真的会捕获包括Python语法错误在内的任何错误.
+使用 except: 很容易隐藏真正的bug." -- [《Google Python 风格指南》]
+ (https://google-styleguide.readthedocs.io/zh_CN/latest/google-python-styleguide/python_language_rules.html)
+
+Tips: exception不要太宽泛，且try-except应该放在发生exception最近的地方，不然debug起来可能比较费劲。
+
+"""
 
 
 def fn_timer(func):
