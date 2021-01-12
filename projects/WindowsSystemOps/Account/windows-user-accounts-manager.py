@@ -15,6 +15,7 @@ Long Description:
 
 Enable-PSRemoting -Force
 set firewall policy for TCP port 5985
+telnet <server> 5985
 
 References:
 Prerequisites:          pip install pywinrm
@@ -319,12 +320,18 @@ def main_enable_account(ip=250, user='kurt'):
     is_account_enabled = query_account_status(ip, user)
     if is_account_enabled:
         # 如果已经被启用，则禁用
+        print("disabling account {name} on {server}".format(name=user, server=ip))
         disable_account(ip, user)
     else:
         # 如果已经被禁用，则启用
+        print("enabling account {name} on {server}".format(name=user, server=ip))
         enable_account(ip, user)
 
-    query_account_status(ip, user)
+    account_status = query_account_status(ip, user)
+    if account_status:
+        print("account {name} on {server} is enabled.".format(name=user, server=ip))
+    else:
+        print("account {name} on {server} is disabled.".format(name=user, server=ip))
 
 
 def __main_disable_all_account():
@@ -366,7 +373,7 @@ def disable_account_wrapper(args):
     # return disable_account(*args)
 
     ip, employee = args
-    print("DISABLING ACCOUNT ON {server}: ".format(server=ip))
+    # print("DISABLING ACCOUNT ON {server}: ".format(server=ip))
 
     is_account_enabled = query_account_status(ip, employee)
     if is_account_enabled:
@@ -381,6 +388,9 @@ def main_disable_all_account():
     pool = Pool(processes=4)
     # pool.map(lambda x: disable_account(*x), arguments_list)
     pool.map(disable_account_wrapper, arguments_list)
+
+    # TODO(DingGuodong) skip some users on some targets
+    main_enable_account(147, 'username')
 
 
 if __name__ == '__main__':
