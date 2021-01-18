@@ -272,6 +272,7 @@ python-evtx==0.6.1
 python-exconsole==0.1.5
 python-geoip==1.2
 python-geoip-geolite2==2015.303
+python-ldap==3.3.1  # ldap
 python-memcached==1.59
 python-nmap==0.6.1
 python-ntlm3==1.0.2
