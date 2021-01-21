@@ -65,3 +65,22 @@ Test-Connection github.com -Count 1
 Get-History
 h
 ```
+
+> PS Tips:
+> 1. '%' is an alias of 'ForEach-Object', '$_' is the current object, such as `Get-Process | ForEach-Object {$_.ProcessName}`
+> 2. use `object.GetType()` to get type of variable, such as `(cmdlet).GetType()`, `(Get-Process)[0].gettype()`
+> 3. use `object| fl` to get each property of object , `object|select *`, `object|get-member` as well sometimes.
+>
+
+## powershell 过滤字符串
+
+```shell
+(quser)| where {$_ -match 'admin'}
+(quser) -match 'admin'
+```
+
+## powershell 正则表达式分割字符串（like awk）
+
+```shell
+[regex]::split(((quser) -match 'admin'), '[ ]+')
+```

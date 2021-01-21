@@ -50,7 +50,7 @@ Get-WmiObject Win32_UserAccount -filter 'LocalAccount=True AND Name="guodong"' |
 > https://docs.microsoft.com/en-us/dotnet/api/system.management.managementobject.put?view=dotnet-plat-ext-3.1
 
 > PS Tips:
-> 1. '%' is a alias of 'ForEach-Object', '$_' is the current object, such as `Get-Process | ForEach-Object {$_.ProcessName}`
+> 1. '%' is an alias of 'ForEach-Object', '$_' is the current object, such as `Get-Process | ForEach-Object {$_.ProcessName}`
 > 2. use `object.GetType()` to get type of variable, such as `(cmdlet).GetType()`, `(Get-Process)[0].gettype()`
 > 3. use `object| fl` to get each property of object , `object|select *`, `object|get-member` as well sometimes.
 >
