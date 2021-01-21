@@ -1,5 +1,7 @@
 # notes for prometheus
 
+> 注：Prometheus概念较多，先以应用为主，先广度再深度，不要拘于细节
+
 ## what is Prometheus
 
 什么是 Prometheus
@@ -8,16 +10,20 @@ Monitoring system and time series database
 
 ## Prometheus 主要功能
 
-Prometheus由Go语言编写而成，采用Pull方式获取监控信息，并提供了多维度的数据模型和灵活的查询接口。
+Prometheus由Go语言编写而成，采用Pull方式（通过HTTP协议）获取监控信息，并提供了多维度的数据模型和灵活的查询接口。
 
 Prometheus不仅可以通过静态文件配置监控对象，还支持自动发现机制，能够通过Kubernetes、Consul、DNS等多种方式动态获取监控对象。
 
-## Prometheus 不能做什么
+> Prometheus 服务相对独立，监控、数据库、PromQL、web UI等逻辑或核心功能都在一个二进制文件中，对其他组件依赖性较小，自治性。
+
+## Prometheus 不能做什么 以及缺点
 
 - Prometheus 的数据是基于时序的 float64 的值，如果你的数据值有更多类型，无法满足。
 - Prometheus 不适合做审计计费，因为它的数据是按一定时间采集的，会造成数据丢失。 Prometheus关注的更多是系统的运行瞬时状态以及趋势，即使有少量数据没有采集也能容忍， 但是审计计费需要记录每个请求，并且数据长期存储，这个
   Prometheus 无法满足，可能需要采用专门的审计系统。
 - Prometheus 不适合存储文本（日志），因此不能作为日志存储解决方案
+
+> Prometheus更关注于最近一段时间内的数据指标，默认保存监控数据15天。
 
 ## Prometheus vs Zabbix
 
@@ -26,8 +32,13 @@ Prometheus不仅可以通过静态文件配置监控对象，还支持自动发�
 - Zabbix 在传统主机监控方面，有更多可选的插件。
 - Zabbix 可以在Web GUI中配置很多事情，但是Prometheus需要手动修改文件配置。
 - Prometheus 数据查询语句表现力更强大，内置更强大的统计函数。
+- Zabbix使用关系数据库存储监控数据，而Prometheus使用TSDB存储监控数据，通常认为关系数据库中的数据更容易被掌控（查询、管理、归档）。
 
 > 建议：在彻底掌控之前，使用Zabbix用于传统IT架构，而是用Prometheus用于云原生、微服务等新型IT架构。
+
+## Prometheus架构图
+
+[Prometheus Architecture](https://prometheus.io/docs/introduction/overview/#architecture)
 
 ## float64
 
@@ -62,18 +73,34 @@ cd ${PROMETHEUS_BASEDIR}
 
 > 在生产环境中，我们可以将 Prometheus 添加到sysv或systemd里，或者使用supervisord作为服务自启动。
 
-## default prometheus port
+default prometheus port: 9090
 
-9090
+## 其他名词解释
+
+sample 样本，包含一个float64类型的值和一个毫秒精度的时间戳。
+
+job：配置目标所属的job名称。
+
+instance：被采样目标URL中的<host>:<port>。
+
+exporter：导出器，收集监控样本数据，通过HTTP输出被监控组件信息，供Prometheus获取
+
+pushgateway：将prometheus没法主动获取的数据、短期job数据，推送到prometheus服务端
+
+alertmanager：用于发送的告警信息，如email、webhook
 
 ## metric type
 
-- counter，计数器，只能累加metric，只增不减（除非系统发生重置），记录某些事件发生的次数，用于了解该事件产生速率的变化 一般在定义Counter类型指标的名称时推荐使用_total作为后缀
+[metric types](https://prometheus.io/docs/concepts/metric_types/)
+
+- counter，计数器，从0开始，只能累加的metric，只增不减（除非系统发生重置），记录某些事件发生的次数，用于了解该事件产生速率的变化 一般在定义Counter类型指标的名称时推荐使用_total作为后缀
   http_requests_total
-- gauge，仪表盘，任意加减变化的metric，侧重于反应系统的当前状态 node_memory_MemFree（主机当前空闲的内容大小）、node_memory_MemAvailable（可用内存大小）
-- histogram，柱状图、直方图，用于统计和分析样本的分布情况，可以对观察结果采样，分组及统计。
-- summary，摘要，用于统计和分析样本的分布情况
+- gauge，仪表盘，任意加减变化的metric，侧重于反应系统的当前状态，如 node_memory_MemFree（主机当前空闲的内容大小）、node_memory_MemAvailable（可用内存大小）
+- histogram，柱状图、直方图，用于统计和分析样本的分布情况，表示一段时间范围内数据的变化，可以对观察结果采样，分组及统计。
+- summary，概率图，用于统计和分析样本的分布情况，常用于跟踪与时间有关的数据
 - untyped
+
+> Counter类型通常会很准确（不会因为采样时间间隔丢失数据），Gauge类型则可能因为采样时间间隔的原因丢失数据
 
 > 需要特别注意的是，假设采样数据 metric 叫做 x, 如果 x 是 histogram 或 summary 类型必需满足以下条件：
 > - 采样数据的总和应表示为 x_sum。
@@ -102,7 +129,13 @@ cd ${PROMETHEUS_BASEDIR}
 ## reload prometheus configuration
 
 ```shell
+curl -X POST http://127.0.0.1:9090/-/reload
+
+/usr/bin/kill -HUP $(/usr/bin/pidof prometheus)
+kill -HUP $(ps -ef|awk '/[p]rometheus$/{print $2}')
+
 kill -SIGHUP <prometheus pid>
+kill -HUP <prometheus pid>
 ```
 
 ## good example configuration file
@@ -134,6 +167,14 @@ https://prometheus.io/docs/querying/basics/
 - irate （瞬时增长率）
 - predict_linear （预测，基于线性回归）
 - histogram_quantile （分位数计算）
+
+## PromQL 表达式
+
+计算来自不同的instance的值
+
+```text
+mysql_global_variables_innodb_buffer_pool_size{instance="localhost:9104",job="mysqld"} / on () node_memory_MemTotal_bytes{instance="localhost:9100",job="node"}
+```
 
 ## exporters
 
@@ -180,7 +221,11 @@ cd ${GRAFANA_BASEDIR}
 
 ```
 
-default port: 3000 default user: admin default password: admin
+default port: 3000
+
+default user: admin
+
+default password: admin
 
 > 也可以考虑使用grafana做报警发送
 
@@ -201,6 +246,24 @@ default port: 3000 default user: admin default password: admin
 > 因为过多的exporter会占用较多的服务端口号和主机性能。
 
 default port: 9115
+
+## prometheus mysqld exporter
+
+install mysqld exporter on Debian/Ubuntu
+
+mysql privileges for prometheus user: PROCESS, REPLICATION CLIENT, SELECT
+
+```shell
+sudo apt install prometheus-mysqld-exporter -y
+dpkg -L prometheus-mysqld-exporter
+cat /etc/default/prometheus-mysqld-exporter
+sudo systemctl status prometheus-mysqld-exporter.service
+sudo setfacl -m u:prometheus:r /etc/mysql/debian.cnf
+sudo systemctl start prometheus-mysqld-exporter.service
+sudo systemctl status prometheus-mysqld-exporter.service
+```
+
+default port: 9104
 
 ## ansible-prometheus
 
