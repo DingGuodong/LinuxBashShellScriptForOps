@@ -1,24 +1,7 @@
 # Manage Windows Local Account using WMI(Windows Management Instrumentation)
 
-## get powershell version
-```shell script
-Get-Host
-$PSVersionTable
-```
-
-## Discovering objects, properties, and methods
-https://docs.microsoft.com/zh-cn/powershell/scripting/learn/ps101/03-discovering-objects?view=powershell-7
-
-```shell script
-Get-Service -Name w32time | Get-Member
-Get-Service -Name w32time | Get-Member -MemberType Method
-Get-Service -Name w32time | Select-Object -Property *
-Get-Service -Name w32time | Select-Object -Property Status, Name, DisplayName, ServiceType
-Get-Service -Name w32time | Select-Object -Property Status, DisplayName, Can*
-
-```
-
 ## get and set user account
+
 ```shell script
 wmic useraccount /?
 wmic useraccount where "LocalAccount=true" get name
@@ -37,7 +20,6 @@ Get-WmiObject Win32_UserAccount -filter 'LocalAccount=True AND Name="guodong"'|S
 (Get-WmiObject Win32_UserAccount -filter 'LocalAccount=True AND Name="guodong"').Disabled
 
 
-
 # (Get-WmiObject Win32_UserAccount -filter 'LocalAccount=True AND Name="guodong"').gettype()
 # note: .put() operation need administrator privilege
 Get-WmiObject Win32_UserAccount -filter 'LocalAccount=True AND Name="guodong"' | % {$_.Disabled = $false;$_.put()}
@@ -49,13 +31,8 @@ Get-WmiObject Win32_UserAccount -filter 'LocalAccount=True AND Name="guodong"' |
 > https://docs.microsoft.com/zh-cn/dotnet/api/system.management.managementobject.put?view=dotnet-plat-ext-3.1
 > https://docs.microsoft.com/en-us/dotnet/api/system.management.managementobject.put?view=dotnet-plat-ext-3.1
 
-> PS Tips:
-> 1. '%' is an alias of 'ForEach-Object', '$_' is the current object, such as `Get-Process | ForEach-Object {$_.ProcessName}`
-> 2. use `object.GetType()` to get type of variable, such as `(cmdlet).GetType()`, `(Get-Process)[0].gettype()`
-> 3. use `object| fl` to get each property of object , `object|select *`, `object|get-member` as well sometimes.
->
-
 ## other references
+
 ```
 /usr/lib/python3/dist-packages/ansible/modules/windows/win_user.ps1
 ```
@@ -64,7 +41,14 @@ Get-WmiObject Win32_UserAccount -filter 'LocalAccount=True AND Name="guodong"' |
 
 ```shell script
 # disable user account
-NET USER username /ACTIVE:NO
+NET USER <username> /ACTIVE:NO
 # enable user account
-NET USER username /ACTIVE:YES
+NET USER <username> /ACTIVE:YES
+```
+
+## get user's groups
+
+```shell
+net user <username>
+[System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | ForEach-Object { $_.Translate([System.Security.Principal.NTAccount]).Value } | Sort-Object
 ```

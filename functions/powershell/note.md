@@ -66,11 +66,12 @@ Get-History
 h
 ```
 
-> PS Tips:
+> PS Tips or Knowledge Points:
 > 1. '%' is an alias of 'ForEach-Object', '$_' is the current object, such as `Get-Process | ForEach-Object {$_.ProcessName}`
 > 2. use `object.GetType()` to get type of variable, such as `(cmdlet).GetType()`, `(Get-Process)[0].gettype()`
 > 3. use `object| fl` to get each property of object , `object|select *`, `object|get-member` as well sometimes.
->
+> 4. 'double - colon operator' `::`, The `::` operator is the static member accessor. Whereas the dot operator retrieved instance members, the double-colon operator accesses static members (properties as well as methods) on a class, as is the case with the join method in the example at the end of the last section. The left operand to the static member accessor is required to be a type—either a type literal or an expression returning a type, as you see here: `[string]::join('+',(1,2,3))`.
+> 5. object in 'square brackets', `[object]`, such as `[System.Math]` indicates the .NET math class. The :: is the static method operator. For example `[math]::Round($x,2)`
 
 ## powershell 过滤字符串
 
@@ -83,4 +84,16 @@ h
 
 ```shell
 [regex]::split(((quser) -match 'admin'), '[ ]+')
+```
+
+## Discovering objects, properties, and methods
+
+https://docs.microsoft.com/zh-cn/powershell/scripting/learn/ps101/03-discovering-objects?view=powershell-7
+
+```shell script
+Get-Service -Name w32time | Get-Member
+Get-Service -Name w32time | Get-Member -MemberType Method
+Get-Service -Name w32time | Select-Object -Property *
+Get-Service -Name w32time | Select-Object -Property Status, Name, DisplayName, ServiceType
+Get-Service -Name w32time | Select-Object -Property Status, DisplayName, Can*
 ```
