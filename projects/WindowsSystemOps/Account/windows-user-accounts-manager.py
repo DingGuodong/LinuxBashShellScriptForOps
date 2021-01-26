@@ -17,6 +17,9 @@ Enable-PSRemoting -Force
 set firewall policy for TCP port 5985
 telnet <server> 5985
 
+Related Windows Services:
+    WinRM: Windows Remote Management (WS-Management)
+
 References:
 Prerequisites:          pip install pywinrm
 Development Status:     3 - Alpha, 5 - Production/Stable
@@ -260,6 +263,35 @@ def disable_account(server, name):
     # print("account {} is disabled.".format(name))
 
 
+def get_user_logged_on_server(server, name):
+    """
+    checkout if user is logged on the system, return False if fail or not logged on, True if logged on.
+    quser.exe: Display information about users logged on to the system.
+
+    :param server:hostname or ip address
+    :type server:str | int
+    :param name: user account name
+    :type name:str
+    :return:boolean
+    :rtype:boolean
+    """
+    ip, user, psw = get_acc_psw_with_ends(server)
+    if BIZ_USERNAME_PREFIX not in name:
+        name = BIZ_USERNAME_PREFIX + name
+    script = "[regex]::split(((quser.exe) -match '{name}'), '[ ]+')[3]".format(name=name)
+    # commenting the comments is for meeting the principle of 'Make each program do one thing well.'
+    # print("disabling account {name} on {server}".format(name=name, server=ip))
+    status_code, std_out, std_err = run_powershell(ip, user, psw, script)
+    if status_code != 0:
+        return False
+    else:
+        if std_out.strip() in ["断开", "Disc"]:
+            return False
+        else:
+            return True
+    # print("account {} is disabled.".format(name))
+
+
 def enable_account(server, name):
     """
     enable user account
@@ -306,6 +338,14 @@ def query_account_status(server, name):
         if status_code != 0:
             # print(std_out.strip())
             # print(std_err.strip())
+            # if std_out in "requests failed.":
+            #     print("WARN: account {} in IP {} may has an issue, "
+            #           "such as `requests.exceptions.ConnectionError`, "
+            #           u"error detail: {}.".format(name, ip, std_err.decode('gbk')))
+            if "ConnectionError" in std_err:
+                print("WARN: account {} in IP {} may has an issue, "
+                      "such as `requests.exceptions.ConnectionError`, "
+                      u"error detail: {}.".format(name, ip, std_err.decode('gbk')))
             return None
 
     status = std_out.strip()
@@ -315,7 +355,7 @@ def query_account_status(server, name):
     return status in ["Yes", "True"]
 
 
-def main_enable_account(ip=250, user='kurt'):
+def main_change_account_status(ip=250, user='kurt'):
     print("exec time: {}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))))
     is_account_enabled = query_account_status(ip, user)
     if is_account_enabled:
@@ -390,9 +430,10 @@ def main_disable_all_account():
     pool.map(disable_account_wrapper, arguments_list)
 
     # TODO(DingGuodong) skip some users on some targets
-    main_enable_account(147, 'username')
+    main_change_account_status(147, 'kurt')
 
 
 if __name__ == '__main__':
     main_disable_all_account()
     # main_enable_account(147, 'username')
+    # print get_user_logged_on_server(104, 'username')
