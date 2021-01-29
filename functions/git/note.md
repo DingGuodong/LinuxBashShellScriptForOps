@@ -124,3 +124,31 @@ git pull origin master
 ### .gitignore
 
 ignore顾名思义是不提交到仓库。 在提交时，可以先确定哪些文件或目录需要ignore。
+
+## GitHub Authentication Tips
+
+应该通过命令行或 API 创建个人访问令牌（Personal Access Token）来代替密码。
+
+在使用GitHub API 或命令行时，可使用个人访问令牌 (PAT) 代替密码向 GitHub 进行身份验证。
+
+### 在命令行上使用令牌（Token）
+
+如果您有令牌，则可以在通过 HTTPS 执行 Git 操作时输入令牌，而不是密码。
+
+例如，在命令行中输入以下内容：
+
+```text
+$ git clone https://github.com/username/repo.git
+Username: your_username
+Password: your_token
+```
+
+个人访问令牌只能用于 HTTPS Git 操作。 如果您的仓库使用 SSH 远程
+URL，则需要[将远程 URL 从 SSH 切换到 HTTPS](https://docs.github.com/cn/articles/changing-a-remote-s-url/#switching-remote-urls-from-ssh-to-https)。
+
+如果没有提示您输入用户名和密码，说明您的凭据可能已缓存在计算机上。
+您可以[在密钥链中更新您的凭据](https://docs.github.com/cn/articles/updating-credentials-from-the-osx-keychain)，用令牌替换您的旧密码。
+
+### Windows删除凭据
+
+进入"仓库根目录/.git"，编辑"config"文件，将`[credential ".*.git"]`节中的`helper = .*`注释或删除，重新push，按照指引配置。
