@@ -50,6 +50,8 @@ git pull 是git fetch + git merge的组合。git pull是把远程仓库更新到
 ```shell script
 git remote add upstream git://github.com/public/repo.git
 git fetch upstream
+git merge upstream/master
+git push origin master
 ```
 
 ## 常见问题FAQ
