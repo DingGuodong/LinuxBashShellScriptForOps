@@ -138,6 +138,19 @@ def parse_redis_u2(obj):
         return obj
 
 
+def convert(data):
+    # provided by TianPanJi@GitHub
+    if isinstance(data, bytes):
+        return data.decode()
+    if isinstance(data, dict):
+        return dict(map(convert, data))
+    if isinstance(data, list):
+        return list(map(convert, data))
+    if isinstance(data, set):
+        return set(map(convert, data))
+    return data
+
+
 def to_container(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
