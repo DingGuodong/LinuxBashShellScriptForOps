@@ -3,7 +3,7 @@
 """
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:windows-user-accounts-manager.py
-Version:                0.0.2
+Version:                0.0.3
 Author:                 dgden
 Author Email:           dgdenterprise@gmail.com
 URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
@@ -34,14 +34,14 @@ Topic:                  Utilities
 Notes:
  """
 import json
+import time
+import warnings
+from base64 import b64encode
 from itertools import product
 from multiprocessing import Pool
 
 import requests
-import time
-import warnings
 import winrm
-from base64 import b64encode
 from winrm.protocol import Protocol
 
 # disable python warnings
@@ -336,6 +336,8 @@ def query_account_status(server, name):
         script = '(NET USER {name} | where {{$_ -match "帐户启用*"}}).Split()|select -Last 1'.format(name=name)
         status_code, std_out, std_err = run_powershell_with_codepage_936(ip, user, psw, script)
         if status_code != 0:
+            script = '[bool](((NET USER {name}) -match "帐户启用") -match "no")'.format(name=name)
+            status_code, std_out, std_err = run_powershell_with_codepage_936(ip, user, psw, script)
             # print(std_out.strip())
             # print(std_err.strip())
             # if std_out in "requests failed.":
@@ -355,23 +357,100 @@ def query_account_status(server, name):
     return status in ["Yes", "True"]
 
 
+def query_account_status_u1(server, name):
+    """
+    query user account status and return (account_status, message)
+    status meaning:
+        None: error, see message
+        True: enabled
+        False: disabled
+    :param server:hostname or ip address
+    :type server:str | int
+    :param name: user account name
+    :type name:str
+    :return:tuple
+    :rtype:tuple
+    """
+    ip, user, psw = get_acc_psw_with_ends(server)
+    if BIZ_USERNAME_PREFIX not in name:
+        name = BIZ_USERNAME_PREFIX + name
+    script = '(Get-LocalUser -Name {name}).Enabled'.format(name=name)
+    status_code, std_out, std_err = run_powershell(ip, user, psw, script)
+    # $LastExitCode maybe 1, 2, etc, so do NOT use `status_code == 1`
+    if status_code != 0:  # some reason: powershell version < 5.0
+        # -Split (NET USER guest | where {$_ -match "帐户启用*"})| select -Last 1
+        # (NET USER guest | where {$_ -match "帐户启用*"}).Split()[-1]
+        # (NET USER guest | where {$_ -match "帐户启用*"}).Split()|select -Last 1
+        # [bool]([regex]::Match(((NET USER guest) -match "帐户启用"),'Yes')).Success
+        # [bool](((NET USER guest) -match "帐户启用") -match "no")
+        script = '(NET USER {name} | where {{$_ -match "帐户启用*"}}).Split()|select -Last 1'.format(name=name)
+        status_code, std_out, std_err = run_powershell_with_codepage_936(ip, user, psw, script)
+        if status_code != 0:
+            # print(std_out.strip())
+            # print(std_err.strip())
+            # if std_out in "requests failed.":
+            #     print("WARN: account {} in IP {} may has an issue, "
+            #           "such as `requests.exceptions.ConnectionError`, "
+            #           u"error detail: {}.".format(name, ip, std_err.decode('gbk')))
+            if "ConnectionError" in std_err:
+                print("WARN: account {} in IP {} may has an issue, "
+                      "such as `requests.exceptions.ConnectionError`, "
+                      u"error detail: {}.".format(name, ip, std_err.decode('gbk')))
+            return None, std_err.st
+
+    message = std_out.strip()
+    if message == "":
+        message = "NotExist"
+
+    account_status = message in ["Yes", "True"]
+    # print("account {name}'s status on {server} is {status}.".format(name=name, status=status, server=server))
+    return account_status, message
+
+
 def main_change_account_status(ip=250, user='kurt'):
     print("exec time: {}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))))
     is_account_enabled = query_account_status(ip, user)
-    if is_account_enabled:
+    if is_account_enabled is True:
         # 如果已经被启用，则禁用
         print("disabling account {name} on {server}".format(name=user, server=ip))
         disable_account(ip, user)
-    else:
+    elif is_account_enabled is False:
         # 如果已经被禁用，则启用
         print("enabling account {name} on {server}".format(name=user, server=ip))
         enable_account(ip, user)
+    else:
+        print("status is strange, we should better verify it manually")
 
     account_status = query_account_status(ip, user)
-    if account_status:
+    if account_status is None:
+        print("status is strange, we should better verify it manually")
+    elif account_status is True:
         print("account {name} on {server} is enabled.".format(name=user, server=ip))
     else:
         print("account {name} on {server} is disabled.".format(name=user, server=ip))
+
+
+def main_change_account_status_u1(ip=250, user='kurt'):
+    import sys
+    print("exec time: {}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))))
+    is_account_enabled, message = query_account_status_u1(ip, user)
+    if is_account_enabled is True:
+        # 如果已经被启用，则禁用
+        print("disabling account {name} on {server}".format(name=user, server=ip))
+        disable_account(ip, user)
+        account_status, message = query_account_status_u1(ip, user)
+        if account_status is False:
+            print("account {name} on {server} is disabled.".format(name=user, server=ip))
+    elif is_account_enabled is False:
+        # 如果已经被禁用，则启用
+        print("enabling account {name} on {server}".format(name=user, server=ip))
+        enable_account(ip, user)
+        account_status, message = query_account_status_u1(ip, user)
+        if account_status is True:
+            print("account {name} on {server} is enabled.".format(name=user, server=ip))
+    else:
+        print("status is strange, we should better verify it manually, message is: {msg}".format(msg=message))
+        sys.exit(2)
 
 
 def __main_disable_all_account():
@@ -435,5 +514,5 @@ def main_disable_all_account():
 
 if __name__ == '__main__':
     main_disable_all_account()
-    # main_enable_account(147, 'username')
+    # main_change_account_status_u1(147, 'username')
     # print get_user_logged_on_server(104, 'username')
