@@ -12,9 +12,16 @@ Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOp
 Create Date:            2017/11/20
 Create Time:            11:03
 Description:            send alter message to somebody over DingTalk(Ali DingDing)
-Long Description:       
+Long Description:
+
+    使用钉钉群自定义机器人发送消息到钉钉群的步骤：
+        创建钉钉群聊（至少1个人，可以添加无关人再删除无关人达到至少1人的情况），使用PC端登录打开群聊，添加机器人
+        建议使用“加签”安全设置，记录下签名密钥，如：SECc10***dc2
+        参考文档：[自定义机器人接入](https://developers.dingtalk.com/document/app/custom-robot-access)
+        创建完成后，记录好webhook地址，如：https://oapi.dingtalk.com/robot/send?access_token=40d654***c37
+        webhook地址中有access_token，后续会使用到。
+
 References:             https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.karFPe&treeId=257&articleId=105735&docType=1
-                        https://open-doc.dingtalk.com/microapp/faquestions/vzbp02
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
@@ -87,10 +94,10 @@ def send_message(access_token, title, content, mobile, enable_at_all=False):
     result_dict = json.loads(result_string)
     if result_dict["errcode"] == 0:
         print("send ok")
-        print(json.dumps(result_string, indent=4))
+        print(json.dumps(result_dict, indent=4))
     else:
         print("send failed")
-        print(json.dumps(result_string, indent=4))
+        print(json.dumps(result_dict, indent=4))
 
 
 if __name__ == '__main__':
