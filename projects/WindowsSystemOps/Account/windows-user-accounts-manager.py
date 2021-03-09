@@ -3,7 +3,7 @@
 """
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:windows-user-accounts-manager.py
-Version:                0.0.3
+Version:                0.0.4
 Author:                 dgden
 Author Email:           dgdenterprise@gmail.com
 URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
@@ -84,6 +84,37 @@ def get_ip_with_ends(num):
                 return item
 
 
+def get_ip_with_ends_u1(num):
+    """
+    get full ip address with ip from config.json, ip num can be fourth part or full ip, such as '3' in '192.168.1.3'
+    :param num: ip
+    :type num: str | int
+    :return: ip
+    :rtype: str
+    """
+    if isinstance(num, int):
+        num = str(num)
+
+    if servers is None:
+        raise KeyError("no servers is found")
+
+    keys_list = servers.keys()
+    keys_found_list = list()
+    for item in keys_list:  # type: str
+        item = item.strip()
+        if item.endswith(num):
+            keys_found_list.append(item)
+    if len(keys_found_list) > 1:
+        print("warning: more than one server is found, "
+              "please use full ip addr instead last part.")
+        return keys_found_list[0]
+    elif len(keys_found_list) == 1:
+        return keys_found_list[0]
+    else:
+        raise RuntimeError("no server is found, "
+                           "please use full ip addr instead last part or check the config.json file.")
+
+
 def get_acc_psw_with_ends(num):
     """
     get full ip address, username and password with given ip num from config.json
@@ -95,7 +126,7 @@ def get_acc_psw_with_ends(num):
     if isinstance(num, int):
         num = str(num)
 
-    ip_addr = get_ip_with_ends(num)
+    ip_addr = get_ip_with_ends_u1(num)
     account = servers[ip_addr].get("account")
     password = servers[ip_addr].get("password")
     return ip_addr, account, password
@@ -396,7 +427,7 @@ def query_account_status_u1(server, name):
                 print("WARN: account {} in IP {} may has an issue, "
                       "such as `requests.exceptions.ConnectionError`, "
                       u"error detail: {}.".format(name, ip, std_err.decode('gbk')))
-            return None, std_err.st
+            return None, std_err
 
     message = std_out.strip()
     if message == "":
@@ -431,6 +462,15 @@ def main_change_account_status(ip=250, user='kurt'):
 
 
 def main_change_account_status_u1(ip=250, user='kurt'):
+    """
+
+    :param ip:
+    :type ip: str | int
+    :param user:
+    :type user:
+    :return:
+    :rtype:
+    """
     import sys
     print("exec time: {}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))))
     is_account_enabled, message = query_account_status_u1(ip, user)
