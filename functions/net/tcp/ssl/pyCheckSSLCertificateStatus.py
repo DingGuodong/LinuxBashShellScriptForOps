@@ -26,11 +26,10 @@ Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
  """
+import certifi
 import datetime
 import socket
 import ssl
-
-import certifi
 
 
 def ssl_expiry_datetime(hostname):
@@ -42,7 +41,7 @@ def ssl_expiry_datetime(hostname):
         server_hostname=hostname,
     )
     # 3 second timeout because Lambda has runtime limitations
-    conn.settimeout(3.0)
+    conn.settimeout(30.0)
 
     conn.connect((hostname, 443))
     ssl_info = conn.getpeercert()

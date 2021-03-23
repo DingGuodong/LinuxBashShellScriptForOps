@@ -10,9 +10,9 @@ Create Time:        13:58
  """
 import datetime
 import time
-from socket import socket
-
 from OpenSSL.SSL import Connection, Context, SSLv3_METHOD, TLSv1_2_METHOD
+from OpenSSL.SSL import X509Name
+from socket import socket
 
 host = 'www.baidu.com'
 
@@ -28,7 +28,7 @@ c = Connection(ssl_connection_setting, s)
 c.set_connect_state()
 c.do_handshake()
 cert = c.get_peer_certificate()
-print "Issuer: ", cert.get_issuer()
+print "Issuer: ", cert.get_issuer()  # type: X509Name
 print "Subject: ", cert.get_subject().get_components()
 subject_list = cert.get_subject().get_components()
 print "Common Name:", dict(subject_list).get("CN")
