@@ -18,6 +18,17 @@ Long Description:
     2. construct the cmd: remove old rule, add new rule
     3. execute the command on remote host via SSH protocol
 
+Other IP APIs:
+    http://ping.pe/
+    https://www.ipip.net/ip.html
+    https://ip138.com/
+    https://ipinfo.io/
+    https://ifconfig.me/
+    https://httpbin.org/ip
+    http://cip.cc
+    https://ip.cn
+    https://ident.me
+
 References:             projects/others/aliyun/ECS/SecurityGroup/add-Internet-IP-to-aliyun-ecs-security-group.py
 Prerequisites:          pip install requests
                         pip install paramiko
@@ -34,15 +45,17 @@ Topic:                  Utilities
 
 import requests
 
+# TODO(DingGuodong) known issue: the(some) api will return IPv6 address which is not wanted.
 IP_QUERY_API_S1 = "https://ifconfig.co/ip"
-IP_QUERY_API_S2 = "https://api.ip.sb/ip"
+IP_QUERY_API_S2 = "https://api-ipv4.ip.sb/ip"
 
 
 def get_public_ip_from_api(api):
-    query_ip_api_url = api
+    query_ip_api_url = api.strip()
 
     headers = {
         'Cache-Control': "no-cache",
+        "User-Agent": "curl/7.55.1",
     }
 
     data = ""
@@ -51,6 +64,8 @@ def get_public_ip_from_api(api):
         response = requests.request("GET", query_ip_api_url, headers=headers, timeout=(10, 5))
         if response.ok:
             data = response.text.strip()
+        else:
+            print("API {api} status code: {code}".format(api=api, code=response.status_code))
     except Exception as _:
         del _
 
@@ -59,7 +74,10 @@ def get_public_ip_from_api(api):
 
 def get_public_ip():
     ip1, ip2 = map(get_public_ip_from_api, (IP_QUERY_API_S1, IP_QUERY_API_S2))
-    return ip1 if ip1 != "" else ip2
+    ip = ip1 if ip1 != "" and ":" not in ip1 else ip2
+    if ip == "":
+        raise AssertionError("can NOT get IP from APIs, terminated.")
+    return ip
 
 
 def execute_commands_on_remote_host(host, command, **kwargs):
@@ -93,6 +111,7 @@ def execute_commands_on_remote_host(host, command, **kwargs):
 
 if __name__ == '__main__':
     internet_ip = get_public_ip()
+    print("Current public IP address is {}".format(internet_ip))
 
     # Tips: `| awk '$1=$1'` 或 `| awk 'NF--'` 去除字符串两端的（多个）空格，
     # Decrementing NF causes the values of fields past the new value to be lost,
