@@ -59,7 +59,7 @@ constantly==15.1.0
 contextlib2==0.6.0.post1
 coverage==5.3
 crcmod==1.7
-cryptography==3.2
+cryptography==3.3.2
 cssselect==1.1.0
 curtsies==0.3.4
 cx-Oracle==7.3.0
