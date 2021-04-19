@@ -110,6 +110,8 @@ def execute_commands_on_remote_host(host, command, **kwargs):
 
 
 if __name__ == '__main__':
+    # TODO(DingGuodong) if the network we using has more than 1 public network addresses,
+    #  this script may run into useless result, it all depends on how you use that.
     internet_ip = get_public_ip()
     print("Current public IP address is {}".format(internet_ip))
 
@@ -118,12 +120,13 @@ if __name__ == '__main__':
     # and the value of $0 to  be  recomputed,  with  the  fields being separated by the value of OFS.
 
     command_remove_old_rule = '''firewall-cmd --permanent --zone=public ''' \
-                              '''--remove-rich-rule="$(firewall-cmd --list-all | awk '/fw_temp_kw/','$1=$1')"; ''' \
+                              '''--remove-rich-rule="$(firewall-cmd --list-all --zone=public ''' \
+                              '''| awk '/fw_temp_kw/','$1=$1')"; ''' \
                               '''firewall-cmd --reload'''
 
     # use `log prefix="fw_temp_kw" level="info"` as comment in firewall-cmd
     # refer: https://serverfault.com/questions/893112/migrating-from-iptables-to-firewalld-commenting-rules
-    command_add_new_rule = 'firewall-cmd --permanent ' \
+    command_add_new_rule = 'firewall-cmd --permanent --zone=public ' \
                            '--add-rich-rule="rule family="ipv4" source address="{ip}" ' \
                            'port protocol="tcp" port="50009" log prefix="fw_temp_kw" level="info" accept";' \
                            'firewall-cmd --reload'.format(ip=internet_ip)
