@@ -4,15 +4,16 @@
 Created by PyCharm.
 File Name:              LinuxBashShellScriptForOps:get-domain-ssl-info.py
 Version:                0.0.1
-Author:                 dgden
+Author:                 Guodong
 Author Email:           dgdenterprise@gmail.com
 URL:                    https://github.com/DingGuodong/LinuxBashShellScriptForOps
 Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOps/tarball/master
-Create Date:            2021/4/14
-Create Time:            11:27
+Create Date:            2018/1/2
+Create Time:            16:28
 Description:            get the certificate's issuer and the valid days count
-Long Description:       
-References:             
+Long Description:       check website https certificate status
+References:             https://gist.github.com/horacioibrahim/9413241
+                        https://serverlesscode.com/post/ssl-expiration-alerts-with-lambda/
 Prerequisites:          []
                         Internet access maybe is required
 Development Status:     3 - Alpha, 5 - Production/Stable
