@@ -6,7 +6,7 @@
 # Description: allow the login ip access a port on this host
 
 function remove_an_old_fw_rich_rule() {
-  wanted_rich_rule=$(firewall-cmd --list-all | awk '/fw_temp_kw_phone/','$1=$1')
+  wanted_rich_rule=$(firewall-cmd --list-all | awk '/fw_temp_kw_internal/','$1=$1')
   if [[ $wanted_rich_rule != "" ]]; then
     firewall-cmd --permanent --zone=public --remove-rich-rule="$wanted_rich_rule"
     firewall-cmd --reload
@@ -15,7 +15,7 @@ function remove_an_old_fw_rich_rule() {
 
 function add_a_fw_rich_rule() {
   from_ip=$(bash -c "w -h | awk '/w -h/ {print \$3}'")
-  firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="$from_ip" port protocol="tcp" port="50009" log prefix="fw_temp_kw_phone" level="info" accept"
+  firewall-cmd --permanent --zone=public --add-rich-rule="rule family="ipv4" source address="$from_ip" port protocol="tcp" port="50009" log prefix="fw_temp_kw_internal" level="info" accept"
   firewall-cmd --reload
 }
 
