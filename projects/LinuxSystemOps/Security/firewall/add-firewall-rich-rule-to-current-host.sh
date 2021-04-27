@@ -22,7 +22,7 @@ function add_a_fw_rich_rule() {
 function main() {
   remove_an_old_fw_rich_rule
   add_a_fw_rich_rule
-  firewall-cmd --list-all
+  firewall-cmd --list-all --zone=public
 }
 
 main
