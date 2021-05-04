@@ -14,7 +14,8 @@ Description:        Refactoring WeChat Message Sender by Python without SQL data
 References:
                     [微信公众平台-企业号开发者中心-接口文档](http://qydev.weixin.qq.com/wiki/index.php?title=%E9%A6%96%E9%A1%B5)
                     [发送接口说明](http://qydev.weixin.qq.com/wiki/index.php?title=%E5%8F%91%E9%80%81%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)
-
+                    update@202104
+                    [企业微信发送应用消息](https://work.weixin.qq.com/api/doc/90000/90135/90236)
 Prerequisites:      [shelve, json,]
  """
 import datetime
@@ -118,6 +119,25 @@ class WeChatMessageSender(object):
         self.get_access_token()
 
     def sender_config(self, content, to_user="", to_party="", to_tag="", msg_type="text", agent_id=1, safe=1):
+        """
+
+        :param content:
+        :type content:
+        :param to_user: 成员名称使用该成员在企业微信中的账号名（并非显示名称），账号名可以在企业微信后台查到
+        :type to_user: str
+        :param to_party:
+        :type to_party:
+        :param to_tag:
+        :type to_tag:
+        :param msg_type:
+        :type msg_type:
+        :param agent_id:
+        :type agent_id:
+        :param safe:
+        :type safe:
+        :return:
+        :rtype:
+        """
         # parameters instruction see this URL as follows.
         # http://qydev.weixin.qq.com/wiki/index.php?title=%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F
         self.message_data['touser'] = to_user
@@ -129,10 +149,22 @@ class WeChatMessageSender(object):
         self.message_data['text']['content'] = content
         self.message_data['safe'] = safe
 
-    def send(self):
+    def send(self, debug=False):
+        """
+        该方法不同于企业微信机器人，此方法是将信息通过企业微信管理后台中"应用管理"中创建的"应用"，
+        发送给该应用中的成员，成员名称使用该成员在企业微信中的账号名（并非显示名称），账号名可以在企业微信后台查到
+        :return:
+        :rtype:
+        """
         url = "https://qyapi.weixin.qq.com/cgi-bin/message/send"
 
-        querystring = {"access_token": self.access_token}
+        if debug:
+            querystring = {
+                "access_token": self.access_token,
+                "debug": "1"
+            }
+        else:
+            querystring = {"access_token": self.access_token}
 
         payload = json.dumps(self.message_data, encoding='utf-8', ensure_ascii=False)
 
@@ -146,8 +178,12 @@ class WeChatMessageSender(object):
 
 
 if __name__ == '__main__':
-    CorpID = 'your corp id'
-    Secret = 'your secret for your corp id'
+    # [企业微信管理后台](https://work.weixin.qq.com/wework_admin/)
+    CorpID = 'your_corp_id'  # 企业ID，可通过企业微信后台"我的企业"|"企业ID"查看
+    Secret = 'your_secret_of_this_app'  # 企业微信中自建企业应用的Secret
+    AgentID = 1000002  # 企业微信中自建企业应用的AgentId
+    ToUser = 'DingGuodong'  # 企业微信企业成员的账号名（非显示名）
+
     w = WeChatMessageSender(CorpID, Secret)
-    w.sender_config("message body to send.", to_user='username in your corp\'s app', agent_id=2)
+    w.sender_config("message body to send.", to_user=ToUser, agent_id=AgentID)
     w.send()
