@@ -28,6 +28,8 @@ import smtplib
 import string
 import sys
 
+import six
+
 
 def usage():
     print("""
@@ -36,30 +38,30 @@ def usage():
     Zabbix setting: 'Administration' -> 'Media types' 
                     https://hostname/zabbix.php?action=mediatype.edit&mediatypeid=4
                     Script parameters: {ALERT.SENDTO} {ALERT.SUBJECT} {ALERT.MESSAGE}
-    Example: python %s "dinggd@example.com" "Test email from Python" "Python rules them all!"
-""") % (__file__, sys.argv[0])
+    Example: python %s "admin@example.domain" "Test email from Python" "Python rules them all!"
+""" % (__file__, sys.argv[0]))
     sys.exit(0)
 
 
 EMAIL_HOST = "smtp.mxhichina.com"
+EMAIL_PORT = 25  # default smtp port
 EMAIL_HOST_USER = 'sender@example.com'
 EMAIL_HOST_PASSWORD = 'password'
 EMAIL_HOST_ENABLE_SSL = True
 EMAIL_HOST_ENABLE_TLS = False
 
-if EMAIL_HOST_ENABLE_TLS:
-    EMAIL_PORT = 587
-elif EMAIL_HOST_ENABLE_SSL:
+if EMAIL_HOST_ENABLE_SSL and EMAIL_HOST_ENABLE_TLS:
+    raise Exception("can NOT be used together")
+
+if EMAIL_HOST_ENABLE_SSL:
     EMAIL_PORT = 465
-else:
-    EMAIL_PORT = 25
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # https://tools.ietf.org/html/rfc822.html#appendix-A
 CRLF = "\r\n"  # for Windows user
 
 EMAIL_TO = "receiver@example.com"  # user defined variable, in Zabbix is {ALERT.SENDTO}
-SUBJECT = "Test email from Python"  # user defined variable, in Zabbix is {ALERT.SUBJECT}
-text = "Python rules them all!"  # user defined variable, in Zabbix is {ALERT.MESSAGE}
+EMAIL_SUBJECT = "Test email from Python"  # user defined variable, in Zabbix is {ALERT.SUBJECT}
+EMAIL_BODY = "Python rules them all!"  # user defined variable, in Zabbix is {ALERT.MESSAGE}
 
 argc = len(sys.argv)
 if not (argc == 1 or argc == 4):
@@ -70,19 +72,32 @@ if argc == 1:
 else:
     if sys.argv[1] != '' and sys.argv[2] != '' and sys.argv[3] != '':
         EMAIL_TO = sys.argv[1]
-        SUBJECT = sys.argv[2]
-        text = sys.argv[3]
+        EMAIL_SUBJECT = sys.argv[2]
+        EMAIL_BODY = sys.argv[3]
 
-BODY = string.join((
-    "From: %s" % DEFAULT_FROM_EMAIL,
-    "To: %s" % EMAIL_TO,
-    "Subject: %s" % SUBJECT,
-    "",
-    text
-), CRLF)
+if six.PY2:
+    BODY = string.join((
+        "From: %s" % DEFAULT_FROM_EMAIL,
+        "To: %s" % EMAIL_TO,
+        "Subject: %s" % EMAIL_SUBJECT,
+        "",
+        EMAIL_BODY
+    ), CRLF)
+else:
+    BODY = CRLF.join((
+        "From: %s" % DEFAULT_FROM_EMAIL,
+        "To: %s" % EMAIL_TO,
+        "Subject: %s" % EMAIL_SUBJECT,
+        "",
+        EMAIL_BODY
+    ))
 
-if EMAIL_HOST_ENABLE_SSL:
-    server = smtplib.SMTP_SSL()
+if EMAIL_HOST_ENABLE_SSL or EMAIL_HOST_ENABLE_TLS:
+    if six.PY3:
+        # for python3, ValueError: server_hostname cannot be an empty string or start with a leading dot.
+        server = smtplib.SMTP_SSL(host=EMAIL_HOST)
+    else:
+        server = smtplib.SMTP_SSL()
 else:
     server = smtplib.SMTP()
 
