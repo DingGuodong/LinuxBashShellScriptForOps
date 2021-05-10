@@ -7,7 +7,6 @@
 # Create Date: 2021/5/10
 # Create Time: 22:24
 
-
 #if [ "$(id -u)" != "0" ]; then
 #  echo "WARNING: This script should be run as root" 2>&1
 #fi
@@ -26,8 +25,8 @@ ps -ef | grep "$current_pid_grep" | awk -v pid="$current_pid" '$2==pid' | grep "
 current_ppid="$(ps -ef | grep "$current_pid_grep" | awk -v ppid="$current_pid" '$2==ppid {print $3}')"
 
 if [[ "$current_ppid" == "" || "$current_ppid" == "0" ]]; then
-    echo "the pid not exists."
-    exit 1
+  echo "the pid not exists."
+  exit 1
 fi
 
 while [[ $current_ppid -ne 1 ]]; do
