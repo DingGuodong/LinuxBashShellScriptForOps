@@ -91,7 +91,8 @@ def run_workload(path):
 
 
 git_top_directory = r'D:\GitHub'
-git_repos_list = [os.path.join(git_top_directory, x) for x in os.listdir(git_top_directory)]
+git_repos_list = [os.path.join(git_top_directory, x) for x in os.listdir(git_top_directory) if
+                  os.path.isdir(os.path.join(git_top_directory, x))]
 
 if __name__ == '__main__':
     pool = Pool(4)  # 4 CPU cores
