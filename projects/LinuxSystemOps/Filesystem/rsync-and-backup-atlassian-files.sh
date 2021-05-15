@@ -34,9 +34,20 @@
 # rsync task config
 ################
 SRC="/opt/atlassian"
-DEST="/backup"
-RSYNC_LOG_FILE="/backup/atlassian-rsync.log"
+DEST="/backup/my-atlassian-data"                   # mount backup disk to /backup
+RSYNC_LOG_FILE="/var/log/corn-atlassian-rsync.log" # create unified log dir for log file
 ################
+
+# TODO(DingGuodong) we can send backups to oss(object store service)
+
+# do this ONLY once
+lock_file=$SRC/.backup_lock_file # do NOT set to $DEST, make sure $DEST (backup disk) exist
+if [[ ! -f $lock_file ]]; then
+  mkdir -p $DEST
+  touch $lock_file
+fi
+
+test ! -d $DEST && echo "backup dir not exist, disk is down? exit now." && exit 1
 
 #SHELL=/bin/bash
 #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
