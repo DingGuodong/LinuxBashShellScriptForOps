@@ -61,6 +61,17 @@ mysql_backup_dir=/backup/db/mysql
 date_format_type_dir=$(date +%Y-%m-%d)
 date_format_type_file=$(date +%Y%m%d%H%M%S)
 
+# TODO(DingGuodong) we can send backups to oss(object store service)
+
+# do this ONLY once
+lock_file=$mysql_basedir/.backup_lock_file # do NOT set to $DEST, make sure $DEST (backup disk) exist
+if [[ ! -f $lock_file ]]; then
+  mkdir -p $mysql_backup_dir
+  touch $lock_file
+fi
+
+test ! -d $mysql_backup_dir && echo "backup dir not exist, disk is down? exit now." && exit 1
+
 echo "------------------------------------------------------------------------"
 echo "=> do backup scheduler start at $(date +%Y%m%d%H%M%S)"
 
