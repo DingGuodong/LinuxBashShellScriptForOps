@@ -115,7 +115,7 @@ def install_packages_base():
     if is_apt():
         cxn.sudo(
             'apt update && apt install -y '
-            'apt-transport-https ca-certificates openssl libssl-dev curl bash-completion '
+            'ca-certificates openssl libssl-dev curl '
             'ruby facter '
             'ntp ntp-doc '
             'bash-completion command-not-found '
@@ -127,7 +127,7 @@ def install_packages_base():
             'yum install -y epel-release && yum makecache fast',
             hide=True, warn=True, pty=True, watchers=[sudo_pass_auto_respond])
         cxn.sudo(
-            'yum install -y ca-certificates openssl openssl-devel curl rpm gnupg2 nss bash-completion '
+            'yum install -y ca-certificates openssl openssl-devel curl rpm gnupg2 nss '
             'facter ruby-json '
             'ntp ntpdate ntp-doc '
             'bash-completion bash-completion-extras '
