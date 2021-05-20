@@ -65,10 +65,10 @@ def execute_commands_on_remote_host(host, command, **kwargs):
                 understand your server's configuration before using!
     """
     for line in stdout:
-        print "Stdout: ", line,
+        print("Stdout: ", line,)
 
     for line in stdout:
-        print "Stderr: ", line,
+        print("Stderr: ", line,)
     client.close()
 
 

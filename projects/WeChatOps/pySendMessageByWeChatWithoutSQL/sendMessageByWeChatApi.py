@@ -174,7 +174,7 @@ class WeChatMessageSender(object):
         }
 
         response = requests.request("POST", url, data=payload, headers=headers, params=querystring)
-        print response.text
+        print(response.text)
 
 
 if __name__ == '__main__':
