@@ -13,7 +13,8 @@ Create Time:            11:11
 Description:            get SSL certificate from PEM file
 Long Description:       
 References:             
-Prerequisites:          []
+Prerequisites:          pip install pyOpenSSL
+                        pip install python-dateutil
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -27,13 +28,16 @@ Topic:                  Utilities
 
 # from ssl import DER_cert_to_PEM_cert
 import OpenSSL
+import six
 from OpenSSL.crypto import load_certificate
 from dateutil import parser
+import datetime
+from dateutil.tz import tzutc
 
 with open("5366531_www.example.com.pem") as fp:
     content = fp.read()
 
-cert = load_certificate(OpenSSL.crypto.FILETYPE_PEM, content)
+cert = load_certificate(OpenSSL.crypto.FILETYPE_PEM, content.encode())
 
 
 def to_unicode_or_bust(obj, encoding='utf-8'):
@@ -53,14 +57,18 @@ def to_unicode_or_bust(obj, encoding='utf-8'):
 
 
 def print_v2(*args):
-    print("".join([to_unicode_or_bust(x) for x in args]))
+    if six.PY2:
+        print("".join([to_unicode_or_bust(x) for x in args]))
+    else:
+        print("".join([x for x in args]))
 
 
 print_v2("颁发者: ", cert.get_issuer().commonName)
-print_v2("颁发给: ", dict(cert.get_subject().get_components()).get('CN'))
+print_v2("颁发给: ", str(dict(cert.get_subject().get_components()).get(b'CN').decode()))
 print_v2("有效期从: ", parser.parse(cert.get_notBefore()).strftime('%Y-%m-%d %H:%M:%S'))
 print_v2("到: ", parser.parse(cert.get_notAfter()).strftime('%Y-%m-%d %H:%M:%S'))
-print_v2("证书是否已经过期: ", cert.has_expired())
+print_v2("证书是否已经过期: ", str(cert.has_expired()))
+print_v2("证书剩余天数: ", str((parser.parse(cert.get_notAfter()) - datetime.datetime.now(tz=tzutc())).days))
 
 cert_name_map = {
     "CN": "通用名称 ",
@@ -72,4 +80,4 @@ cert_name_map = {
 }
 
 for item in cert.get_issuer().get_components():
-    print_v2(cert_name_map.get(item[0]), ": ", item[1])
+    print_v2(cert_name_map.get(item[0].decode()), ": ", item[1].decode())
