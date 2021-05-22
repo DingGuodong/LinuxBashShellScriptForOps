@@ -5,9 +5,10 @@ import sys
 
 import datetime
 import delorean
-import pytz
+import pytz  # pip install pytz
 import time
 from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
+from dateutil.tz import tzutc
 
 # print localtime, When the time tuple is not present, current time as returned by localtime() is used.
 print(time.strftime('%Y-%m-%d %H:%M:%S'))
@@ -34,7 +35,6 @@ print(date_utc_string)
 GMT_FORMAT = '%b %d %H:%M:%S %Y GMT'
 print(datetime.datetime.utcnow().strftime(GMT_FORMAT))
 
-
 # Python's program to get current time MST EST UTC GMT HST
 mst = pytz.timezone('MST')
 print("Time in MST:", datetime.datetime.now(mst))
@@ -50,7 +50,6 @@ print("Time in GMT:", datetime.datetime.now(gmt))
 
 hst = pytz.timezone('HST')
 print("Time in HST:", datetime.datetime.now(hst))
-
 
 print(time.strftime('%Y%m%d%H%M%S', time.localtime(time.time())))
 print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
@@ -229,6 +228,11 @@ print((datetime.datetime.strptime(mysql_query_general_log_time, "%Y-%m-%dT%H:%M:
 # mysql time in UTC, match nginx time well
 print(datetime.datetime.strptime(mysql_query_general_log_time, "%Y-%m-%dT%H:%M:%S.%fZ").replace(
     tzinfo=pytz.timezone('UTC')).astimezone(pytz.timezone('Asia/Shanghai')).strftime('"%d/%b/%Y:%H:%M:%S %z"'))
+
+#  tzinfo=tzutc(), from dateutil.tz import tzutc
+print((datetime.datetime(2021, 8, 18, 16, 1, 42, tzinfo=tzutc()) - datetime.datetime.now(tz=pytz.timezone('UTC'))).days)
+print((datetime.datetime(2021, 8, 18, 16, 1, 42, tzinfo=tzutc()) - datetime.datetime.now(tz=tzutc())).days)
+
 # python get current timezone and get the time difference from UTC
 # python获取当前时区并计算与UTC的时间差
 print(datetime.datetime.now(pytz.timezone('Asia/Shanghai')))
