@@ -337,7 +337,7 @@ traitlets==4.3.3
 Twisted==20.3.0
 typing==3.7.4.3
 tzlocal==2.1
-urllib3==1.25.10
+urllib3==1.26.5
 uuid==1.30
 validators==0.14.3
 vine==1.3.0
