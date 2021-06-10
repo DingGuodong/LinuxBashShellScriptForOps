@@ -69,7 +69,7 @@ decorator==4.4.2
 defusedxml==0.6.0
 Delorean==1.0.0
 distlib==0.3.1
-Django==1.11.29
+Django==2.2.24
 django-bootstrap-form==3.4
 django-bootstrap3==12.1.0
 django-crispy-forms==1.9.0
