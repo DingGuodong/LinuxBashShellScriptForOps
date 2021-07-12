@@ -7,6 +7,8 @@ import datetime
 import delorean
 import pytz  # pip install pytz
 import time
+
+import six
 from dateutil.relativedelta import relativedelta  # pip install -U python-dateutil
 from dateutil.tz import tzutc
 
@@ -73,6 +75,12 @@ print(time.strftime('%Y-%m-%d %H:%M:%S', time.strptime("20170416145604.489009+48
 # Return a 3-tuple, (ISO year, ISO week number, ISO weekday). The same as self.date().isocalendar().
 print(datetime.datetime.now().isocalendar())
 print(datetime.datetime.strptime('2020/02/07', '%Y/%m/%d').isocalendar())
+
+# what day is today?
+if six.PY2:
+    print(datetime.datetime.now().isocalendar()[-1])
+else:
+    print(datetime.datetime.now().isocalendar().weekday)
 
 # Python3.x support same format in GNU `date`
 # in GNU `date`, '%U': week number of year, with Sunday as first day of week (00..53)
