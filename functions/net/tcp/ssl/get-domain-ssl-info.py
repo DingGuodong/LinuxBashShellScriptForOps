@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
 Created by PyCharm.
@@ -24,6 +24,7 @@ Natural Language:       English, Chinese (Simplified)
 Operating System:       POSIX :: Linux, Microsoft :: Windows
 Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
+Programming Language:   Python :: 3
 Topic:                  Utilities
  """
 import datetime
@@ -32,30 +33,54 @@ import ssl
 import sys
 
 import certifi
+import time
+
+used_in_zabbix = False
 
 
 def get_cert_info(hostname):
+    global used_in_zabbix
+
     ssl_context = ssl.create_default_context(cafile=certifi.where())
-    ssl_conn = ssl_context.wrap_socket(
-        socket.socket(socket.AF_INET),
-        server_hostname=hostname,
-    )
-
-    ssl_conn.settimeout(30.0)
-
+    ssl_conn = None
     max_tries = 3
     tried_time = 0
     while True:
         try:
+            ssl_conn = ssl_context.wrap_socket(
+                socket.socket(socket.AF_INET),
+                server_hostname=hostname,
+            )
+            ssl_conn.settimeout(30.0)
             ssl_conn.connect((hostname, 443))
             break
         except socket.error as e:
             tried_time += 1
             # such as 'socket.error: [Errno 10060]'
-            print(e, "try again, ({}/{})".format(max_tries, tried_time))
+            if not used_in_zabbix:
+                print(e, "try again, ({}/{})".format(max_tries, tried_time))
             if tried_time == max_tries:
-                print("Exceed max number of try times, {}".format(max_tries))
-                sys.exit(1)
+                if not used_in_zabbix:
+                    print("Exceed max number of try times, {}".format(max_tries))
+                    sys.exit(1)
+                else:
+                    print(0)
+                    sys.exit(0)
+            time.sleep(1)
+            if ssl_conn is not None:
+                ssl_conn.close()
+        except ValueError as e:
+            # ValueError: attempt to connect already-connected SSLSocket!
+            # Python 3.7 and higher raises ValueError if a socket is already connected
+            if sys.version_info >= (3, 7):
+                if not used_in_zabbix:
+                    print(e)
+                    exit(0)
+                else:
+                    print(0)
+                    sys.exit(0)
+            else:
+                raise
 
     cert_info = ssl_conn.getpeercert()
 
@@ -71,15 +96,18 @@ def get_cert_issuer(hostname):
 
 def get_cert_expiry_datetime(hostname):
     ssl_date_fmt = r'%b %d %H:%M:%S %Y %Z'
-    cert_info = get_cert_info(hostname)
+    cert_info = get_cert_info(hostname)  # 'notAfter': 'Jul 26 05:31:02 2021 GMT'
     # parse the string from the certificate into a Python datetime object
     return datetime.datetime.strptime(cert_info['notAfter'], ssl_date_fmt)
 
 
 def get_cert_valid_days_remaining(hostname):
-    """Get the number of days left in a cert's lifetime."""
+    """
+    Get the number of days left in a cert's lifetime.
+    import datetime; print((datetime.datetime.strptime("2021/7/26", "%Y/%m/%d") - datetime.datetime.now()).days)
+    """
     expires = get_cert_expiry_datetime(hostname)
-    return (expires - datetime.datetime.utcnow()).days
+    return (expires - datetime.datetime.now()).days
 
 
 def is_cert_expired_after_days(hostname, after_days=14):
@@ -102,16 +130,25 @@ def is_cert_expired_after_days(hostname, after_days=14):
 
 
 def show_domain_info(hostname):
-    domain = hostname
-    # is_ssl_enable = True
     remain_days = get_cert_valid_days_remaining(hostname)
     issuer = get_cert_issuer(hostname)
-    print("Domain: {}, DaysLeft: {}, Issuer: {}".format(
-        domain,
+    expires = get_cert_expiry_datetime(hostname)
+    print("Domain: {}, ExpiredAfter: {}, DaysLeft: {}, Issuer: {}".format(
+        hostname,
+        expires,
         remain_days,
         issuer
     ))
 
 
 if __name__ == '__main__':
-    show_domain_info("github.com")
+    if len(sys.argv) == 1:
+        show_domain_info("github.com")
+        print(get_cert_valid_days_remaining("github.com"))
+    elif len(sys.argv) == 2:
+        used_in_zabbix = True
+        # show_domain_info(sys.argv[-1])
+        print(get_cert_valid_days_remaining(sys.argv[-1]))
+    else:
+        print("bad call. usage: {} <host>".format(sys.argv[0]))
+        sys.exit(1)
