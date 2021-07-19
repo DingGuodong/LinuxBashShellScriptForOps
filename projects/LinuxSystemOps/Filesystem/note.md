@@ -27,6 +27,27 @@
 └── ...
 ```
 
+## 多站点之间数据备份策略
+
+原则：
+
+1. 源站有读权限，备份站点有写权限
+
+2. 文件的权限不能丢失也不能改变
+
+3. 在rsync同步数据时，源站的数据备份应该保持静默，无改变系统的操作（如chmod，chown等）
+
+4. 尽可能利用上传带宽而不是下载带宽，保护相对重要的服务
+
+## 高可靠性备份方案：
+
+数据中心1的节点（发送方） --> （接收方）数据中心2的节点（发送方） --> （接收方）数据中心3的节点
+
+数据中心1的节点：生成备份数据，备份数据的用户可能有多个，如www-data，git等，推送到数据中心2的节点 数据中心2的节点：接收来自数据中心1的节点的数据，再将从数据中心1的节点上接收的备份文件推送到数据中心节点3
+数据中心3的节点：被动接收从数据中心2的节点传输过来的数据
+
+全链路非root的解决方案：暂缺
+
 ## rsync
 
 Rsync is widely used for backups and mirroring and as an improved copy command for everyday use.
@@ -46,12 +67,21 @@ sudo /usr/bin/rsync -a -e "ssh -p 22 -oStrictHostKeyChecking=no -i /home/guodong
 Rsync finds files that need to be transferred using a "quick check" algorithm (by default) that looks for files that have changed in size or in last-modified time.
 Any changes in the other preserved attributes (as requested by options) are made on the destination file directly when the quick check indicates that the file's data does not need to be updated.
 
-The option turns off rsync's "quick check" algorithm 
+The option turns off rsync's "quick check" algorithm
+
 ```
 --ignore-times, -I
 --size-only
 --checksum, -c  # this option can be used in some more severe scenario but it will slow performance if there are many files to handle
 ```
 
-notes: Generating the checksums means that both sides will expend a lot of disk I/O reading all the data 
-in the files in the transfer, so this can slow things down significantly.
+notes: Generating the checksums means that both sides will expend a lot of disk I/O reading all the data in the files in
+the transfer, so this can slow things down significantly.
+
+## rsync 注意问题
+
+1. rsync 默认使用 `mod-time & size` 来判断文件是否发生变化，因此确保同步之前，不要使用chmod、chown等命令修改文件的权限以免修改文件的日期造成文件重传
+
+2. `-c`参数用于源服务器必须使用chmod、chown等命令修改权限的情况，此时rsync会比对文件的MD5
+
+3. `--partial`参数用于断点续传

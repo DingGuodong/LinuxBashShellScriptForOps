@@ -1,6 +1,6 @@
 [
     {
-        "command": "add_Info",
+        "command": "add_info",
         "keys": [
             "ctrl+shift+;"
         ]

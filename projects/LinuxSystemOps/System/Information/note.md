@@ -1,0 +1,1 @@
+sudo lshw -C system sudo dmidecode -t system # Serial Number, UUID sudo dmidecode -t processor # CPU ID
