@@ -50,7 +50,12 @@ def get_domain_name_from_url(url):
 
 
 def run_ping(destination, option=""):
-    command = "ping.exe {} {}".format(option, destination)
+    if sys.platform == 'win32':
+        command = "ping.exe {} {}".format(option, destination)
+    elif sys.platform == 'linux':
+        command = "ping {} {}".format(option, destination)
+    else:
+        command = "ping {} {}".format(option, destination)
     try:
         os.system(command)
     except KeyboardInterrupt:
