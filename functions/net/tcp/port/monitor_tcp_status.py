@@ -15,6 +15,12 @@ Long Description:       designed for zabbix
 References:             
 Prerequisites:          pip install ipy
                         pip install psutil
+
+curl -L https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+sudo python2.7 get-pip.py -i https://pypi.tuna.tsinghua.edu.cn/simple/
+sudo -H pip install pyopenssl ndg-httpsclient pyasn1 -i https://pypi.tuna.tsinghua.edu.cn/simple
+sudo pip install ipy psutil==5.8.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -24,6 +30,7 @@ Operating System:       POSIX :: Linux, Microsoft :: Windows
 Programming Language:   Python :: 2.6
 Programming Language:   Python :: 2.7
 Topic:                  Utilities
+Known issue:            not support in container: the data maybe not incomplete when containers running on host.
  """
 import sys
 
@@ -40,7 +47,7 @@ def __get_sconn_status_set():
     for sconn in sconn_list:
         sconn_status_set.add(sconn.status)
 
-    print sconn_status_set
+    print(sconn_status_set)
 
 
 def is_private_ipv4(ip):
