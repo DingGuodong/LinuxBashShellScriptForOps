@@ -272,7 +272,7 @@ python-ntlm3==1.0.2
 python-whois-extended==0.7.12
 pytz==2020.1
 pyunpack==0.2.2
-pywin32==228
+pywin32==301
 pywinpty==0.5.7
 pywinrm==0.4.1
 pywinservicemanager==1.0.5
