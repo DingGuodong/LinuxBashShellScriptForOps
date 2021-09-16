@@ -48,8 +48,9 @@ if connection is not None:
         if isinstance(item, dict):
             row_data_list = list()
             for key, value in item.items():
-                field_names_list.append(key)
                 row_data_list.append(value)
+                if len(field_names_list) < len(row_data_list):
+                    field_names_list.append(key)
             table.add_row(row_data_list)
             del row_data_list
     table.field_names = field_names_list
