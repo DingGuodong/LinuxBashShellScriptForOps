@@ -28,14 +28,14 @@ import dns.resolver
 
 
 def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="114.114.114.114", debug=False):
-    # type: (str, str, str, bool) -> list
+    # type: (str, str, str, bool) -> dict
     """
     query ip address of given domain name
     :param qname: domain name
     :param rdtype: A, CNAME, MX, TXT, NS, SRV, ...
     :param nameserver:
     :param debug: enable debug,
-    :return: list
+    :return: dict
     """
     if isinstance(rdtype, str):
         rdtype = dns.rdatatype.from_text(rdtype)
@@ -47,7 +47,7 @@ def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="114.114.114.114", de
     resolver.cache = False
     answer = None
     try:
-        answer = resolver.query(qname, rdtype).response.answer  # type: [dns.rrset.RRset,]
+        answer = resolver.resolve(qname, rdtype).response.answer  # type: [dns.rrset.RRset,]
     except dns.resolver.NoAnswer as e:
         if debug:
             print(e)
@@ -63,8 +63,11 @@ def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="114.114.114.114", de
 
     records = []
     answers = []
-    if answer:
-        for record in answer:
+    result = dict()
+
+    if answer:  # type: list
+        for record in answer:  # type: dns.rrset.RRset
+            result[dns.rdatatype.to_text(record.rdtype)] = record.name.to_text()
             records.append(record)  # redefined __str__ in <class 'dns.rrset.RRset'>
 
     for items in records:  # same as answer[-1].__str__()
@@ -72,4 +75,11 @@ def query_dns_rr(qname, rdtype=dns.rdatatype.A, nameserver="114.114.114.114", de
             for item in items:  # same as 'item.items', redefined __iter__ and __len__ in  <class 'dns.Set'>
                 answers.append(str(item))
 
-    return answers
+    result["data"] = answers
+
+    return result
+
+
+if __name__ == '__main__':
+    print(query_dns_rr("www.baidu.com", "CNAME"))
+
