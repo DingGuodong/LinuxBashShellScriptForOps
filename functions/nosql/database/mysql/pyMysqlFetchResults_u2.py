@@ -14,7 +14,8 @@ Create Time:            15:46
 Description:            
 Long Description:       
 References:             
-Prerequisites:          []
+Prerequisites:          pip install prettytable
+                        pip install pymysql
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
 Intended Audience:      System Administrators, Developers, End Users/Desktop
@@ -35,7 +36,7 @@ try:
                                  charset='utf8',
                                  cursorclass=pymysql.cursors.DictCursor)
 except pymysql.Error as e:
-    print e
+    print(e)
     sys.exit(1)
 
 table = prettytable.PrettyTable(border=True, header=True, left_padding_width=2, padding_width=1)
@@ -46,10 +47,10 @@ if connection is not None:
     for item in cursor:
         if isinstance(item, dict):
             row_data_list = list()
-            for key, value in item.iteritems():
+            for key, value in item.items():
                 field_names_list.append(key)
                 row_data_list.append(value)
             table.add_row(row_data_list)
             del row_data_list
     table.field_names = field_names_list
-    print table
+    print(table)

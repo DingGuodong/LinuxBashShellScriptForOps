@@ -40,8 +40,8 @@ finally:
 if cursor is not None:
     results = cursor.fetchall()
     for result in results:
-        for k, v in result.iteritems():
-            print k, v
+        for k, v in result.items():
+            print(k, v)
 else:
     print('This will never be reached when join gevent')
     sys.exit(1)
