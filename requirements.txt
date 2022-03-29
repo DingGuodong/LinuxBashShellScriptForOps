@@ -194,7 +194,7 @@ ordereddict==1.1
 packaging==20.4
 pandas==0.24.2
 pandocfilters==1.4.2
-paramiko==2.7.2
+paramiko==2.10.1
 parse==1.18.0
 parsel==1.6.0
 passlib==1.7.4
