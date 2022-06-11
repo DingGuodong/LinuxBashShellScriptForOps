@@ -10,7 +10,7 @@ Download URL:           https://github.com/DingGuodong/LinuxBashShellScriptForOp
 Create Date:            2020/09/03
 Create Time:            10:57:19
 Description:            ping a url as ping a ip or domain name
-Long Description:       
+Long Description:
 Prerequisites:          []
 Development Status:     3 - Alpha, 5 - Production/Stable
 Environment:            Console
@@ -46,7 +46,7 @@ def get_domain_name_from_url(url):
         return domain_name
     else:
         # return original url, usually as parsed_uri.path
-        return url
+        return url.strip().split('/')[0]
 
 
 def run_ping(destination, option=""):
