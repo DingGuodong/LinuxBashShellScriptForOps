@@ -300,7 +300,7 @@ scandir==1.10.0
 scapy==2.4.4
 schedule==0.6.0
 scipy==1.2.3
-Scrapy==1.8.0
+Scrapy==2.6.1
 seaborn==0.9.1
 selectors2==2.0.2
 selenium==3.141.0
