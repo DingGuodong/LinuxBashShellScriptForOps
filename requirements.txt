@@ -227,7 +227,7 @@ py-zabbix==1.1.7
 pyad==0.6.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-pycares==2.3.0
+pycares==4.2.0
 pycodestyle==2.6.0
 pycparser==2.20
 pycryptodome==3.9.8
