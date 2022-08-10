@@ -178,7 +178,7 @@ more-itertools==5.0.0
 msgpack-python==0.5.6
 mysql-connector-python==8.0.21
 MySQL-python==1.2.5
-nbconvert==5.6.1
+nbconvert==6.3.0
 nbformat==4.4.0
 ndg-httpsclient==0.5.1
 netaddr==0.8.0
