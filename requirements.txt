@@ -217,7 +217,7 @@ progressbar==2.5
 prometheus-client==0.8.0
 prompt-toolkit==1.0.18
 Protego==0.1.16
-protobuf==3.13.0
+protobuf==3.18.3
 psutil==5.7.2
 psycopg2==2.8.6
 psycopg2-binary==2.8.6
