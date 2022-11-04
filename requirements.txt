@@ -334,7 +334,7 @@ toml==0.10.1
 Top==1.0.0
 tornado==5.1.1
 traitlets==4.3.3
-Twisted==20.3.0
+Twisted==22.10.0
 typing==3.7.4.3
 tzlocal==2.1
 urllib3==1.25.10
