@@ -40,7 +40,7 @@ blinker==1.4
 braceexpand==0.1.6
 bs4==0.0.1
 celery==4.4.7
-certifi==2020.6.20
+certifi==2022.12.7
 cffi==1.14.3
 chardet==3.0.4
 cheroot==8.4.5
