@@ -77,7 +77,7 @@ Email: uberurey_ups#163.com
 
 也可加入QQ群与其他人一起交流：
 
-1. QQ群名称：[Bash/Awk/Sed CU论坛](https://jq.qq.com/?_wv=1027&k=5NNyJum) / 群号码：302706076
+1. QQ群名称：[Bash/Awk/Sed CU论坛]() / 群号码：370897942
 
 2. QQ群名称：[运维架构技术交流](https://jq.qq.com/?_wv=1027&k=52fjL0z) / 群号码：991904631
 
