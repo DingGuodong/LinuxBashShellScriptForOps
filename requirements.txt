@@ -23,7 +23,7 @@ atomicwrites==1.4.0
 attrs==20.2.0
 Automat==20.2.0
 autopep8==1.5.4
-Babel==2.8.0
+Babel==2.9.1
 backports-abc==0.5
 backports.csv==1.0.7
 backports.functools-lru-cache==1.6.1
