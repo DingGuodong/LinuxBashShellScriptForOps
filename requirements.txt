@@ -276,7 +276,7 @@ pywin32==228
 pywinpty==0.5.7
 pywinrm==0.4.1
 pywinservicemanager==1.0.5
-PyYAML==5.3.1
+PyYAML==5.4
 pyzabbix==0.8.2
 pyzmq==19.0.2
 qiniu==7.3.0
